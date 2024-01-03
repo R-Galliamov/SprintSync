@@ -1,4 +1,4 @@
-package com.developers.spryntsync
+package com.developers.spryntsync.ui
 
 import android.os.Bundle
 import android.util.Log

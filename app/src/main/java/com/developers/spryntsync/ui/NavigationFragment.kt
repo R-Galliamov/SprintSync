@@ -1,4 +1,4 @@
-package com.developers.spryntsync
+package com.developers.spryntsync.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.developers.spryntsync.R
 import com.developers.spryntsync.databinding.FragmentNavigationBinding
 
 const val isFirstRun = false //TODO replace with SharedPref
