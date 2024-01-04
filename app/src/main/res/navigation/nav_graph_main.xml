@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/onboardingFragment">
+
+    <fragment
+        android:id="@+id/tabsFragment"
+        android:name="com.developers.spryntsync.ui.fragment.TabsFragment"
+        android:label="tabsFragment" />
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.developers.spryntsync.ui.fragment.OnboardingFragment"
+        android:label="onboardingFragment" >
+        <action
+            android:id="@+id/action_onboardingFragment_to_tabsFragment"
+            app:destination="@id/tabsFragment"
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>
