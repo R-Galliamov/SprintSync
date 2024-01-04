@@ -7,13 +7,14 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import com.developers.spryntsync.R
-import com.developers.spryntsync.ui.AppThemeManager
+import com.developers.spryntsync.util.AppThemeManager
 
 class CircularProgressBar(context: Context, attrs: AttributeSet) :
     View(context, attrs) {
 
-    private val appThemeManager = AppThemeManager(context)
-    val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircularProgressBar)
+    private var appThemeManager = AppThemeManager(context)
+
+    private val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircularProgressBar)
 
     private var progress =
         typedArray.getInt(R.styleable.CircularProgressBar_progress, DEFAULT_PROGRESS)
