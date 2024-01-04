@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">?colorPrimary</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_run_48dp</item>
+        <!-- <item name="windowSplashScreenAnimationDuration">3</item> -->
+        <item name="postSplashScreenTheme">Theme.SpryntSync</item>
+    </style>
+</resources>

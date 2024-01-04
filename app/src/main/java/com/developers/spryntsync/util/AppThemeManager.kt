@@ -1,4 +1,4 @@
-package com.developers.spryntsync.ui
+package com.developers.spryntsync.util
 
 import android.content.Context
 import android.util.TypedValue
