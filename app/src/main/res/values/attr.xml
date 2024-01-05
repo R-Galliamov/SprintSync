@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <attr name="progress" format="integer" />
+
     <declare-styleable name="CircularProgressBar">
-        <attr name="progress" format="integer" />
+        <attr name="progress" />
         <attr name="progressColor" format="color" />
         <attr name="backgroundColor" format="color" />
         <attr name="strokeWidth" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="CounterView">
+        <attr name="icon" format="reference" />
+        <attr name="progress" />
+        <attr name="units" format="string" />
+        <attr name="maxNumber" format="integer" />
+        <attr name="textSize" format="dimension" />
+        <attr name="progressTextSize" format="dimension" />
+        <attr name="textColor" format="color" />
+    </declare-styleable>
 </resources>
+
+
