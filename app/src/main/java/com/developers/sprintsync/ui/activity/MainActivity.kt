@@ -1,10 +1,10 @@
-package com.developers.spryntsync.ui
+package com.developers.sprintsync.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.developers.spryntsync.databinding.ActivityMainBinding
-import com.developers.spryntsync.util.NavigationManager
-import com.developers.spryntsync.util.extension.getRootNavController
+import com.developers.sprintsync.databinding.ActivityMainBinding
+import com.developers.sprintsync.util.manager.NavigationManager
+import com.developers.sprintsync.util.extension.getRootNavController
 
 const val TAG = "My log"
 

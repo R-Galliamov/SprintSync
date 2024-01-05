@@ -1,6 +1,6 @@
-package com.developers.spryntsync.util
+package com.developers.sprintsync.util.manager
 
-import com.developers.spryntsync.R
+import com.developers.sprintsync.R
 
 class NavGraphMainManager {
 

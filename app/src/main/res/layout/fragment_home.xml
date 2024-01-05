@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.developers.spryntsync.ui.view.CircularProgressBar
+        <com.developers.sprintsync.ui.view.CircularProgressBar
             android:layout_width="@dimen/lag65"
             android:layout_height="@dimen/lag65"
             app:progress="80" />
@@ -51,5 +51,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+    <com.developers.sprintsync.ui.view.CounterView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button"
+        app:maxNumber="120"
+        app:progress="12"
+        app:progressTextSize="12sp"
+        app:textColor="#FFFFFF"
+        app:textSize="10sp"
+        app:units="min" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

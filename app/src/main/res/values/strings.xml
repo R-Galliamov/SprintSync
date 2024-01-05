@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SpryntSync</string>
+    <string name="app_name">SprintSync</string>
     <string name="start_run_desc">Start run</string>
     <string name="home">Home</string>
     <string name="plan">Plan</string>

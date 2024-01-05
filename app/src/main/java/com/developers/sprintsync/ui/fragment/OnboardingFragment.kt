@@ -1,4 +1,4 @@
-package com.developers.spryntsync.ui.fragment
+package com.developers.sprintsync.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.developers.spryntsync.R
-import com.developers.spryntsync.databinding.FragmentOnboardingBinding
-import com.developers.spryntsync.ui.TAG
+import com.developers.sprintsync.R
+import com.developers.sprintsync.databinding.FragmentOnboardingBinding
+import com.developers.sprintsync.ui.activity.TAG
 
 class OnboardingFragment : Fragment() {
 

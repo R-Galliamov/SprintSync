@@ -1,9 +1,9 @@
-package com.developers.spryntsync.util.extension
+package com.developers.sprintsync.util.extension
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.developers.spryntsync.R
+import com.developers.sprintsync.R
 
 fun AppCompatActivity.getRootNavController() : NavController {
     val navHost = supportFragmentManager.findFragmentById(R.id.mainFragmentContainer) as NavHostFragment

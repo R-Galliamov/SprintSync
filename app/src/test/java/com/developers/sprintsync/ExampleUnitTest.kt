@@ -1,4 +1,4 @@
-package com.developers.spryntsync
+package com.developers.sprintsync
 
 import org.junit.Test
 

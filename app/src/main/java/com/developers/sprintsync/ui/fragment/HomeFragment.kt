@@ -1,13 +1,13 @@
-package com.developers.spryntsync.ui.fragment
+package com.developers.sprintsync.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.developers.spryntsync.R
-import com.developers.spryntsync.databinding.FragmentHomeBinding
-import com.developers.spryntsync.util.extension.findTopNavController
+import com.developers.sprintsync.R
+import com.developers.sprintsync.databinding.FragmentHomeBinding
+import com.developers.sprintsync.util.extension.findTopNavController
 
 class HomeFragment : Fragment() {
 

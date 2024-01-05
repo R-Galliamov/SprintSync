@@ -1,4 +1,4 @@
-package com.developers.spryntsync.util
+package com.developers.sprintsync.util.manager
 
 import androidx.navigation.NavController
 

@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/tabsFragment"
-        android:name="com.developers.spryntsync.ui.fragment.TabsFragment"
+        android:name="com.developers.sprintsync.ui.fragment.TabsFragment"
         android:label="tabsFragment" />
 
     <fragment
         android:id="@+id/onboardingFragment"
-        android:name="com.developers.spryntsync.ui.fragment.OnboardingFragment"
+        android:name="com.developers.sprintsync.ui.fragment.OnboardingFragment"
         android:label="onboardingFragment" >
         <action
             android:id="@+id/action_onboardingFragment_to_tabsFragment"

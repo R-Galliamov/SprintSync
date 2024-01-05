@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.developers.spryntsync'
+    namespace 'com.developers.sprintsync'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.developers.spryntsync"
+        applicationId "com.developers.sprintsync"
         minSdk 26
         targetSdk 34
         versionCode 1

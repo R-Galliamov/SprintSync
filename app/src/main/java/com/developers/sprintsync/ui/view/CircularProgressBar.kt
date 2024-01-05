@@ -1,4 +1,4 @@
-package com.developers.spryntsync.ui.view
+package com.developers.sprintsync.ui.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,11 +6,13 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import com.developers.spryntsync.R
-import com.developers.spryntsync.util.AppThemeManager
+import com.developers.sprintsync.R
+import com.developers.sprintsync.util.manager.AppThemeManager
 
 class CircularProgressBar(context: Context, attrs: AttributeSet) :
     View(context, attrs) {
+
+    //TODO rewrite with typedArray.recycle()
 
     private var appThemeManager = AppThemeManager(context)
 

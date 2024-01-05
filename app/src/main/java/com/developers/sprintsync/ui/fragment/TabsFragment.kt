@@ -1,4 +1,4 @@
-package com.developers.spryntsync.ui.fragment
+package com.developers.sprintsync.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.developers.spryntsync.R
-import com.developers.spryntsync.databinding.FragmentTabsBinding
+import com.developers.sprintsync.R
+import com.developers.sprintsync.databinding.FragmentTabsBinding
 
 class TabsFragment : Fragment() {
 

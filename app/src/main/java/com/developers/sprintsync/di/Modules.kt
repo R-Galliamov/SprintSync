@@ -1,2 +1,2 @@
-package com.developers.spryntsync.di
+package com.developers.sprintsync.di
 

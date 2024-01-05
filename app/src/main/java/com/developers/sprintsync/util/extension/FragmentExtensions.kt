@@ -1,10 +1,10 @@
-package com.developers.spryntsync.util.extension
+package com.developers.sprintsync.util.extension
 
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.developers.spryntsync.R
+import com.developers.sprintsync.R
 
 fun Fragment.findTopNavController(): NavController {
     val topLevelHost =
