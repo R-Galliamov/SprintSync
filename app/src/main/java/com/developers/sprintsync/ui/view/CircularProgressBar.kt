@@ -9,27 +9,18 @@ import android.view.View
 import com.developers.sprintsync.R
 import com.developers.sprintsync.util.manager.AppThemeManager
 
-class CircularProgressBar(context: Context, attrs: AttributeSet) :
+class CircularProgressBar(private val context: Context, private val attrs: AttributeSet) :
     View(context, attrs) {
-
-    //TODO rewrite with typedArray.recycle()
 
     private var appThemeManager = AppThemeManager(context)
 
-    private val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircularProgressBar)
+    private var progress = Attributes().getProgress()
 
-    private var progress =
-        typedArray.getInt(R.styleable.CircularProgressBar_progress, DEFAULT_PROGRESS)
-    private var progressColor = typedArray.getColor(
-        R.styleable.CircularProgressBar_progressColor,
-        getDefaultProgressColor()
-    )
-    private var backgroundColor = typedArray.getColor(
-        R.styleable.CircularProgressBar_backgroundColor,
-        getDefaultBackgroundColor()
-    )
-    private var strokeWidth =
-        typedArray.getDimension(R.styleable.CircularProgressBar_strokeWidth, DEFAULT_STROKE_WIDTH)
+    private var progressColor = Attributes().getProgressColor()
+
+    private var backgroundColor = Attributes().getBackgroundColor()
+
+    private var strokeWidth = Attributes().getStrokeWidth()
 
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
@@ -46,6 +37,30 @@ class CircularProgressBar(context: Context, attrs: AttributeSet) :
     }
 
     private val ovalBounds = RectF()
+
+    private inner class Attributes() {
+
+        private val typedArray =
+            context.obtainStyledAttributes(attrs, R.styleable.CircularProgressBar)
+
+        fun getProgress() =
+            typedArray.getInt(R.styleable.CircularProgressBar_progress, DEFAULT_PROGRESS)
+
+        fun getProgressColor() = typedArray.getColor(
+            R.styleable.CircularProgressBar_progressColor,
+            getDefaultProgressColor()
+        )
+
+        fun getBackgroundColor() = typedArray.getColor(
+            R.styleable.CircularProgressBar_backgroundColor,
+            getDefaultBackgroundColor()
+        )
+
+        fun getStrokeWidth() = typedArray.getDimension(
+            R.styleable.CircularProgressBar_strokeWidth,
+            DEFAULT_STROKE_WIDTH
+        )
+    }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -90,7 +105,6 @@ class CircularProgressBar(context: Context, attrs: AttributeSet) :
         appThemeManager.getSecondaryColor()
 
     private fun getDefaultBackgroundColor(): Int = appThemeManager.getPrimaryColor()
-
 
     companion object {
         private const val DEFAULT_STROKE_WIDTH = 20f
