@@ -1,10 +1,8 @@
 package com.developers.sprintsync.ui.view
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.Gravity
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.developers.sprintsync.R
