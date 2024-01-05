@@ -13,10 +13,8 @@ class CounterView @JvmOverloads constructor(
     private val context: Context,
     private val attrs: AttributeSet? = null,
     private val defStyleAttr: Int = 0
-) :
-    LinearLayout(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr) {
 
-    private var icon: Drawable? = null
     private var progress: Int = DEFAULT_PROGRESS
     private var maxNumber: Int = DEFAULT_MAX_NUMBER
     private var units: String? = null
@@ -24,7 +22,6 @@ class CounterView @JvmOverloads constructor(
     private var progressTextSize: Float = DEFAULT_TEXT_SIZE
     private var textSize: Float = DEFAULT_TEXT_SIZE
 
-    private var imageView: ImageView? = null
     private var progressTextView: TextView? = null
     private var slashTextView: TextView? = null
     private var maxNumberTextView: TextView? = null
@@ -38,7 +35,6 @@ class CounterView @JvmOverloads constructor(
         setProgressTextView()
         setSplashTextView()
         setMaxNumberTextView()
-        icon?.let { setImageView() }
         if (!units.isNullOrBlank()) {
             setUnitsTextView()
         }
@@ -51,11 +47,6 @@ class CounterView @JvmOverloads constructor(
 
     fun setMaxNumber(int: Int) {
         progressTextView?.text = int.toString()
-    }
-
-    fun setIcon(drawable: Drawable) {
-        //todo write logic if layout doesn't contain view
-        imageView?.setImageDrawable(drawable)
     }
 
     fun setTextSize(float: Float) {
@@ -73,7 +64,6 @@ class CounterView @JvmOverloads constructor(
     private fun setAttrs() {
         val attrs = Attributes()
         attrs.apply {
-            icon = getIcon()
             progress = getProgress()
             maxNumber = getMuxNumber()
             textSize = getTextSize()
@@ -112,11 +102,6 @@ class CounterView @JvmOverloads constructor(
         textColor?.let { maxNumberTextView?.setTextColor(it) }
     }
 
-    private fun setImageView() {
-        imageView = ImageView(context)
-        imageView?.setImageDrawable(icon)
-    }
-
     private fun setUnitsTextView() {
         unitsTextView = TextView(context)
         unitsTextView?.text = units
@@ -125,7 +110,6 @@ class CounterView @JvmOverloads constructor(
     }
 
     private fun addViews() {
-        imageView?.let { addView(it) }
         addView(progressTextView)
         addView(slashTextView)
         addView(maxNumberTextView)
@@ -137,12 +121,7 @@ class CounterView @JvmOverloads constructor(
             attrs, R.styleable.CounterView, defStyleAttr, 0
         )
 
-        fun getIcon(): Drawable? = typedArray.getDrawable(
-            R.styleable.CounterView_icon
-        )
-
-        fun getProgress() =
-            typedArray.getInt(R.styleable.CounterView_progress, DEFAULT_PROGRESS)
+        fun getProgress() = typedArray.getInt(R.styleable.CounterView_progress, DEFAULT_PROGRESS)
 
         fun getMuxNumber() =
             typedArray.getInt(R.styleable.CounterView_maxNumber, DEFAULT_MAX_NUMBER)
@@ -153,8 +132,7 @@ class CounterView @JvmOverloads constructor(
         fun getProgressTextSize() =
             typedArray.getDimension(R.styleable.CounterView_progressTextSize, textSize)
 
-        fun getUnits() =
-            typedArray.getString(R.styleable.CounterView_units)
+        fun getUnits() = typedArray.getString(R.styleable.CounterView_units)
 
         fun getTextColor(): Int? {
             val textColor =
