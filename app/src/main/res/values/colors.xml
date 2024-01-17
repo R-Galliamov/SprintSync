@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="gray_900">#1F1F2E</color>
-    <color name="gray_700">#414251</color>
+    <!-- app colors -->
     <color name="blue_A100">#82B1FF</color>
-    <color name="blue_A900">#2962FF</color>
-    <color name="black">#FF000000</color>
+    <color name="blue_100">#D0EDFF</color>
+    <color name="yellow_300">#FFC34F</color>
+    <color name="yellow_100">#FFE9BD</color>
+    <color name="red_400">#FF5E5F</color>
+    <color name="gray_900">#2C2C2C</color>
+    <color name="gray_100">#EFEFEF</color>
+
+    <!-- basic colors -->
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+
+
 </resources>
