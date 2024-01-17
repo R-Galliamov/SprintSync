@@ -5,8 +5,18 @@
     <dimen name="lag3">12dp</dimen>
     <dimen name="lag4">16dp</dimen>
     <dimen name="lag5">20dp</dimen>
+    <dimen name="lag6">24dp</dimen>
+    <dimen name="lag8">32dp</dimen>
+    <dimen name="lag10">40dp</dimen>
     <dimen name="lag25">100dp</dimen>
     <dimen name="lag50">200dp</dimen>
     <dimen name="lag65">260dp</dimen>
     <dimen name="lag100">400dp</dimen>
+
+    <dimen name="commonBigSpace">40dp</dimen>
+    <dimen name="commonSmallSpace">20dp</dimen>
+
+    <dimen name="titlesSize">24sp</dimen>
+    <dimen name="bigTextSize">20sp</dimen>
+    <dimen name="regularTextSize">16sp</dimen>
 </resources>

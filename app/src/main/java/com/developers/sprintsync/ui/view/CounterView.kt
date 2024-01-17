@@ -2,6 +2,8 @@ package com.developers.sprintsync.ui.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -17,8 +19,8 @@ class CounterView @JvmOverloads constructor(
     private var maxNumber: Int = DEFAULT_MAX_NUMBER
     private var units: String? = null
 
-    private var progressTextSize: Float = DEFAULT_TEXT_SIZE
-    private var textSize: Float = DEFAULT_TEXT_SIZE
+    private var progressTextSize: Float = DEFAULT_TEXT_SIZE_FLOAT
+    private var textSize: Float = DEFAULT_TEXT_SIZE_FLOAT
 
     private var progressTextView: TextView? = null
     private var slashTextView: TextView? = null
@@ -39,6 +41,8 @@ class CounterView @JvmOverloads constructor(
         addViews()
     }
 
+
+    //TODO fix setters
     fun setProgress(int: Int) {
         progressTextView?.text = int.toString()
     }
@@ -79,9 +83,9 @@ class CounterView @JvmOverloads constructor(
 
     private fun setProgressTextView() {
         progressTextView = TextView(context)
+        progressTextView?.setTextSize(TypedValue.COMPLEX_UNIT_SP, progressTextSize)
         progressTextView?.apply {
             text = progress.toString()
-            textSize = progressTextSize
             textColor?.let { setTextColor(it) }
         }
     }
@@ -95,7 +99,7 @@ class CounterView @JvmOverloads constructor(
 
     private fun setMaxNumberTextView() {
         maxNumberTextView = TextView(context)
-        maxNumberTextView?.textSize = textSize
+        maxNumberTextView?.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
         maxNumberTextView?.text = maxNumber.toString()
         textColor?.let { maxNumberTextView?.setTextColor(it) }
     }
@@ -103,7 +107,7 @@ class CounterView @JvmOverloads constructor(
     private fun setUnitsTextView() {
         unitsTextView = TextView(context)
         unitsTextView?.text = units
-        unitsTextView?.textSize = textSize
+        unitsTextView?.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
         textColor?.let { unitsTextView?.setTextColor(it) }
     }
 
@@ -114,7 +118,7 @@ class CounterView @JvmOverloads constructor(
         unitsTextView?.let { addView(it) }
     }
 
-    private inner class Attributes() {
+    private inner class Attributes {
         private val typedArray = context.obtainStyledAttributes(
             attrs, R.styleable.CounterView, defStyleAttr, 0
         )
@@ -125,10 +129,18 @@ class CounterView @JvmOverloads constructor(
             typedArray.getInt(R.styleable.CounterView_maxNumber, DEFAULT_MAX_NUMBER)
 
         fun getTextSize() =
-            typedArray.getDimension(R.styleable.CounterView_textSize, DEFAULT_TEXT_SIZE)
+            typedArray.getInteger(
+                R.styleable.CounterView_textSize,
+                DEFAULT_TEXT_SIZE_INT
+            ).toFloat()
 
         fun getProgressTextSize() =
-            typedArray.getDimension(R.styleable.CounterView_progressTextSize, textSize)
+            typedArray.getInteger(
+                R.styleable.CounterView_progressTextSize,
+                DEFAULT_TEXT_SIZE_INT
+            ).toFloat().also {
+                Log.d("COUNTER VIEW", it.toString())
+            }
 
         fun getUnits() = typedArray.getString(R.styleable.CounterView_units)
 
@@ -141,11 +153,12 @@ class CounterView @JvmOverloads constructor(
         fun recycle() = typedArray.recycle()
     }
 
-    companion object {
-        const val DEFAULT_TEXT_SIZE: Float = 24.0f
-        const val DEFAULT_PROGRESS: Int = 0
-        const val DEFAULT_MAX_NUMBER: Int = 100
-        const val COLOR_ABSENT_CODE = -999
+    private companion object {
+        private const val DEFAULT_TEXT_SIZE_INT: Int = 20
+        private const val DEFAULT_TEXT_SIZE_FLOAT: Float = DEFAULT_TEXT_SIZE_INT.toFloat()
+        private const val DEFAULT_PROGRESS: Int = 0
+        private const val DEFAULT_MAX_NUMBER: Int = 100
+        private const val COLOR_ABSENT_CODE = -999
     }
 
 }

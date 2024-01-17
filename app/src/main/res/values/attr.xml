@@ -14,8 +14,8 @@
         <attr name="progress" />
         <attr name="units" format="string" />
         <attr name="maxNumber" format="integer" />
-        <attr name="textSize" format="dimension" />
-        <attr name="progressTextSize" format="dimension" />
+        <attr name="textSize" format="integer" />
+        <attr name="progressTextSize" format="integer" />
         <attr name="textColor" format="color" />
     </declare-styleable>
 </resources>
