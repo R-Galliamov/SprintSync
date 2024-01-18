@@ -5,5 +5,22 @@
     <string name="plan">Plan</string>
     <string name="analysis">Analysis</string>
     <string name="profile">Profile</string>
-    <string name="heart_health">Heart health</string>
+    <string name="steps">steps</string>
+    <string name="week_goal">Week goal</string>
+    <string name="min">min</string>
+
+    <string name="percent_formatted">%d%%</string>
+    <string name="today">Today:&#32;</string>
+    <string name="record_board">RECORD BOARD</string>
+    <string name="workouts">Workouts</string>
+    <string name="km">km</string>
+    <string name="kcal">Kcal</string>
+    <string name="runs">Runs</string>
+    <string name="best_results">Best results</string>
+    <string name="longest_distance">Longest distance</string>
+    <string name="best_pace">Best pace</string>
+    <string name="min_km">min/km</string>
+    <string name="max_duration">Max duration</string>
+    <string name="h_m">h:m</string>
+
 </resources>

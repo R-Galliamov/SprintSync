@@ -46,6 +46,6 @@
         app:layout_anchor="@id/bottomNavBar"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavBar"
         app:layout_constraintEnd_toEndOf="@+id/bottomNavBar"
-        app:srcCompat="@drawable/ic_run_48dp" />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

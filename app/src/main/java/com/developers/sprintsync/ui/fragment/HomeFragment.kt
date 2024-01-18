@@ -26,9 +26,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener {
-        findTopNavController().navigate(R.id.onboardingFragment) // todo: remove this code as far it's just an example
-        }
+
     }
 
     override fun onDestroyView() {

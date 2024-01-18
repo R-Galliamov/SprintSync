@@ -1,69 +1,432 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_white_gray"
+    android:paddingBottom="@dimen/bigSpace"
     tools:context=".ui.fragment.HomeFragment">
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foregroundGravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
-        <com.developers.sprintsync.ui.view.CircularProgressBar
-            android:layout_width="@dimen/lag65"
-            android:layout_height="@dimen/lag65"
-            app:progress="80" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <ImageView
-                android:id="@+id/ivHeart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/lag1"
-                android:src="@drawable/ic_heart_24dp" />
+            android:background="@drawable/card_back_decor"
+            android:padding="@dimen/normalSpace">
 
             <TextView
-                android:id="@+id/tvHeartHealth"
-                android:layout_width="100dp"
+                android:id="@+id/tvWeekGoal"
+                style="@style/TitleText.Caps"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/heart_health" />
+                android:text="@string/week_goal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvProgress"
+                style="@style/TabloidText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/percent_formatted"
+                app:layout_constraintBottom_toTopOf="@id/tvProgressStatus"
+                app:layout_constraintEnd_toEndOf="@id/pbWeekGoal"
+                app:layout_constraintStart_toStartOf="@id/pbWeekGoal"
+                app:layout_constraintTop_toTopOf="@id/pbWeekGoal"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="100%" />
+
+            <TextView
+                android:id="@+id/tvProgressStatus"
+                style="@style/RegularText.Bold.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/pbWeekGoal"
+                app:layout_constraintEnd_toEndOf="@id/tvProgress"
+                app:layout_constraintStart_toStartOf="@id/tvProgress"
+                app:layout_constraintTop_toBottomOf="@id/tvProgress"
+                tools:text="completed!" />
+
+            <com.developers.sprintsync.ui.view.CircularProgressBar
+                android:id="@+id/pbWeekGoal"
+                android:layout_width="@dimen/lag50"
+                android:layout_height="@dimen/lag50"
+                android:layout_marginTop="@dimen/normalSpace"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvWeekGoal"
+                app:strokeWidth="@dimen/lag5" />
+
+            <ImageView
+                android:id="@+id/ivWalkCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="@dimen/lag4"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_walk_48dp"
+                app:layout_constraintBottom_toTopOf="@id/ivRunCounter"
+                app:layout_constraintEnd_toStartOf="@id/cvWalkCounter"
+                app:layout_constraintStart_toEndOf="@id/pbWeekGoal"
+                app:layout_constraintTop_toTopOf="@id/pbWeekGoal" />
+
+            <com.developers.sprintsync.ui.view.CounterView
+                android:id="@+id/cvWalkCounter"
+                style="@style/CounterViewStyle.Min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/lag1"
+                app:layout_constraintBottom_toBottomOf="@id/ivWalkCounter"
+                app:layout_constraintStart_toEndOf="@+id/ivWalkCounter"
+                app:layout_constraintTop_toTopOf="@+id/ivWalkCounter" />
+
+            <ImageView
+                android:id="@+id/ivRunCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lag4"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_run_48dp"
+                app:layout_constraintBottom_toTopOf="@id/ivKcalCounter"
+                app:layout_constraintStart_toStartOf="@id/ivWalkCounter"
+                app:layout_constraintTop_toBottomOf="@id/ivWalkCounter" />
+
+            <com.developers.sprintsync.ui.view.CounterView
+                android:id="@+id/cvRunCounter"
+                style="@style/CounterViewStyle.Min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/lag1"
+                app:layout_constraintBottom_toBottomOf="@id/ivRunCounter"
+                app:layout_constraintStart_toEndOf="@+id/ivRunCounter"
+                app:layout_constraintTop_toTopOf="@+id/ivRunCounter" />
+
+            <ImageView
+                android:id="@+id/ivKcalCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lag4"
+                android:layout_marginBottom="@dimen/lag4"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_kcal_48dp"
+                app:layout_constraintBottom_toBottomOf="@id/pbWeekGoal"
+                app:layout_constraintStart_toStartOf="@id/ivRunCounter"
+                app:layout_constraintTop_toBottomOf="@id/ivRunCounter" />
+
+            <TextView
+                style="@style/RegularText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/lag1"
+                app:layout_constraintBottom_toBottomOf="@id/ivKcalCounter"
+                app:layout_constraintStart_toEndOf="@id/ivKcalCounter"
+                app:layout_constraintTop_toTopOf="@id/ivKcalCounter"
+                tools:text="8900" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:orientation="horizontal"
+            android:padding="@dimen/normalSpace">
+
+            <TextView
+                style="@style/TitleText.Caps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/today" />
+
+            <TextView
+                style="@style/TitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Jogging Bliss" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rwTrainingPlan"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lag50"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:ignore="RtlSymmetry"
+            tools:listitem="@layout/item_training_card" />
+
+        <!-- TODO try secondary color -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lag18"
+            android:layout_margin="@dimen/normalSpace"
+            android:background="@drawable/steps_counter_back">
+
+            <ImageView
+                android:id="@+id/ivSneaker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/lag8"
+                android:src="@drawable/ic_sneaker"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.developers.sprintsync.ui.view.CounterView
+                android:id="@+id/cvStepsCounter"
+                style="@style/CounterViewStyle.Steps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/tvSteps"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/ivSneaker"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tvSteps"
+                style="@style/RegularText.Bold.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/steps"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/cvStepsCounter"
+                app:layout_constraintStart_toStartOf="@id/cvStepsCounter"
+                app:layout_constraintTop_toBottomOf="@id/cvStepsCounter" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvRecordBoard"
+            style="@style/TitleText.Caps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normalSpace"
+            android:text="@string/record_board"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normalSpace"
+            android:baselineAligned="true"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTotalRunsValue"
+                    style="@style/TabloidText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    tools:text="83" />
+
+                <TextView
+                    android:id="@+id/tvRuns"
+                    style="@style/SubTitleText.Caps.Gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/runs" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTotalKmValue"
+                    style="@style/TabloidText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    tools:text="25.0" />
+
+                <TextView
+                    android:id="@+id/tvKm"
+                    style="@style/SubTitleText.Caps.Gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/km" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTotalKcalValue"
+                    style="@style/TabloidText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    tools:text="8290" />
+
+                <TextView
+                    android:id="@+id/tvKcal"
+                    style="@style/SubTitleText.Caps.Gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/kcal" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <TextView
+            style="@style/RegularText.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/normalSpace"
+            android:text="@string/best_results" />
 
-    </FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normalSpace"
+            android:layout_marginEnd="@dimen/normalSpace"
+            android:background="@drawable/card_back_outlined_decor">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GO TO ONBOARDING"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+            <ImageView
+                android:id="@+id/ivLongestDistance"
+                android:layout_width="@dimen/lag8"
+                android:layout_height="@dimen/lag8"
+                android:layout_marginStart="@dimen/normalSpace"
+                android:layout_marginTop="@dimen/normalSpace"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_distance_32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <com.developers.sprintsync.ui.view.CounterView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button"
-        app:maxNumber="120"
-        app:progress="12"
-        app:progressTextSize="12sp"
-        app:textColor="#FFFFFF"
-        app:textSize="10sp"
-        app:units="min" />
+            <TextView
+                android:id="@+id/tvLongestDistance"
+                style="@style/SubTitleText.Caps.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/lag2"
+                android:text="@string/longest_distance"
+                app:layout_constraintBottom_toBottomOf="@id/ivLongestDistance"
+                app:layout_constraintStart_toEndOf="@id/ivLongestDistance"
+                app:layout_constraintTop_toTopOf="@id/ivLongestDistance" />
 
+            <TextView
+                android:id="@+id/tvLongestDistanceValue"
+                style="@style/TabloidText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/normalSpace"
+                android:layout_marginBottom="-6dp"
+                app:layout_constraintBottom_toBottomOf="@id/tvLongestDistance"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="12.3" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-6dp"
+                android:text="@string/km"
+                app:layout_constraintEnd_toEndOf="@+id/tvLongestDistanceValue"
+                app:layout_constraintTop_toBottomOf="@id/tvLongestDistanceValue" />
+
+            <ImageView
+                android:id="@+id/ivBestPace"
+                android:layout_width="@dimen/lag8"
+                android:layout_height="@dimen/lag8"
+                android:layout_marginTop="@dimen/lag12"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_reward_32dp"
+                app:layout_constraintStart_toStartOf="@id/ivLongestDistance"
+                app:layout_constraintTop_toBottomOf="@id/ivLongestDistance" />
+
+            <TextView
+                android:id="@+id/tvBestPace"
+                style="@style/SubTitleText.Caps.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/best_pace"
+                app:layout_constraintBottom_toBottomOf="@id/ivBestPace"
+                app:layout_constraintStart_toStartOf="@id/tvLongestDistance"
+                app:layout_constraintTop_toTopOf="@id/ivBestPace" />
+
+            <TextView
+                android:id="@+id/tvBestPaceValue"
+                style="@style/TabloidText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-6dp"
+                app:layout_constraintBottom_toBottomOf="@id/tvBestPace"
+                app:layout_constraintEnd_toEndOf="@id/tvLongestDistanceValue"
+                tools:text="2:12" />
+
+            <TextView
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-6dp"
+                android:text="@string/min_km"
+                app:layout_constraintEnd_toEndOf="@id/tvBestPaceValue"
+                app:layout_constraintTop_toBottomOf="@id/tvBestPaceValue" />
+
+            <ImageView
+                android:id="@+id/ivMaxDuration"
+                android:layout_width="@dimen/lag8"
+                android:layout_height="@dimen/lag8"
+                android:layout_marginTop="@dimen/lag12"
+                android:src="@drawable/ic_timer_32dp"
+                app:layout_constraintStart_toStartOf="@id/ivBestPace"
+                app:layout_constraintTop_toBottomOf="@id/ivBestPace" />
+
+            <TextView
+                android:id="@+id/tvMaxDuration"
+                style="@style/SubTitleText.Caps.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/max_duration"
+                app:layout_constraintBottom_toBottomOf="@id/ivMaxDuration"
+                app:layout_constraintStart_toStartOf="@id/tvBestPace"
+                app:layout_constraintTop_toTopOf="@id/ivMaxDuration" />
+
+            <TextView
+                android:id="@+id/tvMaxDurationValue"
+                style="@style/TabloidText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-6dp"
+                app:layout_constraintBottom_toBottomOf="@id/tvMaxDuration"
+                app:layout_constraintEnd_toEndOf="@id/tvLongestDistanceValue"
+                tools:text="1:02" />
+
+            <TextView
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-6dp"
+                android:layout_marginBottom="@dimen/normalSpace"
+                android:text="@string/h_m"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tvMaxDurationValue"
+                app:layout_constraintTop_toBottomOf="@id/tvMaxDurationValue" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</ScrollView>
