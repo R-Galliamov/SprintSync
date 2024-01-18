@@ -1,4 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources >
+<resources>
+
+    <!-- Text -->
+    <!-- Accents -->
+    <style name="TabloidText" parent="Theme.SprintSync">
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="android:textSize">@dimen/accentSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Titles -->
+    <style name="TitleText" parent="Theme.SprintSync">
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="android:textSize">@dimen/titlesSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TitleText.Gray">
+        <item name="android:textColor">?colorOnPrimaryVariant</item>
+    </style>
+
+    <style name="TitleText.White">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="TitleText.Caps">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TitleText.Caps.Gray">
+        <item name="android:textColor">?colorOnPrimaryVariant</item>
+    </style>
+
+
+    <!-- Subtitles -->
+    <style name="SubTitleText" parent="Theme.SprintSync">
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="android:textSize">@dimen/bigTextSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SubTitleText.Gray">
+        <item name="android:textColor">?colorOnPrimaryVariant</item>
+    </style>
+
+    <style name="SubTitleText.Caps">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="SubTitleText.Caps.Gray">
+        <item name="android:textColor">?colorOnPrimaryVariant</item>
+    </style>
+
+    <!-- Regular text -->
+    <style name="RegularText" parent="Theme.SprintSync">
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="android:textSize">@dimen/regularTextSize</item>
+    </style>
+
+    <style name="RegularText.White">
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="RegularText.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="RegularText.Bold.Gray">
+        <item name="android:textColor">?colorOnPrimaryVariant</item>
+    </style>
+
+    <!-- Counters -->
+    <style name="CounterViewStyle" parent="Theme.SprintSync">
+        <item name="textColor">?colorOnPrimary</item>
+        <item name="progressTextSize">20</item>
+        <item name="textSize">16</item>
+    </style>
+
+    <style name="CounterViewStyle.Min">
+        <item name="units">@string/min</item>
+    </style>
+
+    <style name="CounterViewStyle.Steps">
+        <item name="progressTextSize">24</item>
+        <item name="textSize">24</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

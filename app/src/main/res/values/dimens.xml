@@ -8,14 +8,19 @@
     <dimen name="lag6">24dp</dimen>
     <dimen name="lag8">32dp</dimen>
     <dimen name="lag10">40dp</dimen>
+    <dimen name="lag12">48dp</dimen>
+    <dimen name="lag18">72dp</dimen>
     <dimen name="lag25">100dp</dimen>
     <dimen name="lag50">200dp</dimen>
     <dimen name="lag65">260dp</dimen>
+    <dimen name="lag75">300dp</dimen>
     <dimen name="lag100">400dp</dimen>
 
-    <dimen name="commonBigSpace">40dp</dimen>
-    <dimen name="commonSmallSpace">20dp</dimen>
+    <dimen name="bigSpace">40dp</dimen>
+    <dimen name="normalSpace">20dp</dimen>
+    <dimen name="smallSpace">10dp</dimen>
 
+    <dimen name="accentSize">40sp</dimen>
     <dimen name="titlesSize">24sp</dimen>
     <dimen name="bigTextSize">20sp</dimen>
     <dimen name="regularTextSize">16sp</dimen>
