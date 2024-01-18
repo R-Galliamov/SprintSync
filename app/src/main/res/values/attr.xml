@@ -27,6 +27,7 @@
         <attr name="textSize" format="integer" />
         <attr name="progressTextSize" format="integer" />
         <attr name="textColor" format="color" />
+        <attr name="android:textStyle"/>
     </declare-styleable>
 
 
