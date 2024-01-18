@@ -1,6 +1,7 @@
 package com.developers.sprintsync.ui.view
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
@@ -28,6 +29,7 @@ class CounterView @JvmOverloads constructor(
     private var unitsTextView: TextView? = null
 
     private var textColor: Int? = null
+    private var typeface: Typeface = Typeface.DEFAULT
 
     init {
         attrs?.let { setAttrs() }
@@ -71,6 +73,7 @@ class CounterView @JvmOverloads constructor(
             textSize = getTextSize()
             progressTextSize = getProgressTextSize()
             units = getUnits()
+            typeface = Typeface.defaultFromStyle(getTextStyle())
             textColor = getTextColor()
             recycle()
         }
@@ -82,26 +85,30 @@ class CounterView @JvmOverloads constructor(
     }
 
     private fun setProgressTextView() {
-        progressTextView = TextView(context)
-        progressTextView?.setTextSize(TypedValue.COMPLEX_UNIT_SP, progressTextSize)
-        progressTextView?.apply {
+        progressTextView = TextView(context).apply {
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, progressTextSize)
+            typeface = typeface?.let { Typeface.create(it, this@CounterView.typeface.style) }
             text = progress.toString()
-            textColor?.let { setTextColor(it) }
+            this@CounterView.textColor?.let { setTextColor(it) }
         }
     }
 
     private fun setSplashTextView() {
-        slashTextView = TextView(context)
-        slashTextView?.textSize = textSize
-        slashTextView?.text = "/"
-        textColor?.let { slashTextView?.setTextColor(it) }
+        slashTextView = TextView(context).apply {
+            textSize = this@CounterView.textSize
+            text = "/"
+            typeface = typeface?.let { Typeface.create(it, this@CounterView.typeface.style) }
+            this@CounterView.textColor?.let { setTextColor(it) }
+        }
     }
 
     private fun setMaxNumberTextView() {
-        maxNumberTextView = TextView(context)
-        maxNumberTextView?.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
-        maxNumberTextView?.text = maxNumber.toString()
-        textColor?.let { maxNumberTextView?.setTextColor(it) }
+        maxNumberTextView = TextView(context).apply {
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, this@CounterView.textSize)
+            typeface = typeface?.let { Typeface.create(it, this@CounterView.typeface.style) }
+            text = maxNumber.toString()
+            this@CounterView.textColor?.let { setTextColor(it) }
+        }
     }
 
     private fun setUnitsTextView() {
@@ -149,6 +156,10 @@ class CounterView @JvmOverloads constructor(
                 typedArray.getColor(R.styleable.CounterView_textColor, COLOR_ABSENT_CODE)
             return if (textColor != COLOR_ABSENT_CODE) textColor else null
         }
+
+        fun getTextStyle(): Int =
+            typedArray.getInt(R.styleable.CounterView_android_textStyle, Typeface.DEFAULT.style)
+
 
         fun recycle() = typedArray.recycle()
     }
