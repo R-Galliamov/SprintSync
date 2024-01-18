@@ -102,9 +102,9 @@ class CircularProgressBar(private val context: Context, private val attrs: Attri
     }
 
     private fun getDefaultProgressColor(): Int =
-        appThemeManager.getSecondaryColor()
+        appThemeManager.getThirdlyColor()
 
-    private fun getDefaultBackgroundColor(): Int = appThemeManager.getPrimaryColor()
+    private fun getDefaultBackgroundColor(): Int = appThemeManager.getSecondaryColor()
 
     companion object {
         private const val DEFAULT_STROKE_WIDTH = 20f
