@@ -21,10 +21,11 @@
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
+
+
     </style>
 
-</resources>
-<!--
+</resources><!--
     <style name="Theme.SprintSync" parent="Theme.MaterialComponents.NoActionBar">
 
 <item name="colorPrimary">@color/blue_A100</item>

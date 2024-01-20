@@ -19,8 +19,12 @@
     <string name="best_results">Best results</string>
     <string name="longest_distance">Longest distance</string>
     <string name="best_pace">Best pace</string>
+    <string name="pace">pace</string>
     <string name="min_km">min/km</string>
     <string name="max_duration">Max duration</string>
     <string name="h_m">h:m</string>
+    <string name="move_back">Move back</string>
+    <string name="start_time">00:00:00</string>
+    <string name="start">start</string>
 
 </resources>

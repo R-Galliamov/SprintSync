@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="-40dp"
+        android:layout_marginBottom="-40dp"
+        app:layout_constraintBottom_toTopOf="@id/ivCardBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivCardTop" />
+
+    <ImageView
+        android:id="@+id/ivCardTop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/card_white_top"
+        android:importantForAccessibility="no"
+        app:layout_constraintBottom_toBottomOf="@id/tvMin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivCardBottom"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:background="@drawable/card_white_bottom"
+        android:importantForAccessibility="no"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- TODO: add ripple circle back. Set as style -->
+    <ImageView
+        android:id="@+id/btBack"
+        android:layout_width="@dimen/smallImageSize"
+        android:layout_height="@dimen/smallImageSize"
+        android:layout_marginStart="@dimen/regularSpace"
+        android:layout_marginTop="@dimen/regularSpace"
+        android:clickable="true"
+        android:contentDescription="@string/move_back"
+        android:src="@drawable/ic_cancel_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- TODO: add ripple circle back. Set as style -->
+    <ImageView
+        android:id="@+id/btSettings"
+        android:layout_width="@dimen/smallImageSize"
+        android:layout_height="@dimen/smallImageSize"
+        android:layout_marginTop="@dimen/regularSpace"
+        android:layout_marginEnd="@dimen/regularSpace"
+        android:clickable="true"
+        android:contentDescription="@string/move_back"
+        android:src="@drawable/ic_settings_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvStopwatch"
+        style="@style/TabloidText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/bigSpace"
+        android:text="@string/start_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMin"
+        style="@style/RegularText.Bold.Gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/regularSpace"
+        android:text="@string/min"
+        app:layout_constraintEnd_toEndOf="@id/tvStopwatch"
+        app:layout_constraintStart_toStartOf="@id/tvStopwatch"
+        app:layout_constraintTop_toBottomOf="@id/tvStopwatch" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/bigSpace"
+        android:baselineAligned="true"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/btStart"
+        app:layout_constraintEnd_toEndOf="@id/ivCardBottom"
+        app:layout_constraintStart_toStartOf="@id/ivCardBottom">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTotalKmValue"
+                style="@style/TabloidText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:text="25.0" />
+
+            <TextView
+                android:id="@+id/tvKm"
+                style="@style/SubTitleText.Caps.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/km" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPaceValue"
+                style="@style/TabloidText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:text="1.2" />
+
+            <TextView
+                android:id="@+id/tvPace"
+                style="@style/SubTitleText.Caps.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/pace" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTotalKcalValue"
+                style="@style/TabloidText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:text="190" />
+
+            <TextView
+                android:id="@+id/tvKcal"
+                style="@style/SubTitleText.Caps.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/kcal" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/btStart"
+        android:layout_width="@dimen/largeButtonSize"
+        android:layout_height="@dimen/largeButtonSize"
+        android:layout_marginBottom="@dimen/regularSpace"
+        android:background="@drawable/bt_circle_secondary"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@id/ivCardBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            style="@style/TabloidText.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/lag1"
+            android:text="@string/start" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/btStop"
+        android:layout_width="@dimen/bigButtonSize"
+        android:layout_height="@dimen/bigButtonSize"
+        android:layout_marginStart="@dimen/bigSpace"
+        android:layout_marginBottom="@dimen/regularSpace"
+        android:background="@drawable/bt_circle_fourthly"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@id/btStart"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:importantForAccessibility="no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_stop_18dp" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/btLock"
+        android:layout_width="@dimen/bigButtonSize"
+        android:layout_height="@dimen/bigButtonSize"
+        android:layout_marginEnd="@dimen/bigSpace"
+        android:layout_marginBottom="@dimen/regularSpace"
+        android:background="@drawable/bt_circle_outlined_black"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@id/btStart"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:importantForAccessibility="no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_lock_24dp" />
+
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

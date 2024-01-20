@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--Lags-->
     <dimen name="lag1">4dp</dimen>
     <dimen name="lag2">8dp</dimen>
     <dimen name="lag3">12dp</dimen>
@@ -16,12 +18,23 @@
     <dimen name="lag75">300dp</dimen>
     <dimen name="lag100">400dp</dimen>
 
-    <dimen name="bigSpace">40dp</dimen>
-    <dimen name="normalSpace">20dp</dimen>
+    <!--Space-->
+    <dimen name="largeSpace">40dp</dimen>
+    <dimen name="bigSpace">32dp</dimen>
+    <dimen name="regularSpace">20dp</dimen>
     <dimen name="smallSpace">10dp</dimen>
 
+    <!--Text-->
     <dimen name="accentSize">40sp</dimen>
     <dimen name="titlesSize">24sp</dimen>
     <dimen name="bigTextSize">20sp</dimen>
     <dimen name="regularTextSize">16sp</dimen>
+
+    <!--Image-->
+    <dimen name="smallImageSize">24dp</dimen>
+    <dimen name="mediumImageSize">32dp</dimen>
+    <dimen name="bigImageSize">48dp</dimen>
+
+    <dimen name="bigButtonSize">60dp</dimen>
+    <dimen name="largeButtonSize">120dp</dimen>
 </resources>

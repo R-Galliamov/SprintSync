@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/lag75"
     android:layout_height="@dimen/lag50"
-    android:layout_marginStart="@dimen/normalSpace"
-    android:background="@drawable/card_back_training_item"
-    android:padding="@dimen/normalSpace">
+    android:layout_marginStart="@dimen/regularSpace"
+    android:background="@drawable/card_grad_secondary"
+    android:padding="@dimen/regularSpace">
 
     <TextView
         android:id="@+id/tvWeekValue"
@@ -47,6 +47,8 @@
         tools:text="25 min" />
 
     <ImageView
+        android:id="@+id/ivImage"
+        android:importantForAccessibility="no"
         android:layout_width="@dimen/lag25"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

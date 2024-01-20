@@ -9,6 +9,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="TabloidText.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <!-- Titles -->
     <style name="TitleText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
@@ -56,6 +60,10 @@
     <style name="RegularText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
         <item name="android:textSize">@dimen/regularTextSize</item>
+    </style>
+
+    <style name="RegularText.Big">
+        <item name="android:textSize">@dimen/bigTextSize</item>
     </style>
 
     <style name="RegularText.White">
