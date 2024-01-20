@@ -8,7 +8,11 @@
     <fragment
         android:id="@+id/tabsFragment"
         android:name="com.developers.sprintsync.ui.fragment.TabsFragment"
-        android:label="tabsFragment" />
+        android:label="tabsFragment" >
+        <action
+            android:id="@+id/action_tabsFragment_to_runDash"
+            app:destination="@id/runDash" />
+    </fragment>
 
     <fragment
         android:id="@+id/onboardingFragment"
@@ -20,4 +24,9 @@
             app:popUpTo="@id/onboardingFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/runDash"
+        android:name="com.developers.sprintsync.ui.fragment.RunDashFragment"
+        android:label="fragment_run_dash"
+        tools:layout="@layout/fragment_run_dash" />
 </navigation>

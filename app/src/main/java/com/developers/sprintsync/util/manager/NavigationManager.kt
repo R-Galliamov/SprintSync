@@ -4,17 +4,17 @@ import androidx.navigation.NavController
 
 object NavigationManager {
 
-    private val navGraphMainManager = NavGraphMainManager()
+    private val navGraphTopManager = NavGraphTopManager()
 
     fun prepareRootNavController(isFirstRun: Boolean, rootNavController: NavController) {
-        val graph = rootNavController.navInflater.inflate(navGraphMainManager.getNavGraphId())
+        val graph = rootNavController.navInflater.inflate(navGraphTopManager.getNavGraphId())
         graph.setStartDestination(getStartDestination(isFirstRun))
         rootNavController.graph = graph
     }
 
     private fun getStartDestination(isFirstRun: Boolean): Int = if (isFirstRun) {
-        navGraphMainManager.getOnboardingDestination()
+        navGraphTopManager.getOnboardingDestination()
     } else {
-        navGraphMainManager.getTabsDestination()
+        navGraphTopManager.getTabsDestination()
     }
 }

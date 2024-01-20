@@ -2,9 +2,9 @@ package com.developers.sprintsync.util.manager
 
 import com.developers.sprintsync.R
 
-class NavGraphMainManager {
+class NavGraphTopManager {
 
-    fun getNavGraphId(): Int = R.navigation.nav_graph_main
+    fun getNavGraphId(): Int = R.navigation.nav_graph_top
 
     fun getOnboardingDestination(): Int = R.id.onboardingFragment
 
