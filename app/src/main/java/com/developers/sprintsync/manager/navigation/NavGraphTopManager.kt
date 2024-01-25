@@ -1,4 +1,4 @@
-package com.developers.sprintsync.util.manager
+package com.developers.sprintsync.manager.navigation
 
 import com.developers.sprintsync.R
 

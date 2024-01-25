@@ -1,4 +1,4 @@
-package com.developers.sprintsync.util.manager
+package com.developers.sprintsync.manager
 
 import android.content.Context
 import android.util.TypedValue
