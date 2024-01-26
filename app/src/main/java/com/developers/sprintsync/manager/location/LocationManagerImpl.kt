@@ -5,7 +5,7 @@ import android.content.Context
 import android.location.Location
 import android.os.Looper
 import com.developers.sprintsync.error.NoPermissionsException
-import com.developers.sprintsync.manager.permission.PermissionManager
+import com.developers.sprintsync.manager.permission.LocationPermissionManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -60,5 +60,5 @@ class LocationManagerImpl @Inject constructor(
     }
 
     override fun hasLocationPermission(): Boolean =
-        PermissionManager.checkLocationPermission(context)
+        LocationPermissionManager.hasPermission(context)
 }
