@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Looper
+import android.util.Log
 import com.developers.sprintsync.error.NoPermissionsException
 import com.developers.sprintsync.manager.permission.LocationPermissionManager
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -27,7 +28,7 @@ class LocationManagerImpl @Inject constructor(
 
     companion object {
         const val LOCATION_UPDATE_INTERVAL = 5000L
-        const val FASTEST_LOCATION_INTERVAL = 2000F
+        const val FASTEST_LOCATION_INTERVAL = 2F
     }
 
     private val client: FusedLocationProviderClient by lazy {
@@ -49,6 +50,10 @@ class LocationManagerImpl @Inject constructor(
             val locationCallback = object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {
                     super.onLocationResult(result)
+                    Log.i(
+                        "My Stack",
+                        "Lat is: ${result.lastLocation?.latitude}, Long is: ${result.lastLocation?.longitude}"
+                    )
                     result.lastLocation?.let { launch { send(it) } }
                 }
             }

@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".service.TrackingServiceImpl"
+            android:name=".service.TrackingService"
             android:enabled="true" />
     </application>
 
