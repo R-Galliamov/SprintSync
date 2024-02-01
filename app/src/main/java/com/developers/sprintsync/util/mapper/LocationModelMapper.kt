@@ -1,4 +1,4 @@
-package com.developers.sprintsync.util.extension
+package com.developers.sprintsync.util.mapper
 
 import android.location.Location
 import com.developers.sprintsync.model.Latitude
