@@ -2,6 +2,8 @@ package com.developers.sprintsync.di
 
 import com.developers.sprintsync.manager.location.LocationManager
 import com.developers.sprintsync.manager.location.LocationManagerImpl
+import com.developers.sprintsync.manager.locationModel.LocationModelManager
+import com.developers.sprintsync.manager.locationModel.LocationModelManagerImpl
 import com.developers.sprintsync.util.stopWatch.StopWatch
 import com.developers.sprintsync.util.stopWatch.StopWatchImpl
 import dagger.Binds
@@ -24,4 +26,12 @@ abstract class StopWatchModule() {
 
     @Binds
     abstract fun bindStopWatch(impl: StopWatchImpl): StopWatch
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class LocationModelManagerModule() {
+    @Binds
+    @Singleton
+    abstract fun bindLocationModelManager(impl: LocationModelManagerImpl): LocationModelManager
 }
