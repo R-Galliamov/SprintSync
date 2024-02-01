@@ -1,10 +1,10 @@
 package com.developers.sprintsync.service
 
-import android.content.Intent
 import androidx.lifecycle.LifecycleService
 import com.developers.sprintsync.manager.location.LocationManager
 import com.developers.sprintsync.model.LocationModel
 import com.developers.sprintsync.util.extension.toDataModel
+import com.developers.sprintsync.util.stopWatch.StopWatch
 import com.developers.sprintsync.util.`typealias`.Track
 import com.developers.sprintsync.util.`typealias`.addPoint
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TrackingService @Inject constructor(private val locationManager: LocationManager) :
+class TrackingService @Inject constructor(private val locationManager: LocationManager, private val stopWatch: StopWatch) :
     LifecycleService() {
 
     private var _isActive = false
@@ -41,16 +41,17 @@ class TrackingService @Inject constructor(private val locationManager: LocationM
             track
         }
 
+    val timeInMillis = stopWatch.timeMillisState
+
     fun pause() {
         _isActive = false
+        stopWatch.pause()
     }
 
     fun resume() {
         _isActive = true
         wasResumed = true
+        stopWatch.start()
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return super.onStartCommand(intent, flags, startId)
-    }
 }
