@@ -7,7 +7,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import com.developers.sprintsync.R
-import com.developers.sprintsync.util.manager.AppThemeManager
+import com.developers.sprintsync.manager.AppThemeManager
 
 class CircularProgressBar(private val context: Context, private val attrs: AttributeSet) :
     View(context, attrs) {
