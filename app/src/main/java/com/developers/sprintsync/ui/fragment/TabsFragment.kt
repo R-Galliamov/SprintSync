@@ -6,21 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTabsBinding
-import com.developers.sprintsync.util.extension.findTopNavController
+import com.developers.sprintsync.manager.permission.LocationPermissionManager
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TabsFragment : Fragment() {
 
     private var _binding: FragmentTabsBinding? = null
-    private val binding: FragmentTabsBinding
-        get() = _binding!!
+    private val binding get() = checkNotNull(_binding) { R.string.binding_init_error }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTabsBinding.inflate(inflater, container, false)
         return binding.root
@@ -45,7 +45,11 @@ class TabsFragment : Fragment() {
 
     private fun setListeners() {
         binding.fabRun.setOnClickListener {
-            findTopNavController().navigate(R.id.action_tabsFragment_to_runDash)
+            if (LocationPermissionManager.hasPermission(requireContext())) {
+                findNavController().navigate(R.id.action_tabsFragment_to_runDash)
+            } else {
+                findNavController().navigate(R.id.action_tabsFragment_to_locationRequestFragment)
+            }
         }
     }
 }

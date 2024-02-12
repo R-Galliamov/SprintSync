@@ -2,17 +2,19 @@ package com.developers.sprintsync.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.ActivityMainBinding
-import com.developers.sprintsync.util.manager.NavigationManager
+import com.developers.sprintsync.manager.navigation.NavigationManager
 import com.developers.sprintsync.util.extension.getRootNavController
+import dagger.hilt.android.AndroidEntryPoint
 
 const val TAG = "My log"
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
-    private val binding: ActivityMainBinding
-        get() = _binding!!
+    private val binding  get() = checkNotNull(_binding) { getString(R.string.binding_init_error)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

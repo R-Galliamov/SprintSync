@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentHomeBinding
-import com.developers.sprintsync.util.extension.findTopNavController
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private val binding: FragmentHomeBinding
-        get() = _binding!!
+    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
