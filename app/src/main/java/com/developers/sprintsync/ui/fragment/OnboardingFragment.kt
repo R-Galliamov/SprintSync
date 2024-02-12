@@ -14,8 +14,7 @@ import com.developers.sprintsync.ui.activity.TAG
 class OnboardingFragment : Fragment() {
 
     private var _binding: FragmentOnboardingBinding? = null
-    private val binding: FragmentOnboardingBinding
-        get() = _binding!!
+    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

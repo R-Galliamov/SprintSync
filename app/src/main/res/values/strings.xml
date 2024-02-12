@@ -26,5 +26,8 @@
     <string name="move_back">Move back</string>
     <string name="start_time">00:00:00</string>
     <string name="start">start</string>
+    <string name="allow">Allow</string>
+    <string name="binding_init_error">Binding isn\'t initialised</string>
+    <string name="service_isn_t_initialised">Service isn\'t initialised</string>
 
 </resources>

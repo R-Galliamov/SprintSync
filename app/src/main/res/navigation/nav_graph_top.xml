@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_tabsFragment_to_runDash"
             app:destination="@id/runDash" />
+        <action
+            android:id="@+id/action_tabsFragment_to_locationRequestFragment"
+            app:destination="@id/locationRequestFragment" />
     </fragment>
 
     <fragment
@@ -28,5 +31,18 @@
         android:id="@+id/runDash"
         android:name="com.developers.sprintsync.ui.fragment.RunDashFragment"
         android:label="fragment_run_dash"
-        tools:layout="@layout/fragment_run_dash" />
+        tools:layout="@layout/fragment_run_dash" >
+        <action
+            android:id="@+id/action_runDash_to_locationRequestFragment"
+            app:destination="@id/locationRequestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationRequestFragment"
+        android:name="com.developers.sprintsync.ui.fragment.LocationRequestFragment"
+        android:label="fragment_location_request"
+        tools:layout="@layout/fragment_location_request" >
+        <action
+            android:id="@+id/action_locationRequestFragment_to_runDash"
+            app:destination="@id/runDash" />
+    </fragment>
 </navigation>
