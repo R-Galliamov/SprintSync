@@ -1,6 +1,11 @@
 package com.developers.sprintsync.service
 
-import androidx.lifecycle.LifecycleService
+import android.app.Service
+import android.content.Intent
+import android.os.Binder
+import android.os.IBinder
+import android.util.Log
+import androidx.lifecycle.asLiveData
 import com.developers.sprintsync.manager.location.LocationManager
 import com.developers.sprintsync.manager.locationModel.LocationModelManager
 import com.developers.sprintsync.model.LocationModel
@@ -9,21 +14,31 @@ import com.developers.sprintsync.util.stopWatch.StopWatch
 import com.developers.sprintsync.util.`typealias`.MutableTrack
 import com.developers.sprintsync.util.`typealias`.Track
 import com.developers.sprintsync.util.`typealias`.addPoint
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.scan
+import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TrackingService @Inject constructor(
-    private val locationManager: LocationManager,
-    private val locationModelManager: LocationModelManager,
-    private val stopWatch: StopWatch
-) :
-    LifecycleService() {
+@AndroidEntryPoint
+class TrackingService : Service() {
+
+    @Inject
+    lateinit var locationManager: LocationManager
+
+    @Inject
+    lateinit var locationModelManager: LocationModelManager
+
+    @Inject
+    lateinit var stopWatch: StopWatch
+
+    @Inject
+    lateinit var notificationManager: ServiceNotificationHelper
 
     private var _isActive = false
     val isActive: Boolean
@@ -32,33 +47,52 @@ class TrackingService @Inject constructor(
     private var needResumption = false
 
     private var _distanceInMeters = MutableStateFlow(0F)
-    val distanceInMeters: StateFlow<Float>
-        get() = _distanceInMeters
+    val distanceInMeters = _distanceInMeters.asStateFlow()
 
     private var _paceMinutesPerKm = MutableStateFlow(0F)
-    val paceMinutesPerKm: StateFlow<Float>
-        get() = _paceMinutesPerKm
+    val paceMinutesPerKm = _paceMinutesPerKm.asStateFlow()
 
+    fun getTimeInMillisFlow(): Flow<Long> = stopWatch.timeMillisState
 
-    val timeInMillis = stopWatch.timeMillisState
-
-    val location: Flow<LocationModel> =
+    fun getLocationFlow(): Flow<LocationModel> =
         locationManager.listenToLocation().map {
             it.toDataModel()
         }
 
-    val track: Flow<Track> = location
+    fun getTrackFlow(): Flow<Track> = getLocationFlow()
         .scan(
             listOf(emptyList())
         ) { accumulator, value ->
             val track = prepareTrack(accumulator)
             if (isActive) {
                 updateDistanceInMetersState(track, value)
-                updatePaceMinutesPerKmState()
                 track.addPoint(value)
             }
+            Log.i("My stack", "TrackingService thread: " + Thread.currentThread().name)
             track
         }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        startForegroundService()
+        start()
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        CoroutineScope(Dispatchers.IO).launch {
+            getTrackFlow().collect {
+                updatePaceMinutesPerKmState()
+            }
+            getTimeInMillisFlow().collect { value ->
+                notificationManager.updateDuration(value)
+            }
+            distanceInMeters.collect { value ->
+                notificationManager.updateDistance(value)
+            }
+        }
+    }
+
 
     private fun prepareTrack(track: Track): MutableTrack {
         val preparedTrack = track.toMutableList()
@@ -75,11 +109,13 @@ class TrackingService @Inject constructor(
             val distanceInMeters = locationModelManager.distanceBetween(startPoint, value)
                 .plus(_distanceInMeters.value)
             _distanceInMeters.value = distanceInMeters
+            notificationManager.updateDistance(distanceInMeters)
         }
     }
 
+    //TODO calc current pace
     private fun updatePaceMinutesPerKmState() {
-        val timeInMillis = timeInMillis.value
+        val timeInMillis = getTimeInMillisFlow().asLiveData().value ?: 0L
         val distanceInMeters = distanceInMeters.value
         val pace = if (distanceInMeters != 0F) {
             (timeInMillis / 60_000F) / (distanceInMeters / 1000F)
@@ -98,4 +134,25 @@ class TrackingService @Inject constructor(
         stopWatch.pause()
     }
 
+    private fun startForegroundService() {
+        val id = ServiceNotificationHelper.NOTIFICATION_ID
+        val foregroundServiceType = notificationManager.notification.build()
+        startForeground(
+            id,
+            foregroundServiceType
+        )
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    override fun onBind(p0: Intent?): IBinder {
+        return ServiceBinder()
+    }
+
+    inner class ServiceBinder : Binder() {
+        fun getService(): TrackingService = this@TrackingService
+    }
 }
