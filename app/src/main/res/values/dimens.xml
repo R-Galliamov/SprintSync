@@ -35,6 +35,11 @@
     <dimen name="mediumImageSize">32dp</dimen>
     <dimen name="bigImageSize">48dp</dimen>
 
-    <dimen name="bigButtonSize">60dp</dimen>
-    <dimen name="largeButtonSize">120dp</dimen>
+    <!--Button-->
+    <dimen name="regularButtonHeight">72dp</dimen>
+    <dimen name="bigCircleButtonSize">60dp</dimen>
+    <dimen name="largeCircleButtonSize">120dp</dimen>
+
+    <!--Shapes-->
+    <dimen name="regularCornerRadius">32dp</dimen>
 </resources>

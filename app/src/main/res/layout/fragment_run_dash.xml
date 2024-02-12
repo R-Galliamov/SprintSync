@@ -171,8 +171,8 @@
 
     <FrameLayout
         android:id="@+id/btStart"
-        android:layout_width="@dimen/largeButtonSize"
-        android:layout_height="@dimen/largeButtonSize"
+        android:layout_width="@dimen/largeCircleButtonSize"
+        android:layout_height="@dimen/largeCircleButtonSize"
         android:layout_marginBottom="@dimen/regularSpace"
         android:background="@drawable/bt_circle_secondary"
         android:clickable="true"
@@ -192,8 +192,8 @@
 
     <FrameLayout
         android:id="@+id/btStop"
-        android:layout_width="@dimen/bigButtonSize"
-        android:layout_height="@dimen/bigButtonSize"
+        android:layout_width="@dimen/bigCircleButtonSize"
+        android:layout_height="@dimen/bigCircleButtonSize"
         android:layout_marginStart="@dimen/bigSpace"
         android:layout_marginBottom="@dimen/regularSpace"
         android:background="@drawable/bt_circle_fourthly"
@@ -212,8 +212,8 @@
 
     <FrameLayout
         android:id="@+id/btLock"
-        android:layout_width="@dimen/bigButtonSize"
-        android:layout_height="@dimen/bigButtonSize"
+        android:layout_width="@dimen/bigCircleButtonSize"
+        android:layout_height="@dimen/bigCircleButtonSize"
         android:layout_marginEnd="@dimen/bigSpace"
         android:layout_marginBottom="@dimen/regularSpace"
         android:background="@drawable/bt_circle_outlined_black"
