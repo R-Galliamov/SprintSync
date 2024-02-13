@@ -4,8 +4,8 @@ import com.developers.sprintsync.manager.location.LocationManager
 import com.developers.sprintsync.manager.location.LocationManagerImpl
 import com.developers.sprintsync.manager.locationModel.LocationModelManager
 import com.developers.sprintsync.manager.locationModel.LocationModelManagerImpl
-import com.developers.sprintsync.util.stopWatch.StopWatch
-import com.developers.sprintsync.util.stopWatch.StopWatchImpl
+import com.developers.sprintsync.util.stopwatch.Stopwatch
+import com.developers.sprintsync.util.stopwatch.StopwatchImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,7 +25,7 @@ abstract class LocationManagerModule() {
 abstract class StopWatchModule() {
 
     @Binds
-    abstract fun bindStopWatch(impl: StopWatchImpl): StopWatch
+    abstract fun bindStopWatch(impl: StopwatchImpl): Stopwatch
 }
 
 @Module

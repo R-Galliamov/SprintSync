@@ -1,8 +1,8 @@
-package com.developers.sprintsync.util.stopWatch
+package com.developers.sprintsync.util.stopwatch
 
 import kotlinx.coroutines.flow.MutableStateFlow
 
-interface StopWatch {
+interface Stopwatch {
 
     val timeMillisState: MutableStateFlow<Long>
 

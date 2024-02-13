@@ -10,7 +10,7 @@ import com.developers.sprintsync.manager.location.LocationManager
 import com.developers.sprintsync.manager.locationModel.LocationModelManager
 import com.developers.sprintsync.model.LocationModel
 import com.developers.sprintsync.util.mapper.toDataModel
-import com.developers.sprintsync.util.stopWatch.StopWatch
+import com.developers.sprintsync.util.stopwatch.Stopwatch
 import com.developers.sprintsync.util.`typealias`.MutableTrack
 import com.developers.sprintsync.util.`typealias`.Track
 import com.developers.sprintsync.util.`typealias`.addPoint
@@ -35,7 +35,7 @@ class TrackingService : Service() {
     lateinit var locationModelManager: LocationModelManager
 
     @Inject
-    lateinit var stopWatch: StopWatch
+    lateinit var stopwatch: Stopwatch
 
     @Inject
     lateinit var notificationManager: ServiceNotificationHelper
@@ -125,13 +125,13 @@ class TrackingService : Service() {
 
     fun start() {
         _isActive = true
-        stopWatch.start()
+        stopwatch.start()
     }
 
     fun pause() {
         _isActive = false
         needResumption = true
-        stopWatch.pause()
+        stopwatch.pause()
     }
 
     private fun startForegroundService() {

@@ -1,6 +1,5 @@
-package com.developers.sprintsync.util.stopWatch
+package com.developers.sprintsync.util.stopwatch
 
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -9,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class StopWatchImpl @Inject constructor() : StopWatch {
+class StopwatchImpl @Inject constructor() : Stopwatch {
 
     private var coroutineScope = CoroutineScope(Dispatchers.Default)
     private var isActive = false
@@ -24,13 +23,12 @@ class StopWatchImpl @Inject constructor() : StopWatch {
 
         coroutineScope.launch {
             lastTimestamp = System.currentTimeMillis()
-            this@StopWatchImpl.isActive = true
+            this@StopwatchImpl.isActive = true
             while (isActive) {
-                delay(UPDATING_TIME_INTERVAL)
                 timeMillis += System.currentTimeMillis() - lastTimestamp
                 lastTimestamp = System.currentTimeMillis()
                 timeMillisState.value = timeMillis
-                Log.i("My Stack", "StopWatch IsActive")
+                delay(UPDATING_TIME_INTERVAL)
             }
         }
     }
