@@ -7,6 +7,7 @@ import android.content.Context
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.developers.sprintsync.R
+import com.developers.sprintsync.util.mapper.indicator.TimeMapper
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -42,12 +43,13 @@ class ServiceNotificationHelper @Inject constructor(@ApplicationContext private 
     }
 
     fun updateDuration(timeInMillis: Long) {
-        notificationLayout.setTextViewText(R.id.tvDurationValue, timeInMillis.toString())
+        val presentableTime = TimeMapper.millisToPresentableTime(timeInMillis)
+        notificationLayout.setTextViewText(R.id.tvDurationValue, presentableTime)
         notification.setCustomContentView(notificationLayout)
         notificationManager.notify(NOTIFICATION_ID, notification.build())
     }
 
-    fun updateDistance(distanceInMeters: Float) {
+    fun updateDistance(distanceInMeters: Int) {
         notificationLayout.setTextViewText(R.id.tvDistanceValue, distanceInMeters.toString())
         notification.setCustomContentView(notificationLayout)
         notificationManager.notify(NOTIFICATION_ID, notification.build())
@@ -55,9 +57,7 @@ class ServiceNotificationHelper @Inject constructor(@ApplicationContext private 
 
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "tracking_channel"
-        const val NOTIFICATION_CHANNEL_NAME = "Tracking"
+        const val NOTIFICATION_CHANNEL_NAME = "Tracking location"
         const val NOTIFICATION_ID = 1
     }
-
-
 }

@@ -1,10 +1,10 @@
 package com.developers.sprintsync.util.`typealias`
 
-import com.developers.sprintsync.model.LocationModel
+import com.developers.sprintsync.model.tracking.LocationModel
+import com.developers.sprintsync.model.tracking.MutableTrack
 
-typealias Track = List<List<LocationModel>>
-typealias MutableTrack = MutableList<List<LocationModel>>
 
+/*
 fun MutableTrack.addPoint(point: LocationModel) {
     if (this.isEmpty()) this.add(emptyList())
     val index = this.lastIndex
@@ -12,3 +12,5 @@ fun MutableTrack.addPoint(point: LocationModel) {
     currentList.add(point)
     this[index] = currentList.toList()
 }
+
+ */

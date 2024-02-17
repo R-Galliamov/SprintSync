@@ -22,10 +22,10 @@ abstract class LocationManagerModule() {
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class StopWatchModule() {
+abstract class StopwatchModule() {
 
     @Binds
-    abstract fun bindStopWatch(impl: StopwatchImpl): Stopwatch
+    abstract fun bindStopwatch(impl: StopwatchImpl): Stopwatch
 }
 
 @Module

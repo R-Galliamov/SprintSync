@@ -1,7 +1,7 @@
 package com.developers.sprintsync.manager.locationModel
 
-import com.developers.sprintsync.model.LocationModel
+import com.developers.sprintsync.model.tracking.LocationModel
 
 interface LocationModelManager {
-    fun distanceBetween(start: LocationModel, end: LocationModel) : Float
+    fun distanceBetweenInMeters(start: LocationModel, end: LocationModel) : Float
 }

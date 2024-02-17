@@ -15,6 +15,8 @@ import androidx.lifecycle.asLiveData
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentRunDashBinding
 import com.developers.sprintsync.service.TrackingService
+import com.developers.sprintsync.util.mapper.indicator.DistanceMapper
+import com.developers.sprintsync.util.mapper.indicator.TimeMapper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,8 +58,6 @@ class RunDashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
-
-
     }
 
     override fun onStart() {
@@ -72,9 +72,8 @@ class RunDashFragment : Fragment() {
 
     private fun initTrackingCollector() {
         CoroutineScope(Dispatchers.IO).launch {
-            trackingService.getTrackFlow().collect {
-                if (trackingService.isActive) {
-                    Log.i("My stack", "Ui thread: " + Thread.currentThread().name)
+            trackingService.segmentsFlow().collect {
+                if (trackingService.isActive.value) {
                     Log.i("My stack", it.toString())
                 }
             }
@@ -87,7 +86,7 @@ class RunDashFragment : Fragment() {
 
     private fun setStartListener() {
         binding.btStart.setOnClickListener {
-            if (trackingService.isActive)
+            if (trackingService.isActive.value)
                 trackingService.pause() else {
                 Intent(requireContext(), TrackingService::class.java).also {
                     requireContext().startService(it)
@@ -102,21 +101,20 @@ class RunDashFragment : Fragment() {
     }
 
     private fun unbindService() {
-            requireActivity().unbindService(serviceConnection)
+        requireActivity().unbindService(serviceConnection)
     }
 
     private fun setServiceObservers() {
-        trackingService.getTimeInMillisFlow().asLiveData().observe(viewLifecycleOwner) {
-            binding.tvStopwatch.text = it.toString()
-        }
+        trackingService.timeInMillisFlow().asLiveData()
+            .observe(viewLifecycleOwner) { timeInMillis ->
+                binding.tvStopwatch.text = TimeMapper.millisToPresentableTime(timeInMillis)
+            }
 
-        trackingService.distanceInMeters.asLiveData().observe(viewLifecycleOwner) {
-            binding.tvTotalKmValue.text = it.toInt().toString()
-        }
-
-        trackingService.paceMinutesPerKm.asLiveData().observe(viewLifecycleOwner) {
-            binding.tvPaceValue.text = it.toInt().toString()
-        }
+        trackingService.distanceInMeters.asLiveData()
+            .observe(viewLifecycleOwner) { distanceInMeters ->
+                binding.tvTotalKmValue.text =
+                    DistanceMapper.metersToPresentableDistance(distanceInMeters)
+            }
     }
 
 
