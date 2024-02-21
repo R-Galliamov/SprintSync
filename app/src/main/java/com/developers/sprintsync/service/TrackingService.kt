@@ -16,14 +16,12 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class TrackingService : Service() {
-
     @Inject
     lateinit var notificationManager: ServiceNotificationHelper
 
     @Inject
     lateinit var trackingFlowManager: TrackingFlowHelper
 
-    // private val paceCalculator = PaceCalculator()
     val isActive: StateFlow<Boolean>
         get() = trackingFlowManager.isActive
 
@@ -34,13 +32,18 @@ class TrackingService : Service() {
 
     fun timeInMillisFlow() = trackingFlowManager.timeInMillisFlow()
 
-    fun locationFlow() = trackingFlowManager.locationFlow().also {
-        Log.i("My stack", "Location flow is init")
-    }
+    fun locationFlow() =
+        trackingFlowManager.locationFlow().also {
+            Log.i("My stack", "Location flow is init")
+        }
 
     fun segmentsFlow() = trackingFlowManager.trackSegmentFlow()
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(
+        intent: Intent?,
+        flags: Int,
+        startId: Int,
+    ): Int {
         startForegroundService()
         start()
         return super.onStartCommand(intent, flags, startId)
@@ -72,9 +75,6 @@ class TrackingService : Service() {
         return preparedTrack.toMutableList()
     }
 
-     */
-
-    /*
     private fun updateDistanceInMetersState(track: Track, value: LocationModel) {
         val startPoint = track.lastOrNull()?.lastOrNull()
         if (startPoint != null) {
@@ -85,8 +85,6 @@ class TrackingService : Service() {
             notificationManager.updateDistance(distanceInMeters)
         }
     }
-
-
 
     private fun updatePaceMinPerKmState(
         currentTimeMillis: Long,
@@ -111,7 +109,7 @@ class TrackingService : Service() {
         val foregroundServiceType = notificationManager.notification.build()
         startForeground(
             id,
-            foregroundServiceType
+            foregroundServiceType,
         )
     }
 

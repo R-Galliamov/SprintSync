@@ -13,5 +13,16 @@ data class LocationModel(
     val longitude: Longitude,
 )
 
-fun Location.toDataModel(): LocationModel =
-    LocationModel(Latitude(latitude), Longitude(longitude))
+fun Location.toDataModel(): LocationModel = LocationModel(Latitude(latitude), Longitude(longitude))
+
+fun LocationModel.distanceBetweenInMeters(end: LocationModel): Float {
+    val result = FloatArray(1)
+    Location.distanceBetween(
+        this.latitude.value,
+        this.longitude.value,
+        end.latitude.value,
+        end.longitude.value,
+        result,
+    )
+    return result[0]
+}
