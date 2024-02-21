@@ -2,7 +2,7 @@ package com.developers.sprintsync.model.tracking
 
 import android.util.Log
 
-//TODO optimise memory by changing types
+// TODO optimise memory by changing types
 data class TrackSegment(
     val startLocation: LocationModel? = null,
     val startTime: Long? = null,
@@ -14,9 +14,7 @@ data class TrackSegment(
 ) {
     fun hasStartData(): Boolean = (startLocation != null && startTime != null)
 
-
     fun hasEndData(): Boolean = (endLocation != null && endTime != null)
-
 
     fun hasStartEndData(): Boolean = (hasStartData() && hasEndData()).also {
         Log.i(

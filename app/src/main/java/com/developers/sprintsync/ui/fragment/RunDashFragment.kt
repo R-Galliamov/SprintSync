@@ -43,7 +43,6 @@ class RunDashFragment : Fragment() {
         override fun onServiceDisconnected(className: ComponentName?) {
             _trackingService = null
         }
-
     }
 
     override fun onCreateView(
@@ -118,7 +117,6 @@ class RunDashFragment : Fragment() {
                     DistanceMapper.metersToPresentableDistance(distanceInMeters)
             }
     }
-
 
     override fun onStop() {
         super.onStop()

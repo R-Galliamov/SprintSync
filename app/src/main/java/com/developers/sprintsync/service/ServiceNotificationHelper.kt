@@ -31,8 +31,8 @@ class ServiceNotificationHelper @Inject constructor(@ApplicationContext private 
         notificationManager.createNotificationChannel(channel)
     }
 
-    //TODO create a bigContentView
-    //TODO change an icon
+    // TODO create a bigContentView
+    // TODO change an icon
     private fun getNotificationBuilder(): NotificationCompat.Builder {
         return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(false)

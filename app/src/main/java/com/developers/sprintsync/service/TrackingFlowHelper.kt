@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 class TrackingFlowHelper @Inject constructor(
     private val locationTimeTracker: LocationInTimeTracker,
     private val timeTracker: TimeTracker,

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import com.developers.sprintsync.util.calculator.PaceCalculator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,12 +23,11 @@ class TrackingService : Service() {
     @Inject
     lateinit var trackingFlowManager: TrackingFlowHelper
 
-
-    //private val paceCalculator = PaceCalculator()
+    // private val paceCalculator = PaceCalculator()
     val isActive: StateFlow<Boolean>
         get() = trackingFlowManager.isActive
 
-    //private var needResumption = false
+    // private var needResumption = false
 
     private var _distanceInMeters = MutableStateFlow(0)
     val distanceInMeters = _distanceInMeters.asStateFlow()
@@ -117,7 +115,6 @@ class TrackingService : Service() {
         )
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
     }
@@ -130,4 +127,3 @@ class TrackingService : Service() {
         fun getService(): TrackingService = this@TrackingService
     }
 }
-

@@ -41,9 +41,7 @@ class LocationManagerImpl @Inject constructor(
     override fun listenToLocation(): Flow<Location> {
         val request = LocationRequest.Builder(
             Priority.PRIORITY_HIGH_ACCURACY, LOCATION_UPDATE_INTERVAL
-        )
-            .setMinUpdateDistanceMeters(FASTEST_LOCATION_INTERVAL)
-            .build()
+        ).setMinUpdateDistanceMeters(FASTEST_LOCATION_INTERVAL).build()
 
         return callbackFlow {
             if (!hasLocationPermission()) throw NoPermissionsException
@@ -52,7 +50,8 @@ class LocationManagerImpl @Inject constructor(
                     super.onLocationResult(result)
                     Log.i(
                         "My Stack",
-                        "Lat is: ${result.lastLocation?.latitude}, Long is: ${result.lastLocation?.longitude}"
+                        "Lat is: ${result.lastLocation?.latitude}, " +
+                                "Long is: ${result.lastLocation?.longitude}"
                     )
                     result.lastLocation?.let { launch { send(it) } }
                 }
@@ -64,6 +63,5 @@ class LocationManagerImpl @Inject constructor(
         }
     }
 
-    override fun hasLocationPermission(): Boolean =
-        LocationPermissionManager.hasPermission(context)
+    override fun hasLocationPermission(): Boolean = LocationPermissionManager.hasPermission(context)
 }

@@ -6,8 +6,8 @@ object DistanceMapper {
 
     private const val METERS_IN_KILOMETERS = 1000
 
-    //TODO based on setting mapper can decide what function to use to convert values
-    //TODO init locale whit HILT
+    // TODO based on setting mapper can decide what function to use to convert values
+    // TODO init locale whit HILT
     fun metersToPresentableDistance(distanceInMeters: Int): String {
         val kilometers = metersToKilometers(distanceInMeters)
         val locale = Locale.getDefault()
