@@ -43,6 +43,4 @@ class LocationPermissionManager(
         fun hasPermission(context: Context): Boolean =
             PermissionManager.hasPermission(context, permission)
     }
-
-
 }

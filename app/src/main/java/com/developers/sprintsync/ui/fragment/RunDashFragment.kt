@@ -65,10 +65,12 @@ class RunDashFragment : Fragment() {
         bindService()
     }
 
+    /*
     private fun sendCommandToService() =
         Intent(requireContext(), TrackingService::class.java).also {
             requireContext().startService(it)
         }
+     */
 
     private fun initTrackingCollector() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -128,4 +130,3 @@ class RunDashFragment : Fragment() {
         _binding = null
     }
 }
-

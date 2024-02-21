@@ -29,5 +29,4 @@ data class TrackSegment(
 
     fun withEndData(endLocation: LocationModel, endTime: Long) =
         this.copy(endLocation = endLocation, endTime = endTime)
-
 }

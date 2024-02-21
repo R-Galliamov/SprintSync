@@ -38,7 +38,7 @@ class CircularProgressBar(private val context: Context, private val attrs: Attri
 
     private val ovalBounds = RectF()
 
-    private inner class Attributes() {
+    private inner class Attributes {
 
         private val typedArray =
             context.obtainStyledAttributes(attrs, R.styleable.CircularProgressBar)
@@ -71,8 +71,8 @@ class CircularProgressBar(private val context: Context, private val attrs: Attri
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawOval(ovalBounds, backgroundPaint)
-        val angle = 360 * progress / 100f
-        canvas.drawArc(ovalBounds, -90f, angle, false, progressPaint)
+        val angle = FULL_CIRCLE_DEGREES.toFloat() * progress / MAX_PROGRESS.toFloat()
+        canvas.drawArc(ovalBounds, START_ANGLE_DEGREES, angle, false, progressPaint)
     }
 
     fun setStrokeWidth(strokeWidth: Float) {
@@ -82,8 +82,8 @@ class CircularProgressBar(private val context: Context, private val attrs: Attri
 
     fun setProgress(progress: Int) {
         this.progress = when {
-            progress < 0 -> 0
-            progress > 100 -> 100
+            progress < MIN_PROGRESS -> MIN_PROGRESS
+            progress > MAX_PROGRESS -> MAX_PROGRESS
             else -> progress
         }
         invalidate()
@@ -109,5 +109,10 @@ class CircularProgressBar(private val context: Context, private val attrs: Attri
     companion object {
         private const val DEFAULT_STROKE_WIDTH = 20f
         private const val DEFAULT_PROGRESS = 0
+        private const val MIN_PROGRESS = 0
+        private const val MAX_PROGRESS = 100
+        private const val FULL_CIRCLE_DEGREES = 360f
+        private const val START_ANGLE_DEGREES = -90f
+
     }
 }

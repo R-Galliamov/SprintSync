@@ -49,5 +49,4 @@ class StopwatchImpl @Inject constructor() : Stopwatch {
     companion object {
         private const val UPDATING_TIME_INTERVAL = 1000L
     }
-
 }

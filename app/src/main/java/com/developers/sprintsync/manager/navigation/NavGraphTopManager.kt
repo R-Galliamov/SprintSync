@@ -9,5 +9,4 @@ class NavGraphTopManager {
     fun getOnboardingDestination(): Int = R.id.onboardingFragment
 
     fun getTabsDestination(): Int = R.id.tabsFragment
-
 }

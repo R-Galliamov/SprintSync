@@ -1,5 +1,6 @@
 package com.developers.sprintsync.util.calculator
 
+import com.developers.sprintsync.util.mapper.indicator.DistanceMapper
 import java.util.concurrent.TimeUnit
 
 class PaceCalculator {
@@ -39,7 +40,7 @@ class PaceCalculator {
         require(distanceCoveredMeters >= 0) { "Distance must be non-negative" }
         if (distanceCoveredMeters == 0) return -1F
         val minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTimeMillis)
-        val kilometers = distanceCoveredMeters / 1000.0f
+        val kilometers = DistanceMapper.metersToKilometers(distanceCoveredMeters)
         return (minutes / kilometers)
     }
 }

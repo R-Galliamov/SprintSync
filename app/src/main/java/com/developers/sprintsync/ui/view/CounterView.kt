@@ -171,5 +171,4 @@ class CounterView @JvmOverloads constructor(
         private const val DEFAULT_MAX_NUMBER: Int = 100
         private const val COLOR_ABSENT_CODE = -999
     }
-
 }

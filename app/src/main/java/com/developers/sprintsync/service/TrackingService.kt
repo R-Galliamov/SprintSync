@@ -25,11 +25,11 @@ class TrackingService : Service() {
     lateinit var trackingFlowManager: TrackingFlowHelper
 
 
-    private val paceCalculator = PaceCalculator()
+    //private val paceCalculator = PaceCalculator()
     val isActive: StateFlow<Boolean>
         get() = trackingFlowManager.isActive
 
-    private var needResumption = false
+    //private var needResumption = false
 
     private var _distanceInMeters = MutableStateFlow(0)
     val distanceInMeters = _distanceInMeters.asStateFlow()
@@ -88,7 +88,6 @@ class TrackingService : Service() {
         }
     }
 
-     */
 
 
     private fun updatePaceMinPerKmState(
@@ -98,6 +97,8 @@ class TrackingService : Service() {
         val pace = paceCalculator.getCurrentPaceInMinPerKm(currentTimeMillis, currentDistanceMeters)
         //_paceMinutesPerKm.value = pace
     }
+
+     */
 
     fun start() {
         trackingFlowManager.start()
@@ -129,3 +130,4 @@ class TrackingService : Service() {
         fun getService(): TrackingService = this@TrackingService
     }
 }
+

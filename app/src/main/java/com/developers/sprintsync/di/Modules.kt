@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class LocationManagerModule() {
+abstract class LocationManagerModule {
     @Binds
     @Singleton
     abstract fun bindLocationManager(impl: LocationManagerImpl): LocationManager
@@ -22,7 +22,7 @@ abstract class LocationManagerModule() {
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class StopwatchModule() {
+abstract class StopwatchModule {
 
     @Binds
     abstract fun bindStopwatch(impl: StopwatchImpl): Stopwatch
@@ -30,7 +30,7 @@ abstract class StopwatchModule() {
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class LocationModelManagerModule() {
+abstract class LocationModelManagerModule {
     @Binds
     @Singleton
     abstract fun bindLocationModelManager(impl: LocationModelManagerImpl): LocationModelManager
