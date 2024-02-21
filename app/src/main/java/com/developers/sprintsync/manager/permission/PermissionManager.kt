@@ -11,19 +11,18 @@ import androidx.fragment.app.Fragment
 open class PermissionManager(
     caller: ActivityResultCaller,
     private val context: Context,
-    private val shouldShowPermissionRational: (permission: String) -> Boolean
+    private val shouldShowPermissionRational: (permission: String) -> Boolean,
 ) {
-
     constructor(activity: ComponentActivity) : this(
         caller = activity as ActivityResultCaller,
         context = activity,
-        shouldShowPermissionRational = { activity.shouldShowRequestPermissionRationale(it) }
+        shouldShowPermissionRational = { activity.shouldShowRequestPermissionRationale(it) },
     )
 
     constructor(fragment: Fragment) : this(
         caller = fragment,
         context = fragment.requireContext(),
-        shouldShowPermissionRational = { fragment.shouldShowRequestPermissionRationale(it) }
+        shouldShowPermissionRational = { fragment.shouldShowRequestPermissionRationale(it) },
     )
 
     private var onPermissionsGranted: ((isGranted: Boolean) -> Unit)? = null
@@ -50,15 +49,16 @@ open class PermissionManager(
     fun requestPermissions(
         vararg permissions: String,
         onPermissionsGranted: ((isGranted: Boolean) -> Unit)? = null,
-        onPermissionRational: (() -> Unit)? = null
+        onPermissionRational: (() -> Unit)? = null,
     ) {
         this.onPermissionsGranted = onPermissionsGranted
 
         val permissionsToBeRequested =
             permissions.filter { permission -> !hasPermission(context, permission) }
-        val shouldShowPermissionRational = permissionsToBeRequested.any {
-            shouldShowPermissionRational.invoke(it)
-        }
+        val shouldShowPermissionRational =
+            permissionsToBeRequested.any {
+                shouldShowPermissionRational.invoke(it)
+            }
         when {
             permissionsToBeRequested.isEmpty() -> {
                 onPermissionsGranted?.invoke(true)
@@ -79,10 +79,13 @@ open class PermissionManager(
     }
 
     companion object {
-        fun hasPermission(context: Context, permission: String): Boolean =
+        fun hasPermission(
+            context: Context,
+            permission: String,
+        ): Boolean =
             ContextCompat.checkSelfPermission(
                 context,
-                permission
+                permission,
             ) == PackageManager.PERMISSION_GRANTED
     }
 }

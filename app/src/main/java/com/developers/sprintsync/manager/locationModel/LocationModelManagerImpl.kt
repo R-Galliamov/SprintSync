@@ -4,7 +4,7 @@ import android.location.Location
 import com.developers.sprintsync.model.tracking.LocationModel
 import javax.inject.Inject
 
-class LocationModelManagerImpl @Inject constructor(): LocationModelManager {
+class LocationModelManagerImpl @Inject constructor() : LocationModelManager {
     override fun distanceBetweenInMeters(start: LocationModel, end: LocationModel): Float {
         val results = FloatArray(1)
         Location.distanceBetween(

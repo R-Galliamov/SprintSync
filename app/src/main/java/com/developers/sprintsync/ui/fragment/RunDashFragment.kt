@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RunDashFragment : Fragment() {
-
     private var _binding: FragmentRunDashBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
@@ -32,30 +31,36 @@ class RunDashFragment : Fragment() {
 
     private val trackingService get() = checkNotNull(_trackingService) { getString(R.string.service_isn_t_initialised) }
 
-    private val serviceConnection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName?, iBinder: IBinder?) {
-            val binder = iBinder as TrackingService.ServiceBinder
-            _trackingService = binder.getService()
-            initTrackingCollector()
-            setServiceObservers()
-        }
+    private val serviceConnection =
+        object : ServiceConnection {
+            override fun onServiceConnected(
+                className: ComponentName?,
+                iBinder: IBinder?,
+            ) {
+                val binder = iBinder as TrackingService.ServiceBinder
+                _trackingService = binder.getService()
+                initTrackingCollector()
+                setServiceObservers()
+            }
 
-        override fun onServiceDisconnected(className: ComponentName?) {
-            _trackingService = null
+            override fun onServiceDisconnected(className: ComponentName?) {
+                _trackingService = null
+            }
         }
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentRunDashBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
     }
@@ -88,8 +93,9 @@ class RunDashFragment : Fragment() {
 
     private fun setStartListener() {
         binding.btStart.setOnClickListener {
-            if (trackingService.isActive.value)
-                trackingService.pause() else {
+            if (trackingService.isActive.value) {
+                trackingService.pause()
+            } else {
                 Intent(requireContext(), TrackingService::class.java).also {
                     requireContext().startService(it)
                 }
@@ -118,7 +124,6 @@ class RunDashFragment : Fragment() {
                     DistanceMapper.metersToPresentableDistance(distanceInMeters)
             }
     }
-
 
     override fun onStop() {
         super.onStop()

@@ -32,8 +32,6 @@ class StopwatchImpl @Inject constructor() : Stopwatch {
             }
         }
     }
-
-
     override fun pause() {
         isActive = false
     }

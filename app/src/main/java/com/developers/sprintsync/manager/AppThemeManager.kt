@@ -4,13 +4,13 @@ import android.content.Context
 import android.util.TypedValue
 import com.developers.sprintsync.R
 
-
 class AppThemeManager(private val context: Context) {
-
     fun getPrimaryColor(): Int {
         val typedValue = TypedValue()
         context.theme.resolveAttribute(
-            com.google.android.material.R.attr.colorPrimary, typedValue, true
+            com.google.android.material.R.attr.colorPrimary,
+            typedValue,
+            true,
         )
         return typedValue.data
     }
@@ -18,7 +18,9 @@ class AppThemeManager(private val context: Context) {
     fun getSecondaryColor(): Int {
         val typedValue = TypedValue()
         context.theme.resolveAttribute(
-            com.google.android.material.R.attr.colorSecondary, typedValue, true
+            com.google.android.material.R.attr.colorSecondary,
+            typedValue,
+            true,
         )
         return typedValue.data
     }
@@ -26,7 +28,9 @@ class AppThemeManager(private val context: Context) {
     fun getThirdlyColor(): Int {
         val typedValue = TypedValue()
         context.theme.resolveAttribute(
-            R.attr.colorThirdly, typedValue, true
+            R.attr.colorThirdly,
+            typedValue,
+            true,
         )
         return typedValue.data
     }
@@ -34,7 +38,9 @@ class AppThemeManager(private val context: Context) {
     fun getFourthlyColor(): Int {
         val typedValue = TypedValue()
         context.theme.resolveAttribute(
-            R.attr.colorFourthly, typedValue, true
+            R.attr.colorFourthly,
+            typedValue,
+            true,
         )
         return typedValue.data
     }

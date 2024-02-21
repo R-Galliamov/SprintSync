@@ -14,15 +14,14 @@ const val TAG = "My log"
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
-    private val binding  get() = checkNotNull(_binding) { getString(R.string.binding_init_error)}
+    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //installSplashScreen() //TODO set splash screen
+        // installSplashScreen() // TODO set splash screen
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setNavigation()
-
     }
 
     private fun setNavigation() {

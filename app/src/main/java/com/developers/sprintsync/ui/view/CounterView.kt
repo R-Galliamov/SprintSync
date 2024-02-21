@@ -43,8 +43,7 @@ class CounterView @JvmOverloads constructor(
         addViews()
     }
 
-
-    //TODO fix setters
+    // TODO fix setters
     fun setProgress(int: Int) {
         progressTextView?.text = int.toString()
     }
@@ -159,8 +158,6 @@ class CounterView @JvmOverloads constructor(
 
         fun getTextStyle(): Int =
             typedArray.getInt(R.styleable.CounterView_android_textStyle, Typeface.DEFAULT.style)
-
-
         fun recycle() = typedArray.recycle()
     }
 

@@ -15,18 +15,22 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TabsFragment : Fragment() {
-
     private var _binding: FragmentTabsBinding? = null
     private val binding get() = checkNotNull(_binding) { R.string.binding_init_error }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentTabsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setNavMenu()
         setListeners()

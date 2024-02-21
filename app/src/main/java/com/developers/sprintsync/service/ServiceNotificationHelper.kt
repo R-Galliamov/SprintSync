@@ -11,53 +11,56 @@ import com.developers.sprintsync.util.mapper.indicator.TimeMapper
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class ServiceNotificationHelper @Inject constructor(@ApplicationContext private val context: Context) {
+class ServiceNotificationHelper
+    @Inject
+    constructor(
+        @ApplicationContext private val context: Context,
+    ) {
+        val notification = getNotificationBuilder()
 
-    val notification = getNotificationBuilder()
+        private val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    private val notificationManager: NotificationManager =
-        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        private val notificationLayout =
+            RemoteViews(context.packageName, R.layout.service_notification_layout)
 
-    private val notificationLayout =
-        RemoteViews(context.packageName, R.layout.service_notification_layout)
+        init {
+            createTrackingNotificationChannel()
+        }
 
-    init {
-        createTrackingNotificationChannel()
+        private fun createTrackingNotificationChannel() {
+            val channel =
+                NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, IMPORTANCE_MIN)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        // TODO create a bigContentView
+        // TODO change an icon
+        private fun getNotificationBuilder(): NotificationCompat.Builder {
+            return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.ic_run_48dp)
+                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomContentView(notificationLayout)
+        }
+
+        fun updateDuration(timeInMillis: Long) {
+            val presentableTime = TimeMapper.millisToPresentableTime(timeInMillis)
+            notificationLayout.setTextViewText(R.id.tvDurationValue, presentableTime)
+            notification.setCustomContentView(notificationLayout)
+            notificationManager.notify(NOTIFICATION_ID, notification.build())
+        }
+
+        fun updateDistance(distanceInMeters: Int) {
+            notificationLayout.setTextViewText(R.id.tvDistanceValue, distanceInMeters.toString())
+            notification.setCustomContentView(notificationLayout)
+            notificationManager.notify(NOTIFICATION_ID, notification.build())
+        }
+
+        companion object {
+            const val NOTIFICATION_CHANNEL_ID = "tracking_channel"
+            const val NOTIFICATION_CHANNEL_NAME = "Tracking location"
+            const val NOTIFICATION_ID = 1
+        }
     }
-
-    private fun createTrackingNotificationChannel() {
-        val channel =
-            NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, IMPORTANCE_MIN)
-        notificationManager.createNotificationChannel(channel)
-    }
-
-    //TODO create a bigContentView
-    //TODO change an icon
-    private fun getNotificationBuilder(): NotificationCompat.Builder {
-        return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setSmallIcon(R.drawable.ic_run_48dp)
-            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-            .setCustomContentView(notificationLayout)
-    }
-
-    fun updateDuration(timeInMillis: Long) {
-        val presentableTime = TimeMapper.millisToPresentableTime(timeInMillis)
-        notificationLayout.setTextViewText(R.id.tvDurationValue, presentableTime)
-        notification.setCustomContentView(notificationLayout)
-        notificationManager.notify(NOTIFICATION_ID, notification.build())
-    }
-
-    fun updateDistance(distanceInMeters: Int) {
-        notificationLayout.setTextViewText(R.id.tvDistanceValue, distanceInMeters.toString())
-        notification.setCustomContentView(notificationLayout)
-        notificationManager.notify(NOTIFICATION_ID, notification.build())
-    }
-
-    companion object {
-        const val NOTIFICATION_CHANNEL_ID = "tracking_channel"
-        const val NOTIFICATION_CHANNEL_NAME = "Tracking location"
-        const val NOTIFICATION_ID = 1
-    }
-}

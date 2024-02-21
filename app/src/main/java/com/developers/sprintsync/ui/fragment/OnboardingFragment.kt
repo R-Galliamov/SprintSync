@@ -12,29 +12,29 @@ import com.developers.sprintsync.databinding.FragmentOnboardingBinding
 import com.developers.sprintsync.ui.activity.TAG
 
 class OnboardingFragment : Fragment() {
-
     private var _binding: FragmentOnboardingBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentOnboardingBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding.button.setOnClickListener {
-
             findNavController().navigate(
-                R.id.action_onboardingFragment_to_tabsFragment
+                R.id.action_onboardingFragment_to_tabsFragment,
             )
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
