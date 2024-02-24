@@ -7,5 +7,6 @@ data class TrackSegment(
     val endTime: Long,
     val durationMillis: Long,
     val distanceMeters: Int,
-    val pace: Float?,
+    val pace: Float,
+    val burnedKCalories: Int,
 )

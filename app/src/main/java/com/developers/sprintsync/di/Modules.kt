@@ -1,7 +1,7 @@
 package com.developers.sprintsync.di
 
-import com.developers.sprintsync.manager.location.LocationManager
-import com.developers.sprintsync.manager.location.LocationManagerImpl
+import com.developers.sprintsync.manager.location.LocationProvider
+import com.developers.sprintsync.manager.location.LocationProviderImpl
 import com.developers.sprintsync.util.stopwatch.Stopwatch
 import com.developers.sprintsync.util.stopwatch.StopwatchImpl
 import dagger.Binds
@@ -12,10 +12,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class LocationManagerModule {
+abstract class LocationProviderModule {
     @Binds
     @Singleton
-    abstract fun bindLocationManager(impl: LocationManagerImpl): LocationManager
+    abstract fun bindLocationProvider(impl: LocationProviderImpl): LocationProvider
 }
 
 @Module

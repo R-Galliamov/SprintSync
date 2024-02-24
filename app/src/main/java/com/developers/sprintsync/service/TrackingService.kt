@@ -20,24 +20,22 @@ class TrackingService : Service() {
     lateinit var notificationManager: ServiceNotificationHelper
 
     @Inject
-    lateinit var trackingFlowManager: TrackingFlowHelper
+    lateinit var locationTracker: LocationTracker
 
     val isActive: StateFlow<Boolean>
-        get() = trackingFlowManager.isActive
-
-    // private var needResumption = false
+        get() = locationTracker.isActive
 
     private var _distanceInMeters = MutableStateFlow(0)
     val distanceInMeters = _distanceInMeters.asStateFlow()
 
-    fun timeInMillisFlow() = trackingFlowManager.timeInMillisFlow()
+    fun timeInMillisFlow() = locationTracker.timeInMillisFlow()
 
     fun locationFlow() =
-        trackingFlowManager.locationFlow().also {
+        locationTracker.locationFlow().also {
             Log.i("My stack", "Location flow is init")
         }
 
-    fun segmentsFlow() = trackingFlowManager.trackSegmentFlow()
+    fun segmentsFlow() = locationTracker.trackSegmentFlow()
 
     override fun onStartCommand(
         intent: Intent?,
@@ -64,44 +62,12 @@ class TrackingService : Service() {
         }
     }
 
-    /*
-
-    private fun prepareTrack(track: Track): MutableTrack {
-        val preparedTrack = track.toMutableList()
-        if (isActive && needResumption && preparedTrack.last().isNotEmpty()) {
-            needResumption = false
-            preparedTrack.add(emptyList())
-        }
-        return preparedTrack.toMutableList()
-    }
-
-    private fun updateDistanceInMetersState(track: Track, value: LocationModel) {
-        val startPoint = track.lastOrNull()?.lastOrNull()
-        if (startPoint != null) {
-            val distanceInMeters = locationModelManager.distanceBetweenInMeters(startPoint, value)
-                .plus(_distanceInMeters.value)
-                .toInt()
-            _distanceInMeters.value = distanceInMeters
-            notificationManager.updateDistance(distanceInMeters)
-        }
-    }
-
-    private fun updatePaceMinPerKmState(
-        currentTimeMillis: Long,
-        currentDistanceMeters: Int
-    ) {
-        val pace = paceCalculator.getCurrentPaceInMinPerKm(currentTimeMillis, currentDistanceMeters)
-        //_paceMinutesPerKm.value = pace
-    }
-
-     */
-
     fun start() {
-        trackingFlowManager.start()
+        locationTracker.start()
     }
 
     fun pause() {
-        trackingFlowManager.pause()
+        locationTracker.pause()
     }
 
     private fun startForegroundService() {

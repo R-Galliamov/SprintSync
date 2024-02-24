@@ -1,25 +1,28 @@
 package com.developers.sprintsync.service
 
-import com.developers.sprintsync.manager.segment.TrackSegmentHandler
-import com.developers.sprintsync.service.tracker.LocationTimeTracker
+import com.developers.sprintsync.manager.location.LocationProvider
+import com.developers.sprintsync.manager.segment.SegmentBuilder
+import com.developers.sprintsync.model.tracking.LocationModel
+import com.developers.sprintsync.model.tracking.TrackSegment
+import com.developers.sprintsync.model.tracking.toDataModel
 import com.developers.sprintsync.service.tracker.TimeTracker
+import com.developers.sprintsync.util.extension.withLatestFrom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TrackingFlowHelper
+class LocationTracker
     @Inject
     constructor(
-        private val locationTimeTracker: LocationTimeTracker,
+        private val locationProvider: LocationProvider,
         private val timeTracker: TimeTracker,
-        private val segmentManager: TrackSegmentHandler,
+        private val segmentBuilder: SegmentBuilder,
     ) {
         private val _isActive = MutableStateFlow(false)
         val isActive: StateFlow<Boolean>
@@ -29,20 +32,18 @@ class TrackingFlowHelper
             initActiveStateListener()
         }
 
-        fun locationFlow() = locationTimeTracker.locationFlow()
+        fun locationFlow(): Flow<LocationModel> =
+            locationProvider.listenToLocation().map { location ->
+                location.toDataModel()
+            }
 
         fun timeInMillisFlow(): Flow<Long> = timeTracker.timeInMillisFlow()
 
-        fun trackSegmentFlow() =
-            locationFlow().combine(timeInMillisFlow()) { location, timeMillis ->
-                location to timeMillis
-            }.map { pair ->
-                val location = pair.first
-                val time = pair.second
+        fun trackSegmentFlow(): Flow<TrackSegment> =
+            locationFlow().withLatestFrom(timeInMillisFlow()) { location, timeMillis ->
                 val isActive = _isActive.value
-                if (isActive && locationTimeTracker.assureLocationChanged(location)) {
-                    locationTimeTracker.updateLastLocationTime(location, time)
-                    segmentManager.nextSegmentOrNull(location, time)
+                if (isActive) {
+                    segmentBuilder.nextSegmentOrNull(location, timeMillis)
                 } else {
                     null
                 }
@@ -60,6 +61,9 @@ class TrackingFlowHelper
             CoroutineScope(Dispatchers.IO).launch {
                 _isActive.collect { isActive ->
                     timeTracker.updateStopwatchState(isActive)
+                    if (!isActive) {
+                        segmentBuilder.reset()
+                    }
                 }
             }
         }

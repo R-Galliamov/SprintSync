@@ -80,9 +80,7 @@ class RunDashFragment : Fragment() {
     private fun initTrackingCollector() {
         CoroutineScope(Dispatchers.IO).launch {
             trackingService.segmentsFlow().collect {
-                if (trackingService.isActive.value) {
-                    Log.i("My stack", it.toString())
-                }
+                Log.i("My stack", "Segment is: $it")
             }
         }
     }
