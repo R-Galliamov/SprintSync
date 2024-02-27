@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LocationTracker
+class RouteTracker
     @Inject
     constructor(
         private val locationProvider: LocationProvider,

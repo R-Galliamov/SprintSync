@@ -23,10 +23,10 @@ class TrackingService : Service() {
     lateinit var notificationManager: ServiceNotificationHelper
 
     @Inject
-    lateinit var locationTracker: LocationTracker
+    lateinit var routeTracker: RouteTracker
 
     val isActive: StateFlow<Boolean>
-        get() = locationTracker.isActive
+        get() = routeTracker.isActive
 
     private var _segments: MutableStateFlow<List<TrackSegment>> = MutableStateFlow(emptyList())
     val segments: StateFlow<List<TrackSegment>>
@@ -36,14 +36,14 @@ class TrackingService : Service() {
     val distanceInMeters: StateFlow<Int>
         get() = _distanceInMeters.asStateFlow()
 
-    fun timeInMillisFlow() = locationTracker.timeInMillisFlow()
+    fun timeInMillisFlow() = routeTracker.timeInMillisFlow()
 
     fun locationFlow() =
-        locationTracker.locationFlow().also {
+        routeTracker.locationFlow().also {
             Log.i("My stack", "Location flow is init")
         }
 
-    fun segmentFlow() = locationTracker.trackSegmentFlow()
+    fun segmentFlow() = routeTracker.trackSegmentFlow()
 
     override fun onStartCommand(
         intent: Intent?,
@@ -85,11 +85,11 @@ class TrackingService : Service() {
     }
 
     private fun start() {
-        locationTracker.start()
+        routeTracker.start()
     }
 
     private fun pause() {
-        locationTracker.pause()
+        routeTracker.pause()
     }
 
     private fun updateDistance(distanceInMeters: Int) {
