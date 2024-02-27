@@ -10,6 +10,7 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentRunDashBinding
 import com.developers.sprintsync.manager.service.TrackingServiceManager
 import com.developers.sprintsync.util.mapper.indicator.DistanceMapper
+import com.developers.sprintsync.util.mapper.indicator.PaceMapper
 import com.developers.sprintsync.util.mapper.indicator.TimeMapper
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -67,15 +68,25 @@ class RunDashFragment : Fragment() {
      */
 
     private fun setServiceObservers() {
-        serviceManager.service.timeInMillisFlow().asLiveData()
-            .observe(viewLifecycleOwner) { timeInMillis ->
-                binding.tvStopwatch.text = TimeMapper.millisToPresentableTime(timeInMillis)
+        serviceManager.service.indicators.kCalories.asLiveData()
+            .observe(viewLifecycleOwner) { kCalories ->
+                binding.tvTotalKcalValue.text = kCalories.toString()
             }
 
-        serviceManager.service.distanceInMeters.asLiveData()
+        serviceManager.service.indicators.distanceInMeters.asLiveData()
             .observe(viewLifecycleOwner) { distanceInMeters ->
                 binding.tvTotalKmValue.text =
                     DistanceMapper.metersToPresentableDistance(distanceInMeters)
+            }
+
+        serviceManager.service.indicators.pace.asLiveData()
+            .observe(viewLifecycleOwner) { pace ->
+                binding.tvPaceValue.text = PaceMapper.paceToPresentablePace(pace)
+            }
+
+        serviceManager.service.indicators.timeInMillisFlow().asLiveData()
+            .observe(viewLifecycleOwner) { time ->
+                binding.tvStopwatch.text = TimeMapper.millisToPresentableTime(time)
             }
     }
 

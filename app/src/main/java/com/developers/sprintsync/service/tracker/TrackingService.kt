@@ -7,13 +7,10 @@ import android.os.IBinder
 import android.util.Log
 import com.developers.sprintsync.manager.service.TrackingServiceManager.Action.PAUSE_SERVICE
 import com.developers.sprintsync.manager.service.TrackingServiceManager.Action.START_SERVICE
-import com.developers.sprintsync.model.tracking.TrackSegment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,18 +22,11 @@ class TrackingService : Service() {
     @Inject
     lateinit var routeTracker: RouteTracker
 
+    @Inject
+    lateinit var indicators: Indicators
+
     val isActive: StateFlow<Boolean>
         get() = routeTracker.isActive
-
-    private var _segments: MutableStateFlow<List<TrackSegment>> = MutableStateFlow(emptyList())
-    val segments: StateFlow<List<TrackSegment>>
-        get() = _segments.asStateFlow()
-
-    private var _distanceInMeters = MutableStateFlow(0)
-    val distanceInMeters: StateFlow<Int>
-        get() = _distanceInMeters.asStateFlow()
-
-    fun timeInMillisFlow() = routeTracker.timeInMillisFlow()
 
     fun locationFlow() =
         routeTracker.locationFlow().also {
@@ -71,25 +61,25 @@ class TrackingService : Service() {
     }
 
     private fun initTimeUpdates() {
-        CoroutineScope(Dispatchers.IO).launch {
-            timeInMillisFlow().collect { time ->
-                notificationManager.updateDuration(time)
-            }
+        indicators.initTimeUpdates { time ->
+            notificationManager.updateDuration(time)
         }
     }
 
     private fun initDistanceUpdates() {
-        CoroutineScope(Dispatchers.IO).launch {
-            distanceInMeters.collect { distance ->
-                notificationManager.updateDistance(distance)
-            }
+        indicators.initDistanceUpdates { distance ->
+            notificationManager.updateDistance(distance)
         }
     }
 
     private fun initSegmentUpdates() {
         CoroutineScope(Dispatchers.IO).launch {
             segmentFlow().collect { segment ->
-                updateDistance(segment.distanceMeters)
+                indicators.apply {
+                    updateDistance(segment.distanceMeters)
+                    updatePace(segment.pace)
+                    updateKCalories(segment.burnedKCalories)
+                }
             }
         }
     }
@@ -100,10 +90,6 @@ class TrackingService : Service() {
 
     private fun pause() {
         routeTracker.pause()
-    }
-
-    private fun updateDistance(distanceInMeters: Int) {
-        _distanceInMeters.value += distanceInMeters
     }
 
     private fun startForegroundService() {
@@ -127,3 +113,9 @@ class TrackingService : Service() {
         fun getService(): TrackingService = this@TrackingService
     }
 }
+
+/*
+ private var _segments: MutableStateFlow<List<TrackSegment>> = MutableStateFlow(emptyList())
+    val segments: StateFlow<List<TrackSegment>>
+        get() = _segments.asStateFlow()
+ */
