@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import com.developers.sprintsync.manager.service.TrackingServiceManager.Action.PAUSE_SERVICE
+import com.developers.sprintsync.manager.service.TrackingServiceManager.Action.START_SERVICE
+import com.developers.sprintsync.model.tracking.TrackSegment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +28,13 @@ class TrackingService : Service() {
     val isActive: StateFlow<Boolean>
         get() = locationTracker.isActive
 
+    private var _segments: MutableStateFlow<List<TrackSegment>> = MutableStateFlow(emptyList())
+    val segments: StateFlow<List<TrackSegment>>
+        get() = _segments.asStateFlow()
+
     private var _distanceInMeters = MutableStateFlow(0)
-    val distanceInMeters = _distanceInMeters.asStateFlow()
+    val distanceInMeters: StateFlow<Int>
+        get() = _distanceInMeters.asStateFlow()
 
     fun timeInMillisFlow() = locationTracker.timeInMillisFlow()
 
@@ -35,15 +43,23 @@ class TrackingService : Service() {
             Log.i("My stack", "Location flow is init")
         }
 
-    fun segmentsFlow() = locationTracker.trackSegmentFlow()
+    fun segmentFlow() = locationTracker.trackSegmentFlow()
 
     override fun onStartCommand(
         intent: Intent?,
         flags: Int,
         startId: Int,
     ): Int {
-        startForegroundService()
-        start()
+        when (intent?.action) {
+            START_SERVICE -> {
+                startForegroundService()
+                start()
+            }
+
+            PAUSE_SERVICE -> {
+                pause()
+            }
+        }
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -60,14 +76,24 @@ class TrackingService : Service() {
                 notificationManager.updateDistance(distance)
             }
         }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            segmentFlow().collect { segment ->
+                updateDistance(segment.distanceMeters)
+            }
+        }
     }
 
-    fun start() {
+    private fun start() {
         locationTracker.start()
     }
 
-    fun pause() {
+    private fun pause() {
         locationTracker.pause()
+    }
+
+    private fun updateDistance(distanceInMeters: Int) {
+        _distanceInMeters.value += distanceInMeters
     }
 
     private fun startForegroundService() {

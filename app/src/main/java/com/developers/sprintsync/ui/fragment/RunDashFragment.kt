@@ -1,12 +1,6 @@
 package com.developers.sprintsync.ui.fragment
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,39 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentRunDashBinding
-import com.developers.sprintsync.service.TrackingService
+import com.developers.sprintsync.manager.service.TrackingServiceManager
 import com.developers.sprintsync.util.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.util.mapper.indicator.TimeMapper
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RunDashFragment : Fragment() {
     private var _binding: FragmentRunDashBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
-    private var _trackingService: TrackingService? = null
-
-    private val trackingService get() = checkNotNull(_trackingService) { getString(R.string.service_isn_t_initialised) }
-
-    private val serviceConnection =
-        object : ServiceConnection {
-            override fun onServiceConnected(
-                className: ComponentName?,
-                iBinder: IBinder?,
-            ) {
-                val binder = iBinder as TrackingService.ServiceBinder
-                _trackingService = binder.getService()
-                initTrackingCollector()
-                setServiceObservers()
-            }
-
-            override fun onServiceDisconnected(className: ComponentName?) {
-                _trackingService = null
-            }
-        }
+    private var _serviceManager: TrackingServiceManager? = null
+    private val serviceManager get() = checkNotNull(_serviceManager) { "Service isn't initialised" }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,27 +35,13 @@ class RunDashFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        initServiceManager()
         setListeners()
     }
 
     override fun onStart() {
         super.onStart()
-        bindService()
-    }
-
-    /*
-    private fun sendCommandToService() =
-        Intent(requireContext(), TrackingService::class.java).also {
-            requireContext().startService(it)
-        }
-     */
-
-    private fun initTrackingCollector() {
-        CoroutineScope(Dispatchers.IO).launch {
-            trackingService.segmentsFlow().collect {
-                Log.i("My stack", "Segment is: $it")
-            }
-        }
+        serviceManager.bindService { setServiceObservers() }
     }
 
     private fun setListeners() {
@@ -91,41 +50,49 @@ class RunDashFragment : Fragment() {
 
     private fun setStartListener() {
         binding.btStart.setOnClickListener {
-            if (trackingService.isActive.value) {
-                trackingService.pause()
+            if (serviceManager.service.isActive.value) {
+                serviceManager.pauseService()
             } else {
-                Intent(requireContext(), TrackingService::class.java).also {
-                    requireContext().startService(it)
-                }
+                serviceManager.startService()
             }
         }
     }
 
-    private fun bindService() {
-        val serviceIntent = Intent(requireContext(), TrackingService::class.java)
-        requireActivity().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
+    /*
+    private fun initMaps() {
+        binding.mapView.getMapAsync { googleMap ->
+            // The GoogleMap object is now ready to use
+        }
     }
-
-    private fun unbindService() {
-        requireActivity().unbindService(serviceConnection)
-    }
+     */
 
     private fun setServiceObservers() {
-        trackingService.timeInMillisFlow().asLiveData()
+        serviceManager.service.timeInMillisFlow().asLiveData()
             .observe(viewLifecycleOwner) { timeInMillis ->
                 binding.tvStopwatch.text = TimeMapper.millisToPresentableTime(timeInMillis)
             }
 
-        trackingService.distanceInMeters.asLiveData()
+        serviceManager.service.distanceInMeters.asLiveData()
             .observe(viewLifecycleOwner) { distanceInMeters ->
                 binding.tvTotalKmValue.text =
                     DistanceMapper.metersToPresentableDistance(distanceInMeters)
             }
     }
 
+    /*
+    private fun finishWorkOut() {
+        TrackBuilder.buildTrack(service.segmentList)
+        navigate to StatisticsFragment
+    }
+     */
+
+    private fun initServiceManager() {
+        _serviceManager = TrackingServiceManager(this)
+    }
+
     override fun onStop() {
         super.onStop()
-        unbindService()
+        serviceManager.unbindService()
     }
 
     override fun onDestroyView() {
