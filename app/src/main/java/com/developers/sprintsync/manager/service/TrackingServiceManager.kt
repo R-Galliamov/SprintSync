@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import androidx.fragment.app.Fragment
-import com.developers.sprintsync.service.TrackingService
+import com.developers.sprintsync.service.tracker.TrackingService
 
 // TODO create with delegate or HILT?
 class TrackingServiceManager(

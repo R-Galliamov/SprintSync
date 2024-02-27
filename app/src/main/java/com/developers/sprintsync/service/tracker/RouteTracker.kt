@@ -1,11 +1,10 @@
-package com.developers.sprintsync.service
+package com.developers.sprintsync.service.tracker
 
 import com.developers.sprintsync.manager.location.LocationProvider
 import com.developers.sprintsync.manager.segment.SegmentBuilder
 import com.developers.sprintsync.model.tracking.LocationModel
 import com.developers.sprintsync.model.tracking.TrackSegment
 import com.developers.sprintsync.model.tracking.toDataModel
-import com.developers.sprintsync.service.tracker.TimeTracker
 import com.developers.sprintsync.util.extension.withLatestFrom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

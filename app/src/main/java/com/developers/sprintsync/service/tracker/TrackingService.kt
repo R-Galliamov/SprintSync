@@ -1,4 +1,4 @@
-package com.developers.sprintsync.service
+package com.developers.sprintsync.service.tracker
 
 import android.app.Service
 import android.content.Intent
@@ -65,18 +65,28 @@ class TrackingService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        initTimeUpdates()
+        initDistanceUpdates()
+        initSegmentUpdates()
+    }
+
+    private fun initTimeUpdates() {
         CoroutineScope(Dispatchers.IO).launch {
             timeInMillisFlow().collect { time ->
                 notificationManager.updateDuration(time)
             }
         }
+    }
 
+    private fun initDistanceUpdates() {
         CoroutineScope(Dispatchers.IO).launch {
             distanceInMeters.collect { distance ->
                 notificationManager.updateDistance(distance)
             }
         }
+    }
 
+    private fun initSegmentUpdates() {
         CoroutineScope(Dispatchers.IO).launch {
             segmentFlow().collect { segment ->
                 updateDistance(segment.distanceMeters)
