@@ -1,12 +1,12 @@
-package com.developers.sprintsync.manager.segment
+package com.developers.sprintsync.tracking.generator.segment
 
-import com.developers.sprintsync.model.tracking.GeoTimePair
-import com.developers.sprintsync.model.tracking.LocationModel
-import com.developers.sprintsync.model.tracking.TrackSegment
+import com.developers.sprintsync.tracking.model.GeoTimePair
+import com.developers.sprintsync.tracking.model.LocationModel
+import com.developers.sprintsync.tracking.model.TrackSegment
 import com.developers.sprintsync.util.mapper.model.TrackSegmentMapper
 import javax.inject.Inject
 
-class SegmentBuilder
+class SegmentGenerator
     @Inject
     constructor(
         private val mapper: TrackSegmentMapper,

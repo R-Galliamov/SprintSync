@@ -1,6 +1,6 @@
 package com.developers.sprintsync.util.calculator
 
-import com.developers.sprintsync.model.user.UserSettings
+import com.developers.sprintsync.user.model.UserSettings
 import com.developers.sprintsync.util.mapper.indicator.DistanceMapper
 import javax.inject.Inject
 

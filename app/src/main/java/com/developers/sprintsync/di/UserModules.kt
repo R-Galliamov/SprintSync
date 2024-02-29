@@ -1,6 +1,6 @@
 package com.developers.sprintsync.di
 
-import com.developers.sprintsync.model.user.UserSettings
+import com.developers.sprintsync.user.model.UserSettings
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

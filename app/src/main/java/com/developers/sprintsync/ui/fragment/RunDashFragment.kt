@@ -5,13 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.asLiveData
+import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentRunDashBinding
-import com.developers.sprintsync.manager.service.TrackingServiceManager
-import com.developers.sprintsync.util.mapper.indicator.DistanceMapper
-import com.developers.sprintsync.util.mapper.indicator.PaceMapper
-import com.developers.sprintsync.util.mapper.indicator.TimeMapper
+import com.developers.sprintsync.tracking.service.TrackingServiceController
+import com.developers.sprintsync.tracking.viewModel.TrackingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,8 +17,13 @@ class RunDashFragment : Fragment() {
     private var _binding: FragmentRunDashBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
-    private var _serviceManager: TrackingServiceManager? = null
-    private val serviceManager get() = checkNotNull(_serviceManager) { "Service isn't initialised" }
+    private val viewModel by activityViewModels<TrackingViewModel>()
+
+    private val service: TrackingServiceController by lazy {
+        TrackingServiceController(
+            requireContext(),
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,25 +39,23 @@ class RunDashFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        initServiceManager()
-        setListeners()
+        setObservers()
     }
 
-    override fun onStart() {
-        super.onStart()
-        serviceManager.bindService { setServiceObservers() }
+    private fun setObservers() {
+        setActiveStateObservers()
     }
 
-    private fun setListeners() {
-        setStartListener()
-    }
-
-    private fun setStartListener() {
-        binding.btStart.setOnClickListener {
-            if (serviceManager.service.isActive.value) {
-                serviceManager.pauseService()
+    private fun setActiveStateObservers() {
+        viewModel.isTracking.observe(viewLifecycleOwner) { isActive ->
+            if (!isActive) {
+                binding.btStart.setOnClickListener {
+                    service.startService()
+                }
             } else {
-                serviceManager.startService()
+                binding.btStart.setOnClickListener {
+                    service.pauseService()
+                }
             }
         }
     }
@@ -65,45 +66,30 @@ class RunDashFragment : Fragment() {
             // The GoogleMap object is now ready to use
         }
     }
-     */
 
     private fun setServiceObservers() {
-        serviceManager.service.indicators.kCalories.asLiveData()
-            .observe(viewLifecycleOwner) { kCalories ->
-                binding.tvTotalKcalValue.text = kCalories.toString()
-            }
-
-        serviceManager.service.indicators.distanceInMeters.asLiveData()
-            .observe(viewLifecycleOwner) { distanceInMeters ->
+        serviceManager.service.tracker.trackDataFLow().asLiveData()
+            .observe(viewLifecycleOwner) { track ->
+                binding.tvPaceValue.text = PaceMapper.paceToPresentablePace(track.avgPace)
                 binding.tvTotalKmValue.text =
-                    DistanceMapper.metersToPresentableDistance(distanceInMeters)
+                    DistanceMapper.metersToPresentableDistance(track.distanceMeters)
+                binding.tvTotalKcalValue.text = track.calories.toString()
             }
 
-        serviceManager.service.indicators.pace.asLiveData()
-            .observe(viewLifecycleOwner) { pace ->
-                binding.tvPaceValue.text = PaceMapper.paceToPresentablePace(pace)
-            }
-
-        serviceManager.service.indicators.timeInMillisFlow().asLiveData()
+        serviceManager.service.tracker.timeInMillisFlow().asLiveData()
             .observe(viewLifecycleOwner) { time ->
                 binding.tvStopwatch.text = TimeMapper.millisToPresentableTime(time)
             }
     }
 
-    /*
     private fun finishWorkOut() {
         TrackBuilder.buildTrack(service.segmentList)
         navigate to StatisticsFragment
     }
      */
 
-    private fun initServiceManager() {
-        _serviceManager = TrackingServiceManager(this)
-    }
-
     override fun onStop() {
         super.onStop()
-        serviceManager.unbindService()
     }
 
     override fun onDestroyView() {

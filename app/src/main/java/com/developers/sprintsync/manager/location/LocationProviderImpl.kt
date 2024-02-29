@@ -2,11 +2,12 @@ package com.developers.sprintsync.manager.location
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.location.Location
 import android.os.Looper
 import android.util.Log
 import com.developers.sprintsync.error.NoPermissionsException
 import com.developers.sprintsync.manager.permission.LocationPermissionManager
+import com.developers.sprintsync.tracking.model.LocationModel
+import com.developers.sprintsync.tracking.model.toDataModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -39,7 +40,7 @@ class LocationProviderImpl
         }
 
         @SuppressLint("MissingPermission")
-        override fun listenToLocation(): Flow<Location> {
+        override fun listenToLocation(): Flow<LocationModel> {
             val request =
                 LocationRequest.Builder(
                     Priority.PRIORITY_HIGH_ACCURACY,
@@ -57,7 +58,7 @@ class LocationProviderImpl
                                 "Lat is: ${result.lastLocation?.latitude}, " +
                                     "Long is: ${result.lastLocation?.longitude}",
                             )
-                            result.lastLocation?.let { launch { send(it) } }
+                            result.lastLocation?.let { launch { send(it.toDataModel()) } }
                         }
                     }
 

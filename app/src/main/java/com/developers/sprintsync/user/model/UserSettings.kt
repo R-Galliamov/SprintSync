@@ -1,4 +1,4 @@
-package com.developers.sprintsync.model.user
+package com.developers.sprintsync.user.model
 
 data class UserSettings(
     val weight: Double,
