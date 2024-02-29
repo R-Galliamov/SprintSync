@@ -1,4 +1,4 @@
-package com.developers.sprintsync.model.tracking
+package com.developers.sprintsync.tracking.model
 
 data class TrackSegment(
     val startLocation: LocationModel,

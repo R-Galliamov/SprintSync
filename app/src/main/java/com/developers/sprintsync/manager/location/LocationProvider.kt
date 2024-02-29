@@ -1,10 +1,10 @@
 package com.developers.sprintsync.manager.location
 
-import android.location.Location
+import com.developers.sprintsync.tracking.model.LocationModel
 import kotlinx.coroutines.flow.Flow
 
 interface LocationProvider {
-    fun listenToLocation(): Flow<Location>
+    fun listenToLocation(): Flow<LocationModel>
 
     fun hasLocationPermission(): Boolean
 }
