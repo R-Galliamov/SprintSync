@@ -59,19 +59,23 @@ class Tracker
             }.filterNotNull()
 
         fun start() {
-            _isActive.value = true
+            updateActiveState(true)
         }
 
         fun stop() {
-            _isActive.value = false
+            updateActiveState(false)
         }
 
         fun reset() {
         }
 
+        private fun updateActiveState(isActive: Boolean) {
+            _isActive.value = isActive
+        }
+
         private fun initActiveStateListener() {
             CoroutineScope(Dispatchers.IO).launch {
-                _isActive.collect { isActive ->
+                isActive.collect { isActive ->
                     timeProvider.updateStopwatchState(isActive)
                     if (!isActive) {
                         trackUpdater.onPause()

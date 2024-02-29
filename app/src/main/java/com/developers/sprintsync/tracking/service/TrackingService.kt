@@ -10,8 +10,10 @@ import com.developers.sprintsync.tracking.repository.TrackingRepository
 import com.developers.sprintsync.tracking.service.TrackingServiceController.Action.PAUSE_SERVICE
 import com.developers.sprintsync.tracking.service.TrackingServiceController.Action.START_SERVICE
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +25,8 @@ class TrackingService : Service() {
     @Inject
     lateinit var repository: TrackingRepository
 
+    private var coroutineScope: CoroutineScope? = null
+
     override fun onStartCommand(
         intent: Intent?,
         flags: Int,
@@ -31,26 +35,43 @@ class TrackingService : Service() {
         when (intent?.action) {
             START_SERVICE -> {
                 Log.i("My stack", "Service started")
-                // initForegroundUpdates()
                 startForegroundService()
-                startCoroutine()
+                initCoroutineScope()
+                startForegroundUpdates()
                 repository.startTracking()
             }
 
             PAUSE_SERVICE -> {
                 Log.i("My stack", "Service paused")
+                resetCoroutine()
                 repository.stopTracking()
             }
         }
         return super.onStartCommand(intent, flags, startId)
     }
 
-    private fun startCoroutine() {
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.track.collect {
-                Log.i("My stack", "Test value is: $it")
+    private fun initCoroutineScope() {
+        coroutineScope = CoroutineScope(Dispatchers.IO)
+    }
+
+    private fun startForegroundUpdates() {
+        coroutineScope?.launch(CoroutineName("track_distance")) {
+            repository.track.collect { track ->
+                notificationManager.updateDistance(track.distanceMeters)
+                Log.i("My stack", "Service track is: $track")
             }
         }
+        coroutineScope?.launch(CoroutineName("track_time")) {
+            repository.timeMillis.collect { time ->
+                Log.i("My stack", "Service time is: $time")
+                notificationManager.updateDuration(time)
+            }
+        }
+    }
+
+    private fun resetCoroutine() {
+        coroutineScope?.cancel()
+        coroutineScope = null
     }
 
     private fun startForegroundService() {
@@ -60,16 +81,6 @@ class TrackingService : Service() {
             id,
             foregroundServiceType,
         )
-    }
-
-    private fun initForegroundUpdates() {
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.track.collect { track ->
-                Log.i("My stack", "Service track is: $track")
-                notificationManager.updateDuration(track.durationMillis)
-                notificationManager.updateDistance(track.distanceMeters)
-            }
-        }
     }
 
     override fun onDestroy() {

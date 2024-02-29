@@ -26,6 +26,7 @@ class ServiceNotificationHelper
 
         init {
             createTrackingNotificationChannel()
+            initStartingValues()
         }
 
         private fun createTrackingNotificationChannel() {
@@ -56,6 +57,11 @@ class ServiceNotificationHelper
             notificationLayout.setTextViewText(R.id.tvDistanceValue, distanceInMeters.toString())
             notification.setCustomContentView(notificationLayout)
             notificationManager.notify(NOTIFICATION_ID, notification.build())
+        }
+
+        private fun initStartingValues() {
+            updateDistance(0)
+            updateDuration(0)
         }
 
         companion object {
