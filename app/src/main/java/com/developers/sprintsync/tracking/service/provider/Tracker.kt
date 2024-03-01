@@ -1,6 +1,5 @@
 package com.developers.sprintsync.tracking.service.provider
 
-import android.util.Log
 import com.developers.sprintsync.global.util.extension.withLatestFrom
 import com.developers.sprintsync.tracking.builder.track.TrackUpdater
 import com.developers.sprintsync.tracking.model.LocationModel
@@ -8,12 +7,10 @@ import com.developers.sprintsync.tracking.service.provider.location.LocationProv
 import com.developers.sprintsync.tracking.service.provider.time.TimeProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,18 +29,6 @@ class Tracker
         init {
             initActiveStateListener()
         }
-
-        val testFlow =
-            flow {
-                while (true) {
-                    Log.i("My stack", "The object is: $this, isActive: ${isActive.value}")
-                    if (isActive.value) {
-                        val int = (Math.random() * 100).toInt()
-                        emit(int)
-                        delay(1000)
-                    }
-                }
-            }
 
         val timeInMillisFlow: Flow<Long> = timeProvider.timeInMillisFlow()
 
@@ -65,9 +50,6 @@ class Tracker
 
         fun stop() {
             updateActiveState(false)
-        }
-
-        fun reset() {
         }
 
         private fun updateActiveState(isActive: Boolean) {

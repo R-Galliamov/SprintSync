@@ -15,7 +15,6 @@ class TrackUpdater
     ) {
         private var currentTrack = Track.EMPTY_TRACK_DATA
 
-        // todo: Try reactive approach here and in SegmentsGenerator
         fun getTrack(
             locationModel: LocationModel,
             timeMillis: Long,

@@ -163,7 +163,11 @@ class CounterView
                 return if (textColor != COLOR_ABSENT_CODE) textColor else null
             }
 
-            fun getTextStyle(): Int = typedArray.getInt(R.styleable.CounterView_android_textStyle, Typeface.DEFAULT.style)
+            fun getTextStyle(): Int =
+                typedArray.getInt(
+                    R.styleable.CounterView_android_textStyle,
+                    Typeface.DEFAULT.style,
+                )
 
             fun recycle() = typedArray.recycle()
         }

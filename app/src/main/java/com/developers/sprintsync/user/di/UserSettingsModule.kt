@@ -1,4 +1,4 @@
-package com.developers.sprintsync.global.di
+package com.developers.sprintsync.user.di
 
 import com.developers.sprintsync.user.model.UserSettings
 import dagger.Module
@@ -9,8 +9,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class UserSettingsModules {
+class UserSettingsModule {
+    companion object {
+        const val USER_TEST_WEIGHT = 60.0
+    }
+
     @Provides
     @Singleton
-    fun provideUserSettings(): UserSettings = UserSettings(60.0)
+    fun provideUserSettings(): UserSettings = UserSettings(USER_TEST_WEIGHT)
 }

@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.StateFlow
 interface TrackingRepository {
     val isTracking: StateFlow<Boolean>
 
-    val testFlow: Flow<Int>
-
     val track: Flow<Track>
 
     val timeMillis: Flow<Long>
