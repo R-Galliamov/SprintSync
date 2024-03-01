@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_white_gray"
     android:paddingBottom="@dimen/largeSpace"
-    tools:context=".ui.fragment.HomeFragment">
+    tools:context=".global.ui.fragment.HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvProgress"
                 tools:text="completed!" />
 
-            <com.developers.sprintsync.ui.view.CircularProgressBar
+            <com.developers.sprintsync.global.ui.view.CircularProgressBar
                 android:id="@+id/pbWeekGoal"
                 android:layout_width="@dimen/lag50"
                 android:layout_height="@dimen/lag50"
@@ -74,7 +74,7 @@
                 app:layout_constraintStart_toEndOf="@id/pbWeekGoal"
                 app:layout_constraintTop_toTopOf="@id/pbWeekGoal" />
 
-            <com.developers.sprintsync.ui.view.CounterView
+            <com.developers.sprintsync.global.ui.view.CounterView
                 android:id="@+id/cvWalkCounter"
                 style="@style/CounterViewStyle.Min"
                 android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
                 app:layout_constraintStart_toStartOf="@id/ivWalkCounter"
                 app:layout_constraintTop_toBottomOf="@id/ivWalkCounter" />
 
-            <com.developers.sprintsync.ui.view.CounterView
+            <com.developers.sprintsync.global.ui.view.CounterView
                 android:id="@+id/cvRunCounter"
                 style="@style/CounterViewStyle.Min"
                 android:layout_width="wrap_content"
@@ -176,7 +176,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.developers.sprintsync.ui.view.CounterView
+            <com.developers.sprintsync.global.ui.view.CounterView
                 android:id="@+id/cvStepsCounter"
                 style="@style/CounterViewStyle.Steps"
                 android:layout_width="wrap_content"

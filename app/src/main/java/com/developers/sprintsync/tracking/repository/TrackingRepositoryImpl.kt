@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.repository
 
-import com.developers.sprintsync.service.tracker.Tracker
+import com.developers.sprintsync.tracking.service.provider.Tracker
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
