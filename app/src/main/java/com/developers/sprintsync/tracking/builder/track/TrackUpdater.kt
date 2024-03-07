@@ -41,6 +41,10 @@ class TrackUpdater
             track: Track,
             newSegment: TrackSegment,
         ): Track {
+            // TODO add logic for handling overflows
+            // TODO add logic for handling track values errors
+            checkNewSegmentValues(newSegment)
+
             val updatedDuration =
                 calculateUpdatedDuration(track.durationMillis, newSegment.durationMillis)
             val updatedDistance =
@@ -94,5 +98,12 @@ class TrackUpdater
             newCalories: Int,
         ): Int {
             return calculator.calculateCalories(previousCalories, newCalories)
+        }
+
+        private fun checkNewSegmentValues(newSegment: TrackSegment) {
+            require(newSegment.durationMillis >= 0) { "New duration must be non-negative" }
+            require(newSegment.distanceMeters >= 0) { "New distance must be non-negative" }
+            require(newSegment.pace >= 0) { "New pace must be non-negative" }
+            require(newSegment.burnedKCalories >= 0) { "New calories must be non-negative" }
         }
     }
