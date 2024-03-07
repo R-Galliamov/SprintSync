@@ -1,44 +1,42 @@
 package com.developers.sprintsync.tracking.builder.track
 
-import com.developers.sprintsync.tracking.model.Track
-import com.developers.sprintsync.tracking.model.TrackSegment
 import javax.inject.Inject
 
 class TrackStatCalculator
     @Inject
     constructor() {
         fun calculateDuration(
-            track: Track,
-            newSegment: TrackSegment,
+            previousDuration: Long,
+            newDuration: Long,
         ): Long {
-            return track.durationMillis + newSegment.durationMillis
+            return previousDuration + newDuration
         }
 
         fun calculateDistance(
-            track: Track,
-            newSegment: TrackSegment,
+            previousDistanceMeters: Int,
+            newDistanceMeters: Int,
         ): Int {
-            return track.distanceMeters + newSegment.distanceMeters
+            return previousDistanceMeters + newDistanceMeters
         }
 
         fun calculateAvgPace(
-            track: Track,
-            newSegment: TrackSegment,
+            previousAvgPace: Float,
+            newPace: Float,
         ): Float {
-            return (track.avgPace + newSegment.pace) / 2
+            return (previousAvgPace + newPace) / 2
         }
 
         fun calculateMaxPace(
-            track: Track,
-            newSegment: TrackSegment,
+            previousMaxPace: Float,
+            newPace: Float,
         ): Float {
-            return maxOf(track.maxPace, newSegment.pace)
+            return maxOf(previousMaxPace, newPace)
         }
 
         fun calculateCalories(
-            track: Track,
-            newSegment: TrackSegment,
+            previousCalories: Int,
+            newCalories: Int,
         ): Int {
-            return track.calories + newSegment.burnedKCalories
+            return previousCalories + newCalories
         }
     }
