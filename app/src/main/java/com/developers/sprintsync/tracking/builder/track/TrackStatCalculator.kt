@@ -1,44 +1,52 @@
 package com.developers.sprintsync.tracking.builder.track
 
-import com.developers.sprintsync.tracking.model.Track
-import com.developers.sprintsync.tracking.model.TrackSegment
 import javax.inject.Inject
 
 class TrackStatCalculator
     @Inject
     constructor() {
         fun calculateDuration(
-            track: Track,
-            newSegment: TrackSegment,
+            previousDuration: Long,
+            newDuration: Long,
         ): Long {
-            return track.durationMillis + newSegment.durationMillis
+            check(previousDuration >= 0) { "Previous duration must be non-negative" }
+            check(newDuration >= 0) { "New duration must be non-negative" }
+            return previousDuration + newDuration
         }
 
         fun calculateDistance(
-            track: Track,
-            newSegment: TrackSegment,
+            previousDistanceMeters: Int,
+            newDistanceMeters: Int,
         ): Int {
-            return track.distanceMeters + newSegment.distanceMeters
+            check(previousDistanceMeters >= 0) { "Previous distance must be non-negative" }
+            check(newDistanceMeters >= 0) { "New distance must be non-negative" }
+            return previousDistanceMeters + newDistanceMeters
         }
 
         fun calculateAvgPace(
-            track: Track,
-            newSegment: TrackSegment,
+            previousAvgPace: Float,
+            newPace: Float,
         ): Float {
-            return (track.avgPace + newSegment.pace) / 2
+            check(previousAvgPace >= 0) { "Previous average pace must be non-negative" }
+            check(newPace >= 0) { "New average pace must be non-negative" }
+            return (previousAvgPace + newPace) / 2
         }
 
         fun calculateMaxPace(
-            track: Track,
-            newSegment: TrackSegment,
+            previousMaxPace: Float,
+            newPace: Float,
         ): Float {
-            return maxOf(track.maxPace, newSegment.pace)
+            check(previousMaxPace >= 0) { "Previous max pace must be non-negative" }
+            check(newPace >= 0) { "New max pace must be non-negative" }
+            return maxOf(previousMaxPace, newPace)
         }
 
         fun calculateCalories(
-            track: Track,
-            newSegment: TrackSegment,
+            previousCalories: Int,
+            newCalories: Int,
         ): Int {
-            return track.calories + newSegment.burnedKCalories
+            check(previousCalories >= 0) { "Previous calories must be non-negative" }
+            check(newCalories >= 0) { "New calories must be non-negative" }
+            return previousCalories + newCalories
         }
     }

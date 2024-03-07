@@ -24,6 +24,10 @@ class TrackUpdater
             return currentTrack
         }
 
+        fun onPause() {
+            segmentGenerator.reset()
+        }
+
         private fun updateCurrent(newSegment: TrackSegment) {
             currentTrack =
                 if (currentTrack == Track.EMPTY_TRACK_DATA) {
@@ -37,18 +41,58 @@ class TrackUpdater
             track: Track,
             newSegment: TrackSegment,
         ): Track {
+            val updatedDuration =
+                calculateUpdatedDuration(track.durationMillis, newSegment.durationMillis)
+            val updatedDistance =
+                calculateUpdatedDistance(track.distanceMeters, newSegment.distanceMeters)
+            val updatedAvgPace = calculateUpdatedAvgPace(track.avgPace, newSegment.pace)
+            val updatedMaxPace = calculateUpdatedMaxPace(track.maxPace, newSegment.pace)
+            val updatedCalories = calculateUpdatedCalories(track.calories, newSegment.burnedKCalories)
+
             val segments = track.segments.toMutableList().apply { add(newSegment) }
+
             return track.copy(
-                durationMillis = calculator.calculateDuration(track, newSegment),
-                distanceMeters = calculator.calculateDistance(track, newSegment),
-                avgPace = calculator.calculateAvgPace(track, newSegment),
-                maxPace = calculator.calculateMaxPace(track, newSegment),
-                calories = calculator.calculateCalories(track, newSegment),
+                durationMillis = updatedDuration,
+                distanceMeters = updatedDistance,
+                avgPace = updatedAvgPace,
+                maxPace = updatedMaxPace,
+                calories = updatedCalories,
                 segments = segments,
             )
         }
 
-        fun onPause() {
-            segmentGenerator.reset()
+        private fun calculateUpdatedDuration(
+            previousDuration: Long,
+            newDuration: Long,
+        ): Long {
+            return calculator.calculateDuration(previousDuration, newDuration)
+        }
+
+        private fun calculateUpdatedDistance(
+            previousDistanceMeters: Int,
+            newDistanceMeters: Int,
+        ): Int {
+            return calculator.calculateDistance(previousDistanceMeters, newDistanceMeters)
+        }
+
+        private fun calculateUpdatedAvgPace(
+            previousAvgPace: Float,
+            newPace: Float,
+        ): Float {
+            return calculator.calculateAvgPace(previousAvgPace, newPace)
+        }
+
+        private fun calculateUpdatedMaxPace(
+            previousMaxPace: Float,
+            newPace: Float,
+        ): Float {
+            return calculator.calculateMaxPace(previousMaxPace, newPace)
+        }
+
+        private fun calculateUpdatedCalories(
+            previousCalories: Int,
+            newCalories: Int,
+        ): Int {
+            return calculator.calculateCalories(previousCalories, newCalories)
         }
     }
