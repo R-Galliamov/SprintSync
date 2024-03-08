@@ -11,11 +11,14 @@ class LocationPermissionManager(
     private val context: Context,
     private val shouldShowPermissionRational: (permission: String) -> Boolean,
 ) {
+
+    /*
     constructor(activity: ComponentActivity) : this(
         caller = activity as ActivityResultCaller,
         context = activity,
         shouldShowPermissionRational = { activity.shouldShowRequestPermissionRationale(it) },
     )
+     */
 
     constructor(fragment: Fragment) : this(
         caller = fragment,
@@ -30,16 +33,16 @@ class LocationPermissionManager(
         onPermissionsGranted: ((isGranted: Boolean) -> Unit)? = null,
         onPermissionRational: (() -> Unit)? = null,
     ) = permissionManager.requestPermissions(
-        permission,
+        PERMISSION,
         onPermissionsGranted = onPermissionsGranted,
         onPermissionRational = onPermissionRational,
     )
 
-    fun shouldShowPermissionRational(): Boolean = shouldShowPermissionRational.invoke(permission)
+    fun shouldShowPermissionRational(): Boolean = shouldShowPermissionRational.invoke(PERMISSION)
 
     companion object {
-        const val permission = Manifest.permission.ACCESS_FINE_LOCATION
+        const val PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION
 
-        fun hasPermission(context: Context): Boolean = PermissionManager.hasPermission(context, permission)
+        fun hasPermission(context: Context): Boolean = PermissionManager.hasPermission(context, PERMISSION)
     }
 }

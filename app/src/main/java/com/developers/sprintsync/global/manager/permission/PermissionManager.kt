@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ComponentActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
@@ -13,11 +12,13 @@ open class PermissionManager(
     private val context: Context,
     private val shouldShowPermissionRational: (permission: String) -> Boolean,
 ) {
+    /*
     constructor(activity: ComponentActivity) : this(
         caller = activity as ActivityResultCaller,
         context = activity,
         shouldShowPermissionRational = { activity.shouldShowRequestPermissionRationale(it) },
     )
+     */
 
     constructor(fragment: Fragment) : this(
         caller = fragment,
