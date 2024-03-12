@@ -3,6 +3,7 @@ package com.developers.sprintsync.tracking.service.provider
 import com.developers.sprintsync.global.util.extension.withLatestFrom
 import com.developers.sprintsync.tracking.builder.track.TrackUpdater
 import com.developers.sprintsync.tracking.model.LocationModel
+import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.service.provider.location.LocationProvider
 import com.developers.sprintsync.tracking.service.provider.time.TimeProvider
 import kotlinx.coroutines.CoroutineScope
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,7 +44,7 @@ class Tracker
                 } else {
                     null
                 }
-            }.filterNotNull()
+            }.filterNotNull().onStart { emit(Track.EMPTY_TRACK_DATA) }
 
         fun start() {
             updateActiveState(true)
