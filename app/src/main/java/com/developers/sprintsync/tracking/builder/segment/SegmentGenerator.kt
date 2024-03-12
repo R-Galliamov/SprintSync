@@ -18,6 +18,7 @@ class SegmentGenerator
             location: LocationModel,
             timeMillis: Long,
         ): TrackSegment? {
+            if (!checkLocationChanged(location)) return null
             val geoTimePair = GeoTimePair(location, timeMillis)
             updatePairs(geoTimePair)
             return previousPair?.let { startData -> buildTrackSegment(startData, geoTimePair) }
@@ -26,6 +27,12 @@ class SegmentGenerator
         fun reset() {
             previousPair = null
             currentPair = null
+        }
+
+        private fun checkLocationChanged(location: LocationModel): Boolean {
+            currentPair?.let { return it.location != location }
+            previousPair?.let { return it.location != location }
+            return true
         }
 
         private fun buildTrackSegment(
