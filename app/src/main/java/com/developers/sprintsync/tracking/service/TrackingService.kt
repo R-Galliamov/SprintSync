@@ -33,7 +33,7 @@ class TrackingService : Service() {
     ): Int {
         when (intent?.action) {
             START_SERVICE -> {
-                Log.i("My stack", "Service started")
+                Log.i("My stack", "Service is started")
                 startForegroundService()
                 initCoroutineScope()
                 startForegroundUpdates()
@@ -41,8 +41,8 @@ class TrackingService : Service() {
             }
 
             PAUSE_SERVICE -> {
-                Log.i("My stack", "Service paused")
-                resetCoroutine()
+                Log.i("My stack", "Service is paused")
+                stopForegroundCoroutine()
                 repository.stopTracking()
             }
         }
@@ -54,23 +54,31 @@ class TrackingService : Service() {
     }
 
     private fun startForegroundUpdates() {
+        startDistanceUpdates()
+        startTimeUpdates()
+    }
+
+    private fun stopForegroundCoroutine() {
+        coroutineScope?.cancel()
+        coroutineScope = null
+    }
+
+    private fun startDistanceUpdates() {
         coroutineScope?.launch(CoroutineName("track_distance")) {
             repository.track.collect { track ->
                 notifier.updateDistance(track.distanceMeters)
                 Log.i("My stack", "Service track is: $track")
             }
         }
+    }
+
+    private fun startTimeUpdates() {
         coroutineScope?.launch(CoroutineName("track_time")) {
             repository.timeMillis.collect { time ->
                 Log.i("My stack", "Service time is: $time")
                 notifier.updateDuration(time)
             }
         }
-    }
-
-    private fun resetCoroutine() {
-        coroutineScope?.cancel()
-        coroutineScope = null
     }
 
     private fun startForegroundService() {
