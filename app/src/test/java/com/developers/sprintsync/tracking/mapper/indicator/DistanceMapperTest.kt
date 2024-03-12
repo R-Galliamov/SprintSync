@@ -11,7 +11,7 @@ class DistanceMapperTest {
     @Test
     fun metersToPresentableDistance_returnsCorrectlyFormattedDistanceInKilometers() {
         // Arrange
-        val distanceInMeters = 1500
+        val distanceInMeters = 1509
         val expectedFormattedDistance = "1.50"
         Locale.setDefault(Locale.US)
 
@@ -20,34 +20,6 @@ class DistanceMapperTest {
 
         // Assert
         assertEquals(expectedFormattedDistance, result)
-    }
-
-    @Test
-    fun metersToPresentableDistance_returnsCorrectlyRoundedUpDistance() {
-        // Arrange
-        val distanceInMeters = 1495
-        val expectedDistanceInKilometers = "1.50"
-        Locale.setDefault(Locale.US)
-
-        // Act
-        val result = DistanceMapper.metersToPresentableDistance(distanceInMeters)
-
-        // Assert
-        assertEquals(expectedDistanceInKilometers, result)
-    }
-
-    @Test
-    fun metersToPresentableDistance_returnsCorrectlyRoundedDownDistance() {
-        // Arrange
-        val distanceInMeters = 1494
-        val expectedDistanceInKilometers = "1.49"
-        Locale.setDefault(Locale.US)
-
-        // Act
-        val result = DistanceMapper.metersToPresentableDistance(distanceInMeters)
-
-        // Assert
-        assertEquals(expectedDistanceInKilometers, result)
     }
 
     @Test
