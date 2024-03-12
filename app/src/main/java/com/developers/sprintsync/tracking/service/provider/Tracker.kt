@@ -1,6 +1,7 @@
 package com.developers.sprintsync.tracking.service.provider
 
-import com.developers.sprintsync.global.util.extension.withLatestFrom
+import android.util.Log
+import com.developers.sprintsync.global.util.extension.withLatestConcat
 import com.developers.sprintsync.tracking.builder.track.TrackUpdater
 import com.developers.sprintsync.tracking.model.LocationModel
 import com.developers.sprintsync.tracking.model.Track
@@ -37,11 +38,13 @@ class Tracker
         val locationFlow: Flow<LocationModel> =
             locationProvider.listenToLocation()
 
-        val trackFLow =
-            locationFlow.withLatestFrom(timeInMillisFlow) { location, timeMillis ->
-                if (isActive.value) {
-                    trackUpdater.getTrack(location, timeMillis)
-                } else {
+        val trackFlow: Flow<Track> =
+            locationFlow.withLatestConcat(timeInMillisFlow) { location, timeMillis ->
+                Log.i("My Stack", "Tracker: location: $location, timeMillis: $timeMillis")
+                if (isActive.value)
+                    {
+                        trackUpdater.getTrack(location, timeMillis)
+                    } else {
                     null
                 }
             }.filterNotNull().onStart { emit(Track.EMPTY_TRACK_DATA) }

@@ -1,8 +1,10 @@
 package com.developers.sprintsync.global.util.extension
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicReference
@@ -28,3 +30,11 @@ fun <A, B : Any, R> Flow<A>.withLatestFrom(
             }
         }
     }
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun <T, U : Any, R> Flow<T>.withLatestConcat(
+    other: Flow<U>,
+    transform: suspend (T, U) -> R,
+): Flow<R> =
+    this.withLatestFrom(other) { a, b -> a to b }
+        .flatMapConcat { (a, b) -> flow { emit(transform(a, b)) } }
