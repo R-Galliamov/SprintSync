@@ -8,6 +8,8 @@ object PaceCalculator {
         durationMillis: Long,
         coveredMeters: Int,
     ): Float {
+        require(durationMillis >= 0) { "durationMillis must be non-negative" }
+        require(coveredMeters > 0) { "coveredMeters must be positive" }
         val minutes = TimeMapper.millisToMinutes(durationMillis)
         val kilometers = DistanceMapper.metersToKilometers(coveredMeters)
         return (minutes / kilometers)
