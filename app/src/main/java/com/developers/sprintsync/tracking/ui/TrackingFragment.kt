@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
+import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
+import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.service.TrackingServiceController
 import com.developers.sprintsync.tracking.viewModel.TrackingViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +46,8 @@ class TrackingFragment : Fragment() {
 
     private fun setObservers() {
         setActiveStateObservers()
+        setTimeObserver()
+        setTrackDataObserver()
     }
 
     private fun setActiveStateObservers() {
@@ -56,6 +60,24 @@ class TrackingFragment : Fragment() {
                 binding.btStart.setOnClickListener {
                     service.pauseService()
                 }
+            }
+        }
+    }
+
+    private fun setTimeObserver() {
+        viewModel.timeMillis.observe(viewLifecycleOwner) { time ->
+            binding.tvStopwatch.text = TimeMapper.millisToPresentableTime(time)
+        }
+    }
+
+    private fun setTrackDataObserver() {
+        viewModel.track.observe(viewLifecycleOwner) { track ->
+            binding.apply {
+                tvTotalKmValue.text = track.distanceMeters.toString()
+                tvTotalKcalValue.text = track.calories.toString()
+                val currentPace =
+                    if (track.segments.isNotEmpty()) track.segments.last().pace else 0f
+                tvPaceValue.text = PaceMapper.paceToPresentablePace(currentPace)
             }
         }
     }
