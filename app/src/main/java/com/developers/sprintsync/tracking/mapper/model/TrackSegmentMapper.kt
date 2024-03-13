@@ -14,6 +14,7 @@ class TrackSegmentMapper
         private val caloriesCalculator: CaloriesCalculator,
     ) {
         fun buildTrackSegment(
+            id: Long,
             startData: GeoTimePair,
             endData: GeoTimePair,
         ): TrackSegment {
@@ -22,6 +23,7 @@ class TrackSegmentMapper
             val pace = PaceCalculator.getPaceInMinPerKm(duration, distance)
             val burnedKCalories = caloriesCalculator.getBurnedKiloCalories(distance)
             return TrackSegment(
+                id = id,
                 startLocation = startData.location,
                 startTime = startData.timeMillis,
                 endLocation = endData.location,

@@ -1,6 +1,7 @@
 package com.developers.sprintsync.tracking.model
 
 data class TrackSegment(
+    val id: Long,
     val startLocation: LocationModel,
     val startTime: Long,
     val endLocation: LocationModel,

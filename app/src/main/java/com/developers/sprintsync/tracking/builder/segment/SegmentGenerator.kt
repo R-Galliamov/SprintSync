@@ -11,9 +11,11 @@ class SegmentGenerator
     constructor(
         private val mapper: TrackSegmentMapper,
     ) {
+        private var segmentId: Long = 0
         private var previousPair: GeoTimePair? = null
         private var currentPair: GeoTimePair? = null
 
+        // TODO fix crash when location is not changed and come at the same time
         fun nextSegmentOrNull(
             location: LocationModel,
             timeMillis: Long,
@@ -21,7 +23,14 @@ class SegmentGenerator
             if (!checkLocationChanged(location)) return null
             val geoTimePair = GeoTimePair(location, timeMillis)
             updatePairs(geoTimePair)
-            return previousPair?.let { startData -> buildTrackSegment(startData, geoTimePair) }
+            return previousPair?.let { startData ->
+                buildTrackSegment(
+                    segmentId,
+                    startData,
+                    geoTimePair,
+                )
+            }
+                .also { segmentId++ }
         }
 
         fun reset() {
@@ -36,10 +45,11 @@ class SegmentGenerator
         }
 
         private fun buildTrackSegment(
+            segmentId: Long,
             startData: GeoTimePair,
             endData: GeoTimePair,
         ): TrackSegment {
-            return mapper.buildTrackSegment(startData, endData)
+            return mapper.buildTrackSegment(segmentId, startData, endData)
         }
 
         private fun updatePairs(geoTimePair: GeoTimePair) {
