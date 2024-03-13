@@ -11,7 +11,7 @@ class TrackingRepositoryImpl
     constructor(private val tracker: Tracker) :
     TrackingRepository {
         override val isTracking = tracker.isActive
-        override val track = tracker.trackFLow
+        override val track = tracker.trackFlow
         override val timeMillis: Flow<Long> = tracker.timeInMillisFlow
 
         override fun startTracking() {
