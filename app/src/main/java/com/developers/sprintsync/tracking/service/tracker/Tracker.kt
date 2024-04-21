@@ -26,7 +26,7 @@ class Tracker
         private val trackBuilder: TrackBuilder,
         private val activityMonitor: ActivityMonitor,
     ) {
-        private val _state: MutableStateFlow<TrackerState> = MutableStateFlow(TrackerState.Paused)
+        private val _state: MutableStateFlow<TrackerState> = MutableStateFlow(TrackerState.Initialised)
         val state = _state.asStateFlow()
 
         val userActivityState = activityMonitor.userActivityState
@@ -150,6 +150,10 @@ class Tracker
             CoroutineScope(Dispatchers.IO).launch {
                 state.collect { state ->
                     when (state) {
+                        TrackerState.Initialised -> {
+                            // NO - OP
+                        }
+
                         TrackerState.Tracking -> {
                             startUpdatingTime()
                             startUpdatingTrack()

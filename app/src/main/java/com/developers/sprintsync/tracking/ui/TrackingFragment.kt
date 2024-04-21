@@ -54,25 +54,7 @@ class TrackingFragment : Fragment() {
 
     private fun setTrackerStateObservers() {
         viewModel.trackerState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is TrackerState.Tracking -> {
-                    binding.btStart.setOnClickListener {
-                        service.pauseService()
-                    }
-                }
-
-                is TrackerState.Paused -> {
-                    binding.btStart.setOnClickListener {
-                        service.startService()
-                    }
-                }
-
-                is TrackerState.Finished -> {
-                    binding.btStart.setOnClickListener {
-                        service.finish()
-                    }
-                }
-            }
+            updateButtonController(state)
         }
     }
 
@@ -101,7 +83,69 @@ class TrackingFragment : Fragment() {
             track.segments.isNotEmpty() && track.segments.last() is Segment.ActiveSegment -> {
                 (track.segments.last() as Segment.ActiveSegment).pace
             }
+
             else -> 0f
+        }
+    }
+
+    private fun updateButtonController(state: TrackerState) {
+        when (state) {
+            TrackerState.Initialised -> {
+                showStartButton()
+            }
+
+            TrackerState.Tracking -> {
+                showPauseButton()
+                showFinishButton()
+            }
+
+            TrackerState.Paused -> {
+                showResumeButton()
+                showFinishButton()
+            }
+
+            TrackerState.Finished -> {
+                // NO - OP
+            }
+        }
+    }
+
+    private fun showStartButton() {
+        binding.tvController.visibility = View.VISIBLE
+        binding.btTrackingController.setBackgroundResource(R.drawable.bt_circle_secondary)
+        binding.btTrackingController.setOnClickListener {
+            service.startService()
+        }
+        binding.btFinish.visibility = View.GONE
+        binding.imController.visibility = View.GONE
+    }
+
+    private fun showPauseButton() {
+        binding.tvController.visibility = View.GONE
+        binding.btTrackingController.setBackgroundResource(R.drawable.bt_circle_thirdhly)
+        binding.imController.setImageResource(R.drawable.ic_pause_48dp)
+        binding.imController.visibility = View.VISIBLE
+        binding.btTrackingController.setOnClickListener {
+            service.pauseService()
+        }
+    }
+
+    private fun showResumeButton() {
+        binding.tvController.visibility = View.GONE
+        binding.btTrackingController.setBackgroundResource(R.drawable.bt_circle_secondary)
+        binding.imController.setImageResource(R.drawable.ic_start_48dp)
+        binding.imController.visibility = View.VISIBLE
+        binding.btTrackingController.setOnClickListener {
+            service.startService()
+        }
+    }
+
+    private fun showFinishButton() {
+        binding.btFinish.apply {
+            visibility = View.VISIBLE
+            setOnClickListener {
+                service.finish()
+            }
         }
     }
 
