@@ -54,25 +54,7 @@ class TrackingFragment : Fragment() {
 
     private fun setTrackerStateObservers() {
         viewModel.trackerState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is TrackerState.Tracking -> {
-                    binding.btStart.setOnClickListener {
-                        service.pauseService()
-                    }
-                }
-
-                is TrackerState.Paused -> {
-                    binding.btStart.setOnClickListener {
-                        service.startService()
-                    }
-                }
-
-                is TrackerState.Finished -> {
-                    binding.btStart.setOnClickListener {
-                        service.finish()
-                    }
-                }
-            }
+            updateTrackingControllerPanel(state)
         }
     }
 
@@ -101,7 +83,121 @@ class TrackingFragment : Fragment() {
             track.segments.isNotEmpty() && track.segments.last() is Segment.ActiveSegment -> {
                 (track.segments.last() as Segment.ActiveSegment).pace
             }
+
             else -> 0f
+        }
+    }
+
+    private fun updateTrackingControllerPanel(state: TrackerState) {
+        when (state) {
+            TrackerState.Initialised -> {
+                initTrackingControllerButton()
+                initFinishButtonListener()
+                setFinishButtonVisibility(false)
+            }
+
+            TrackerState.Tracking -> {
+                updateTrackingControllerButton(true)
+                setFinishButtonVisibility(true)
+            }
+
+            TrackerState.Paused -> {
+                updateTrackingControllerButton(false)
+                setFinishButtonVisibility(true)
+            }
+
+            TrackerState.Finished -> {
+                // NO - OP
+            }
+        }
+    }
+
+    private fun setFinishButtonVisibility(isVisible: Boolean) {
+        when (isVisible) {
+            true -> binding.btFinish.visibility = View.VISIBLE
+            false -> binding.btFinish.visibility = View.GONE
+        }
+    }
+
+    private fun initFinishButtonListener() {
+        binding.btFinish.setOnClickListener {
+            service.finish()
+        }
+    }
+
+    private fun initTrackingControllerButton() {
+        updateTextTrackingControllerVisibility(true)
+        updateImageTrackingControllerVisibility(false)
+        updateTrackingControllerListener(false)
+        initTextTrackingController()
+        updateTrackingControllerButtonBackground(false)
+    }
+
+    private fun updateTrackingControllerButton(isTracking: Boolean) {
+        when (isTracking) {
+            true ->
+                binding.apply {
+                    updateTextTrackingControllerVisibility(false)
+                    updateTrackingControllerListener(true)
+                    updateImageTrackingControllerVisibility(true)
+                    updateTrackingControllerButtonBackground(true)
+                    updateImageTrackingController(true)
+                }
+
+            false ->
+                binding.apply {
+                    updateTextTrackingControllerVisibility(false)
+                    updateTrackingControllerListener(false)
+                    updateImageTrackingControllerVisibility(true)
+                    updateTrackingControllerButtonBackground(false)
+                    updateImageTrackingController(false)
+                }
+        }
+    }
+
+    private fun updateTrackingControllerListener(isTracking: Boolean) {
+        when (isTracking) {
+            true ->
+                binding.btTrackingController.setOnClickListener {
+                    service.pauseService()
+                }
+
+            false ->
+                binding.btTrackingController.setOnClickListener {
+                    service.startService()
+                }
+        }
+    }
+
+    private fun updateTextTrackingControllerVisibility(isVisible: Boolean) {
+        when (isVisible) {
+            true -> binding.tvTrackingController.visibility = View.VISIBLE
+            false -> binding.tvTrackingController.visibility = View.GONE
+        }
+    }
+
+    private fun initTextTrackingController() {
+        binding.tvTrackingController.text = getString(R.string.start)
+    }
+
+    private fun updateImageTrackingControllerVisibility(isVisible: Boolean) {
+        when (isVisible) {
+            true -> binding.imTrackingController.visibility = View.VISIBLE
+            false -> binding.imTrackingController.visibility = View.GONE
+        }
+    }
+
+    private fun updateImageTrackingController(isTracking: Boolean) {
+        when (isTracking) {
+            true -> binding.imTrackingController.setImageResource(R.drawable.ic_pause_48dp)
+            false -> binding.imTrackingController.setImageResource(R.drawable.ic_start_48dp)
+        }
+    }
+
+    private fun updateTrackingControllerButtonBackground(isTracking: Boolean) {
+        when (isTracking) {
+            true -> binding.btTrackingController.setBackgroundResource(R.drawable.bt_circle_thirdhly)
+            false -> binding.btTrackingController.setBackgroundResource(R.drawable.bt_circle_secondary)
         }
     }
 
