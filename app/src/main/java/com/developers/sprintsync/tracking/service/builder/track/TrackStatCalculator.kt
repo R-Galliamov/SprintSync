@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.builder.track
+package com.developers.sprintsync.tracking.service.builder.track
 
 import javax.inject.Inject
 

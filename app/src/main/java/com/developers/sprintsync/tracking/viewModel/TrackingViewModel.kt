@@ -10,7 +10,6 @@ import javax.inject.Inject
 class TrackingViewModel
     @Inject
     constructor(private val repository: TrackingRepository) : ViewModel() {
-        val isTracking = repository.isTracking.asLiveData()
-        val track = repository.track.asLiveData()
-        val timeMillis = repository.timeMillis.asLiveData()
+        val trackerState = repository.trackerState.asLiveData()
+        val data = repository.data.asLiveData()
     }

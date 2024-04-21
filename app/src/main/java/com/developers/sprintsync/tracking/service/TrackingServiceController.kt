@@ -16,7 +16,7 @@ class TrackingServiceController(
     }
 
     fun finish() {
-        sendCommandToService(Action.STOP_SERVICE)
+        sendCommandToService(Action.FINISH_SERVICE)
     }
 
     private fun sendCommandToService(action: String) {
@@ -29,6 +29,6 @@ class TrackingServiceController(
     object Action {
         const val START_SERVICE = "START_SERVICE"
         const val PAUSE_SERVICE = "PAUSE_SERVICE"
-        const val STOP_SERVICE = "STOP_SERVICE"
+        const val FINISH_SERVICE = "STOP_SERVICE"
     }
 }

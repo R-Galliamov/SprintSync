@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.model
 
-data class GeoTimePair(
+data class GeoTimePoint(
     val location: LocationModel,
     val timeMillis: Long,
 )

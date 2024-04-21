@@ -10,6 +10,9 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
 import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
+import com.developers.sprintsync.tracking.model.Segment
+import com.developers.sprintsync.tracking.model.Track
+import com.developers.sprintsync.tracking.model.TrackerState
 import com.developers.sprintsync.tracking.service.TrackingServiceController
 import com.developers.sprintsync.tracking.viewModel.TrackingViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,40 +48,60 @@ class TrackingFragment : Fragment() {
     }
 
     private fun setObservers() {
-        setActiveStateObservers()
-        setTimeObserver()
-        setTrackDataObserver()
+        setTrackerStateObservers()
+        setDataObserver()
     }
 
-    private fun setActiveStateObservers() {
-        viewModel.isTracking.observe(viewLifecycleOwner) { isActive ->
-            if (!isActive) {
-                binding.btStart.setOnClickListener {
-                    service.startService()
+    private fun setTrackerStateObservers() {
+        viewModel.trackerState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is TrackerState.Tracking -> {
+                    binding.btStart.setOnClickListener {
+                        service.pauseService()
+                    }
                 }
-            } else {
-                binding.btStart.setOnClickListener {
-                    service.pauseService()
+
+                is TrackerState.Paused -> {
+                    binding.btStart.setOnClickListener {
+                        service.startService()
+                    }
+                }
+
+                is TrackerState.Finished -> {
+                    binding.btStart.setOnClickListener {
+                        service.finish()
+                    }
                 }
             }
         }
     }
 
-    private fun setTimeObserver() {
-        viewModel.timeMillis.observe(viewLifecycleOwner) { time ->
-            binding.tvStopwatch.text = TimeMapper.millisToPresentableTime(time)
+    private fun setDataObserver() {
+        viewModel.data.observe(viewLifecycleOwner) { data ->
+            updateDuration(data.durationMillis)
+            updateTrackingData(data.track)
         }
     }
 
-    private fun setTrackDataObserver() {
-        viewModel.track.observe(viewLifecycleOwner) { track ->
-            binding.apply {
-                tvTotalKmValue.text = track.distanceMeters.toString()
-                tvTotalKcalValue.text = track.calories.toString()
-                val currentPace =
-                    if (track.segments.isNotEmpty()) track.segments.last().pace else 0f
-                tvPaceValue.text = PaceMapper.paceToPresentablePace(currentPace)
+    private fun updateDuration(durationMillis: Long) {
+        binding.tvDuration.text = TimeMapper.millisToPresentableTime(durationMillis)
+    }
+
+    private fun updateTrackingData(track: Track) {
+        binding.apply {
+            tvDistanceValue.text = track.distanceMeters.toString()
+            tvCaloriesValue.text = track.calories.toString()
+            val currentPace = getPace(track)
+            tvPaceValue.text = PaceMapper.paceToPresentablePace(currentPace)
+        }
+    }
+
+    private fun getPace(track: Track): Float {
+        return when {
+            track.segments.isNotEmpty() && track.segments.last() is Segment.ActiveSegment -> {
+                (track.segments.last() as Segment.ActiveSegment).pace
             }
+            else -> 0f
         }
     }
 

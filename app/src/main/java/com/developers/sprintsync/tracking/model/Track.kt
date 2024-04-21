@@ -8,12 +8,12 @@ data class Track(
     val avgPace: Float,
     val maxPace: Float,
     val calories: Int,
-    val segments: List<TrackSegment>,
+    val segments: Segments,
 ) {
     companion object {
         val EMPTY_TRACK_DATA =
             Track(
-                id = 0,
+                id = -1,
                 startTimeDateMillis = 0L,
                 durationMillis = 0L,
                 distanceMeters = 0,

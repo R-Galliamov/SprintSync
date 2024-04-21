@@ -1,19 +1,20 @@
 package com.developers.sprintsync.tracking.repository
 
 import com.developers.sprintsync.tracking.model.Track
-import kotlinx.coroutines.flow.Flow
+import com.developers.sprintsync.tracking.model.TrackerState
+import com.developers.sprintsync.tracking.model.TrackingSession
 import kotlinx.coroutines.flow.StateFlow
 
 interface TrackingRepository {
-    val isTracking: StateFlow<Boolean>
+    val trackerState: StateFlow<TrackerState>
 
-    val track: Flow<Track>
+    val data: StateFlow<TrackingSession>
 
-    val timeMillis: Flow<Long>
+    fun saveTrack(track: Track)
 
     fun startTracking()
 
-    fun stopTracking()
+    fun pauseTracking()
 
     fun finishTracking()
 }

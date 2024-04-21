@@ -1,5 +1,6 @@
-package com.developers.sprintsync.tracking.builder.track
+package com.developers.sprintsync.tracking.generator.track
 
+import com.developers.sprintsync.tracking.service.builder.track.TrackStatCalculator
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

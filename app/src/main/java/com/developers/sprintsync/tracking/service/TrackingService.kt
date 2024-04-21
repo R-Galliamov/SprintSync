@@ -6,6 +6,7 @@ import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 import com.developers.sprintsync.tracking.repository.TrackingRepository
+import com.developers.sprintsync.tracking.service.TrackingServiceController.Action.FINISH_SERVICE
 import com.developers.sprintsync.tracking.service.TrackingServiceController.Action.PAUSE_SERVICE
 import com.developers.sprintsync.tracking.service.TrackingServiceController.Action.START_SERVICE
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +44,13 @@ class TrackingService : Service() {
             PAUSE_SERVICE -> {
                 Log.i("My stack", "Service is paused")
                 stopForegroundCoroutine()
-                repository.stopTracking()
+                repository.pauseTracking()
+            }
+
+            FINISH_SERVICE -> {
+                Log.i("My stack", "Service is stopped")
+                stopForegroundCoroutine()
+                repository.finishTracking()
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -65,18 +72,16 @@ class TrackingService : Service() {
 
     private fun startDistanceUpdates() {
         coroutineScope?.launch(CoroutineName("track_distance")) {
-            repository.track.collect { track ->
-                notifier.updateDistance(track.distanceMeters)
-                Log.i("My stack", "Service track is: $track")
+            repository.data.collect { data ->
+                notifier.updateDistance(data.track.distanceMeters)
             }
         }
     }
 
     private fun startTimeUpdates() {
         coroutineScope?.launch(CoroutineName("track_time")) {
-            repository.timeMillis.collect { time ->
-                Log.i("My stack", "Service time is: $time")
-                notifier.updateDuration(time)
+            repository.data.collect { data ->
+                notifier.updateDuration(data.durationMillis)
             }
         }
     }
