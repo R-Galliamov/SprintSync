@@ -28,6 +28,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/pauseCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/lag5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivCardTop">
+
+        <ImageView
+            android:layout_width="@dimen/lag50"
+            android:layout_height="@dimen/lag10"
+            android:background="@drawable/card_outlined_thirdly"
+            android:importantForAccessibility="no" />
+
+        <TextView
+            style="@style/SubTitleText.Caps.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/pause" />
+    </FrameLayout>
+
     <ImageView
         android:id="@+id/ivCardBottom"
         android:layout_width="match_parent"
@@ -41,11 +64,9 @@
     <!-- TODO: add ripple circle back. Set as style -->
     <ImageView
         android:id="@+id/btBack"
-        android:layout_width="@dimen/smallImageSize"
-        android:layout_height="@dimen/smallImageSize"
+        style="@style/TransparentButton"
         android:layout_marginStart="@dimen/regularSpace"
         android:layout_marginTop="@dimen/regularSpace"
-        android:clickable="true"
         android:contentDescription="@string/move_back"
         android:src="@drawable/ic_cancel_24dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,12 +75,10 @@
     <!-- TODO: add ripple circle back. Set as style -->
     <ImageView
         android:id="@+id/btSettings"
-        android:layout_width="@dimen/smallImageSize"
-        android:layout_height="@dimen/smallImageSize"
+        style="@style/TransparentButton"
         android:layout_marginTop="@dimen/regularSpace"
         android:layout_marginEnd="@dimen/regularSpace"
-        android:clickable="true"
-        android:contentDescription="@string/move_back"
+        android:contentDescription="@string/settings"
         android:src="@drawable/ic_settings_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

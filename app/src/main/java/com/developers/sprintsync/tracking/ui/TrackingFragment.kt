@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
+import com.developers.sprintsync.global.util.extension.findTopNavController
 import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
@@ -53,6 +54,7 @@ class TrackingFragment : Fragment() {
         initMapManager()
         initMap()
         binding.mapView.onCreate(savedInstanceState)
+        setBackButtonListener()
     }
 
     private fun initMapManager() {
@@ -133,23 +135,33 @@ class TrackingFragment : Fragment() {
         when (state) {
             TrackerState.Initialised -> {
                 initTrackingControllerButton()
+                setPauseCardVisibility(false)
                 initFinishButtonListener()
                 setFinishButtonVisibility(false)
             }
 
             TrackerState.Tracking -> {
                 updateTrackingControllerButton(true)
+                setPauseCardVisibility(false)
                 setFinishButtonVisibility(true)
             }
 
             TrackerState.Paused -> {
                 updateTrackingControllerButton(false)
+                setPauseCardVisibility(true)
                 setFinishButtonVisibility(true)
             }
 
             TrackerState.Finished -> {
                 // NO - OP
             }
+        }
+    }
+
+    private fun setPauseCardVisibility(isVisible: Boolean) {
+        when (isVisible) {
+            true -> binding.pauseCard.visibility = View.VISIBLE
+            false -> binding.pauseCard.visibility = View.GONE
         }
     }
 
@@ -239,6 +251,12 @@ class TrackingFragment : Fragment() {
         when (isTracking) {
             true -> binding.btTrackingController.setBackgroundResource(R.drawable.bt_circle_thirdhly)
             false -> binding.btTrackingController.setBackgroundResource(R.drawable.bt_circle_secondary)
+        }
+    }
+
+    private fun setBackButtonListener() {
+        binding.btBack.setOnClickListener {
+            findTopNavController().navigateUp()
         }
     }
 

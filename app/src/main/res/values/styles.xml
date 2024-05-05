@@ -82,6 +82,16 @@
         <item name="android:textColor">?colorOnPrimaryVariant</item>
     </style>
 
+    <!-- Buttons -->
+    <style name="TransparentButton" parent="Theme.SprintSync">
+        <item name="android:padding">@dimen/lag3</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/bt_circle_transparent</item>
+        <item name="android:layout_width">@dimen/bigImageSize</item>
+        <item name="android:layout_height">@dimen/bigImageSize</item>
+    </style>
+
+
     <!-- Counters -->
     <style name="CounterViewStyle" parent="Theme.SprintSync">
         <item name="textColor">?colorOnPrimary</item>
