@@ -1,6 +1,7 @@
 package com.developers.sprintsync.tracking.model
 
 import android.location.Location
+import com.google.android.gms.maps.model.LatLng
 
 @JvmInline
 value class Latitude(val value: Double)
@@ -14,6 +15,8 @@ data class LocationModel(
 )
 
 fun Location.toDataModel(): LocationModel = LocationModel(Latitude(latitude), Longitude(longitude))
+
+fun LocationModel.toLatLng(): LatLng = LatLng(latitude.value, longitude.value)
 
 fun LocationModel.distanceBetweenInMeters(end: LocationModel): Float {
     val result = FloatArray(1)

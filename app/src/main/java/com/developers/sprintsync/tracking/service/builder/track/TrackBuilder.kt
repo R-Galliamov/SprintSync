@@ -16,6 +16,7 @@ class TrackBuilder
     ) {
         private var track: Track = Track.EMPTY_TRACK_DATA
 
+        // when user is moving
         fun addActiveDataPoint(
             location: LocationModel,
             timeMillis: Long,
@@ -25,6 +26,7 @@ class TrackBuilder
             segment?.let { updateTrack(it) }
         }
 
+        // when user isn't  moving, but tracker is working
         fun addInactiveDataPoint(endPauseTimeMillis: Long) {
             segmentBuilder.addInactiveDataPoint(
                 endPauseTimeMillis,

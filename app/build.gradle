@@ -19,12 +19,19 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
 
-    detekt {
-        toolVersion = "$detekt_version"
-        config.setFrom("config/detekt/detekt.yml")
-        buildUponDefaultConfig = true
+        detekt {
+            toolVersion = "$detekt_version"
+            config.setFrom("config/detekt/detekt.yml")
+            buildUponDefaultConfig = true
+        }
+
+        def properties = new Properties()
+        def file = rootProject.file("key.properties")
+        if (file.exists()) {
+            properties.load(file.newDataInputStream())
+        }
+        manifestPlaceholders.mapsApiKey = properties.getProperty("MAPS_API_KEY", "")
     }
 
     buildFeatures {
@@ -37,10 +44,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
         freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]

@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
+import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.model.Segment
 import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.model.TrackerState
+import com.developers.sprintsync.tracking.model.toLatLng
 import com.developers.sprintsync.tracking.service.TrackingServiceController
+import com.developers.sprintsync.tracking.util.manager.MapManager
 import com.developers.sprintsync.tracking.viewModel.TrackingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,6 +33,8 @@ class TrackingFragment : Fragment() {
         )
     }
 
+    private var mapManager: MapManager? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,11 +50,24 @@ class TrackingFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
+        initMapManager()
+        initMap()
+        binding.mapView.onCreate(savedInstanceState)
+    }
+
+    private fun initMapManager() {
+        mapManager = MapManager(requireContext())
+    }
+
+    private fun initMap() {
+        binding.mapView.getMapAsync {
+            mapManager?.initialize(it)
+        }
     }
 
     private fun setObservers() {
         setTrackerStateObservers()
-        setDataObserver()
+        setDataObservers()
     }
 
     private fun setTrackerStateObservers() {
@@ -58,10 +76,33 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    private fun setDataObserver() {
-        viewModel.data.observe(viewLifecycleOwner) { data ->
-            updateDuration(data.durationMillis)
-            updateTrackingData(data.track)
+    private fun setDataObservers() {
+        setDurationObserver()
+        setCurrentLocationObserver()
+        setTrackObserver()
+    }
+
+    private fun setDurationObserver() {
+        viewModel.duration.observe(viewLifecycleOwner) { duration ->
+            updateDuration(duration)
+        }
+    }
+
+    private fun setCurrentLocationObserver() {
+        viewModel.currentLocation.observe(viewLifecycleOwner) { location ->
+            val latLng = location?.toLatLng()
+            latLng?.let {
+                mapManager?.updateUserMarker(it)
+                mapManager?.moveCameraToLocation(it)
+            }
+        }
+    }
+
+    private fun setTrackObserver() {
+        viewModel.track.observe(viewLifecycleOwner) { track ->
+            track.segments.lastOrNull { it is Segment.ActiveSegment }
+            updateTrackingData(track)
+            track.segments.lastOrNull()?.let { mapManager?.addPolyline(it) }
         }
     }
 
@@ -71,7 +112,7 @@ class TrackingFragment : Fragment() {
 
     private fun updateTrackingData(track: Track) {
         binding.apply {
-            tvDistanceValue.text = track.distanceMeters.toString()
+            tvDistanceValue.text = DistanceMapper.metersToPresentableDistance(track.distanceMeters)
             tvCaloriesValue.text = track.calories.toString()
             val currentPace = getPace(track)
             tvPaceValue.text = PaceMapper.paceToPresentablePace(currentPace)
@@ -201,34 +242,6 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    /*
-    private fun initMaps() {
-        binding.mapView.getMapAsync { googleMap ->
-            // The GoogleMap object is now ready to use
-        }
-    }
-
-    private fun setServiceObservers() {
-        serviceManager.service.tracker.trackDataFLow().asLiveData()
-            .observe(viewLifecycleOwner) { track ->
-                binding.tvPaceValue.text = PaceMapper.paceToPresentablePace(track.avgPace)
-                binding.tvTotalKmValue.text =
-                    DistanceMapper.metersToPresentableDistance(track.distanceMeters)
-                binding.tvTotalKcalValue.text = track.calories.toString()
-            }
-
-        serviceManager.service.tracker.timeInMillisFlow().asLiveData()
-            .observe(viewLifecycleOwner) { time ->
-                binding.tvStopwatch.text = TimeMapper.millisToPresentableTime(time)
-            }
-    }
-
-    private fun finishWorkOut() {
-        TrackBuilder.buildTrack(service.segmentList)
-        navigate to StatisticsFragment
-    }
-     */
-
     override fun onStop() {
         super.onStop()
     }
@@ -236,5 +249,7 @@ class TrackingFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        mapManager?.cleanup()
+        mapManager = null
     }
 }
