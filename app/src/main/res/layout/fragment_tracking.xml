@@ -61,7 +61,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- TODO: add ripple circle back. Set as style -->
     <ImageView
         android:id="@+id/btBack"
         style="@style/TransparentButton"
@@ -72,7 +71,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- TODO: add ripple circle back. Set as style -->
     <ImageView
         android:id="@+id/btSettings"
         style="@style/TransparentButton"
