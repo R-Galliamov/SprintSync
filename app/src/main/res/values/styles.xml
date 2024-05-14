@@ -13,6 +13,10 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="TabloidText.Secondary">
+        <item name="android:textColor">?colorSecondary</item>
+    </style>
+
     <!-- Titles -->
     <style name="TitleText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>

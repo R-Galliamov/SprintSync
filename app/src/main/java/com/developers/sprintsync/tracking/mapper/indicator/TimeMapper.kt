@@ -20,6 +20,10 @@ class TimeMapper {
             return String.format(locale, "%02d:%02d:%02d", hours, minutes, seconds)
         }
 
+        fun millisToSeconds(millis: Long): Float {
+            return millis / MILLIS_IN_SECOND.toFloat()
+        }
+
         fun millisToMinutes(millis: Long): Float {
             return millis / (MILLIS_IN_SECOND * SECONDS_IN_MINUTE).toFloat()
         }

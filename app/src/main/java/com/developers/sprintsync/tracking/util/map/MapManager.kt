@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.util.manager
+package com.developers.sprintsync.tracking.util.map
 
 import android.content.Context
 import com.developers.sprintsync.R

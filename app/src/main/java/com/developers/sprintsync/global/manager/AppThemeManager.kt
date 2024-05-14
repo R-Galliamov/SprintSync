@@ -25,6 +25,16 @@ class AppThemeManager(private val context: Context) {
         return typedValue.data
     }
 
+    fun getSecondaryColorVariant(): Int {
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(
+            com.google.android.material.R.attr.colorSecondaryVariant,
+            typedValue,
+            true,
+        )
+        return typedValue.data
+    }
+
     fun getThirdlyColor(): Int {
         val typedValue = TypedValue()
         context.theme.resolveAttribute(

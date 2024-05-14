@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_tracking_to_locationRequestFragment"
             app:destination="@id/locationRequestFragment" />
+        <action
+            android:id="@+id/action_trackingFragment_to_trackStatisticsFragment"
+            app:destination="@id/trackStatisticsFragment" />
     </fragment>
     <fragment
         android:id="@+id/locationRequestFragment"
@@ -45,4 +48,9 @@
             android:id="@+id/action_locationRequestFragment_to_trackingFragment"
             app:destination="@id/trackingFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/trackStatisticsFragment"
+        android:name="com.developers.sprintsync.tracking.ui.TrackStatisticsFragment"
+        android:label="fragment_track_statistics"
+        tools:layout="@layout/fragment_track_statistics" />
 </navigation>

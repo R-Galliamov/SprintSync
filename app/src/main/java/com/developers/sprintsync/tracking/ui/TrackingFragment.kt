@@ -17,7 +17,7 @@ import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.model.TrackerState
 import com.developers.sprintsync.tracking.model.toLatLng
 import com.developers.sprintsync.tracking.service.TrackingServiceController
-import com.developers.sprintsync.tracking.util.manager.MapManager
+import com.developers.sprintsync.tracking.util.map.MapManager
 import com.developers.sprintsync.tracking.viewModel.TrackingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -117,7 +117,7 @@ class TrackingFragment : Fragment() {
             tvDistanceValue.text = DistanceMapper.metersToPresentableDistance(track.distanceMeters)
             tvCaloriesValue.text = track.calories.toString()
             val currentPace = getPace(track)
-            tvPaceValue.text = PaceMapper.paceToPresentablePace(currentPace)
+            tvPaceValue.text = PaceMapper.formatPaceWithTwoDecimals(currentPace)
         }
     }
 
@@ -175,6 +175,7 @@ class TrackingFragment : Fragment() {
     private fun initFinishButtonListener() {
         binding.btFinish.setOnClickListener {
             service.finish()
+            findTopNavController().navigate(R.id.action_trackingFragment_to_trackStatisticsFragment)
         }
     }
 

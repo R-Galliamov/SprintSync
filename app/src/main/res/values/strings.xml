@@ -31,5 +31,7 @@
     <string name="service_isn_t_initialised">Service isn\'t initialised</string>
     <string name="settings">Settings</string>
     <string name="pause">Pause</string>
+    <string name="delete_track">Delete track</string>
+    <string name="great_job">Great job!</string>
 
 </resources>

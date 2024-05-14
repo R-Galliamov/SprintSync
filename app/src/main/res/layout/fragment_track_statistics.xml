@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".tracking.ui.TrackStatisticsFragment">
+
+    <TextView
+        android:id="@+id/tvCongrats"
+        style="@style/TabloidText.Secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/largeSpace"
+        android:text="@string/great_job"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lag50"
+        android:layout_marginStart="@dimen/regularSpace"
+        android:layout_marginEnd="@dimen/regularSpace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCongrats" />
+
+    <ImageView
+        android:id="@+id/btDelete"
+        style="@style/TransparentButton"
+        android:layout_marginTop="@dimen/regularSpace"
+        android:layout_marginEnd="@dimen/regularSpace"
+        android:contentDescription="@string/delete_track"
+        android:src="@drawable/ic_delete_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <FrameLayout
+        android:id="@+id/btHome"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/regularButtonHeight"
+        android:layout_marginStart="@dimen/largeSpace"
+        android:layout_marginEnd="@dimen/largeSpace"
+        android:layout_marginBottom="@dimen/largeSpace"
+        android:background="@drawable/bt_secondary"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tvHome"
+            style="@style/TitleText.Caps.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/home" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

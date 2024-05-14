@@ -16,7 +16,7 @@ class PaceMapperTest {
         Locale.setDefault(Locale.US)
 
         // Act
-        val result = PaceMapper.paceToPresentablePace(pace)
+        val result = PaceMapper.formatPaceWithTwoDecimals(pace)
 
         // Assert
         assertEquals(expected, result)
@@ -30,7 +30,7 @@ class PaceMapperTest {
         Locale.setDefault(Locale.US)
 
         // Act
-        val result = PaceMapper.paceToPresentablePace(pace)
+        val result = PaceMapper.formatPaceWithTwoDecimals(pace)
 
         // Assert
         assertEquals(expected, result)
@@ -44,7 +44,7 @@ class PaceMapperTest {
         Locale.setDefault(Locale.GERMANY)
 
         // Act
-        val result = PaceMapper.paceToPresentablePace(pace)
+        val result = PaceMapper.formatPaceWithTwoDecimals(pace)
 
         // Assert
         assertEquals(expected, result)
@@ -58,7 +58,7 @@ class PaceMapperTest {
         Locale.setDefault(Locale.GERMANY)
 
         // Act
-        val result = PaceMapper.paceToPresentablePace(pace)
+        val result = PaceMapper.formatPaceWithTwoDecimals(pace)
 
         // Assert
         assertEquals(expected, result)
