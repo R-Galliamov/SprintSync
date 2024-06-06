@@ -40,7 +40,7 @@ class SegmentMapper
             startData: GeoTimePoint,
             endTimeMillis: Long,
         ): Segment {
-            val duration = 0L
+            val duration = endTimeMillis - startData.timeMillis
             return Segment.InactiveSegment(
                 id = id,
                 location = startData.location,

@@ -118,7 +118,6 @@ class TrackingFragment : Fragment() {
 
     private fun setTrackObserver() {
         viewModel.track.observe(viewLifecycleOwner) { track ->
-            track.segments.lastOrNull { it is Segment.ActiveSegment }
             updateTrackingData(track)
             track.segments.lastOrNull()?.let { mapManager.addPolyline(it) }
         }

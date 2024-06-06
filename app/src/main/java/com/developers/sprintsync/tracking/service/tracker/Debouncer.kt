@@ -38,6 +38,6 @@ class Debouncer
         }
 
         companion object {
-            private const val DEFAULT_DELAY_MILLIS = 5000L
+            private const val DEFAULT_DELAY_MILLIS = 10000L
         }
     }
