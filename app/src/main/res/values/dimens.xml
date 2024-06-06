@@ -36,6 +36,7 @@
     <dimen name="bigImageSize">48dp</dimen>
 
     <!--Button-->
+    <dimen name="smallButtonHeight">48dp</dimen>
     <dimen name="regularButtonHeight">72dp</dimen>
     <dimen name="bigCircleButtonSize">60dp</dimen>
     <dimen name="largeCircleButtonSize">120dp</dimen>

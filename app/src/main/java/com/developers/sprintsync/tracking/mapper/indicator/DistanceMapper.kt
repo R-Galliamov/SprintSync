@@ -9,11 +9,20 @@ class DistanceMapper {
 
         // TODO based on setting mapper can decide what function to use to convert values
         // TODO init locale whit HILT?
-        fun metersToPresentableDistance(distanceInMeters: Int): String {
+        fun metersToPresentableKilometers(
+            distanceInMeters: Int,
+            includeUnit: Boolean = false,
+        ): String {
             val roundedMeters = distanceInMeters.roundedDownNearestTen()
             val kilometers = metersToKilometers(roundedMeters)
             val locale = Locale.getDefault()
-            return String.format(locale, "%.2f", kilometers)
+            val formattedKilometers = String.format(locale, "%.2f", kilometers)
+            return if (includeUnit) {
+                val units = "km"
+                "$formattedKilometers $units"
+            } else {
+                formattedKilometers
+            }
         }
 
         fun metersToKilometers(distanceInMeters: Int): Float {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><!-- TODO check the effect and fix if needed -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?colorOnPrimary">
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/regularCornerRadius" />
+            <solid android:color="?colorOnPrimary" />
+        </shape>
+    </item>
+
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid android:color="?colorPrimary" />
+            <stroke
+                android:width="2dp"
+                android:color="?colorThirdly" />
+            <corners android:radius="@dimen/lag8" />
+        </shape>
+    </item>
+</ripple>

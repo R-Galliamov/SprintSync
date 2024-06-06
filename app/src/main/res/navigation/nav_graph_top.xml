@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/tabsFragment"
         android:name="com.developers.sprintsync.global.ui.fragment.TabsFragment"
-        android:label="tabsFragment" >
+        android:label="tabsFragment">
         <action
             android:id="@+id/action_tabsFragment_to_trackingFragment"
             app:destination="@id/trackingFragment" />
@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/onboardingFragment"
         android:name="com.developers.sprintsync.global.ui.fragment.OnboardingFragment"
-        android:label="onboardingFragment" >
+        android:label="onboardingFragment">
         <action
             android:id="@+id/action_onboardingFragment_to_tabsFragment"
             app:destination="@id/tabsFragment"
@@ -31,26 +31,41 @@
         android:id="@+id/trackingFragment"
         android:name="com.developers.sprintsync.tracking.ui.TrackingFragment"
         android:label="fragment_tracking"
-        tools:layout="@layout/fragment_tracking" >
+        tools:layout="@layout/fragment_tracking">
         <action
             android:id="@+id/action_tracking_to_locationRequestFragment"
             app:destination="@id/locationRequestFragment" />
         <action
             android:id="@+id/action_trackingFragment_to_trackStatisticsFragment"
-            app:destination="@id/trackStatisticsFragment" />
+            app:destination="@id/trackStatisticsFragment"
+            app:popUpTo="@id/trackingFragment"
+            app:popUpToInclusive="true"
+           />
     </fragment>
     <fragment
         android:id="@+id/locationRequestFragment"
         android:name="com.developers.sprintsync.global.ui.fragment.LocationRequestFragment"
         android:label="fragment_location_request"
-        tools:layout="@layout/fragment_location_request" >
+        tools:layout="@layout/fragment_location_request">
         <action
             android:id="@+id/action_locationRequestFragment_to_trackingFragment"
-            app:destination="@id/trackingFragment" />
+            app:destination="@id/trackingFragment"
+            app:popUpTo="@id/locationRequestFragment"
+            app:popUpToInclusive="true"
+            />
     </fragment>
     <fragment
         android:id="@+id/trackStatisticsFragment"
         android:name="com.developers.sprintsync.tracking.ui.TrackStatisticsFragment"
         android:label="fragment_track_statistics"
-        tools:layout="@layout/fragment_track_statistics" />
+        tools:layout="@layout/fragment_track_statistics" >
+        <action
+            android:id="@+id/action_trackStatisticsFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.developers.sprintsync.tracking.ui.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
 </navigation>

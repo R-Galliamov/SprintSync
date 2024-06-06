@@ -33,5 +33,11 @@
     <string name="pause">Pause</string>
     <string name="delete_track">Delete track</string>
     <string name="great_job">Great job!</string>
+    <string name="pace_track">Pace track</string>
+    <string name="distance">Distance</string>
+    <string name="duration">Duration</string>
+    <string name="avg_pace">Avg. pace</string>
+    <string name="burned_kcal">Burned kcal</string>
+    <string name="on_map">On map</string>
 
 </resources>

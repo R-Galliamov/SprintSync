@@ -1,6 +1,7 @@
 package com.developers.sprintsync.tracking.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,13 +29,9 @@ class TrackingFragment : Fragment() {
 
     private val viewModel by activityViewModels<TrackingViewModel>()
 
-    private val service: TrackingServiceController by lazy {
-        TrackingServiceController(
-            requireContext(),
-        )
-    }
+    private val service by lazy { TrackingServiceController(requireContext()) }
 
-    private var mapManager: MapManager? = null
+    private val mapManager: MapManager by lazy { MapManager(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,26 +47,46 @@ class TrackingFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        setObservers()
-        initMapManager()
-        initMap()
-        binding.mapView.onCreate(savedInstanceState)
+        Log.d(TAG, "onViewCreated")
+        initMap(savedInstanceState) { setTrackDataObservers() }
+        setTrackerStateObservers()
+        setDurationObserver()
         setBackButtonListener()
     }
 
-    private fun initMapManager() {
-        mapManager = MapManager(requireContext())
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart")
+        binding.mapView.onStart()
     }
 
-    private fun initMap() {
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause")
+        binding.mapView.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume")
+        binding.mapView.onResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop")
+        binding.mapView.onStop()
+    }
+
+    private fun initMap(
+        savedInstanceState: Bundle?,
+        onMapReady: () -> Unit,
+    ) {
+        binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync {
-            mapManager?.initialize(it)
+            mapManager.initialize(it)
+            onMapReady()
         }
-    }
-
-    private fun setObservers() {
-        setTrackerStateObservers()
-        setDataObservers()
     }
 
     private fun setTrackerStateObservers() {
@@ -78,8 +95,7 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    private fun setDataObservers() {
-        setDurationObserver()
+    private fun setTrackDataObservers() {
         setCurrentLocationObserver()
         setTrackObserver()
     }
@@ -94,8 +110,8 @@ class TrackingFragment : Fragment() {
         viewModel.currentLocation.observe(viewLifecycleOwner) { location ->
             val latLng = location?.toLatLng()
             latLng?.let {
-                mapManager?.updateUserMarker(it)
-                mapManager?.moveCameraToLocation(it)
+                mapManager.updateUserMarker(it)
+                mapManager.moveCameraToLocation(it)
             }
         }
     }
@@ -104,7 +120,7 @@ class TrackingFragment : Fragment() {
         viewModel.track.observe(viewLifecycleOwner) { track ->
             track.segments.lastOrNull { it is Segment.ActiveSegment }
             updateTrackingData(track)
-            track.segments.lastOrNull()?.let { mapManager?.addPolyline(it) }
+            track.segments.lastOrNull()?.let { mapManager.addPolyline(it) }
         }
     }
 
@@ -114,7 +130,8 @@ class TrackingFragment : Fragment() {
 
     private fun updateTrackingData(track: Track) {
         binding.apply {
-            tvDistanceValue.text = DistanceMapper.metersToPresentableDistance(track.distanceMeters)
+            tvDistanceValue.text =
+                DistanceMapper.metersToPresentableKilometers(track.distanceMeters)
             tvCaloriesValue.text = track.calories.toString()
             val currentPace = getPace(track)
             tvPaceValue.text = PaceMapper.formatPaceWithTwoDecimals(currentPace)
@@ -132,6 +149,7 @@ class TrackingFragment : Fragment() {
     }
 
     private fun updateTrackingControllerPanel(state: TrackerState) {
+        Log.d(TAG, "updateTrackingControllerPanel: $state")
         when (state) {
             TrackerState.Initialised -> {
                 initTrackingControllerButton()
@@ -261,14 +279,14 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d(TAG, "onDestroyView")
+        binding.mapView.onDestroy()
         _binding = null
-        mapManager?.cleanup()
-        mapManager = null
+    }
+
+    companion object {
+        private const val TAG = "Tracking Fragment"
     }
 }

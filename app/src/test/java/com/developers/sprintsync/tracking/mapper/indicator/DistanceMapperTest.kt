@@ -16,7 +16,7 @@ class DistanceMapperTest {
         Locale.setDefault(Locale.US)
 
         // Act
-        val result = DistanceMapper.metersToPresentableDistance(distanceInMeters)
+        val result = DistanceMapper.metersToPresentableKilometers(distanceInMeters)
 
         // Assert
         assertEquals(expectedFormattedDistance, result)
@@ -30,7 +30,7 @@ class DistanceMapperTest {
         Locale.setDefault(Locale.GERMANY)
 
         // Act
-        val result = DistanceMapper.metersToPresentableDistance(distanceInMeters)
+        val result = DistanceMapper.metersToPresentableKilometers(distanceInMeters)
 
         // Assert
         assertEquals(expectedDistanceInKilometers, result)
