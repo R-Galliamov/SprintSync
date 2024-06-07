@@ -22,7 +22,7 @@ class TrackUpdater
             val distanceMeters =
                 getUpdatedDistance(track.distanceMeters, segment.distanceMeters)
             val avgPace = getUpdatedAvgPace(track.avgPace, segment.pace)
-            val maxPace = getUpdatedMaxPace(track.maxPace, segment.pace)
+            val bestPace = getUpdatedBestPace(track.bestPace, segment.pace)
             val calories = getUpdatedCalories(track.calories, segment.calories)
             val segments = getUpdatedSegments(track.segments, segment)
             val updatedTrack =
@@ -31,7 +31,7 @@ class TrackUpdater
                     durationMillis,
                     distanceMeters,
                     avgPace,
-                    maxPace,
+                    bestPace,
                     calories,
                     segments,
                 )
@@ -73,12 +73,12 @@ class TrackUpdater
             return calculator.calculateAvgPace(previousAvgPace, newPace)
         }
 
-        private fun getUpdatedMaxPace(
+        private fun getUpdatedBestPace(
             previousMaxPace: Float,
             newPace: Float,
         ): Float {
             require(newPace >= 0) { "New pace must be non-negative" }
-            return calculator.calculateMaxPace(previousMaxPace, newPace)
+            return calculator.calculateBestPace(previousMaxPace, newPace)
         }
 
         private fun getUpdatedCalories(
@@ -110,7 +110,7 @@ class TrackUpdater
                 durationMillis = durationMillis,
                 distanceMeters = distanceMeters,
                 avgPace = avgPace,
-                maxPace = maxPace,
+                bestPace = maxPace,
                 calories = calories,
                 segments = segments,
             )

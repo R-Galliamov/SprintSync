@@ -49,7 +49,7 @@ class TrackStatCalculatorTest {
         val newPace = 5f
         val expectedMaxPace = 6f
 
-        val result = calculator.calculateMaxPace(previousMaxPace, newPace)
+        val result = calculator.calculateBestPace(previousMaxPace, newPace)
 
         assertEquals(expectedMaxPace, result, 0.01f)
     }
@@ -60,7 +60,7 @@ class TrackStatCalculatorTest {
         val newPace = 6f
         val expectedMaxPace = 6f
 
-        val result = calculator.calculateMaxPace(previousMaxPace, newPace)
+        val result = calculator.calculateBestPace(previousMaxPace, newPace)
 
         assertEquals(expectedMaxPace, result, 0.01f)
     }

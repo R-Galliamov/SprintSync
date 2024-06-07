@@ -63,7 +63,7 @@ class TrackStatisticsFragment : Fragment() {
                 DistanceMapper.metersToPresentableKilometers(track.distanceMeters, true)
             tvDurationValue.text = TimeMapper.millisToPresentableTime(track.durationMillis)
             tvAvgPaceValue.text = PaceMapper.formatPaceWithTwoDecimals(track.avgPace)
-            tvBestPaceValue.text = PaceMapper.formatPaceWithTwoDecimals(track.maxPace)
+            tvBestPaceValue.text = PaceMapper.formatPaceWithTwoDecimals(track.bestPace)
             tvCaloriesValue.text = track.calories.toString()
         }
     }

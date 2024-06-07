@@ -20,7 +20,7 @@ class TrackInitializer
                         durationMillis = initialSegment.durationMillis,
                         distanceMeters = initialSegment.distanceMeters,
                         avgPace = initialSegment.pace,
-                        maxPace = initialSegment.pace,
+                        bestPace = initialSegment.pace,
                         calories = initialSegment.calories,
                         segments = listOf(initialSegment),
                     )

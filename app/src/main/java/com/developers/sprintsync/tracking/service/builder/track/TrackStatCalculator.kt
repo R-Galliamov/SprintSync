@@ -26,11 +26,11 @@ class TrackStatCalculator
             return (previousAvgPace + newPace) / 2
         }
 
-        fun calculateMaxPace(
+        fun calculateBestPace(
             previousMaxPace: Float,
             newPace: Float,
         ): Float {
-            return maxOf(previousMaxPace, newPace)
+            return minOf(previousMaxPace, newPace)
         }
 
         fun calculateCalories(
