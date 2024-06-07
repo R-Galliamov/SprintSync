@@ -15,60 +15,79 @@ class TrackBuilder
         private val trackUpdater: TrackUpdater,
     ) {
         private var track: Track = Track.EMPTY_TRACK_DATA
+        private val lock = Any()
 
         // when user is moving
         fun addActiveDataPoint(
             location: LocationModel,
             timeMillis: Long,
         ) {
-            segmentBuilder.addActiveDataPoint(location, timeMillis)
-            val segment = segmentBuilder.getCurrentSegment()
-            segment?.let { updateTrack(it) }
+            synchronized(lock) {
+                segmentBuilder.addActiveDataPoint(location, timeMillis)
+                val segment = segmentBuilder.getCurrentSegment()
+                segment?.let { updateTrack(it) }
+            }
         }
 
         // when user isn't  moving, but tracker is working
         fun addInactiveDataPoint(endPauseTimeMillis: Long) {
-            segmentBuilder.addInactiveDataPoint(
-                endPauseTimeMillis,
-            )
-            val segment = segmentBuilder.getCurrentSegment()
-            segment?.let { updateTrack(it) }
+            synchronized(lock) {
+                segmentBuilder.addInactiveDataPoint(
+                    endPauseTimeMillis,
+                )
+                val segment = segmentBuilder.getCurrentSegment()
+                segment?.let { updateTrack(it) }
+            }
         }
 
-        fun clearLastDataPoint() = segmentBuilder.clearLastDataPoint()
+        fun clearLastDataPoint() {
+            synchronized(lock) {
+                segmentBuilder.clearLastDataPoint()
+            }
+        }
 
         fun buildTrack(): Track {
-            return track
+            synchronized(lock) {
+                return track
+            }
         }
 
         private fun updateTrack(segment: Segment) {
-            if (!isTrackInitialized()) {
-                initializeTrack(segment)
-                return
-            }
-            val updatedTrack: Track =
-                when (segment) {
-                    is Segment.ActiveSegment -> {
-                        trackUpdater.getTrackUpdatedWithSegment(track, segment)
-                    }
-
-                    is Segment.InactiveSegment -> {
-                        trackUpdater.getTrackUpdatedWithSegment(track, segment)
-                    }
+            synchronized(lock) {
+                if (!isTrackInitialized()) {
+                    initializeTrack(segment)
+                    return
                 }
-            setTrack(updatedTrack)
+                val updatedTrack: Track =
+                    when (segment) {
+                        is Segment.ActiveSegment -> {
+                            trackUpdater.getTrackUpdatedWithSegment(track, segment)
+                        }
+
+                        is Segment.InactiveSegment -> {
+                            trackUpdater.getTrackUpdatedWithSegment(track, segment)
+                        }
+                    }
+                setTrack(updatedTrack)
+            }
         }
 
         private fun initializeTrack(initialSegment: Segment) {
-            val track = initializer.initializeTrack(initialSegment)
-            setTrack(track)
+            synchronized(lock) {
+                val track = initializer.initializeTrack(initialSegment)
+                setTrack(track)
+            }
         }
 
         private fun isTrackInitialized(): Boolean {
-            return track != Track.EMPTY_TRACK_DATA
+            synchronized(lock) {
+                return track != Track.EMPTY_TRACK_DATA
+            }
         }
 
         private fun setTrack(track: Track) {
-            this.track = track
+            synchronized(lock) {
+                this.track = track
+            }
         }
     }
