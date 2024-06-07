@@ -19,8 +19,10 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.resumeWithException
 
 @Singleton
 class LocationProviderImpl
@@ -64,7 +66,23 @@ class LocationProviderImpl
 
                 client.requestLocationUpdates(request, locationCallback, Looper.getMainLooper())
 
-                awaitClose { client.removeLocationUpdates(locationCallback) }
+                awaitClose {
+                    client.removeLocationUpdates(locationCallback)
+                }
+            }
+        }
+
+        @SuppressLint("MissingPermission")
+        override suspend fun getLocation(): LocationModel {
+            if (!hasLocationPermission()) throw NoPermissionsException
+            return suspendCancellableCoroutine { continuation ->
+                client.lastLocation
+                    .addOnSuccessListener { location ->
+                        continuation.resume(location.toDataModel(), null)
+                    }
+                    .addOnFailureListener { e ->
+                        continuation.resumeWithException(e)
+                    }
             }
         }
 

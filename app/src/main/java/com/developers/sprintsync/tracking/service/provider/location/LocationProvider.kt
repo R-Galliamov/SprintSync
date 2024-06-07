@@ -6,5 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface LocationProvider {
     fun listenToLocation(): Flow<LocationModel>
 
+    suspend fun getLocation(): LocationModel
+
     fun hasLocationPermission(): Boolean
 }
