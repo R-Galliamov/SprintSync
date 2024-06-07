@@ -161,6 +161,10 @@ class Tracker
             }
         }
 
+        private fun areUpdatingCoroutinesInactive(): Boolean {
+            return (locationScope == null && trackingScope == null && timeScope == null)
+        }
+
         private fun initTrackerStateListener() {
             CoroutineScope(dispatcher).launch {
                 state.collect { state ->
@@ -175,18 +179,20 @@ class Tracker
                         }
 
                         TrackerState.Paused -> {
+                            finaliseTrack()
                             stopUpdatingTime()
                             stopUpdatingTrack()
                             trackBuilder.clearLastDataPoint()
                             activityMonitor.stopMonitoringInactivity()
-                            finaliseTrack()
                         }
 
                         TrackerState.Finished -> {
-                            finaliseTrack()
-                            stopUpdatingLocation()
-                            stopUpdatingTime()
-                            stopUpdatingTrack()
+                            if (areUpdatingCoroutinesInactive()) {
+                                finaliseTrack()
+                                stopUpdatingLocation()
+                                stopUpdatingTime()
+                                stopUpdatingTrack()
+                            }
                             activityMonitor.stopMonitoringInactivity()
                             _state.value = TrackerState.Initialised
                         }
