@@ -38,12 +38,12 @@ class Tracker
         private val locationFlow = locationProvider.listenToLocation()
         private val trackFlow =
             locationFlow.withLatestConcat(timeFlow) { location, timeMillis ->
+                Log.d("My Stack", "location: ${location.latitude}, timeMillis: $timeMillis")
                 if (activityMonitor.isStopped()) {
                     trackBuilder.addInactiveDataPoint(timeMillis)
                 }
                 trackBuilder.addActiveDataPoint(location, timeMillis)
                 val track = trackBuilder.buildTrack()
-                Log.i("My stack", "trackFlow: ${track.segments}")
                 track
             }
 
@@ -51,21 +51,23 @@ class Tracker
         private var trackingScope: CoroutineScope? = null
         private var timeScope: CoroutineScope? = null
 
+        private val dispatcher = Dispatchers.IO
+
         init {
             initTrackerStateListener()
             startUpdatingLocation()
         }
 
         private fun initTimeScope() {
-            timeScope = CoroutineScope(Dispatchers.IO)
+            timeScope = CoroutineScope(dispatcher)
         }
 
         private fun initTrackingScope() {
-            trackingScope = CoroutineScope(Dispatchers.IO)
+            trackingScope = CoroutineScope(dispatcher)
         }
 
         private fun initLocationScope() {
-            locationScope = CoroutineScope(Dispatchers.IO)
+            locationScope = CoroutineScope(dispatcher)
         }
 
         private fun startUpdatingLocation() {
@@ -138,7 +140,6 @@ class Tracker
             _state.value = TrackerState.Finished
         }
 
-        // TODO find a better name for this function
         private fun addInactiveSegmentToTrack() {
             val endPauseTime = data.value.durationMillis
             trackBuilder.addInactiveDataPoint(endPauseTime)
@@ -146,8 +147,22 @@ class Tracker
             updateSession(track)
         }
 
+        private fun finaliseTrack() {
+            if (activityMonitor.isStopped()) {
+                addInactiveSegmentToTrack()
+            } else {
+                val time = data.value.durationMillis
+                CoroutineScope(dispatcher).launch {
+                    val location = locationProvider.getLocation()
+                    trackBuilder.addActiveDataPoint(location, time)
+                    val track = trackBuilder.buildTrack()
+                    updateSession(track)
+                }
+            }
+        }
+
         private fun initTrackerStateListener() {
-            CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(dispatcher).launch {
                 state.collect { state ->
                     when (state) {
                         TrackerState.Initialised -> {
@@ -164,19 +179,16 @@ class Tracker
                             stopUpdatingTrack()
                             trackBuilder.clearLastDataPoint()
                             activityMonitor.stopMonitoringInactivity()
-                            if (activityMonitor.isStopped()) {
-                                addInactiveSegmentToTrack()
-                            }
+                            finaliseTrack()
                         }
 
                         TrackerState.Finished -> {
+                            finaliseTrack()
                             stopUpdatingLocation()
                             stopUpdatingTime()
                             stopUpdatingTrack()
                             activityMonitor.stopMonitoringInactivity()
-                            if (activityMonitor.isStopped()) {
-                                addInactiveSegmentToTrack()
-                            }
+                            _state.value = TrackerState.Initialised
                         }
                     }
                 }
