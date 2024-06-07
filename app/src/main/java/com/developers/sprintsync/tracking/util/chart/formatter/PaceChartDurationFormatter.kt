@@ -33,6 +33,6 @@ class PaceChartDurationFormatter : ValueFormatter() {
     }
 
     companion object {
-        private const val SECONDS_BARRIER = 60
+        private const val SECONDS_BARRIER = 180
     }
 }
