@@ -187,7 +187,7 @@ class Tracker
                         }
 
                         TrackerState.Finished -> {
-                            if (areUpdatingCoroutinesInactive()) {
+                            if (!areUpdatingCoroutinesInactive()) {
                                 finaliseTrack()
                                 stopUpdatingLocation()
                                 stopUpdatingTime()
