@@ -48,7 +48,11 @@ class TrackingFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
-        initMap(savedInstanceState) { setTrackDataObservers() }
+        updateProgressBarVisibility(true)
+        initMap(savedInstanceState) {
+            updateProgressBarVisibility(false)
+            setTrackDataObservers()
+        }
         setTrackerStateObservers()
         setDurationObserver()
         setBackButtonListener()
@@ -275,6 +279,13 @@ class TrackingFragment : Fragment() {
     private fun setBackButtonListener() {
         binding.btBack.setOnClickListener {
             findTopNavController().navigateUp()
+        }
+    }
+
+    private fun updateProgressBarVisibility(isVisible: Boolean) {
+        when (isVisible) {
+            true -> binding.progressBar.visibility = View.VISIBLE
+            false -> binding.progressBar.visibility = View.GONE
         }
     }
 

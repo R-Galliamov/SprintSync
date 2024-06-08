@@ -35,8 +35,10 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        updateProgressBarVisibility(true)
         initMap(savedInstanceState) {
             getSegmentsOrNull()?.let {
+                updateProgressBarVisibility(false)
                 mapManager.addPolylines(it)
                 mapManager.showTrack(it)
             }
@@ -63,6 +65,13 @@ class MapFragment : Fragment() {
 
     private fun getSegmentsOrNull(): Segments? {
         return viewModel.track.value?.segments
+    }
+
+    private fun updateProgressBarVisibility(isVisible: Boolean) {
+        when (isVisible) {
+            true -> binding.progressBar.visibility = View.VISIBLE
+            false -> binding.progressBar.visibility = View.GONE
+        }
     }
 
     override fun onStart() {
