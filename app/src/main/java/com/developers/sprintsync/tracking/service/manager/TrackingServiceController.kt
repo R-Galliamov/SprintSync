@@ -1,9 +1,9 @@
-package com.developers.sprintsync.tracking.service
+package com.developers.sprintsync.tracking.service.manager
 
 import android.content.Context
 import android.content.Intent
+import com.developers.sprintsync.tracking.service.tracker.TrackingService
 
-// TODO create with delegate or HILT?
 class TrackingServiceController(
     private val context: Context,
 ) {

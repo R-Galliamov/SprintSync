@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.service
+package com.developers.sprintsync.tracking.service.tracker
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.di
+package com.developers.sprintsync.tracking.di.service
 
 import android.app.PendingIntent
 import android.content.Context

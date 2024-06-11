@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.service
+package com.developers.sprintsync.tracking.service.monitor
 
 import com.developers.sprintsync.tracking.model.PaceAnalysisResult
 import com.developers.sprintsync.tracking.model.Segment
