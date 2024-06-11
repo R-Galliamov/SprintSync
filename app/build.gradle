@@ -81,6 +81,8 @@ dependencies {
     def play_services_version = "21.1.0"
     def mockito_version = "4.0.0"
     def mp_android_chart_version = "v3.1.0"
+    def room_version = "2.6.1"
+    def gson_version = "2.11.0"
 
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -112,6 +114,14 @@ dependencies {
 
     // Chart
     implementation "com.github.PhilJay:MPAndroidChart:$mp_android_chart_version"
+
+    // Room
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // Gson
+    implementation "com.google.code.gson:gson:$gson_version"
 
     // SplashScreen
     implementation "androidx.core:core-splashscreen:$splash_screen_version"

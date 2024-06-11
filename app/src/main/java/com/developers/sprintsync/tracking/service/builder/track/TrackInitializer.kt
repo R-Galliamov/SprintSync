@@ -8,7 +8,7 @@ class TrackInitializer
     @Inject
     constructor() {
         companion object {
-            private const val DEFAULT_ID = -1
+            private const val DEFAULT_ID = 0
         }
 
         fun initializeTrack(initialSegment: Segment): Track {
