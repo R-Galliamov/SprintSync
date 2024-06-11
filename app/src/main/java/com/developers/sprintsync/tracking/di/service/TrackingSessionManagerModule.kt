@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.di.repository
+package com.developers.sprintsync.tracking.di.service
 
 import com.developers.sprintsync.tracking.service.manager.TrackingSessionManager
 import com.developers.sprintsync.tracking.service.manager.TrackingSessionManagerImpl
