@@ -20,7 +20,7 @@ class TrackRepositoryImpl
         }
 
         // READ
-        override suspend fun getAllTracks(): Flow<List<Track>> {
+        override fun getAllTracks(): Flow<List<Track>> {
             return trackDao.getAllTracks()
         }
 

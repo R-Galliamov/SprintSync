@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface TrackRepository {
     suspend fun saveTrack(track: Track)
 
-    suspend fun getAllTracks(): Flow<List<Track>>
+    fun getAllTracks(): Flow<List<Track>>
 }
