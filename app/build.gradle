@@ -123,6 +123,8 @@ dependencies {
     // Gson
     implementation "com.google.code.gson:gson:$gson_version"
 
+    implementation 'org.danilopianini:gson-extras:1.2.0'
+
     // SplashScreen
     implementation "androidx.core:core-splashscreen:$splash_screen_version"
 }
