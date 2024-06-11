@@ -1,6 +1,5 @@
 package com.developers.sprintsync.tracking.util.chart
 
-import android.util.Log
 import com.developers.sprintsync.tracking.model.PaceChartData
 import com.developers.sprintsync.tracking.model.Segment
 import com.developers.sprintsync.tracking.model.Segments
@@ -41,7 +40,6 @@ class PaceChartDataPreparer {
 
     private fun getEntry(segment: Segment.ActiveSegment): Entry {
         val timePoint = getTimePoint(segment)
-        Log.d("My stack", "timePoint: $timePoint, pace: ${segment.pace}")
         return Entry(timePoint, segment.pace)
     }
 

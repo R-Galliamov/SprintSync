@@ -3,7 +3,6 @@ package com.developers.sprintsync.tracking.service.provider.location
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
-import android.util.Log
 import com.developers.sprintsync.global.manager.permission.LocationPermissionManager
 import com.developers.sprintsync.global.util.error.NoPermissionsException
 import com.developers.sprintsync.tracking.model.LocationModel
@@ -55,11 +54,6 @@ class LocationProviderImpl
                     object : LocationCallback() {
                         override fun onLocationResult(result: LocationResult) {
                             super.onLocationResult(result)
-                            Log.i(
-                                "My Stack",
-                                "Lat is: ${result.lastLocation?.latitude}, " +
-                                    "Long is: ${result.lastLocation?.longitude}",
-                            )
                             result.lastLocation?.let { launch { send(it.toDataModel()) } }
                         }
                     }
