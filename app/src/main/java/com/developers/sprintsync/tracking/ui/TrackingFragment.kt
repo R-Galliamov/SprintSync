@@ -17,7 +17,7 @@ import com.developers.sprintsync.tracking.model.Segment
 import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.model.TrackerState
 import com.developers.sprintsync.tracking.model.toLatLng
-import com.developers.sprintsync.tracking.service.TrackingServiceController
+import com.developers.sprintsync.tracking.service.manager.TrackingServiceController
 import com.developers.sprintsync.tracking.util.map.MapManager
 import com.developers.sprintsync.tracking.viewModel.TrackingViewModel
 import dagger.hilt.android.AndroidEntryPoint

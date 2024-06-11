@@ -1,9 +1,8 @@
-package com.developers.sprintsync.tracking.service.tracker
+package com.developers.sprintsync.tracking.service.builder.track
 
 import com.developers.sprintsync.tracking.model.Segment
 import com.developers.sprintsync.tracking.model.Segments
 import com.developers.sprintsync.tracking.model.Track
-import com.developers.sprintsync.tracking.service.builder.track.TrackStatCalculator
 import javax.inject.Inject
 
 // TODO add logic for handling overflows

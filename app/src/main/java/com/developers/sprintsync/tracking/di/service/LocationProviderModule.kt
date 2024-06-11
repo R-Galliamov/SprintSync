@@ -1,9 +1,7 @@
-package com.developers.sprintsync.tracking.di
+package com.developers.sprintsync.tracking.di.service
 
 import com.developers.sprintsync.tracking.service.provider.location.LocationProvider
 import com.developers.sprintsync.tracking.service.provider.location.LocationProviderImpl
-import com.developers.sprintsync.tracking.service.provider.time.stopwatch.Stopwatch
-import com.developers.sprintsync.tracking.service.provider.time.stopwatch.StopwatchImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,11 +14,4 @@ abstract class LocationProviderModule {
     @Binds
     @Singleton
     abstract fun bindLocationProvider(impl: LocationProviderImpl): LocationProvider
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class StopwatchModule {
-    @Binds
-    abstract fun bindStopwatch(impl: StopwatchImpl): Stopwatch
 }

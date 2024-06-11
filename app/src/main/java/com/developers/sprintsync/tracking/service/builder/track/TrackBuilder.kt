@@ -4,7 +4,6 @@ import com.developers.sprintsync.tracking.model.LocationModel
 import com.developers.sprintsync.tracking.model.Segment
 import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.service.builder.segment.SegmentBuilder
-import com.developers.sprintsync.tracking.service.tracker.TrackUpdater
 import javax.inject.Inject
 
 class TrackBuilder

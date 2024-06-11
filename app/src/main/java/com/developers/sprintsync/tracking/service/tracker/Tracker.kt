@@ -1,12 +1,12 @@
 package com.developers.sprintsync.tracking.service.tracker
 
-import android.util.Log
 import com.developers.sprintsync.global.util.extension.withLatestConcat
 import com.developers.sprintsync.tracking.model.LocationModel
 import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.model.TrackerState
 import com.developers.sprintsync.tracking.model.TrackingSession
 import com.developers.sprintsync.tracking.service.builder.track.TrackBuilder
+import com.developers.sprintsync.tracking.service.monitor.ActivityMonitor
 import com.developers.sprintsync.tracking.service.provider.location.LocationProvider
 import com.developers.sprintsync.tracking.service.provider.time.TimeProvider
 import kotlinx.coroutines.CoroutineName
@@ -38,7 +38,6 @@ class Tracker
         private val locationFlow = locationProvider.listenToLocation()
         private val trackFlow =
             locationFlow.withLatestConcat(timeFlow) { location, timeMillis ->
-                Log.d("My Stack", "location: ${location.latitude}, timeMillis: $timeMillis")
                 if (activityMonitor.isStopped()) {
                     trackBuilder.addInactiveDataPoint(timeMillis)
                 }

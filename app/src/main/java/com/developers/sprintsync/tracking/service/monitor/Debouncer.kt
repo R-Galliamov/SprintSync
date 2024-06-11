@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.service.tracker
+package com.developers.sprintsync.tracking.service.monitor
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

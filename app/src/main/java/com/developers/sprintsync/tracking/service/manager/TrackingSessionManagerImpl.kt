@@ -1,6 +1,5 @@
-package com.developers.sprintsync.tracking.repository
+package com.developers.sprintsync.tracking.service.manager
 
-import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.model.TrackerState
 import com.developers.sprintsync.tracking.model.TrackingSession
 import com.developers.sprintsync.tracking.service.tracker.Tracker
@@ -9,10 +8,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TrackingRepositoryImpl
+class TrackingSessionManagerImpl
     @Inject
-    constructor(private val tracker: Tracker) :
-    TrackingRepository {
+    constructor(val tracker: Tracker) :
+    TrackingSessionManager {
         override val trackerState: StateFlow<TrackerState>
             get() = tracker.state
         override val data: StateFlow<TrackingSession>
@@ -28,8 +27,5 @@ class TrackingRepositoryImpl
 
         override fun finishTracking() {
             tracker.finish()
-        }
-
-        override fun saveTrack(track: Track) {
         }
     }
