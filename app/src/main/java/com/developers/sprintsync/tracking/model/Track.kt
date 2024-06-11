@@ -13,7 +13,7 @@ data class Track(
     companion object {
         val EMPTY_TRACK_DATA =
             Track(
-                id = -1,
+                id = 0,
                 startTimeDateMillis = 0L,
                 durationMillis = 0L,
                 distanceMeters = 0,

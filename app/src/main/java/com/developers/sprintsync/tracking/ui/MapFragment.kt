@@ -11,7 +11,7 @@ import com.developers.sprintsync.databinding.FragmentMapBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
 import com.developers.sprintsync.tracking.model.Segments
 import com.developers.sprintsync.tracking.util.map.MapManager
-import com.developers.sprintsync.tracking.viewModel.TrackingViewModel
+import com.developers.sprintsync.tracking.viewModel.TrackingSessionViewModel
 
 class MapFragment : Fragment() {
     private var _binding: FragmentMapBinding? = null
@@ -19,7 +19,7 @@ class MapFragment : Fragment() {
 
     private val mapManager by lazy { MapManager(requireContext()) }
 
-    private val viewModel by activityViewModels<TrackingViewModel>()
+    private val sessionViewModel by activityViewModels<TrackingSessionViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,7 +64,7 @@ class MapFragment : Fragment() {
     }
 
     private fun getSegmentsOrNull(): Segments? {
-        return viewModel.track.value?.segments
+        return sessionViewModel.track.value?.segments
     }
 
     private fun updateProgressBarVisibility(isVisible: Boolean) {

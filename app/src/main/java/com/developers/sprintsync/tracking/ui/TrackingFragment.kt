@@ -19,7 +19,7 @@ import com.developers.sprintsync.tracking.model.TrackerState
 import com.developers.sprintsync.tracking.model.toLatLng
 import com.developers.sprintsync.tracking.service.manager.TrackingServiceController
 import com.developers.sprintsync.tracking.util.map.MapManager
-import com.developers.sprintsync.tracking.viewModel.TrackingViewModel
+import com.developers.sprintsync.tracking.viewModel.TrackingSessionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,7 +27,7 @@ class TrackingFragment : Fragment() {
     private var _binding: FragmentTrackingBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
-    private val viewModel by activityViewModels<TrackingViewModel>()
+    private val sessionViewModel by activityViewModels<TrackingSessionViewModel>()
 
     private val service by lazy { TrackingServiceController(requireContext()) }
 
@@ -94,7 +94,7 @@ class TrackingFragment : Fragment() {
     }
 
     private fun setTrackerStateObservers() {
-        viewModel.trackerState.observe(viewLifecycleOwner) { state ->
+        sessionViewModel.trackerState.observe(viewLifecycleOwner) { state ->
             updateTrackingControllerPanel(state)
         }
     }
@@ -105,13 +105,13 @@ class TrackingFragment : Fragment() {
     }
 
     private fun setDurationObserver() {
-        viewModel.duration.observe(viewLifecycleOwner) { duration ->
+        sessionViewModel.duration.observe(viewLifecycleOwner) { duration ->
             updateDuration(duration)
         }
     }
 
     private fun setCurrentLocationObserver() {
-        viewModel.currentLocation.observe(viewLifecycleOwner) { location ->
+        sessionViewModel.currentLocation.observe(viewLifecycleOwner) { location ->
             val latLng = location?.toLatLng()
             latLng?.let {
                 mapManager.updateUserMarker(it)
@@ -121,7 +121,7 @@ class TrackingFragment : Fragment() {
     }
 
     private fun setTrackObserver() {
-        viewModel.track.observe(viewLifecycleOwner) { track ->
+        sessionViewModel.track.observe(viewLifecycleOwner) { track ->
             updateTrackingData(track)
             track.segments.lastOrNull()?.let { mapManager.addPolyline(it) }
         }
