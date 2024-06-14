@@ -41,8 +41,15 @@ class TrackBuilder
 
         fun clearLastDataPoint() {
             synchronized(lock) {
-                segmentBuilder.clearLastDataPoint()
+                segmentBuilder.clearLastData()
             }
+        }
+
+        fun reset() {
+            synchronized(lock) {
+                track = Track.EMPTY_TRACK_DATA
+            }
+            clearLastDataPoint()
         }
 
         fun buildTrack(): Track {

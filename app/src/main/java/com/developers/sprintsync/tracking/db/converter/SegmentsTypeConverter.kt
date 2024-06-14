@@ -37,7 +37,7 @@ class SegmentsTypeConverter {
     }
 
     @TypeConverter
-    fun toSegmentList(segmentsString: String): List<Segment> {
+    fun toSegmentList(segmentsString: String): Segments {
         val jsonArray = JSONArray(segmentsString)
         return (0 until jsonArray.length())
             .map { jsonArray.getString(it) }

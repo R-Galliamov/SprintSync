@@ -11,7 +11,7 @@ import com.developers.sprintsync.databinding.FragmentMapBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
 import com.developers.sprintsync.tracking.model.Segments
 import com.developers.sprintsync.tracking.util.map.MapManager
-import com.developers.sprintsync.tracking.viewModel.TrackingSessionViewModel
+import com.developers.sprintsync.tracking.viewModel.TrackStatisticsViewModel
 
 class MapFragment : Fragment() {
     private var _binding: FragmentMapBinding? = null
@@ -19,7 +19,7 @@ class MapFragment : Fragment() {
 
     private val mapManager by lazy { MapManager(requireContext()) }
 
-    private val sessionViewModel by activityViewModels<TrackingSessionViewModel>()
+    private val sessionViewModel by activityViewModels<TrackStatisticsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

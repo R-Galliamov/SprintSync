@@ -29,10 +29,18 @@ class PaceChartManager(private val context: Context) {
         val lineDataSets = paceChartData.data.map { getLineDataSet(it) }
         setYAxisLimits(paceChartData.maxPace, paceChartData.minPace)
         chart.data = LineData(lineDataSets)
+        refreshChart()
     }
 
     fun cleanup() {
         _chart = null
+    }
+
+    private fun refreshChart() {
+        chart.data?.let {
+            chart.notifyDataSetChanged()
+            chart.invalidate()
+        }
     }
 
     private fun getLineDataSet(entries: List<Entry>): LineDataSet {

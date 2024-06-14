@@ -14,14 +14,14 @@ import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.util.chart.PaceChartManager
-import com.developers.sprintsync.tracking.viewModel.TrackingSessionViewModel
+import com.developers.sprintsync.tracking.viewModel.TrackStatisticsViewModel
 import com.github.mikephil.charting.charts.LineChart
 
 class TrackStatisticsFragment : Fragment() {
     private var _binding: FragmentTrackStatisticsBinding? = null
     private val binding get() = checkNotNull(_binding)
 
-    private val viewModel by activityViewModels<TrackingSessionViewModel>()
+    private val viewModel by activityViewModels<TrackStatisticsViewModel>()
 
     private val paceChartManager by lazy { PaceChartManager(requireContext()) }
 
@@ -52,8 +52,10 @@ class TrackStatisticsFragment : Fragment() {
     // TODO include null case
     private fun setDataObserver() {
         viewModel.track.observe(viewLifecycleOwner) { track ->
-            paceChartManager.setData(track.segments)
-            updateStatisticsValues(track)
+            track?.let {
+                paceChartManager.setData(track.segments)
+                updateStatisticsValues(track)
+            }
         }
     }
 

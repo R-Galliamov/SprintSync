@@ -17,6 +17,14 @@ class TrackingSessionManagerImpl
         override val data: StateFlow<TrackingSession>
             get() = tracker.data
 
+        override fun startUpdatingLocation() {
+            tracker.startUpdatingLocation()
+        }
+
+        override fun stopUpdatingLocation() {
+            tracker.stopUpdatingLocation()
+        }
+
         override fun startTracking() {
             tracker.start()
         }

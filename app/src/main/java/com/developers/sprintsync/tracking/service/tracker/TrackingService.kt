@@ -23,7 +23,7 @@ class TrackingService : Service() {
     lateinit var notifier: TrackingServiceNotifier
 
     @Inject
-    lateinit var repository: TrackingSessionManager
+    lateinit var sessionManager: TrackingSessionManager
 
     private var coroutineScope: CoroutineScope? = null
 
@@ -38,19 +38,20 @@ class TrackingService : Service() {
                 startForegroundService()
                 initCoroutineScope()
                 startForegroundUpdates()
-                repository.startTracking()
+                sessionManager.startTracking()
             }
 
             PAUSE_SERVICE -> {
                 Log.i("My stack", "Service is paused")
                 stopForegroundCoroutine()
-                repository.pauseTracking()
+                sessionManager.pauseTracking()
             }
 
             FINISH_SERVICE -> {
                 Log.i("My stack", "Service is stopped")
                 stopForegroundCoroutine()
-                repository.finishTracking()
+                sessionManager.finishTracking()
+                stopSelf()
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -72,7 +73,7 @@ class TrackingService : Service() {
 
     private fun startDistanceUpdates() {
         coroutineScope?.launch(CoroutineName("track_distance")) {
-            repository.data.collect { data ->
+            sessionManager.data.collect { data ->
                 notifier.updateDistance(data.track.distanceMeters)
             }
         }
@@ -80,7 +81,7 @@ class TrackingService : Service() {
 
     private fun startTimeUpdates() {
         coroutineScope?.launch(CoroutineName("track_time")) {
-            repository.data.collect { data ->
+            sessionManager.data.collect { data ->
                 notifier.updateDuration(data.durationMillis)
             }
         }

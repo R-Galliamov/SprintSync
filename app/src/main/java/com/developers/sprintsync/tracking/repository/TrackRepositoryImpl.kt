@@ -13,6 +13,8 @@ class TrackRepositoryImpl
     constructor(
         private val trackDao: TrackDao,
     ) : TrackRepository {
+        override val tracks = trackDao.getAllTracks()
+
         // CREATE
         override suspend fun saveTrack(track: Track) {
             val entity = TrackEntity.fromDto(track)

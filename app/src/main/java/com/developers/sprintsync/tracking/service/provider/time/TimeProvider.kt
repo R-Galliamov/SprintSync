@@ -17,4 +17,8 @@ class TimeProvider
                 false -> stopwatch.pause()
             }
         }
+
+        fun reset() {
+            stopwatch.reset()
+        }
     }

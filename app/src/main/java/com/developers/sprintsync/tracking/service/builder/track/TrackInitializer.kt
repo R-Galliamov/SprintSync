@@ -17,7 +17,7 @@ class TrackInitializer
                     Track(
                         id = DEFAULT_ID,
                         startTimeDateMillis = System.currentTimeMillis() - initialSegment.startTime,
-                        durationMillis = initialSegment.durationMillis,
+                        durationMillis = initialSegment.startTime + initialSegment.durationMillis,
                         distanceMeters = initialSegment.distanceMeters,
                         avgPace = initialSegment.pace,
                         bestPace = initialSegment.pace,

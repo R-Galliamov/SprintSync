@@ -1,10 +1,12 @@
 package com.developers.sprintsync.tracking.service.tracker
 
+import android.util.Log
 import com.developers.sprintsync.global.util.extension.withLatestConcat
 import com.developers.sprintsync.tracking.model.LocationModel
 import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.model.TrackerState
 import com.developers.sprintsync.tracking.model.TrackingSession
+import com.developers.sprintsync.tracking.repository.TrackRepository
 import com.developers.sprintsync.tracking.service.builder.track.TrackBuilder
 import com.developers.sprintsync.tracking.service.monitor.ActivityMonitor
 import com.developers.sprintsync.tracking.service.provider.location.LocationProvider
@@ -25,6 +27,7 @@ class Tracker
         private val timeProvider: TimeProvider,
         private val trackBuilder: TrackBuilder,
         private val activityMonitor: ActivityMonitor,
+        private val repository: TrackRepository,
     ) {
         private val _state: MutableStateFlow<TrackerState> = MutableStateFlow(TrackerState.Initialised)
         val state = _state.asStateFlow()
@@ -34,7 +37,9 @@ class Tracker
         private val _data = MutableStateFlow(TrackingSession.DEFAULT)
         val data = _data.asStateFlow()
 
-        private val timeFlow = timeProvider.timeInMillisFlow()
+        private val timeFlow =
+            timeProvider.timeInMillisFlow()
+
         private val locationFlow = locationProvider.listenToLocation()
         private val trackFlow =
             locationFlow.withLatestConcat(timeFlow) { location, timeMillis ->
@@ -54,7 +59,33 @@ class Tracker
 
         init {
             initTrackerStateListener()
-            startUpdatingLocation()
+        }
+
+        fun startUpdatingLocation() {
+            initLocationScope()
+            locationScope?.launch(CoroutineName("location")) {
+                locationFlow.collect { location ->
+                    Log.d("MyStack", "new location")
+                    updateSession(location)
+                }
+            }
+        }
+
+        fun stopUpdatingLocation() {
+            locationScope?.cancel()
+            locationScope = null
+        }
+
+        fun start() {
+            _state.value = TrackerState.Tracking
+        }
+
+        fun pause() {
+            _state.value = TrackerState.Paused
+        }
+
+        fun finish() {
+            _state.value = TrackerState.Finished
         }
 
         private fun initTimeScope() {
@@ -67,15 +98,6 @@ class Tracker
 
         private fun initLocationScope() {
             locationScope = CoroutineScope(dispatcher)
-        }
-
-        private fun startUpdatingLocation() {
-            initLocationScope()
-            locationScope?.launch(CoroutineName("location")) {
-                locationFlow.collect { location ->
-                    updateSession(location)
-                }
-            }
         }
 
         private fun startUpdatingTime() {
@@ -105,11 +127,6 @@ class Tracker
             timeScope = null
         }
 
-        private fun stopUpdatingLocation() {
-            locationScope?.cancel()
-            locationScope = null
-        }
-
         private fun stopUpdatingTrack() {
             trackingScope?.cancel()
             trackingScope = null
@@ -127,16 +144,8 @@ class Tracker
             _data.value = _data.value.copy(track = track)
         }
 
-        fun start() {
-            _state.value = TrackerState.Tracking
-        }
-
-        fun pause() {
-            _state.value = TrackerState.Paused
-        }
-
-        fun finish() {
-            _state.value = TrackerState.Finished
+        private fun getTrack(): Track {
+            return data.value.track
         }
 
         private fun addInactiveSegmentToTrack() {
@@ -146,22 +155,50 @@ class Tracker
             updateSession(track)
         }
 
-        private fun finaliseTrack() {
+        private suspend fun finaliseTrack() {
             if (activityMonitor.isStopped()) {
                 addInactiveSegmentToTrack()
             } else {
-                val time = data.value.durationMillis
-                CoroutineScope(dispatcher).launch {
-                    val location = locationProvider.getLocation()
-                    trackBuilder.addActiveDataPoint(location, time)
-                    val track = trackBuilder.buildTrack()
-                    updateSession(track)
-                }
+                finalizeActiveTrack()
             }
+        }
+
+        private suspend fun finalizeActiveTrack() {
+            val location = locationProvider.getLocation()
+            val time = data.value.durationMillis
+            trackBuilder.addActiveDataPoint(location, time)
+            val track = trackBuilder.buildTrack()
+            updateSession(track)
+            Log.d("MyStack", "track finalised")
         }
 
         private fun areUpdatingCoroutinesInactive(): Boolean {
             return (locationScope == null && trackingScope == null && timeScope == null)
+        }
+
+        private fun resetData() {
+            resetTrackData()
+            resetDuration()
+            resetState()
+            timeProvider.reset()
+        }
+
+        private fun resetTrackData() {
+            trackBuilder.reset()
+            val track = trackBuilder.buildTrack()
+            updateSession(track)
+        }
+
+        private fun resetDuration() {
+            updateSession(0L)
+        }
+
+        private fun resetState() {
+            _state.value = TrackerState.Initialised
+        }
+
+        private suspend fun saveTrack() {
+            repository.saveTrack(getTrack())
         }
 
         private fun initTrackerStateListener() {
@@ -187,13 +224,14 @@ class Tracker
 
                         TrackerState.Finished -> {
                             if (!areUpdatingCoroutinesInactive()) {
-                                finaliseTrack()
                                 stopUpdatingLocation()
                                 stopUpdatingTime()
                                 stopUpdatingTrack()
+                                finaliseTrack()
                             }
+                            saveTrack()
+                            resetData()
                             activityMonitor.stopMonitoringInactivity()
-                            _state.value = TrackerState.Initialised
                         }
                     }
                 }

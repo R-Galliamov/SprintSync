@@ -1,6 +1,5 @@
 package com.developers.sprintsync.tracking.service.builder.segment
 
-import android.util.Log
 import com.developers.sprintsync.tracking.mapper.model.SegmentMapper
 import com.developers.sprintsync.tracking.model.GeoTimePoint
 import com.developers.sprintsync.tracking.model.LocationModel
@@ -30,13 +29,12 @@ class SegmentBuilder
             createInactiveSegment(endPauseTimeMillis)
         }
 
-        fun clearLastDataPoint() {
+        fun clearLastData() {
             setLastDataPoint(null)
             setCurrentSegmentValue(null)
         }
 
         fun getCurrentSegment(): Segment? {
-            Log.d("My stack", "getCurrentSegment: $currentSegmentValue")
             return currentSegmentValue
         }
 

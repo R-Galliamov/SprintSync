@@ -19,5 +19,14 @@ class TrackingSessionViewModel
         val currentLocation =
             sessionManager.data.map { it.currentLocation }.distinctUntilChanged().asLiveData()
         val track = sessionManager.data.map { it.track }.distinctUntilChanged().asLiveData()
-        val duration = sessionManager.data.map { it.durationMillis }.distinctUntilChanged().asLiveData()
+        val duration =
+            sessionManager.data.map { it.durationMillis }.distinctUntilChanged().asLiveData()
+
+        fun startUpdatingLocation() {
+            sessionManager.startUpdatingLocation()
+        }
+
+        fun stopUpdatingLocation() {
+            sessionManager.stopUpdatingLocation()
+        }
     }

@@ -9,6 +9,10 @@ interface TrackingSessionManager {
 
     val data: StateFlow<TrackingSession>
 
+    fun startUpdatingLocation()
+
+    fun stopUpdatingLocation()
+
     fun startTracking()
 
     fun pauseTracking()

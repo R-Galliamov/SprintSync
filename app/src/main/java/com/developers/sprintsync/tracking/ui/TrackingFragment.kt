@@ -19,6 +19,7 @@ import com.developers.sprintsync.tracking.model.TrackerState
 import com.developers.sprintsync.tracking.model.toLatLng
 import com.developers.sprintsync.tracking.service.manager.TrackingServiceController
 import com.developers.sprintsync.tracking.util.map.MapManager
+import com.developers.sprintsync.tracking.viewModel.TrackVewModel
 import com.developers.sprintsync.tracking.viewModel.TrackingSessionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +29,8 @@ class TrackingFragment : Fragment() {
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
     private val sessionViewModel by activityViewModels<TrackingSessionViewModel>()
+
+    private val trackVewModel by activityViewModels<TrackVewModel>()
 
     private val service by lazy { TrackingServiceController(requireContext()) }
 
@@ -55,12 +58,14 @@ class TrackingFragment : Fragment() {
         }
         setTrackerStateObservers()
         setDurationObserver()
+        setFinishButtonListener()
         setBackButtonListener()
     }
 
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStart")
+        sessionViewModel.startUpdatingLocation()
         binding.mapView.onStart()
     }
 
@@ -79,6 +84,7 @@ class TrackingFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop")
+        sessionViewModel.stopUpdatingLocation()
         binding.mapView.onStop()
     }
 
@@ -157,7 +163,6 @@ class TrackingFragment : Fragment() {
             TrackerState.Initialised -> {
                 initTrackingControllerButton()
                 setPauseCardVisibility(false)
-                initFinishButtonListener()
                 setFinishButtonVisibility(false)
             }
 
@@ -193,7 +198,7 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    private fun initFinishButtonListener() {
+    private fun setFinishButtonListener() {
         binding.btFinish.setOnClickListener {
             service.finish()
             findTopNavController().navigate(R.id.action_trackingFragment_to_trackStatisticsFragment)
