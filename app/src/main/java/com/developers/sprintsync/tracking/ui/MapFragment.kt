@@ -37,10 +37,10 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         updateProgressBarVisibility(true)
         initMap(savedInstanceState) {
-            getSegmentsOrNull()?.let {
+            getNonEmptySegments()?.let {
                 updateProgressBarVisibility(false)
                 mapManager.addPolylines(it)
-                mapManager.showTrack(it)
+                mapManager.moveCameraToSegments(it)
             }
         }
         setBackButton()
@@ -63,8 +63,8 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun getSegmentsOrNull(): Segments? {
-        return sessionViewModel.track.value?.segments
+    private fun getNonEmptySegments(): Segments? {
+        return sessionViewModel.track.value?.segments?.takeIf { it.isNotEmpty() }
     }
 
     private fun updateProgressBarVisibility(isVisible: Boolean) {

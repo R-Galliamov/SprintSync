@@ -14,6 +14,7 @@ import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.model.Segment
+import com.developers.sprintsync.tracking.model.Segments
 import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.model.TrackerState
 import com.developers.sprintsync.tracking.model.toLatLng
@@ -55,6 +56,10 @@ class TrackingFragment : Fragment() {
         initMap(savedInstanceState) {
             updateProgressBarVisibility(false)
             setTrackDataObservers()
+            getNonEmptySegments()?.let {
+                mapManager.addPolylines(it)
+                mapManager.moveCameraToSegments(it)
+            }
         }
         setTrackerStateObservers()
         setDurationObserver()
@@ -292,6 +297,10 @@ class TrackingFragment : Fragment() {
             true -> binding.progressBar.visibility = View.VISIBLE
             false -> binding.progressBar.visibility = View.GONE
         }
+    }
+
+    private fun getNonEmptySegments(): Segments? {
+        return sessionViewModel.track.value?.segments?.takeIf { it.isNotEmpty() }
     }
 
     override fun onDestroyView() {

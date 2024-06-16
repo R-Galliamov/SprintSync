@@ -62,7 +62,7 @@ class MapManager(
     }
 
     // TODO: add start point
-    fun showTrack(segments: Segments) {
+    fun moveCameraToSegments(segments: Segments) {
         val bounds = getBounds(segments)
         adjustCameraToBounds(bounds)
     }
