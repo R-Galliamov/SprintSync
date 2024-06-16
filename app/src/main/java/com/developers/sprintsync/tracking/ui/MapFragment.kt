@@ -64,7 +64,7 @@ class MapFragment : Fragment() {
     }
 
     private fun getNonEmptySegments(): Segments? {
-        return sessionViewModel.track.value?.segments?.takeIf { it.isNotEmpty() }
+        return sessionViewModel.lastTrack.value?.segments?.takeIf { it.isNotEmpty() }
     }
 
     private fun updateProgressBarVisibility(isVisible: Boolean) {

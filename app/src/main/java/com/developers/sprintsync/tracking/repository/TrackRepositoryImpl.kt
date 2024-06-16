@@ -26,7 +26,8 @@ class TrackRepositoryImpl
             return trackDao.getAllTracks()
         }
 
-        // UPDATE
-
         // DELETE
+        override suspend fun deleteTrackById(id: Int) {
+            trackDao.deleteTrackById(id)
+        }
     }

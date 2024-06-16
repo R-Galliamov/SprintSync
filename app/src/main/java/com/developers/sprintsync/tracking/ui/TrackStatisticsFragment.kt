@@ -43,6 +43,7 @@ class TrackStatisticsFragment : Fragment() {
         setDataObserver()
         setHomeButtonListener()
         setGoToMapButtonListener()
+        setDeleteTrackButtonListener()
     }
 
     private fun initChartManager(chart: LineChart) {
@@ -51,7 +52,7 @@ class TrackStatisticsFragment : Fragment() {
 
     // TODO include null case
     private fun setDataObserver() {
-        viewModel.track.observe(viewLifecycleOwner) { track ->
+        viewModel.lastTrack.observe(viewLifecycleOwner) { track ->
             track?.let {
                 paceChartManager.setData(track.segments)
                 updateStatisticsValues(track)
@@ -80,6 +81,18 @@ class TrackStatisticsFragment : Fragment() {
         binding.btGoToMap.setOnClickListener {
             findNavController().navigate(R.id.action_trackStatisticsFragment_to_mapFragment)
         }
+    }
+
+    // TODO add dialog to confirm delete
+    private fun setDeleteTrackButtonListener() {
+        binding.btDelete.setOnClickListener {
+            getTrackId()?.let { viewModel.deleteTrackById(it) }
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun getTrackId(): Int? {
+        return viewModel.lastTrack.value?.id
     }
 
     override fun onDestroy() {
