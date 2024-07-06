@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTabsBinding
 import com.developers.sprintsync.global.manager.permission.LocationPermissionManager
@@ -44,7 +43,31 @@ class TabsFragment : Fragment() {
     private fun setNavMenu() {
         val navHost = childFragmentManager.findFragmentById(R.id.tabsContainer) as NavHostFragment
         val navController = navHost.navController
-        NavigationUI.setupWithNavController(binding.bottomNavBar, navController)
+
+        binding.bottomNavBar.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    navController.navigate(R.id.nav_graph_home)
+                    true
+                }
+
+                R.id.history -> {
+                    navController.navigate(R.id.nav_graph_history)
+                    true
+                }
+
+                R.id.analysis -> {
+                    navController.navigate(R.id.nav_graph_analysis)
+                    true
+                }
+
+                R.id.profile -> {
+                    navController.navigate(R.id.nav_graph_profile)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setListeners() {
