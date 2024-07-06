@@ -19,7 +19,7 @@ class SegmentBuilder
             location: LocationModel,
             timeMillis: Long,
         ) {
-            // TODO: check if location changed
+            if (location == lastDataPoint?.location) return
             val newData = GeoTimePoint(location, timeMillis)
             createActiveSegment(newData)
             setLastDataPoint(newData)
@@ -34,9 +34,7 @@ class SegmentBuilder
             setCurrentSegmentValue(null)
         }
 
-        fun getCurrentSegment(): Segment? {
-            return currentSegmentValue
-        }
+        fun getCurrentSegment(): Segment? = currentSegmentValue
 
         private fun createActiveSegment(data: GeoTimePoint) {
             lastDataPoint?.let { startData ->
