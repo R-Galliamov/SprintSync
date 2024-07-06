@@ -9,10 +9,10 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/plan"
-        android:contentDescription="@string/plan"
+        android:id="@+id/history"
+        android:contentDescription="@string/history"
         android:icon="@drawable/ic_plan_32dp"
-        android:title="@string/plan"
+        android:title="@string/history"
         app:showAsAction="ifRoom" />
 
     <item
