@@ -22,25 +22,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
 
+        <!-- Window color. -->
+        <item name="android:windowBackground">?colorPrimary</item>
 
     </style>
 
-</resources><!--
-    <style name="Theme.SprintSync" parent="Theme.MaterialComponents.NoActionBar">
-
-<item name="colorPrimary">@color/blue_A100</item>
-<item name="colorPrimaryVariant">@color/blue_100</item>
-<item name="colorOnPrimary">@color/white</item>
-
-<item name="colorSecondary">@color/yellow_300</item>
-<item name="colorSecondaryVariant">@color/yellow_100</item>
-<item name="colorOnSecondary">@color/black</item>
-
-<item name="android:statusBarColor">?attr/colorPrimary</item>
-
-<item name="colorAccent">@color/red_400</item>
-
-<item name="textColor">@color/white</item>
-
-    </style>
--->
+</resources>
