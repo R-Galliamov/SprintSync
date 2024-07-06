@@ -14,11 +14,14 @@ import javax.inject.Inject
 @HiltViewModel
 class TrackStatisticsViewModel
     @Inject
-    constructor(private val repository: TrackRepository) : ViewModel() {
-        val lastTrack: LiveData<Track> =
-            repository.tracks.map {
-                it.first()
-            }.asLiveData()
+    constructor(
+        private val repository: TrackRepository,
+    ) : ViewModel() {
+        val lastTrack: LiveData<Track?> =
+            repository.tracks
+                .map {
+                    it.firstOrNull()
+                }.asLiveData()
 
         fun deleteTrackById(id: Int) {
             viewModelScope.launch {
