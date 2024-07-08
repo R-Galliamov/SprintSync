@@ -22,9 +22,9 @@ class TrackRepositoryImpl
         }
 
         // READ
-        override fun getAllTracks(): Flow<List<Track>> {
-            return trackDao.getAllTracks()
-        }
+        override fun getTrackById(id: Int): Track = trackDao.getTrackById(id)
+
+        override fun getAllTracks(): Flow<List<Track>> = trackDao.getAllTracks()
 
         // DELETE
         override suspend fun deleteTrackById(id: Int) {

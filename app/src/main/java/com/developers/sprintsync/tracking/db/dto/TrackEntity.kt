@@ -9,7 +9,7 @@ import com.developers.sprintsync.tracking.model.Track
 data class TrackEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val startTimeDateMillis: Long,
+    val timestamp: Long,
     val durationMillis: Long,
     val distanceMeters: Int,
     val avgPace: Float,
@@ -20,7 +20,7 @@ data class TrackEntity(
     fun toDto() =
         Track(
             id = id,
-            startTimeDateMillis = startTimeDateMillis,
+            timestamp = timestamp,
             durationMillis = durationMillis,
             distanceMeters = distanceMeters,
             avgPace = avgPace,
@@ -33,7 +33,7 @@ data class TrackEntity(
         fun fromDto(dto: Track) =
             TrackEntity(
                 id = dto.id,
-                startTimeDateMillis = dto.startTimeDateMillis,
+                timestamp = dto.timestamp,
                 durationMillis = dto.durationMillis,
                 distanceMeters = dto.distanceMeters,
                 avgPace = dto.avgPace,

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".tracking.ui.TrackHistoryStatisticsFragment">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <ImageView
+                android:id="@+id/btDelete"
+                style="@style/TransparentButton"
+                android:layout_marginTop="@dimen/regularSpace"
+                android:layout_marginEnd="@dimen/regularSpace"
+                android:contentDescription="@string/delete_track"
+                android:src="@drawable/ic_delete_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvPaceTrack"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/largeSpace"
+                android:layout_marginTop="@dimen/largeSpace"
+                android:paddingTop="@dimen/largeSpace"
+                android:text="@string/pace_track"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lag50"
+                android:layout_marginStart="@dimen/regularSpace"
+                android:layout_marginTop="@dimen/smallSpace"
+                android:layout_marginEnd="@dimen/regularSpace"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPaceTrack" />
+
+            <TextView
+                android:id="@+id/tvDistance"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/regularSpace"
+                android:text="@string/distance"
+                app:layout_constraintStart_toStartOf="@id/tvPaceTrack"
+                app:layout_constraintTop_toBottomOf="@id/chart" />
+
+            <TextView
+                android:id="@+id/tvDistanceValue"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/regularSpace"
+                android:layout_marginEnd="@dimen/largeSpace"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/chart"
+                tools:text="2.3 km" />
+
+            <TextView
+                android:id="@+id/tvDuration"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smallSpace"
+                android:text="@string/duration"
+                app:layout_constraintStart_toStartOf="@id/tvPaceTrack"
+                app:layout_constraintTop_toBottomOf="@id/tvDistance" />
+
+            <TextView
+                android:id="@+id/tvDurationValue"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smallSpace"
+                app:layout_constraintEnd_toEndOf="@id/tvDistanceValue"
+                app:layout_constraintTop_toBottomOf="@id/tvDistance"
+                tools:text="00:30:45" />
+
+            <TextView
+                android:id="@+id/tvAvgPaceValue"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smallSpace"
+                app:layout_constraintEnd_toEndOf="@id/tvDurationValue"
+                app:layout_constraintTop_toBottomOf="@id/tvDuration"
+                tools:text="4:53" />
+
+            <TextView
+                android:id="@+id/tvAvgPace"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smallSpace"
+                android:text="@string/avg_pace"
+                app:layout_constraintStart_toStartOf="@id/tvPaceTrack"
+                app:layout_constraintTop_toBottomOf="@id/tvDuration" />
+
+            <TextView
+                android:id="@+id/tvBestPace"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smallSpace"
+                android:text="@string/best_pace"
+                app:layout_constraintStart_toStartOf="@id/tvPaceTrack"
+                app:layout_constraintTop_toBottomOf="@id/tvAvgPace" />
+
+            <TextView
+                android:id="@+id/tvBestPaceValue"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smallSpace"
+                app:layout_constraintEnd_toEndOf="@id/tvAvgPaceValue"
+                app:layout_constraintTop_toBottomOf="@id/tvAvgPace"
+                tools:text="7:34" />
+
+            <TextView
+                android:id="@+id/tvCalories"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smallSpace"
+                android:text="@string/burned_kcal"
+                app:layout_constraintStart_toStartOf="@id/tvPaceTrack"
+                app:layout_constraintTop_toBottomOf="@id/tvBestPace" />
+
+            <LinearLayout
+                android:id="@+id/btGoToMap"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/smallButtonHeight"
+                android:layout_marginTop="@dimen/regularSpace"
+                android:layout_marginBottom="@dimen/bigSpace"
+                android:background="@drawable/bt_outlined_thirdly"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tvCaloriesValue"
+                app:layout_constraintTop_toBottomOf="@id/tvCaloriesValue">
+
+                <ImageView
+                    android:id="@+id/ivMap"
+                    android:layout_width="@dimen/mediumImageSize"
+                    android:layout_height="@dimen/mediumImageSize"
+                    android:layout_marginStart="@dimen/smallSpace"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_map_32dp" />
+
+                <TextView
+                    android:id="@+id/tvGoToMap"
+                    style="@style/SubTitleText.Gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/lag2"
+                    android:text="@string/on_map" />
+
+                <ImageView
+                    android:id="@+id/ivGoToMap"
+                    android:layout_width="@dimen/smallImageSize"
+                    android:layout_height="@dimen/smallImageSize"
+                    android:layout_marginEnd="@dimen/smallSpace"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_arrow_right_32dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvCaloriesValue"
+                style="@style/SubTitleText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smallSpace"
+                app:layout_constraintEnd_toEndOf="@id/tvAvgPaceValue"
+                app:layout_constraintTop_toBottomOf="@id/tvBestPace"
+                tools:text="682" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/btBack"
+        style="@style/TransparentButton"
+        android:layout_marginStart="@dimen/regularSpace"
+        android:layout_marginTop="@dimen/regularSpace"
+        android:background="@drawable/bt_circle_secondary"
+        android:contentDescription="@string/move_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_arrow_left_32dp"
+            app:layout_constraintStart_toStartOf="parent" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

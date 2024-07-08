@@ -7,6 +7,7 @@
     tools:context=".tracking.ui.TrackingHistoryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTrackingHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

@@ -4,8 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/regularSpace"
-    android:background="@drawable/card_outlined_black">
+    android:layout_marginBottom="@dimen/regularSpace"
+    android:layout_marginStart="@dimen/regularSpace"
+    android:clickable="true"
+    android:layout_marginEnd="@dimen/regularSpace"
+    android:background="@drawable/bt_outlined_thirdly">
 
     <TextView
         android:id="@+id/tvDate"

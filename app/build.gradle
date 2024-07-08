@@ -5,6 +5,7 @@ plugins {
     id 'com.google.dagger.hilt.android'
     id 'io.gitlab.arturbosch.detekt'
     id 'org.jlleitschuh.gradle.ktlint' version "11.0.0"
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -75,7 +76,6 @@ ktlint {
 dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
     implementation 'androidx.lifecycle:lifecycle-service:2.7.0'
-    def nav_version = "2.7.7"
     def splash_screen_version = "1.1.0-alpha02"
     def view_model_version = "2.7.0"
     def play_services_version = "21.1.0"

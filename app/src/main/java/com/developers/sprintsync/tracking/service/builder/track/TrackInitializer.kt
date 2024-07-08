@@ -11,12 +11,12 @@ class TrackInitializer
             private const val DEFAULT_ID = 0
         }
 
-        fun initializeTrack(initialSegment: Segment): Track {
-            return when (initialSegment) {
+        fun initializeTrack(initialSegment: Segment): Track =
+            when (initialSegment) {
                 is Segment.ActiveSegment ->
                     Track(
                         id = DEFAULT_ID,
-                        startTimeDateMillis = System.currentTimeMillis() - initialSegment.startTime,
+                        timestamp = System.currentTimeMillis() - initialSegment.startTime,
                         durationMillis = initialSegment.startTime + initialSegment.durationMillis,
                         distanceMeters = initialSegment.distanceMeters,
                         avgPace = initialSegment.pace,
@@ -28,9 +28,8 @@ class TrackInitializer
                 is Segment.InactiveSegment ->
                     Track.EMPTY_TRACK_DATA.copy(
                         id = DEFAULT_ID,
-                        startTimeDateMillis = System.currentTimeMillis() - initialSegment.startTime,
+                        timestamp = System.currentTimeMillis() - initialSegment.startTime,
                         segments = listOf(initialSegment),
                     )
             }
-        }
     }

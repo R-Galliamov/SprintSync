@@ -1,5 +1,6 @@
 package com.developers.sprintsync.tracking.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,12 +10,16 @@ import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.model.Track
 
-class TrackingHistoryAdapter : ListAdapter<Track, TrackingHistoryAdapter.TrackingHistoryViewHolder>(TrackDiffCallback()) {
+class TrackingHistoryAdapter(
+    private val onInteractionListener: OnInteractionListener,
+) : ListAdapter<Track, TrackingHistoryAdapter.TrackingHistoryViewHolder>(TrackDiffCallback()) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
     ): TrackingHistoryViewHolder {
-        TODO("Not yet implemented")
+        val binding =
+            ItemTrackingHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TrackingHistoryViewHolder(binding)
     }
 
     override fun onBindViewHolder(
@@ -31,15 +36,19 @@ class TrackingHistoryAdapter : ListAdapter<Track, TrackingHistoryAdapter.Trackin
         fun bind(track: Track) {
             binding.apply {
                 // TODO: set date mapper and calories mapper
-                tvDate.text = track.startTimeDateMillis.toString()
-                tvDistance.text = DistanceMapper.metersToPresentableKilometers(track.distanceMeters)
+                tvDate.text = TimeMapper.timestampToPresentableDate(track.timestamp)
+                tvDistance.text =
+                    DistanceMapper.metersToPresentableKilometers(track.distanceMeters, true)
                 tvDuration.text = TimeMapper.millisToPresentableTime(track.durationMillis)
                 tvCalories.text = track.calories.toString()
+                itemView.setOnClickListener {
+                    onInteractionListener.onItemSelected(track.id)
+                }
             }
         }
     }
 
-    class TrackDiffCallback : DiffUtil.ItemCallback<Track>() {
+    private class TrackDiffCallback : DiffUtil.ItemCallback<Track>() {
         override fun areItemsTheSame(
             oldItem: Track,
             newItem: Track,
@@ -49,5 +58,9 @@ class TrackingHistoryAdapter : ListAdapter<Track, TrackingHistoryAdapter.Trackin
             oldItem: Track,
             newItem: Track,
         ): Boolean = oldItem == newItem
+    }
+
+    interface OnInteractionListener {
+        fun onItemSelected(trackId: Int)
     }
 }

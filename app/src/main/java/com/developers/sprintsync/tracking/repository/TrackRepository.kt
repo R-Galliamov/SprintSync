@@ -10,6 +10,8 @@ interface TrackRepository {
     suspend fun saveTrack(track: Track)
 
     // READ
+    fun getTrackById(id: Int): Track
+
     fun getAllTracks(): Flow<List<Track>>
 
     // DELETE

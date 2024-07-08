@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?><!-- TODO check the effect and fix if needed -->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="?colorOnPrimary">
+    android:color="?colorPrimaryVariant">
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/regularCornerRadius" />
-            <solid android:color="?colorOnPrimary" />
+            <solid android:color="?colorPrimaryVariant" />
         </shape>
     </item>
 
