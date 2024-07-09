@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class TrackingHistoryViewModel
+class TrackListViewModel
     @Inject
     constructor(
         private val trackRepository: TrackRepository,

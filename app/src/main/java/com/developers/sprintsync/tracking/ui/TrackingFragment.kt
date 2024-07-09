@@ -20,7 +20,6 @@ import com.developers.sprintsync.tracking.model.TrackerState
 import com.developers.sprintsync.tracking.model.toLatLng
 import com.developers.sprintsync.tracking.service.manager.TrackingServiceController
 import com.developers.sprintsync.tracking.util.map.MapManager
-import com.developers.sprintsync.tracking.viewModel.TrackVewModel
 import com.developers.sprintsync.tracking.viewModel.TrackingSessionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,8 +29,6 @@ class TrackingFragment : Fragment() {
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
     private val sessionViewModel by activityViewModels<TrackingSessionViewModel>()
-
-    private val trackVewModel by activityViewModels<TrackVewModel>()
 
     private val service by lazy { TrackingServiceController(requireContext()) }
 
@@ -152,15 +149,14 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    private fun getPace(track: Track): Float {
-        return when {
+    private fun getPace(track: Track): Float =
+        when {
             track.segments.isNotEmpty() && track.segments.last() is Segment.ActiveSegment -> {
                 (track.segments.last() as Segment.ActiveSegment).pace
             }
 
             else -> 0f
         }
-    }
 
     private fun updateTrackingControllerPanel(state: TrackerState) {
         Log.d(TAG, "updateTrackingControllerPanel: $state")
@@ -206,7 +202,7 @@ class TrackingFragment : Fragment() {
     private fun setFinishButtonListener() {
         binding.btFinish.setOnClickListener {
             service.finish()
-            findTopNavController().navigate(R.id.action_trackingFragment_to_trackStatisticsFragment)
+            findTopNavController().navigate(R.id.action_trackingFragment_to_sessionSummaryFragment)
         }
     }
 
@@ -299,9 +295,10 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    private fun getNonEmptySegments(): Segments? {
-        return sessionViewModel.track.value?.segments?.takeIf { it.isNotEmpty() }
-    }
+    private fun getNonEmptySegments(): Segments? =
+        sessionViewModel.track.value
+            ?.segments
+            ?.takeIf { it.isNotEmpty() }
 
     override fun onDestroyView() {
         super.onDestroyView()

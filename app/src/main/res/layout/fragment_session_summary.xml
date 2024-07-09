@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tracking.ui.TrackHistoryStatisticsFragment">
+    tools:context=".tracking.ui.SessionSummaryFragment">
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btHome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,16 +31,26 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/tvCongrats"
+                style="@style/TabloidText.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/largeSpace"
+                android:text="@string/great_job"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:id="@+id/tvPaceTrack"
                 style="@style/SubTitleText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/largeSpace"
-                android:layout_marginTop="@dimen/largeSpace"
-                android:paddingTop="@dimen/largeSpace"
+                android:layout_marginTop="@dimen/regularSpace"
                 android:text="@string/pace_track"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/tvCongrats" />
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart"
@@ -193,28 +204,31 @@
                 app:layout_constraintTop_toBottomOf="@id/tvBestPace"
                 tools:text="682" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <FrameLayout
-        android:id="@+id/btBack"
-        style="@style/TransparentButton"
-        android:layout_marginStart="@dimen/regularSpace"
-        android:layout_marginTop="@dimen/regularSpace"
-        android:background="@drawable/bt_circle_secondary"
-        android:contentDescription="@string/move_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/btHome"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/regularButtonHeight"
+        android:layout_marginStart="@dimen/largeSpace"
+        android:layout_marginEnd="@dimen/largeSpace"
+        android:layout_marginBottom="@dimen/largeSpace"
+        android:background="@drawable/bt_secondary"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/ivBack"
+        <TextView
+            android:id="@+id/tvHome"
+            style="@style/TitleText.Caps.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_arrow_left_32dp"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_gravity="center"
+            android:text="@string/home" />
+
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
