@@ -17,7 +17,7 @@
             app:destination="@id/locationRequestFragment" />
         <action
             android:id="@+id/action_tabsFragment_to_trackHistoryStatisticsFragment"
-            app:destination="@id/trackHistoryStatisticsFragment">
+            app:destination="@id/trackDetailsFragment">
             <argument
                 android:name="trackId"
                 app:argType="integer" />
@@ -44,7 +44,7 @@
             app:destination="@id/locationRequestFragment" />
         <action
             android:id="@+id/action_trackingFragment_to_trackStatisticsFragment"
-            app:destination="@id/trackStatisticsFragment"
+            app:destination="@id/sessionSummaryFragment"
             app:popUpTo="@id/trackingFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -60,12 +60,12 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/trackStatisticsFragment"
-        android:name="com.developers.sprintsync.tracking.ui.TrackStatisticsFragment"
-        android:label="fragment_track_statistics"
-        tools:layout="@layout/fragment_track_statistics">
+        android:id="@+id/sessionSummaryFragment"
+        android:name="com.developers.sprintsync.tracking.ui.SessionSummaryFragment"
+        android:label="fragment_session_summary"
+        tools:layout="@layout/fragment_session_summary">
         <action
-            android:id="@+id/action_trackStatisticsFragment_to_mapFragment"
+            android:id="@+id/action_sessionSummaryFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
     </fragment>
     <fragment
@@ -74,12 +74,12 @@
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" />
     <fragment
-        android:id="@+id/trackHistoryStatisticsFragment"
-        android:name="com.developers.sprintsync.tracking.ui.TrackHistoryStatisticsFragment"
-        android:label="fragment_track_history_statistics"
-        tools:layout="@layout/fragment_track_history_statistics">
+        android:id="@+id/trackDetailsFragment"
+        android:name="com.developers.sprintsync.tracking.ui.TrackDetailsFragment"
+        android:label="fragment_track_details"
+        tools:layout="@layout/fragment_track_details">
         <action
-            android:id="@+id/action_trackHistoryStatisticsFragment_to_mapFragment"
+            android:id="@+id/action_trackDetailsFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
         <argument
             android:name="trackId"

@@ -7,19 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
-import com.developers.sprintsync.databinding.FragmentTrackingHistoryBinding
+import com.developers.sprintsync.databinding.FragmentTrackListBinding
 import com.developers.sprintsync.global.ui.fragment.TabsFragmentDirections
 import com.developers.sprintsync.global.util.extension.findTopNavController
 import com.developers.sprintsync.tracking.adapter.TrackingHistoryAdapter
-import com.developers.sprintsync.tracking.viewModel.TrackingHistoryViewModel
+import com.developers.sprintsync.tracking.viewModel.TrackListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TrackingHistoryFragment : Fragment() {
-    private var _binding: FragmentTrackingHistoryBinding? = null
+class TrackListFragment : Fragment() {
+    private var _binding: FragmentTrackListBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
-    private val viewModel by activityViewModels<TrackingHistoryViewModel>()
+    private val viewModel by activityViewModels<TrackListViewModel>()
 
     private val onInteractionListener =
         object : TrackingHistoryAdapter.OnInteractionListener {
@@ -35,7 +35,7 @@ class TrackingHistoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentTrackingHistoryBinding.inflate(inflater, container, false)
+        _binding = FragmentTrackListBinding.inflate(inflater, container, false)
         return binding.root
     }
 

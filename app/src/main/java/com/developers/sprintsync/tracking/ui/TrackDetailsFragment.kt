@@ -7,21 +7,24 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
-import com.developers.sprintsync.databinding.FragmentTrackStatisticsBinding
+import com.developers.sprintsync.databinding.FragmentTrackDetailsBinding
 import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.util.chart.PaceChartManager
-import com.developers.sprintsync.tracking.viewModel.TrackStatisticsViewModel
+import com.developers.sprintsync.tracking.viewModel.TrackDetailsViewModel
 import com.github.mikephil.charting.charts.LineChart
 
-class TrackStatisticsFragment : Fragment() {
-    private var _binding: FragmentTrackStatisticsBinding? = null
+class TrackDetailsFragment : Fragment() {
+    private var _binding: FragmentTrackDetailsBinding? = null
     private val binding get() = checkNotNull(_binding)
 
-    private val viewModel by activityViewModels<TrackStatisticsViewModel>()
+    private val args: TrackDetailsFragmentArgs by navArgs()
+
+    private val viewModel by activityViewModels<TrackDetailsViewModel>()
 
     private val paceChartManager by lazy { PaceChartManager(requireContext()) }
 
@@ -30,7 +33,7 @@ class TrackStatisticsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentTrackStatisticsBinding.inflate(inflater, container, false)
+        _binding = FragmentTrackDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -40,10 +43,10 @@ class TrackStatisticsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initChartManager(binding.chart)
-        setDataObserver()
-        setHomeButtonListener()
+        setDataObserver(args.trackId)
+        setBackButtonListener()
         setGoToMapButtonListener()
-        setDeleteTrackButtonListener()
+        setDeleteTrackButtonListener(args.trackId)
     }
 
     private fun initChartManager(chart: LineChart) {
@@ -51,8 +54,8 @@ class TrackStatisticsFragment : Fragment() {
     }
 
     // TODO include null case
-    private fun setDataObserver() {
-        viewModel.lastTrack.observe(viewLifecycleOwner) { track ->
+    private fun setDataObserver(trackId: Int) {
+        viewModel.getTrackById(trackId).observe(viewLifecycleOwner) { track ->
             track?.let {
                 paceChartManager.setData(track.segments)
                 updateStatisticsValues(track)
@@ -71,28 +74,24 @@ class TrackStatisticsFragment : Fragment() {
         }
     }
 
-    private fun setHomeButtonListener() {
-        binding.btHome.setOnClickListener {
-            findNavController().navigateUp()
+    private fun setGoToMapButtonListener() {
+        binding.btGoToMap.setOnClickListener {
+            findNavController().navigate(R.id.action_trackDetailsFragment_to_mapFragment)
         }
     }
 
-    private fun setGoToMapButtonListener() {
-        binding.btGoToMap.setOnClickListener {
-            findNavController().navigate(R.id.action_trackStatisticsFragment_to_mapFragment)
+    private fun setBackButtonListener() {
+        binding.btBack.setOnClickListener {
+            findNavController().navigateUp()
         }
     }
 
     // TODO add dialog to confirm delete
-    private fun setDeleteTrackButtonListener() {
+    private fun setDeleteTrackButtonListener(trackId: Int) {
         binding.btDelete.setOnClickListener {
-            getTrackId()?.let { viewModel.deleteTrackById(it) }
+            viewModel.deleteTrackById(trackId)
             findNavController().navigateUp()
         }
-    }
-
-    private fun getTrackId(): Int? {
-        return viewModel.lastTrack.value?.id
     }
 
     override fun onDestroy() {

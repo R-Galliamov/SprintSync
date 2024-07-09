@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_history"
-    app:startDestination="@id/trackingHistoryFragment">
+    app:startDestination="@id/trackListFragment">
 
     <fragment
-        android:id="@+id/trackingHistoryFragment"
-        android:name="com.developers.sprintsync.tracking.ui.TrackingHistoryFragment"
-        android:label="fragment_tracking_history"
-        tools:layout="@layout/fragment_tracking_history" />
+        android:id="@+id/trackListFragment"
+        android:name="com.developers.sprintsync.tracking.ui.TrackListFragment"
+        android:label="fragment_track_list"
+        tools:layout="@layout/fragment_track_list" />
 
 </navigation>

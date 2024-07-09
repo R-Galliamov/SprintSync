@@ -7,24 +7,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
-import com.developers.sprintsync.databinding.FragmentTrackHistoryStatisticsBinding
+import com.developers.sprintsync.databinding.FragmentSessionSummaryBinding
 import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.util.chart.PaceChartManager
-import com.developers.sprintsync.tracking.viewModel.TrackHistoryStatisticsViewModel
+import com.developers.sprintsync.tracking.viewModel.SessionSummaryViewModel
 import com.github.mikephil.charting.charts.LineChart
 
-class TrackHistoryStatisticsFragment : Fragment() {
-    private var _binding: FragmentTrackHistoryStatisticsBinding? = null
+class SessionSummaryFragment : Fragment() {
+    private var _binding: FragmentSessionSummaryBinding? = null
     private val binding get() = checkNotNull(_binding)
 
-    private val args: TrackHistoryStatisticsFragmentArgs by navArgs()
-
-    private val viewModel by activityViewModels<TrackHistoryStatisticsViewModel>()
+    private val viewModel by activityViewModels<SessionSummaryViewModel>()
 
     private val paceChartManager by lazy { PaceChartManager(requireContext()) }
 
@@ -33,7 +30,7 @@ class TrackHistoryStatisticsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentTrackHistoryStatisticsBinding.inflate(inflater, container, false)
+        _binding = FragmentSessionSummaryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -43,10 +40,10 @@ class TrackHistoryStatisticsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initChartManager(binding.chart)
-        setDataObserver(args.trackId)
-        setBackButtonListener()
+        setDataObserver()
+        setHomeButtonListener()
         setGoToMapButtonListener()
-        setDeleteTrackButtonListener(args.trackId)
+        setDeleteTrackButtonListener()
     }
 
     private fun initChartManager(chart: LineChart) {
@@ -54,8 +51,8 @@ class TrackHistoryStatisticsFragment : Fragment() {
     }
 
     // TODO include null case
-    private fun setDataObserver(trackId: Int) {
-        viewModel.getTrackById(trackId).observe(viewLifecycleOwner) { track ->
+    private fun setDataObserver() {
+        viewModel.lastTrack.observe(viewLifecycleOwner) { track ->
             track?.let {
                 paceChartManager.setData(track.segments)
                 updateStatisticsValues(track)
@@ -74,25 +71,27 @@ class TrackHistoryStatisticsFragment : Fragment() {
         }
     }
 
-    private fun setGoToMapButtonListener() {
-        binding.btGoToMap.setOnClickListener {
-            findNavController().navigate(R.id.action_trackHistoryStatisticsFragment_to_mapFragment)
+    private fun setHomeButtonListener() {
+        binding.btHome.setOnClickListener {
+            findNavController().navigateUp()
         }
     }
 
-    private fun setBackButtonListener() {
-        binding.btBack.setOnClickListener {
-            findNavController().navigateUp()
+    private fun setGoToMapButtonListener() {
+        binding.btGoToMap.setOnClickListener {
+            findNavController().navigate(R.id.action_sessionSummaryFragment_to_mapFragment)
         }
     }
 
     // TODO add dialog to confirm delete
-    private fun setDeleteTrackButtonListener(trackId: Int) {
+    private fun setDeleteTrackButtonListener() {
         binding.btDelete.setOnClickListener {
-            viewModel.deleteTrackById(trackId)
+            getTrackId()?.let { viewModel.deleteTrackById(it) }
             findNavController().navigateUp()
         }
     }
+
+    private fun getTrackId(): Int? = viewModel.lastTrack.value?.id
 
     override fun onDestroy() {
         super.onDestroy()
