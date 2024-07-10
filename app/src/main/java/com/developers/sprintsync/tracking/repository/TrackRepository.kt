@@ -12,8 +12,6 @@ interface TrackRepository {
     // READ
     fun getTrackById(id: Int): Track
 
-    fun getAllTracks(): Flow<List<Track>>
-
     // DELETE
     suspend fun deleteTrackById(id: Int)
 }

@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackDetailsBinding
 import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
@@ -45,7 +44,6 @@ class TrackDetailsFragment : Fragment() {
         initChartManager(binding.chart)
         setDataObserver(args.trackId)
         setBackButtonListener()
-        setGoToMapButtonListener()
         setDeleteTrackButtonListener(args.trackId)
     }
 
@@ -59,6 +57,7 @@ class TrackDetailsFragment : Fragment() {
             track?.let {
                 paceChartManager.setData(track.segments)
                 updateStatisticsValues(track)
+                setGoToMapButtonListener(track.id)
             }
         }
     }
@@ -74,10 +73,15 @@ class TrackDetailsFragment : Fragment() {
         }
     }
 
-    private fun setGoToMapButtonListener() {
+    private fun setGoToMapButtonListener(trackId: Int) {
         binding.btGoToMap.setOnClickListener {
-            findNavController().navigate(R.id.action_trackDetailsFragment_to_mapFragment)
+            navigateToMapFragment(trackId)
         }
+    }
+
+    private fun navigateToMapFragment(trackId: Int) {
+        val action = TrackDetailsFragmentDirections.actionTrackDetailsFragmentToMapFragment(trackId)
+        findNavController().navigate(action)
     }
 
     private fun setBackButtonListener() {

@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.tracking.model.Track
-import com.developers.sprintsync.tracking.repository.TrackRepository
+import com.developers.sprintsync.tracking.viewModel.useCase.DeleteTrackByIdUseCase
+import com.developers.sprintsync.tracking.viewModel.useCase.GetLastTrackUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,17 +15,14 @@ import javax.inject.Inject
 class SessionSummaryViewModel
     @Inject
     constructor(
-        private val repository: TrackRepository,
+        getLastTrackUseCase: GetLastTrackUseCase,
+        private val deleteTrackByIdUseCase: DeleteTrackByIdUseCase,
     ) : ViewModel() {
-        val lastTrack: LiveData<Track?> =
-            repository.tracks
-                .map {
-                    it.firstOrNull()
-                }.asLiveData()
+        val lastTrack: LiveData<Track?> = getLastTrackUseCase().asLiveData()
 
         fun deleteTrackById(id: Int) {
             viewModelScope.launch {
-                repository.deleteTrackById(id)
+                deleteTrackByIdUseCase(id)
             }
         }
     }
