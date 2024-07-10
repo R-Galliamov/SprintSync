@@ -10,7 +10,7 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackListBinding
 import com.developers.sprintsync.global.ui.fragment.TabsFragmentDirections
 import com.developers.sprintsync.global.util.extension.findTopNavController
-import com.developers.sprintsync.tracking.adapter.TrackingHistoryAdapter
+import com.developers.sprintsync.tracking.adapter.TrackListAdapter
 import com.developers.sprintsync.tracking.viewModel.TrackListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,13 +22,13 @@ class TrackListFragment : Fragment() {
     private val viewModel by activityViewModels<TrackListViewModel>()
 
     private val onInteractionListener =
-        object : TrackingHistoryAdapter.OnInteractionListener {
+        object : TrackListAdapter.OnInteractionListener {
             override fun onItemSelected(trackId: Int) {
                 navigateToTrackDetails(trackId)
             }
         }
 
-    private val adapter by lazy { TrackingHistoryAdapter(onInteractionListener) }
+    private val adapter by lazy { TrackListAdapter(onInteractionListener) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

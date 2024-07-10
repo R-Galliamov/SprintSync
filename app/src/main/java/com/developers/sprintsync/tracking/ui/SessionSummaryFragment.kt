@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentSessionSummaryBinding
 import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
@@ -42,7 +41,6 @@ class SessionSummaryFragment : Fragment() {
         initChartManager(binding.chart)
         setDataObserver()
         setHomeButtonListener()
-        setGoToMapButtonListener()
         setDeleteTrackButtonListener()
     }
 
@@ -56,6 +54,7 @@ class SessionSummaryFragment : Fragment() {
             track?.let {
                 paceChartManager.setData(track.segments)
                 updateStatisticsValues(track)
+                setGoToMapButtonListener(track.id)
             }
         }
     }
@@ -77,10 +76,16 @@ class SessionSummaryFragment : Fragment() {
         }
     }
 
-    private fun setGoToMapButtonListener() {
+    private fun setGoToMapButtonListener(trackId: Int) {
         binding.btGoToMap.setOnClickListener {
-            findNavController().navigate(R.id.action_sessionSummaryFragment_to_mapFragment)
+            navigateToMapFragment(trackId)
         }
+    }
+
+    private fun navigateToMapFragment(trackId: Int) {
+        val action =
+            SessionSummaryFragmentDirections.actionSessionSummaryFragmentToMapFragment(trackId)
+        findNavController().navigate(action)
     }
 
     // TODO add dialog to confirm delete

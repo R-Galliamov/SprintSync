@@ -10,9 +10,9 @@ import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.model.Track
 
-class TrackingHistoryAdapter(
+class TrackListAdapter(
     private val onInteractionListener: OnInteractionListener,
-) : ListAdapter<Track, TrackingHistoryAdapter.TrackingHistoryViewHolder>(TrackDiffCallback()) {
+) : ListAdapter<Track, TrackListAdapter.TrackingHistoryViewHolder>(TrackDiffCallback()) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,

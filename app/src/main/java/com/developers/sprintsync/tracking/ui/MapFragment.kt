@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentMapBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
 import com.developers.sprintsync.tracking.model.Segments
+import com.developers.sprintsync.tracking.model.Track
 import com.developers.sprintsync.tracking.util.map.MapManager
-import com.developers.sprintsync.tracking.viewModel.SessionSummaryViewModel
+import com.developers.sprintsync.tracking.viewModel.MapViewModel
 
 class MapFragment : Fragment() {
     private var _binding: FragmentMapBinding? = null
@@ -19,7 +21,9 @@ class MapFragment : Fragment() {
 
     private val mapManager by lazy { MapManager(requireContext()) }
 
-    private val sessionViewModel by activityViewModels<SessionSummaryViewModel>()
+    private val args: MapFragmentArgs by navArgs()
+
+    private val viewModel by activityViewModels<MapViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,11 +41,7 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         updateProgressBarVisibility(true)
         initMap(savedInstanceState) {
-            getNonEmptySegments()?.let {
-                updateProgressBarVisibility(false)
-                mapManager.addPolylines(it)
-                mapManager.moveCameraToSegments(it)
-            }
+            setDataObserver()
         }
         setBackButton()
     }
@@ -57,16 +57,24 @@ class MapFragment : Fragment() {
         }
     }
 
+    private fun setDataObserver() {
+        viewModel.getTrackById(args.trackId).observe(viewLifecycleOwner) { track ->
+            track ?: return@observe
+            getNonEmptySegments(track)?.let { segments ->
+                updateProgressBarVisibility(false)
+                mapManager.addPolylines(segments)
+                mapManager.moveCameraToSegments(segments)
+            }
+        }
+    }
+
     private fun setBackButton() {
         binding.btBack.setOnClickListener {
             findTopNavController().navigateUp()
         }
     }
 
-    private fun getNonEmptySegments(): Segments? =
-        sessionViewModel.lastTrack.value
-            ?.segments
-            ?.takeIf { it.isNotEmpty() }
+    private fun getNonEmptySegments(track: Track): Segments? = track.segments.takeIf { it.isNotEmpty() }
 
     private fun updateProgressBarVisibility(isVisible: Boolean) {
         when (isVisible) {

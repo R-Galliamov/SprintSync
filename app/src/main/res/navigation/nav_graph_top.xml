@@ -96,5 +96,6 @@
         <argument
             android:name="trackId"
             app:argType="integer" />
+
     </fragment>
 </navigation>
