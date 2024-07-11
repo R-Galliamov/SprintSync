@@ -17,10 +17,20 @@ class TrackingSessionViewModel
         val trackerState = sessionManager.trackerState.asLiveData()
 
         val currentLocation =
-            sessionManager.data.map { it.currentLocation }.distinctUntilChanged().asLiveData()
-        val track = sessionManager.data.map { it.track }.distinctUntilChanged().asLiveData()
+            sessionManager.data
+                .map { it.currentLocation }
+                .distinctUntilChanged()
+                .asLiveData()
+        val track =
+            sessionManager.data
+                .map { it.track }
+                .distinctUntilChanged()
+                .asLiveData()
         val duration =
-            sessionManager.data.map { it.durationMillis }.distinctUntilChanged().asLiveData()
+            sessionManager.data
+                .map { it.durationMillis }
+                .distinctUntilChanged()
+                .asLiveData()
 
         fun startUpdatingLocation() {
             sessionManager.startUpdatingLocation()
@@ -29,4 +39,6 @@ class TrackingSessionViewModel
         fun stopUpdatingLocation() {
             sessionManager.stopUpdatingLocation()
         }
+
+        fun isTrackValid(): Boolean = sessionManager.isTrackValid()
     }

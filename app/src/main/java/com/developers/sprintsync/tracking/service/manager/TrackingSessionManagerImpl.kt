@@ -10,8 +10,9 @@ import javax.inject.Singleton
 @Singleton
 class TrackingSessionManagerImpl
     @Inject
-    constructor(val tracker: Tracker) :
-    TrackingSessionManager {
+    constructor(
+        val tracker: Tracker,
+    ) : TrackingSessionManager {
         override val trackerState: StateFlow<TrackerState>
             get() = tracker.state
         override val data: StateFlow<TrackingSession>
@@ -36,4 +37,6 @@ class TrackingSessionManagerImpl
         override fun finishTracking() {
             tracker.finish()
         }
+
+        override fun isTrackValid(): Boolean = tracker.isTrackValid()
     }

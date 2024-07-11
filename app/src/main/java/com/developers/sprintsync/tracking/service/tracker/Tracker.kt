@@ -88,6 +88,8 @@ class Tracker
             _state.value = TrackerState.Finished
         }
 
+        fun isTrackValid(): Boolean = getTrack().segments.isNotEmpty()
+
         private fun initTimeScope() {
             timeScope = CoroutineScope(dispatcher)
         }
@@ -144,9 +146,7 @@ class Tracker
             _data.value = _data.value.copy(track = track)
         }
 
-        private fun getTrack(): Track {
-            return data.value.track
-        }
+        private fun getTrack(): Track = data.value.track
 
         private fun addInactiveSegmentToTrack() {
             val endPauseTime = data.value.durationMillis
@@ -172,9 +172,7 @@ class Tracker
             Log.d("MyStack", "track finalised")
         }
 
-        private fun areUpdatingCoroutinesInactive(): Boolean {
-            return (locationScope == null && trackingScope == null && timeScope == null)
-        }
+        private fun areUpdatingCoroutinesInactive(): Boolean = (locationScope == null && trackingScope == null && timeScope == null)
 
         private fun resetData() {
             resetTrackData()
@@ -223,13 +221,20 @@ class Tracker
                         }
 
                         TrackerState.Finished -> {
+                            Log.d("My Stack", "finishing : ${getTrack()}")
                             if (!areUpdatingCoroutinesInactive()) {
                                 stopUpdatingLocation()
                                 stopUpdatingTime()
                                 stopUpdatingTrack()
-                                finaliseTrack()
+                                if (isTrackValid()) {
+                                    finaliseTrack()
+                                }
                             }
-                            saveTrack()
+                            Log.d("My Stack", "finished : ${getTrack()}")
+                            if (isTrackValid()) {
+                                Log.d("My Stack", "saved : ${getTrack()}")
+                                saveTrack()
+                            }
                             resetData()
                             activityMonitor.stopMonitoringInactivity()
                         }

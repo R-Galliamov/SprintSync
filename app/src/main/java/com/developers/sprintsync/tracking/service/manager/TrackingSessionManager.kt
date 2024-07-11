@@ -18,4 +18,6 @@ interface TrackingSessionManager {
     fun pauseTracking()
 
     fun finishTracking()
+
+    fun isTrackValid(): Boolean
 }

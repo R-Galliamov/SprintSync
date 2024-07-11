@@ -180,7 +180,10 @@ class TrackingFragment : Fragment() {
             }
 
             TrackerState.Finished -> {
-                // NO - OP
+                when (sessionViewModel.isTrackValid()) {
+                    true -> findTopNavController().navigate(R.id.action_trackingFragment_to_sessionSummaryFragment)
+                    false -> findTopNavController().navigateUp()
+                }
             }
         }
     }
@@ -202,7 +205,6 @@ class TrackingFragment : Fragment() {
     private fun setFinishButtonListener() {
         binding.btFinish.setOnClickListener {
             service.finish()
-            findTopNavController().navigate(R.id.action_trackingFragment_to_sessionSummaryFragment)
         }
     }
 
