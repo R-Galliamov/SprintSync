@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_white_gray"
     android:paddingBottom="@dimen/largeSpace"
-    tools:context=".global.ui.fragment.HomeFragment">
+    tools:context=".tracking.analytics.ui.HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

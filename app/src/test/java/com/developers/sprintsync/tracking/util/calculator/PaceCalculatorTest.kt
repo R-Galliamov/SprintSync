@@ -1,5 +1,6 @@
 package com.developers.sprintsync.tracking.util.calculator
 
+import com.developers.sprintsync.tracking.session.service.dataBuilder.calculator.PaceCalculator
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
