@@ -9,11 +9,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.databinding.FragmentTrackDetailsBinding
-import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
-import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
-import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.model.track.Track
 import com.developers.sprintsync.tracking.util.chart.PaceChartManager
+import com.developers.sprintsync.tracking.util.mapper.indicator.DistanceMapper
+import com.developers.sprintsync.tracking.util.mapper.indicator.PaceMapper
+import com.developers.sprintsync.tracking.util.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.viewModel.TrackDetailsViewModel
 import com.github.mikephil.charting.charts.LineChart
 

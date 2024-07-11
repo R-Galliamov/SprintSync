@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.mapper.indicator
+package com.developers.sprintsync.tracking.util.mapper.indicator
 
 import com.developers.sprintsync.global.util.extension.roundedDownNearestTen
 import java.util.Locale
@@ -25,8 +25,6 @@ class DistanceMapper {
             }
         }
 
-        fun metersToKilometers(distanceInMeters: Int): Float {
-            return distanceInMeters / (METERS_IN_KILOMETERS.toFloat())
-        }
+        fun metersToKilometers(distanceInMeters: Int): Float = distanceInMeters / (METERS_IN_KILOMETERS.toFloat())
     }
 }

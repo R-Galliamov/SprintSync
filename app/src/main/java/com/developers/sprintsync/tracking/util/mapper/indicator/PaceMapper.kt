@@ -1,16 +1,12 @@
-package com.developers.sprintsync.tracking.mapper.indicator
+package com.developers.sprintsync.tracking.util.mapper.indicator
 
 import java.util.Locale
 
 class PaceMapper {
     companion object {
-        fun formatPaceWithTwoDecimals(pace: Float): String {
-            return formatPace(pace, 2)
-        }
+        fun formatPaceWithTwoDecimals(pace: Float): String = formatPace(pace, 2)
 
-        fun formatPaceWithOneDecimal(pace: Float): String {
-            return formatPace(pace, 1)
-        }
+        fun formatPaceWithOneDecimal(pace: Float): String = formatPace(pace, 1)
 
         private fun formatPace(
             pace: Float,

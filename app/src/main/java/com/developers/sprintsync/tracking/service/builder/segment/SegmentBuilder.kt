@@ -1,9 +1,9 @@
 package com.developers.sprintsync.tracking.service.builder.segment
 
-import com.developers.sprintsync.tracking.mapper.model.SegmentMapper
 import com.developers.sprintsync.tracking.model.track.GeoTimePoint
 import com.developers.sprintsync.tracking.model.track.LocationModel
 import com.developers.sprintsync.tracking.model.track.Segment
+import com.developers.sprintsync.tracking.util.mapper.model.SegmentMapper
 import javax.inject.Inject
 
 class SegmentBuilder

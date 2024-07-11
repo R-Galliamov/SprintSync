@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.developers.sprintsync.databinding.ItemTrackingHistoryBinding
-import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
-import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.model.track.Track
+import com.developers.sprintsync.tracking.util.mapper.indicator.DistanceMapper
+import com.developers.sprintsync.tracking.util.mapper.indicator.TimeMapper
 
 class TrackListAdapter(
     private val onInteractionListener: OnInteractionListener,

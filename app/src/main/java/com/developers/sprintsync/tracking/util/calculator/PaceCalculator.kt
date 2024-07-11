@@ -1,7 +1,7 @@
 package com.developers.sprintsync.tracking.util.calculator
 
-import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
-import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
+import com.developers.sprintsync.tracking.util.mapper.indicator.DistanceMapper
+import com.developers.sprintsync.tracking.util.mapper.indicator.TimeMapper
 
 class PaceCalculator {
     companion object {

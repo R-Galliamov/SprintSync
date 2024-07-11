@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.mapper.model
+package com.developers.sprintsync.tracking.util.mapper.model
 
 import com.developers.sprintsync.tracking.model.track.GeoTimePoint
 import com.developers.sprintsync.tracking.model.track.Segment

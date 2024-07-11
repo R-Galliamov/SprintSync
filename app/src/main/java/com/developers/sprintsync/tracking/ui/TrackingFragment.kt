@@ -10,9 +10,6 @@ import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
-import com.developers.sprintsync.tracking.mapper.indicator.DistanceMapper
-import com.developers.sprintsync.tracking.mapper.indicator.PaceMapper
-import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.model.session.TrackerState
 import com.developers.sprintsync.tracking.model.track.Segment
 import com.developers.sprintsync.tracking.model.track.Segments
@@ -20,6 +17,9 @@ import com.developers.sprintsync.tracking.model.track.Track
 import com.developers.sprintsync.tracking.model.track.toLatLng
 import com.developers.sprintsync.tracking.service.manager.TrackingServiceController
 import com.developers.sprintsync.tracking.util.map.MapManager
+import com.developers.sprintsync.tracking.util.mapper.indicator.DistanceMapper
+import com.developers.sprintsync.tracking.util.mapper.indicator.PaceMapper
+import com.developers.sprintsync.tracking.util.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.viewModel.TrackingSessionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

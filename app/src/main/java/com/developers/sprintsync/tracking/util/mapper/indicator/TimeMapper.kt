@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.mapper.indicator
+package com.developers.sprintsync.tracking.util.mapper.indicator
 
 import java.text.SimpleDateFormat
 import java.util.Date

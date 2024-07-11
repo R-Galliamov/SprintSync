@@ -1,5 +1,6 @@
 package com.developers.sprintsync.tracking.mapper.indicator
 
+import com.developers.sprintsync.tracking.util.mapper.indicator.DistanceMapper
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

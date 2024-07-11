@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.util.chart.formatter
 
-import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
+import com.developers.sprintsync.tracking.util.mapper.indicator.TimeMapper
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlin.math.roundToInt
@@ -24,13 +24,9 @@ class PaceChartDurationFormatter : ValueFormatter() {
         }
     }
 
-    private fun getPresentableSeconds(seconds: Float): String {
-        return "${seconds.roundToInt()}s"
-    }
+    private fun getPresentableSeconds(seconds: Float): String = "${seconds.roundToInt()}s"
 
-    private fun getPresentableMinutes(minutes: Float): String {
-        return "${minutes.roundToInt()}m"
-    }
+    private fun getPresentableMinutes(minutes: Float): String = "${minutes.roundToInt()}m"
 
     companion object {
         private const val SECONDS_BARRIER = 180

@@ -7,7 +7,7 @@ import android.content.Context
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.developers.sprintsync.R
-import com.developers.sprintsync.tracking.mapper.indicator.TimeMapper
+import com.developers.sprintsync.tracking.util.mapper.indicator.TimeMapper
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -37,14 +37,14 @@ class TrackingServiceNotifier
 
         // TODO create a bigContentView
         // TODO change an icon
-        private fun getNotificationBuilder(): NotificationCompat.Builder {
-            return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+        private fun getNotificationBuilder(): NotificationCompat.Builder =
+            NotificationCompat
+                .Builder(context, NOTIFICATION_CHANNEL_ID)
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_run_48dp)
                 .setStyle(NotificationCompat.DecoratedCustomViewStyle())
                 .setCustomContentView(notificationLayout)
-        }
 
         fun updateDuration(timeInMillis: Long) {
             val presentableTime = TimeMapper.millisToPresentableTime(timeInMillis)
