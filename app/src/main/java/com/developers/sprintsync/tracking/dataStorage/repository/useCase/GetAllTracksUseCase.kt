@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetAllTracksUseCase
     @Inject
     constructor(
-        private val repository: TrackRepository,
+        repository: TrackRepository,
     ) {
         val tracks: Flow<List<Track>> = repository.tracks
     }
