@@ -1,7 +1,7 @@
 package com.developers.sprintsync.tracking.session.service.monitor
 
-import com.developers.sprintsync.tracking.data.model.indicator.PaceAnalysisResult
-import com.developers.sprintsync.tracking.data.model.track.Segment
+import com.developers.sprintsync.tracking.session.model.indicator.PaceAnalysisResult
+import com.developers.sprintsync.tracking.session.model.track.Segment
 
 class PaceAnalyzer {
     companion object {

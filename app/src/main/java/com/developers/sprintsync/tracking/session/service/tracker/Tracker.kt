@@ -2,11 +2,11 @@ package com.developers.sprintsync.tracking.session.service.tracker
 
 import android.util.Log
 import com.developers.sprintsync.global.util.extension.withLatestConcat
-import com.developers.sprintsync.tracking.data.model.session.TrackerState
-import com.developers.sprintsync.tracking.data.model.session.TrackingSession
-import com.developers.sprintsync.tracking.data.model.track.LocationModel
-import com.developers.sprintsync.tracking.data.model.track.Track
-import com.developers.sprintsync.tracking.data.repository.TrackRepository
+import com.developers.sprintsync.tracking.dataStorage.repository.TrackRepository
+import com.developers.sprintsync.tracking.session.model.session.TrackerState
+import com.developers.sprintsync.tracking.session.model.session.TrackingSession
+import com.developers.sprintsync.tracking.session.model.track.LocationModel
+import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.tracking.session.service.dataBuilder.builder.track.TrackBuilder
 import com.developers.sprintsync.tracking.session.service.monitor.ActivityMonitor
 import com.developers.sprintsync.tracking.session.service.provider.location.LocationProvider

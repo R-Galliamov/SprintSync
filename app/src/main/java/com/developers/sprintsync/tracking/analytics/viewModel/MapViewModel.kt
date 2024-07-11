@@ -3,8 +3,8 @@ package com.developers.sprintsync.tracking.analytics.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.developers.sprintsync.tracking.data.model.track.Track
-import com.developers.sprintsync.tracking.data.repository.useCase.GetTrackByIdUseCase
+import com.developers.sprintsync.tracking.dataStorage.repository.useCase.GetTrackByIdUseCase
+import com.developers.sprintsync.tracking.session.model.track.Track
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

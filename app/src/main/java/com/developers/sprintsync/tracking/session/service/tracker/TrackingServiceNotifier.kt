@@ -7,7 +7,7 @@ import android.content.Context
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.developers.sprintsync.R
-import com.developers.sprintsync.tracking.data.mapper.indicator.TimeMapper
+import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.TimeMapper
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

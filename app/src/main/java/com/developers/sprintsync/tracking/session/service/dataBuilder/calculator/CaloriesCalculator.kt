@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.session.service.dataBuilder.calculator
 
-import com.developers.sprintsync.tracking.data.mapper.indicator.DistanceMapper
+import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.user.model.UserSettings
 import javax.inject.Inject
 

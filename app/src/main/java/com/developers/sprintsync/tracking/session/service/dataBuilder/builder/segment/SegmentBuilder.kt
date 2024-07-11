@@ -1,8 +1,8 @@
 package com.developers.sprintsync.tracking.session.service.dataBuilder.builder.segment
 
-import com.developers.sprintsync.tracking.data.model.track.GeoTimePoint
-import com.developers.sprintsync.tracking.data.model.track.Segment
-import com.developers.sprintsync.tracking.data.model.track.distanceBetweenInMeters
+import com.developers.sprintsync.tracking.session.model.track.GeoTimePoint
+import com.developers.sprintsync.tracking.session.model.track.Segment
+import com.developers.sprintsync.tracking.session.model.track.distanceBetweenInMeters
 import com.developers.sprintsync.tracking.session.service.dataBuilder.calculator.CaloriesCalculator
 import com.developers.sprintsync.tracking.session.service.dataBuilder.calculator.PaceCalculator
 import javax.inject.Inject

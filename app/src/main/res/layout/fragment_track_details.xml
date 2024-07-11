@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tracking.analytics.ui.TrackDetailsFragment">
+    tools:context=".tracking.analytics.ui.trackDetails.TrackDetailsFragment">
 
     <ScrollView
         android:id="@+id/scrollView"

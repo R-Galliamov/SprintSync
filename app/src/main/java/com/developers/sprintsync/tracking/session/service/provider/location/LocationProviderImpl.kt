@@ -5,8 +5,8 @@ import android.content.Context
 import android.os.Looper
 import com.developers.sprintsync.global.manager.permission.LocationPermissionManager
 import com.developers.sprintsync.global.util.error.NoPermissionsException
-import com.developers.sprintsync.tracking.data.model.track.LocationModel
-import com.developers.sprintsync.tracking.data.model.track.toDataModel
+import com.developers.sprintsync.tracking.session.model.track.LocationModel
+import com.developers.sprintsync.tracking.session.model.track.toDataModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest

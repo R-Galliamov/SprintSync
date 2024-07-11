@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/sessionSummaryFragment"
-        android:name="com.developers.sprintsync.tracking.analytics.ui.SessionSummaryFragment"
+        android:name="com.developers.sprintsync.tracking.analytics.ui.trackDetails.SessionSummaryFragment"
         android:label="fragment_session_summary"
         tools:layout="@layout/fragment_session_summary">
         <action
@@ -74,7 +74,7 @@
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.developers.sprintsync.tracking.analytics.ui.MapFragment"
+        android:name="com.developers.sprintsync.tracking.analytics.ui.map.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map">
         <argument
@@ -83,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/trackDetailsFragment"
-        android:name="com.developers.sprintsync.tracking.analytics.ui.TrackDetailsFragment"
+        android:name="com.developers.sprintsync.tracking.analytics.ui.trackDetails.TrackDetailsFragment"
         android:label="fragment_track_details"
         tools:layout="@layout/fragment_track_details">
         <action

@@ -1,8 +1,8 @@
 package com.developers.sprintsync.tracking.session.service.dataBuilder.builder.segment
 
-import com.developers.sprintsync.tracking.data.model.track.GeoTimePoint
-import com.developers.sprintsync.tracking.data.model.track.LocationModel
-import com.developers.sprintsync.tracking.data.model.track.Segment
+import com.developers.sprintsync.tracking.session.model.track.GeoTimePoint
+import com.developers.sprintsync.tracking.session.model.track.LocationModel
+import com.developers.sprintsync.tracking.session.model.track.Segment
 import javax.inject.Inject
 
 class SegmentGenerator
