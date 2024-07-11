@@ -10,8 +10,8 @@ import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentMapBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
-import com.developers.sprintsync.tracking.model.Segments
-import com.developers.sprintsync.tracking.model.Track
+import com.developers.sprintsync.tracking.model.track.Segments
+import com.developers.sprintsync.tracking.model.track.Track
 import com.developers.sprintsync.tracking.util.map.MapManager
 import com.developers.sprintsync.tracking.viewModel.MapViewModel
 

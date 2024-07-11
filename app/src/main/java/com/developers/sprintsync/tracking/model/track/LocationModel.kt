@@ -1,13 +1,17 @@
-package com.developers.sprintsync.tracking.model
+package com.developers.sprintsync.tracking.model.track
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 
 @JvmInline
-value class Latitude(val value: Double)
+value class Latitude(
+    val value: Double,
+)
 
 @JvmInline
-value class Longitude(val value: Double)
+value class Longitude(
+    val value: Double,
+)
 
 data class LocationModel(
     val latitude: Latitude,

@@ -1,4 +1,7 @@
-package com.developers.sprintsync.tracking.model
+package com.developers.sprintsync.tracking.model.session
+
+import com.developers.sprintsync.tracking.model.track.LocationModel
+import com.developers.sprintsync.tracking.model.track.Track
 
 data class TrackingSession(
     val currentLocation: LocationModel?,

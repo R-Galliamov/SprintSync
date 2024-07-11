@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.repository
 
-import com.developers.sprintsync.tracking.model.Track
+import com.developers.sprintsync.tracking.model.track.Track
 import kotlinx.coroutines.flow.Flow
 
 interface TrackRepository {

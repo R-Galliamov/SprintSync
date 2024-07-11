@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.model
+package com.developers.sprintsync.tracking.model.track
 
 data class Track(
     val id: Int,

@@ -1,8 +1,8 @@
 package com.developers.sprintsync.tracking.util.chart
 
-import com.developers.sprintsync.tracking.model.PaceChartData
-import com.developers.sprintsync.tracking.model.Segment
-import com.developers.sprintsync.tracking.model.Segments
+import com.developers.sprintsync.tracking.model.indicator.PaceChartData
+import com.developers.sprintsync.tracking.model.track.Segment
+import com.developers.sprintsync.tracking.model.track.Segments
 import com.github.mikephil.charting.data.Entry
 
 class PaceChartDataPreparer {
@@ -43,7 +43,5 @@ class PaceChartDataPreparer {
         return Entry(timePoint, segment.pace)
     }
 
-    private fun getTimePoint(segment: Segment.ActiveSegment): Float {
-        return ((segment.startTime + segment.endTime) / 2f)
-    }
+    private fun getTimePoint(segment: Segment.ActiveSegment): Float = ((segment.startTime + segment.endTime) / 2f)
 }

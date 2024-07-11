@@ -2,8 +2,8 @@ package com.developers.sprintsync.tracking.db.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.developers.sprintsync.tracking.model.Segments
-import com.developers.sprintsync.tracking.model.Track
+import com.developers.sprintsync.tracking.model.track.Segments
+import com.developers.sprintsync.tracking.model.track.Track
 
 @Entity
 data class TrackEntity(

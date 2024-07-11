@@ -1,8 +1,8 @@
 package com.developers.sprintsync.tracking.service.builder.track
 
-import com.developers.sprintsync.tracking.model.Segment
-import com.developers.sprintsync.tracking.model.Segments
-import com.developers.sprintsync.tracking.model.Track
+import com.developers.sprintsync.tracking.model.track.Segment
+import com.developers.sprintsync.tracking.model.track.Segments
+import com.developers.sprintsync.tracking.model.track.Track
 import javax.inject.Inject
 
 // TODO add logic for handling overflows
@@ -104,8 +104,8 @@ class TrackUpdater
             maxPace: Float,
             calories: Int,
             segments: Segments,
-        ): Track {
-            return track.copy(
+        ): Track =
+            track.copy(
                 durationMillis = durationMillis,
                 distanceMeters = distanceMeters,
                 avgPace = avgPace,
@@ -113,13 +113,10 @@ class TrackUpdater
                 calories = calories,
                 segments = segments,
             )
-        }
 
         private fun getUpdatedTrack(
             track: Track,
             durationMillis: Long,
             segments: Segments,
-        ): Track {
-            return track.copy(durationMillis = durationMillis, segments = segments)
-        }
+        ): Track = track.copy(durationMillis = durationMillis, segments = segments)
     }

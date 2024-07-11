@@ -1,7 +1,7 @@
 package com.developers.sprintsync.tracking.service.monitor
 
-import com.developers.sprintsync.tracking.model.PaceAnalysisResult
-import com.developers.sprintsync.tracking.model.Segment
+import com.developers.sprintsync.tracking.model.indicator.PaceAnalysisResult
+import com.developers.sprintsync.tracking.model.track.Segment
 
 class PaceAnalyzer {
     companion object {
@@ -24,32 +24,26 @@ class PaceAnalyzer {
             }
         }
 
-        private fun getRecentPace(segments: List<Segment>): List<Float> {
-            return segments.filterIsInstance<Segment.ActiveSegment>()
+        private fun getRecentPace(segments: List<Segment>): List<Float> =
+            segments
+                .filterIsInstance<Segment.ActiveSegment>()
                 .takeLast(REQUIRED_VALUES_COUNT)
                 .map { segment -> segment.pace }
-        }
 
-        private fun hasInsufficientValues(values: List<*>): Boolean {
-            return values.size < REQUIRED_VALUES_COUNT
-        }
+        private fun hasInsufficientValues(values: List<*>): Boolean = values.size < REQUIRED_VALUES_COUNT
 
-        private fun hasZeroValues(values: List<Float>): Boolean {
-            return values.any {
+        private fun hasZeroValues(values: List<Float>): Boolean =
+            values.any {
                 it == 0f
             }
-        }
 
-        private fun isPaceSlowedDown(recentPaceValues: List<Float>): Boolean {
-            return recentPaceValues.all { isPaceSlowedDown(it) }
-        }
+        private fun isPaceSlowedDown(recentPaceValues: List<Float>): Boolean = recentPaceValues.all { isPaceSlowedDown(it) }
 
-        private fun isPaceSlowedDown(pace: Float): Boolean {
-            return pace > SLOW_DOWN_PACE
-        }
+        private fun isPaceSlowedDown(pace: Float): Boolean = pace > SLOW_DOWN_PACE
 
-        private fun areRecentSegmentsActive(segments: List<Segment>): Boolean {
-            return segments.takeLast(REQUIRED_VALUES_COUNT).all { it is Segment.ActiveSegment }
-        }
+        private fun areRecentSegmentsActive(segments: List<Segment>): Boolean =
+            segments.takeLast(REQUIRED_VALUES_COUNT).all {
+                it is Segment.ActiveSegment
+            }
     }
 }

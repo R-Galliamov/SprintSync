@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.model
+package com.developers.sprintsync.tracking.model.session
 
 sealed class UserActivityState {
     object Running : UserActivityState()

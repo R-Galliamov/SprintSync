@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.model
+package com.developers.sprintsync.tracking.model.indicator
 
 import com.github.mikephil.charting.data.Entry
 

@@ -1,8 +1,8 @@
 package com.developers.sprintsync.tracking.service.builder.track
 
-import com.developers.sprintsync.tracking.model.LocationModel
-import com.developers.sprintsync.tracking.model.Segment
-import com.developers.sprintsync.tracking.model.Track
+import com.developers.sprintsync.tracking.model.track.LocationModel
+import com.developers.sprintsync.tracking.model.track.Segment
+import com.developers.sprintsync.tracking.model.track.Track
 import com.developers.sprintsync.tracking.service.builder.segment.SegmentBuilder
 import javax.inject.Inject
 

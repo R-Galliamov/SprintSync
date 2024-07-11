@@ -3,7 +3,7 @@ package com.developers.sprintsync.tracking.repository
 import androidx.collection.LruCache
 import com.developers.sprintsync.tracking.db.dao.TrackDao
 import com.developers.sprintsync.tracking.db.dto.TrackEntity
-import com.developers.sprintsync.tracking.model.Track
+import com.developers.sprintsync.tracking.model.track.Track
 import javax.inject.Inject
 import javax.inject.Singleton
 

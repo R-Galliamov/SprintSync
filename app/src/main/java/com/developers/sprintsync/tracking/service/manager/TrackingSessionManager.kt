@@ -1,7 +1,7 @@
 package com.developers.sprintsync.tracking.service.manager
 
-import com.developers.sprintsync.tracking.model.TrackerState
-import com.developers.sprintsync.tracking.model.TrackingSession
+import com.developers.sprintsync.tracking.model.session.TrackerState
+import com.developers.sprintsync.tracking.model.session.TrackingSession
 import kotlinx.coroutines.flow.StateFlow
 
 interface TrackingSessionManager {

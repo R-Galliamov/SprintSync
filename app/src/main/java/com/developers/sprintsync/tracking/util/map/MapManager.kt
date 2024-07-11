@@ -4,9 +4,9 @@ import android.content.Context
 import com.developers.sprintsync.R
 import com.developers.sprintsync.global.manager.AppThemeManager
 import com.developers.sprintsync.global.util.extension.getBitmapDescriptor
-import com.developers.sprintsync.tracking.model.Segment
-import com.developers.sprintsync.tracking.model.Segments
-import com.developers.sprintsync.tracking.model.toLatLng
+import com.developers.sprintsync.tracking.model.track.Segment
+import com.developers.sprintsync.tracking.model.track.Segments
+import com.developers.sprintsync.tracking.model.track.toLatLng
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
@@ -72,7 +72,9 @@ class MapManager(
             val icon = context.getBitmapDescriptor(R.drawable.ic_user_location)
             currentUserMarker =
                 map.addMarker(
-                    MarkerOptions().position(latLng).title("Current Location")
+                    MarkerOptions()
+                        .position(latLng)
+                        .title("Current Location")
                         .icon(icon),
                 )
         } else {

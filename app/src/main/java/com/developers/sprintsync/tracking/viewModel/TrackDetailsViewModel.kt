@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.developers.sprintsync.tracking.model.Track
+import com.developers.sprintsync.tracking.model.track.Track
 import com.developers.sprintsync.tracking.viewModel.useCase.DeleteTrackByIdUseCase
 import com.developers.sprintsync.tracking.viewModel.useCase.GetTrackByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

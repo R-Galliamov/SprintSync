@@ -1,8 +1,8 @@
 package com.developers.sprintsync.tracking.mapper.model
 
-import com.developers.sprintsync.tracking.model.GeoTimePoint
-import com.developers.sprintsync.tracking.model.Segment
-import com.developers.sprintsync.tracking.model.distanceBetweenInMeters
+import com.developers.sprintsync.tracking.model.track.GeoTimePoint
+import com.developers.sprintsync.tracking.model.track.Segment
+import com.developers.sprintsync.tracking.model.track.distanceBetweenInMeters
 import com.developers.sprintsync.tracking.util.calculator.CaloriesCalculator
 import com.developers.sprintsync.tracking.util.calculator.PaceCalculator
 import javax.inject.Inject

@@ -1,5 +1,10 @@
 package com.developers.sprintsync.tracking.model
 
+import com.developers.sprintsync.tracking.model.track.Latitude
+import com.developers.sprintsync.tracking.model.track.LocationModel
+import com.developers.sprintsync.tracking.model.track.Longitude
+import com.developers.sprintsync.tracking.model.track.Segment
+
 val TEST_SEGMENTS =
     listOf(
         Segment.ActiveSegment(

@@ -1,8 +1,8 @@
 package com.developers.sprintsync.tracking.db.converter
 
 import androidx.room.TypeConverter
-import com.developers.sprintsync.tracking.model.Segment
-import com.developers.sprintsync.tracking.model.Segments
+import com.developers.sprintsync.tracking.model.track.Segment
+import com.developers.sprintsync.tracking.model.track.Segments
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory
@@ -15,8 +15,7 @@ class SegmentsTypeConverter {
             .registerSubtype(
                 Segment.ActiveSegment::class.java,
                 SegmentType.ACTIVE.lowercaseName,
-            )
-            .registerSubtype(
+            ).registerSubtype(
                 Segment.InactiveSegment::class.java,
                 SegmentType.INACTIVE.lowercaseName,
             )

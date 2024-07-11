@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.developers.sprintsync.tracking.db.dto.TrackEntity
-import com.developers.sprintsync.tracking.model.Track
+import com.developers.sprintsync.tracking.model.track.Track
 import kotlinx.coroutines.flow.Flow
 
 @Dao

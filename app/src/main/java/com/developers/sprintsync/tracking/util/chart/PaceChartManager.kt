@@ -2,7 +2,7 @@ package com.developers.sprintsync.tracking.util.chart
 
 import android.content.Context
 import com.developers.sprintsync.global.manager.AppThemeManager
-import com.developers.sprintsync.tracking.model.Segments
+import com.developers.sprintsync.tracking.model.track.Segments
 import com.developers.sprintsync.tracking.util.chart.formatter.PaceChartDurationFormatter
 import com.developers.sprintsync.tracking.util.chart.formatter.PaceChartPaceFormatter
 import com.github.mikephil.charting.charts.LineChart
@@ -11,7 +11,9 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 
-class PaceChartManager(private val context: Context) {
+class PaceChartManager(
+    private val context: Context,
+) {
     private var _chart: LineChart? = null
     private val chart get() = requireNotNull(_chart) { "Chart is not initialized" }
 
@@ -43,8 +45,8 @@ class PaceChartManager(private val context: Context) {
         }
     }
 
-    private fun getLineDataSet(entries: List<Entry>): LineDataSet {
-        return LineDataSet(entries, CHART_DATA_LABEL).apply {
+    private fun getLineDataSet(entries: List<Entry>): LineDataSet =
+        LineDataSet(entries, CHART_DATA_LABEL).apply {
             setDrawValues(false)
             setDrawCircles(false)
             setDrawFilled(false)
@@ -52,7 +54,6 @@ class PaceChartManager(private val context: Context) {
             mode = LineDataSet.Mode.CUBIC_BEZIER
             color = themeManager.getFourthlyColor()
         }
-    }
 
     private fun setInteraction() {
         chart.apply {

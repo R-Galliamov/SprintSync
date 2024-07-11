@@ -1,15 +1,17 @@
 package com.developers.sprintsync.tracking.service.monitor
 
-import com.developers.sprintsync.tracking.model.PaceAnalysisResult
-import com.developers.sprintsync.tracking.model.Segment
-import com.developers.sprintsync.tracking.model.UserActivityState
+import com.developers.sprintsync.tracking.model.indicator.PaceAnalysisResult
+import com.developers.sprintsync.tracking.model.session.UserActivityState
+import com.developers.sprintsync.tracking.model.track.Segment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class ActivityMonitor
     @Inject
-    constructor(private val debouncer: Debouncer) {
+    constructor(
+        private val debouncer: Debouncer,
+    ) {
         private val _userActivityState: MutableStateFlow<UserActivityState> =
             MutableStateFlow(UserActivityState.Running)
         val userActivityState = _userActivityState.asStateFlow()
@@ -28,9 +30,7 @@ class ActivityMonitor
             }
         }
 
-        fun isStopped(): Boolean {
-            return userActivityState.value is UserActivityState.HasStopped
-        }
+        fun isStopped(): Boolean = userActivityState.value is UserActivityState.HasStopped
 
         fun stopMonitoringInactivity() {
             debouncer.cancel()
@@ -40,7 +40,6 @@ class ActivityMonitor
             _userActivityState.value = userActivityState
         }
 
-        private fun isPaceSlowedDown(segments: List<Segment>): Boolean {
-            return (PaceAnalyzer.analyzePaceChange(segments) == PaceAnalysisResult.PaceSlowedDown)
-        }
+        private fun isPaceSlowedDown(segments: List<Segment>): Boolean =
+            (PaceAnalyzer.analyzePaceChange(segments) == PaceAnalysisResult.PaceSlowedDown)
     }

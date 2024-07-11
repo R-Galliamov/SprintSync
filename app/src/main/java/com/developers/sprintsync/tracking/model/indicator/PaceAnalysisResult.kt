@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.model
+package com.developers.sprintsync.tracking.model.indicator
 
 sealed class PaceAnalysisResult {
     object PaceNormal : PaceAnalysisResult()
