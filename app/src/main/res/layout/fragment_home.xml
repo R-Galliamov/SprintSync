@@ -248,7 +248,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvTotalKmValue"
+                    android:id="@+id/tvTotalDistanceValue"
                     style="@style/TabloidText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -256,7 +256,7 @@
                     tools:text="25.0" />
 
                 <TextView
-                    android:id="@+id/tvKm"
+                    android:id="@+id/tvDistance"
                     style="@style/SubTitleText.Caps.Gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
