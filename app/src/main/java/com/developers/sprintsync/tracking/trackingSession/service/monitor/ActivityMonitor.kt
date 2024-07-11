@@ -1,8 +1,8 @@
-package com.developers.sprintsync.tracking.service.monitor
+package com.developers.sprintsync.tracking.trackingSession.service.monitor
 
-import com.developers.sprintsync.tracking.model.indicator.PaceAnalysisResult
-import com.developers.sprintsync.tracking.model.session.UserActivityState
-import com.developers.sprintsync.tracking.model.track.Segment
+import com.developers.sprintsync.tracking.trackingSession.model.indicator.PaceAnalysisResult
+import com.developers.sprintsync.tracking.trackingSession.model.session.UserActivityState
+import com.developers.sprintsync.tracking.trackingSession.model.track.Segment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
