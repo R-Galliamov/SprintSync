@@ -10,9 +10,9 @@ import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DurationFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.PaceMapper
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.analytics.ui.map.manager.map.MapManager
 import com.developers.sprintsync.tracking.session.model.session.TrackerState
 import com.developers.sprintsync.tracking.session.model.track.Segment
@@ -136,7 +136,7 @@ class TrackingFragment : Fragment() {
     }
 
     private fun updateDuration(durationMillis: Long) {
-        binding.tvDuration.text = TimeMapper.millisToPresentableTime(durationMillis)
+        binding.tvDuration.text = DurationFormatter.formatToHhMmSs(durationMillis)
     }
 
     private fun updateTrackingData(track: Track) {

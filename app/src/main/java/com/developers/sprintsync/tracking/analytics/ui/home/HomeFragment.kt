@@ -8,15 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentHomeBinding
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.PaceMapper
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.TimeMapper
-import com.developers.sprintsync.tracking.analytics.model.TrackingStatistics
+import com.developers.sprintsync.tracking.analytics.model.FormattedStatistics
 import com.developers.sprintsync.tracking.analytics.viewModel.HomeViewModel
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+
+    private val spannableStyler by lazy { SpannableStyler(requireContext()) }
 
     private val viewModel by activityViewModels<HomeViewModel>()
 
@@ -49,21 +48,19 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun updateTotals(stat: TrackingStatistics) {
+    private fun updateTotals(stat: FormattedStatistics) {
         binding.apply {
-            tvTotalRunsValue.text = stat.runs.toString()
-            tvTotalDistanceValue.text =
-                DistanceMapper.metersToPresentableKilometers(stat.totalDistance)
-            tvTotalKcalValue.text = stat.totalCalories.toString()
+            tvTotalRunsValue.text = stat.runs
+            tvTotalDistanceValue.text = stat.totalDistance
+            tvTotalKcalValue.text = stat.totalCalories
         }
     }
 
-    private fun updateBestResults(stat: TrackingStatistics) {
+    private fun updateBestResults(stat: FormattedStatistics) {
         binding.apply {
-            tvLongestDistanceValue.text =
-                DistanceMapper.metersToPresentableKilometers(stat.longestDistance)
-            tvBestPaceValue.text = PaceMapper.formatPaceWithTwoDecimals(stat.bestPace)
-            tvMaxDurationValue.text = TimeMapper.millisToPresentableTime(stat.maxDuration)
+            tvLongestDistanceValue.text = stat.longestDistance
+            tvBestPaceValue.text = stat.bestPace
+            tvMaxDurationValue.text = spannableStyler.styleDuration(stat.maxDuration)
         }
     }
 

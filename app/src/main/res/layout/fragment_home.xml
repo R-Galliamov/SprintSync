@@ -322,7 +322,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/lag2"
-                android:text="@string/longest_distance"
+                android:text="@string/distance"
                 app:layout_constraintBottom_toBottomOf="@id/ivLongestDistance"
                 app:layout_constraintStart_toEndOf="@id/ivLongestDistance"
                 app:layout_constraintTop_toTopOf="@id/ivLongestDistance" />
@@ -362,7 +362,7 @@
                 style="@style/SubTitleText.Caps.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/best_pace"
+                android:text="@string/pace"
                 app:layout_constraintBottom_toBottomOf="@id/ivBestPace"
                 app:layout_constraintStart_toStartOf="@id/tvLongestDistance"
                 app:layout_constraintTop_toTopOf="@id/ivBestPace" />
@@ -391,8 +391,10 @@
                 android:layout_width="@dimen/lag8"
                 android:layout_height="@dimen/lag8"
                 android:layout_marginTop="@dimen/lag12"
+                android:layout_marginBottom="@dimen/regularSpace"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_timer_32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/ivBestPace"
                 app:layout_constraintTop_toBottomOf="@id/ivBestPace" />
 
@@ -401,7 +403,7 @@
                 style="@style/SubTitleText.Caps.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/max_duration"
+                android:text="@string/duration"
                 app:layout_constraintBottom_toBottomOf="@id/ivMaxDuration"
                 app:layout_constraintStart_toStartOf="@id/tvBestPace"
                 app:layout_constraintTop_toTopOf="@id/ivMaxDuration" />
@@ -414,18 +416,7 @@
                 android:layout_marginBottom="-6dp"
                 app:layout_constraintBottom_toBottomOf="@id/tvMaxDuration"
                 app:layout_constraintEnd_toEndOf="@id/tvLongestDistanceValue"
-                tools:text="1:02" />
-
-            <TextView
-                style="@style/SubTitleText.Gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-6dp"
-                android:layout_marginBottom="@dimen/regularSpace"
-                android:text="@string/h_m"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/tvMaxDurationValue"
-                app:layout_constraintTop_toBottomOf="@id/tvMaxDurationValue" />
+                tools:text="1:02:33" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
