@@ -7,7 +7,7 @@ import android.content.Context
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.developers.sprintsync.R
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.TimeMapper
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DurationFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -47,7 +47,7 @@ class TrackingServiceNotifier
                 .setCustomContentView(notificationLayout)
 
         fun updateDuration(timeInMillis: Long) {
-            val presentableTime = TimeMapper.millisToPresentableTime(timeInMillis)
+            val presentableTime = DurationFormatter.formatToHhMmSs(timeInMillis)
             notificationLayout.setTextViewText(R.id.tvDurationValue, presentableTime)
             notification.setCustomContentView(notificationLayout)
             notificationManager.notify(NOTIFICATION_ID, notification.build())

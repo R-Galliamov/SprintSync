@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.developers.sprintsync.databinding.FragmentSessionSummaryBinding
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DurationFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.PaceMapper
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.analytics.ui.map.manager.chart.PaceChartManager
 import com.developers.sprintsync.tracking.analytics.viewModel.SessionSummaryViewModel
 import com.developers.sprintsync.tracking.session.model.track.Track
@@ -63,7 +63,7 @@ class SessionSummaryFragment : Fragment() {
         binding.apply {
             tvDistanceValue.text =
                 DistanceMapper.metersToPresentableKilometers(track.distanceMeters, true)
-            tvDurationValue.text = TimeMapper.millisToPresentableTime(track.durationMillis)
+            tvDurationValue.text = DurationFormatter.formatToHhMmSs(track.durationMillis)
             tvAvgPaceValue.text = PaceMapper.formatPaceWithTwoDecimals(track.avgPace)
             tvBestPaceValue.text = PaceMapper.formatPaceWithTwoDecimals(track.bestPace)
             tvCaloriesValue.text = track.calories.toString()

@@ -6,8 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.developers.sprintsync.databinding.ItemTrackingHistoryBinding
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DateFormatter
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DurationFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.TimeMapper
 import com.developers.sprintsync.tracking.session.model.track.Track
 
 class TrackListAdapter(
@@ -36,10 +37,10 @@ class TrackListAdapter(
         fun bind(track: Track) {
             binding.apply {
                 // TODO: set date mapper and calories mapper
-                tvDate.text = TimeMapper.timestampToPresentableDate(track.timestamp)
+                tvDate.text = DateFormatter.formatDate(track.timestamp)
                 tvDistance.text =
                     DistanceMapper.metersToPresentableKilometers(track.distanceMeters, true)
-                tvDuration.text = TimeMapper.millisToPresentableTime(track.durationMillis)
+                tvDuration.text = DurationFormatter.formatToHhMmSs(track.durationMillis)
                 tvCalories.text = track.calories.toString()
                 itemView.setOnClickListener {
                     onInteractionListener.onItemSelected(track.id)
