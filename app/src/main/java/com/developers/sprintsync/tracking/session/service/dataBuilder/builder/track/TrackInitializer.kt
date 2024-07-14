@@ -23,6 +23,7 @@ class TrackInitializer
                         bestPace = initialSegment.pace,
                         calories = initialSegment.calories,
                         segments = listOf(initialSegment),
+                        imageBitmap = null,
                     )
 
                 is Segment.InactiveSegment ->
