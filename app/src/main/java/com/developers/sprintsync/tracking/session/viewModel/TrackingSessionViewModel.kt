@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.tracking.dataStorage.repository.useCase.SaveTrackuseCase
+import com.developers.sprintsync.tracking.session.model.session.TrackStatus
 import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.tracking.session.service.manager.TrackingSessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,13 +52,15 @@ class TrackingSessionViewModel
             sessionManager.stopUpdatingLocation()
         }
 
-        fun resetData() {
-            sessionManager.reset()
-        }
-
         fun saveTrack(track: Track) {
             viewModelScope.launch {
                 saveTrackUseCase.invoke(track)
+            }
+        }
+
+        fun onDestroy() {
+            if (sessionManager.data.value.trackStatus !is TrackStatus.Incomplete) {
+                sessionManager.reset()
             }
         }
     }

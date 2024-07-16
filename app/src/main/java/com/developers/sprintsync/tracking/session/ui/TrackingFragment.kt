@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
@@ -36,8 +35,6 @@ class TrackingFragment : Fragment() {
     private val service by lazy { TrackingServiceController(requireContext()) }
 
     private val mapManager: MapManager by lazy { MapManager(requireContext()) }
-
-    private val observers = mutableListOf<Observer<*>>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -142,36 +139,32 @@ class TrackingFragment : Fragment() {
     }
 
     private fun setTrackStatusObserver() {
-        val statusObserver =
-            Observer<TrackStatus> { status ->
-                Log.d("MyStack", "status : $status")
-                when (status) {
-                    is TrackStatus.Valid -> {
-                        val track = sessionViewModel.track.value
-                        // add image
-                        track?.let {
-                            val bitmap =
-                                BitmapFactory.decodeResource(
-                                    resources,
-                                    R.drawable.im_training_sample,
-                                )
-                            sessionViewModel.saveTrack(track.copy(imageBitmap = bitmap))
-                        }
-                        sessionViewModel.resetData()
-                        navigateToSessionSummary()
+        sessionViewModel.trackStatus.observe(viewLifecycleOwner) { status ->
+            Log.d("MyStack", "status : $status")
+            when (status) {
+                is TrackStatus.Valid -> {
+                    val track = sessionViewModel.track.value
+                    // add image
+                    track?.let {
+                        val bitmap =
+                            BitmapFactory.decodeResource(
+                                resources,
+                                R.drawable.im_training_sample,
+                            )
+                        sessionViewModel.saveTrack(track.copy(imageBitmap = bitmap))
                     }
+                    navigateToSessionSummary()
+                }
 
-                    is TrackStatus.Invalid -> {
-                        sessionViewModel.resetData()
-                        navigateUp()
-                    }
+                is TrackStatus.Invalid -> {
+                    navigateUp()
+                }
 
-                    is TrackStatus.Incomplete -> {
-                        // NO - OP
-                    }
+                is TrackStatus.Incomplete -> {
+                    // NO - OP
                 }
             }
-        sessionViewModel.trackStatus.observe(viewLifecycleOwner, statusObserver)
+        }
     }
 
     private fun updateDuration(durationMillis: Long) {
@@ -348,6 +341,7 @@ class TrackingFragment : Fragment() {
         super.onDestroyView()
         Log.d(tag, "onDestroyView")
         binding.mapView.onDestroy()
+        sessionViewModel.onDestroy()
         mapManager.clear()
         _binding = null
     }
