@@ -1,6 +1,7 @@
 package com.developers.sprintsync.tracking.analytics.ui.map.manager.map
 
 import android.content.Context
+import android.util.Log
 import com.developers.sprintsync.R
 import com.developers.sprintsync.global.manager.AppThemeManager
 import com.developers.sprintsync.global.util.extension.getBitmapDescriptor
@@ -15,9 +16,13 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 
+interface Clearable {
+    fun clear()
+}
+
 class MapManager(
     private val context: Context,
-) {
+) : Clearable {
     private var _map: GoogleMap? = null
 
     private val map get() = checkNotNull(_map) { "Map is null" }
@@ -80,6 +85,18 @@ class MapManager(
         } else {
             currentUserMarker?.position = latLng
         }
+    }
+
+    fun cleanUp() {
+        map.clear()
+        currentUserMarker?.remove()
+        currentUserMarker = null
+        _map = null
+    }
+
+    override fun clear() {
+        cleanUp()
+        Log.d("MyStack", "MapManager cleared, map: $_map")
     }
 
     private fun addPolyline(

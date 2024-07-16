@@ -19,5 +19,5 @@ interface TrackingSessionManager {
 
     fun finishTracking()
 
-    fun isTrackValid(): Boolean
+    fun reset()
 }

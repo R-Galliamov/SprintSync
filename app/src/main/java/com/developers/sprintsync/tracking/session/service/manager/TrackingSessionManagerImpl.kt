@@ -38,5 +38,7 @@ class TrackingSessionManagerImpl
             tracker.finish()
         }
 
-        override fun isTrackValid(): Boolean = tracker.isTrackValid()
+        override fun reset() {
+            tracker.reset()
+        }
     }

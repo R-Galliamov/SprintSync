@@ -98,6 +98,7 @@ class TrackingService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d("My stack", "Service onDestroy")
     }
 
     override fun onBind(p0: Intent?): IBinder = Binder()

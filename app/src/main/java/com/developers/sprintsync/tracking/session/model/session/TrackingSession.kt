@@ -7,6 +7,7 @@ data class TrackingSession(
     val currentLocation: LocationModel?,
     val track: Track,
     val durationMillis: Long,
+    val trackStatus: TrackStatus,
 ) {
     companion object {
         val DEFAULT =
@@ -14,6 +15,7 @@ data class TrackingSession(
                 currentLocation = null,
                 track = Track.EMPTY_TRACK_DATA,
                 durationMillis = 0L,
+                trackStatus = TrackStatus.Incomplete,
             )
     }
 }

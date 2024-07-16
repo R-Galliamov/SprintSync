@@ -1,5 +1,6 @@
 package com.developers.sprintsync.tracking.session.ui
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
@@ -14,6 +16,7 @@ import com.developers.sprintsync.tracking.analytics.dataManager.formatter.Durati
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.PaceMapper
 import com.developers.sprintsync.tracking.analytics.ui.map.manager.map.MapManager
+import com.developers.sprintsync.tracking.session.model.session.TrackStatus
 import com.developers.sprintsync.tracking.session.model.session.TrackerState
 import com.developers.sprintsync.tracking.session.model.track.Segment
 import com.developers.sprintsync.tracking.session.model.track.Segments
@@ -34,6 +37,8 @@ class TrackingFragment : Fragment() {
 
     private val mapManager: MapManager by lazy { MapManager(requireContext()) }
 
+    private val observers = mutableListOf<Observer<*>>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,7 +53,7 @@ class TrackingFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated")
+        Log.d(tag, "onViewCreated")
         updateProgressBarVisibility(true)
         initMap(savedInstanceState) {
             updateProgressBarVisibility(false)
@@ -60,32 +65,33 @@ class TrackingFragment : Fragment() {
         }
         setTrackerStateObservers()
         setDurationObserver()
+        setTrackStatusObserver()
         setFinishButtonListener()
         setBackButtonListener()
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart")
+        Log.d(tag, "onStart")
         sessionViewModel.startUpdatingLocation()
         binding.mapView.onStart()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG, "onPause")
+        Log.d(tag, "onPause")
         binding.mapView.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume")
+        Log.d(tag, "onResume")
         binding.mapView.onResume()
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, "onStop")
+        Log.d(tag, "onStop")
         sessionViewModel.stopUpdatingLocation()
         binding.mapView.onStop()
     }
@@ -135,6 +141,39 @@ class TrackingFragment : Fragment() {
         }
     }
 
+    private fun setTrackStatusObserver() {
+        val statusObserver =
+            Observer<TrackStatus> { status ->
+                Log.d("MyStack", "status : $status")
+                when (status) {
+                    is TrackStatus.Valid -> {
+                        val track = sessionViewModel.track.value
+                        // add image
+                        track?.let {
+                            val bitmap =
+                                BitmapFactory.decodeResource(
+                                    resources,
+                                    R.drawable.im_training_sample,
+                                )
+                            sessionViewModel.saveTrack(track.copy(imageBitmap = bitmap))
+                        }
+                        sessionViewModel.resetData()
+                        navigateToSessionSummary()
+                    }
+
+                    is TrackStatus.Invalid -> {
+                        sessionViewModel.resetData()
+                        navigateUp()
+                    }
+
+                    is TrackStatus.Incomplete -> {
+                        // NO - OP
+                    }
+                }
+            }
+        sessionViewModel.trackStatus.observe(viewLifecycleOwner, statusObserver)
+    }
+
     private fun updateDuration(durationMillis: Long) {
         binding.tvDuration.text = DurationFormatter.formatToHhMmSs(durationMillis)
     }
@@ -159,7 +198,7 @@ class TrackingFragment : Fragment() {
         }
 
     private fun updateTrackingControllerPanel(state: TrackerState) {
-        Log.d(TAG, "updateTrackingControllerPanel: $state")
+        Log.d(tag, "updateTrackingControllerPanel: $state")
         when (state) {
             TrackerState.Initialised -> {
                 initTrackingControllerButton()
@@ -180,10 +219,7 @@ class TrackingFragment : Fragment() {
             }
 
             TrackerState.Finished -> {
-                when (sessionViewModel.isTrackValid()) {
-                    true -> findTopNavController().navigate(R.id.action_trackingFragment_to_sessionSummaryFragment)
-                    false -> findTopNavController().navigateUp()
-                }
+                // NO - OP
             }
         }
     }
@@ -302,14 +338,22 @@ class TrackingFragment : Fragment() {
             ?.segments
             ?.takeIf { it.isNotEmpty() }
 
+    private fun navigateToSessionSummary() {
+        findTopNavController().navigate(R.id.action_trackingFragment_to_sessionSummaryFragment)
+    }
+
+    private fun navigateUp() = findTopNavController().navigateUp()
+
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(TAG, "onDestroyView")
+        Log.d(tag, "onDestroyView")
         binding.mapView.onDestroy()
+        mapManager.clear()
         _binding = null
     }
 
-    companion object {
-        private const val TAG = "Tracking Fragment"
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(tag, "onDestroy")
     }
 }

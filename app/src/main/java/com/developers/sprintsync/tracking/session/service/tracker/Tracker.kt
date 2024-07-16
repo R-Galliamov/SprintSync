@@ -2,7 +2,7 @@ package com.developers.sprintsync.tracking.session.service.tracker
 
 import android.util.Log
 import com.developers.sprintsync.global.util.extension.withLatestConcat
-import com.developers.sprintsync.tracking.dataStorage.repository.TrackRepository
+import com.developers.sprintsync.tracking.session.model.session.TrackStatus
 import com.developers.sprintsync.tracking.session.model.session.TrackerState
 import com.developers.sprintsync.tracking.session.model.session.TrackingSession
 import com.developers.sprintsync.tracking.session.model.track.LocationModel
@@ -27,10 +27,10 @@ class Tracker
         private val timeProvider: TimeProvider,
         private val trackBuilder: TrackBuilder,
         private val activityMonitor: ActivityMonitor,
-        private val repository: TrackRepository,
     ) {
-        private val _state: MutableStateFlow<TrackerState> = MutableStateFlow(TrackerState.Initialised)
-        val state = _state.asStateFlow()
+        private val _trackerState: MutableStateFlow<TrackerState> =
+            MutableStateFlow(TrackerState.Initialised)
+        val state = _trackerState.asStateFlow()
 
         val userActivityState = activityMonitor.userActivityState
 
@@ -77,18 +77,26 @@ class Tracker
         }
 
         fun start() {
-            _state.value = TrackerState.Tracking
+            _trackerState.value = TrackerState.Tracking
         }
 
         fun pause() {
-            _state.value = TrackerState.Paused
+            _trackerState.value = TrackerState.Paused
         }
 
         fun finish() {
-            _state.value = TrackerState.Finished
+            _trackerState.value = TrackerState.Finished
         }
 
-        fun isTrackValid(): Boolean = getTrack().segments.isNotEmpty()
+        fun reset() {
+            resetTrackData()
+            resetDuration()
+            resetSessionStatus()
+            resetState()
+            timeProvider.reset()
+        }
+
+        private fun isTrackValid(): Boolean = getTrack().segments.isNotEmpty()
 
         private fun initTimeScope() {
             timeScope = CoroutineScope(dispatcher)
@@ -146,6 +154,10 @@ class Tracker
             _data.value = _data.value.copy(track = track)
         }
 
+        private fun updateSession(trackStatus: TrackStatus) {
+            _data.value = _data.value.copy(trackStatus = trackStatus)
+        }
+
         private fun getTrack(): Track = data.value.track
 
         private fun addInactiveSegmentToTrack() {
@@ -174,13 +186,6 @@ class Tracker
 
         private fun areUpdatingCoroutinesInactive(): Boolean = (locationScope == null && trackingScope == null && timeScope == null)
 
-        private fun resetData() {
-            resetTrackData()
-            resetDuration()
-            resetState()
-            timeProvider.reset()
-        }
-
         private fun resetTrackData() {
             trackBuilder.reset()
             val track = trackBuilder.buildTrack()
@@ -191,12 +196,20 @@ class Tracker
             updateSession(0L)
         }
 
-        private fun resetState() {
-            _state.value = TrackerState.Initialised
+        private fun resetSessionStatus() {
+            updateSession(TrackStatus.Incomplete)
         }
 
-        private suspend fun saveTrack() {
-            repository.saveTrack(getTrack())
+        private fun resetState() {
+            _trackerState.value = TrackerState.Initialised
+        }
+
+        private fun completeSession(isTrackValid: Boolean) {
+            Log.d("My Stack", "completeSession : $isTrackValid")
+            when (isTrackValid) {
+                true -> updateSession(TrackStatus.Valid)
+                false -> updateSession(TrackStatus.Invalid)
+            }
         }
 
         private fun initTrackerStateListener() {
@@ -231,11 +244,7 @@ class Tracker
                                 }
                             }
                             Log.d("My Stack", "finished : ${getTrack()}")
-                            if (isTrackValid()) {
-                                Log.d("My Stack", "saved : ${getTrack()}")
-                                saveTrack()
-                            }
-                            resetData()
+                            completeSession(isTrackValid())
                             activityMonitor.stopMonitoringInactivity()
                         }
                     }
