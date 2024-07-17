@@ -74,8 +74,8 @@
     <ImageView
         android:id="@+id/btBack"
         style="@style/TransparentButton"
-        android:layout_marginStart="@dimen/regularSpace"
-        android:layout_marginTop="@dimen/regularSpace"
+        android:layout_marginStart="@dimen/space.regular"
+        android:layout_marginTop="@dimen/space.regular"
         android:contentDescription="@string/move_back"
         android:src="@drawable/ic_cancel_24dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,8 +84,8 @@
     <ImageView
         android:id="@+id/btSettings"
         style="@style/TransparentButton"
-        android:layout_marginTop="@dimen/regularSpace"
-        android:layout_marginEnd="@dimen/regularSpace"
+        android:layout_marginTop="@dimen/space.regular"
+        android:layout_marginEnd="@dimen/space.regular"
         android:contentDescription="@string/settings"
         android:src="@drawable/ic_settings_24dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +96,7 @@
         style="@style/TabloidText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/bigSpace"
+        android:layout_marginTop="@dimen/space.big"
         android:text="@string/start_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +107,7 @@
         style="@style/RegularText.Bold.Gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/regularSpace"
+        android:paddingBottom="@dimen/space.regular"
         android:text="@string/min"
         app:layout_constraintEnd_toEndOf="@id/tvDuration"
         app:layout_constraintStart_toStartOf="@id/tvDuration"
@@ -116,7 +116,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/bigSpace"
+        android:layout_marginBottom="@dimen/space.big"
         android:baselineAligned="true"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/btTrackingController"
@@ -198,9 +198,9 @@
 
     <FrameLayout
         android:id="@+id/btTrackingController"
-        android:layout_width="@dimen/largeCircleButtonSize"
-        android:layout_height="@dimen/largeCircleButtonSize"
-        android:layout_marginBottom="@dimen/regularSpace"
+        android:layout_width="@dimen/button.circle.size.large"
+        android:layout_height="@dimen/button.circle.size.large"
+        android:layout_marginBottom="@dimen/space.regular"
         android:background="@drawable/bt_circle_secondary"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@id/ivCardBottom"
@@ -208,7 +208,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/tv_tracking_controller"
+            android:id="@+id/tvTrackingController"
             style="@style/TabloidText.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -217,9 +217,9 @@
             android:text="@string/start" />
 
         <ImageView
-            android:id="@+id/im_tracking_controller"
-            android:layout_width="@dimen/bigImageSize"
-            android:layout_height="@dimen/bigImageSize"
+            android:id="@+id/imTrackingController"
+            android:layout_width="@dimen/iconSize.big"
+            android:layout_height="@dimen/iconSize.big"
             android:layout_gravity="center"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_start_48dp" />
@@ -228,10 +228,10 @@
 
     <FrameLayout
         android:id="@+id/btFinish"
-        android:layout_width="@dimen/bigCircleButtonSize"
-        android:layout_height="@dimen/bigCircleButtonSize"
-        android:layout_marginStart="@dimen/bigSpace"
-        android:layout_marginBottom="@dimen/regularSpace"
+        android:layout_width="@dimen/button.circle.size.big"
+        android:layout_height="@dimen/button.circle.size.big"
+        android:layout_marginStart="@dimen/space.big"
+        android:layout_marginBottom="@dimen/space.regular"
         android:background="@drawable/bt_circle_fourthly"
         android:clickable="true"
         android:visibility="gone"
@@ -249,10 +249,10 @@
 
     <FrameLayout
         android:id="@+id/btLock"
-        android:layout_width="@dimen/bigCircleButtonSize"
-        android:layout_height="@dimen/bigCircleButtonSize"
-        android:layout_marginEnd="@dimen/bigSpace"
-        android:layout_marginBottom="@dimen/regularSpace"
+        android:layout_width="@dimen/button.circle.size.big"
+        android:layout_height="@dimen/button.circle.size.big"
+        android:layout_marginEnd="@dimen/space.big"
+        android:layout_marginBottom="@dimen/space.regular"
         android:background="@drawable/bt_circle_outlined_black"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@id/btTrackingController"

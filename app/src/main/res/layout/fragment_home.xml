@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_white_gray"
-    android:paddingBottom="@dimen/largeSpace"
+    android:paddingBottom="@dimen/space.large"
     tools:context=".tracking.analytics.ui.home.HomeFragment">
 
     <LinearLayout
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/card_white_top"
-            android:padding="@dimen/regularSpace">
+            android:padding="@dimen/space.regular">
 
             <TextView
                 android:id="@+id/tvWeekGoal"
@@ -56,7 +56,7 @@
                 android:id="@+id/pbWeekGoal"
                 android:layout_width="@dimen/lag50"
                 android:layout_height="@dimen/lag50"
-                android:layout_marginTop="@dimen/regularSpace"
+                android:layout_marginTop="@dimen/space.regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvWeekGoal"
                 app:strokeWidth="@dimen/lag5" />
@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:orientation="horizontal"
-            android:padding="@dimen/regularSpace">
+            android:padding="@dimen/space.regular">
 
             <TextView
                 style="@style/TitleText.Caps"
@@ -162,7 +162,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/lag18"
-            android:layout_margin="@dimen/regularSpace"
+            android:layout_margin="@dimen/space.regular"
             android:background="@drawable/card_grad_thirdly">
 
             <ImageView
@@ -205,7 +205,7 @@
             style="@style/TitleText.Caps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/regularSpace"
+            android:layout_marginStart="@dimen/space.regular"
             android:text="@string/record_board"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -214,7 +214,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/regularSpace"
+            android:layout_marginTop="@dimen/space.regular"
             android:baselineAligned="true"
             android:orientation="horizontal">
 
@@ -295,22 +295,22 @@
             style="@style/RegularText.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/regularSpace"
+            android:padding="@dimen/space.regular"
             android:text="@string/best_results" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/regularSpace"
-            android:layout_marginEnd="@dimen/regularSpace"
+            android:layout_marginStart="@dimen/space.regular"
+            android:layout_marginEnd="@dimen/space.regular"
             android:background="@drawable/card_outlined_black">
 
             <ImageView
                 android:id="@+id/ivLongestDistance"
                 android:layout_width="@dimen/lag8"
                 android:layout_height="@dimen/lag8"
-                android:layout_marginStart="@dimen/regularSpace"
-                android:layout_marginTop="@dimen/regularSpace"
+                android:layout_marginStart="@dimen/space.regular"
+                android:layout_marginTop="@dimen/space.regular"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_distance_32dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -332,7 +332,7 @@
                 style="@style/TabloidText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/regularSpace"
+                android:layout_marginEnd="@dimen/space.regular"
                 android:layout_marginBottom="-6dp"
                 app:layout_constraintBottom_toBottomOf="@id/tvLongestDistance"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -391,7 +391,7 @@
                 android:layout_width="@dimen/lag8"
                 android:layout_height="@dimen/lag8"
                 android:layout_marginTop="@dimen/lag12"
-                android:layout_marginBottom="@dimen/regularSpace"
+                android:layout_marginBottom="@dimen/space.regular"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_timer_32dp"
                 app:layout_constraintBottom_toBottomOf="parent"

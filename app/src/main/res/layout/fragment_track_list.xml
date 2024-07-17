@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/largeSpace"
+        android:paddingBottom="@dimen/space.large"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="10"
-        tools:listitem="@layout/item_tracking_history" />
+        tools:listitem="@layout/item_track_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

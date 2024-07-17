@@ -19,28 +19,34 @@
     <dimen name="lag100">400dp</dimen>
 
     <!--Space-->
-    <dimen name="largeSpace">40dp</dimen>
-    <dimen name="bigSpace">32dp</dimen>
-    <dimen name="regularSpace">20dp</dimen>
-    <dimen name="smallSpace">10dp</dimen>
+    <dimen name="space.small">10dp</dimen>
+    <dimen name="space.regular">20dp</dimen>
+    <dimen name="space.big">32dp</dimen>
+    <dimen name="space.large">40dp</dimen>
 
     <!--Text-->
-    <dimen name="accentSize">40sp</dimen>
-    <dimen name="titlesSize">24sp</dimen>
-    <dimen name="bigTextSize">20sp</dimen>
-    <dimen name="regularTextSize">16sp</dimen>
+    <dimen name="textSize.small">16sp</dimen>
+    <dimen name="textSize.regular">20sp</dimen>
+    <dimen name="textSize.title">24sp</dimen>
+    <dimen name="textSize.accent">40sp</dimen>
+
+    <!--Icon-->
+    <dimen name="iconSize.small">24dp</dimen>
+    <dimen name="iconSize.medium">32dp</dimen>
+    <dimen name="iconSize.big">48dp</dimen>
 
     <!--Image-->
-    <dimen name="smallImageSize">24dp</dimen>
-    <dimen name="mediumImageSize">32dp</dimen>
-    <dimen name="bigImageSize">48dp</dimen>
+    <dimen name="mapPreview.height">120dp</dimen>
+    <dimen name="mapPreview.width">160dp</dimen>
 
     <!--Button-->
-    <dimen name="smallButtonHeight">48dp</dimen>
-    <dimen name="regularButtonHeight">72dp</dimen>
-    <dimen name="bigCircleButtonSize">60dp</dimen>
-    <dimen name="largeCircleButtonSize">120dp</dimen>
+    <dimen name="button.height.small">48dp</dimen>
+    <dimen name="button.height.regular">72dp</dimen>
+    <dimen name="button.circle.size.big">60dp</dimen>
+    <dimen name="button.circle.size.large">120dp</dimen>
 
-    <!--Shapes-->
-    <dimen name="regularCornerRadius">32dp</dimen>
+    <!--Shape-->
+    <dimen name="shape.strokeWidth">2dp</dimen>
+    <dimen name="shape.cornerRadius">32dp</dimen>
+
 </resources>

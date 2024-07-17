@@ -5,7 +5,7 @@
     <!-- Accents -->
     <style name="TabloidText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
-        <item name="android:textSize">@dimen/accentSize</item>
+        <item name="android:textSize">@dimen/textSize.accent</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -20,7 +20,7 @@
     <!-- Titles -->
     <style name="TitleText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
-        <item name="android:textSize">@dimen/titlesSize</item>
+        <item name="android:textSize">@dimen/textSize.title</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -48,7 +48,7 @@
     <!-- Subtitles -->
     <style name="SubTitleText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
-        <item name="android:textSize">@dimen/bigTextSize</item>
+        <item name="android:textSize">@dimen/textSize.regular</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -67,11 +67,11 @@
     <!-- Regular text -->
     <style name="RegularText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
-        <item name="android:textSize">@dimen/regularTextSize</item>
+        <item name="android:textSize">@dimen/textSize.small</item>
     </style>
 
     <style name="RegularText.Big">
-        <item name="android:textSize">@dimen/bigTextSize</item>
+        <item name="android:textSize">@dimen/textSize.regular</item>
     </style>
 
     <style name="RegularText.White">
@@ -91,8 +91,8 @@
         <item name="android:padding">@dimen/lag3</item>
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/bt_circle_transparent</item>
-        <item name="android:layout_width">@dimen/bigImageSize</item>
-        <item name="android:layout_height">@dimen/bigImageSize</item>
+        <item name="android:layout_width">@dimen/iconSize.big</item>
+        <item name="android:layout_height">@dimen/iconSize.big</item>
     </style>
 
 
