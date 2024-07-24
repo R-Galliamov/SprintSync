@@ -30,8 +30,8 @@ class LocationProviderImpl
         @ApplicationContext private val context: Context,
     ) : LocationProvider {
         companion object {
-            const val LOCATION_UPDATE_INTERVAL = 5000L
-            const val FASTEST_LOCATION_INTERVAL = 2F
+            const val LOCATION_UPDATE_INTERVAL = 3000L
+            const val LOCATION_UPDATE_MIN_DISTANCE = 2F
         }
 
         private val client: FusedLocationProviderClient by lazy {
@@ -47,7 +47,7 @@ class LocationProviderImpl
                     .Builder(
                         Priority.PRIORITY_HIGH_ACCURACY,
                         LOCATION_UPDATE_INTERVAL,
-                    ).setMinUpdateDistanceMeters(FASTEST_LOCATION_INTERVAL)
+                    ).setMinUpdateDistanceMeters(LOCATION_UPDATE_MIN_DISTANCE)
                     .build()
 
             return callbackFlow {
