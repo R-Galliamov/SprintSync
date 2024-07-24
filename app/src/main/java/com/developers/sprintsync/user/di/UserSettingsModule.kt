@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class UserSettingsModule {
     companion object {
-        const val USER_TEST_WEIGHT = 60.0
+        const val USER_TEST_WEIGHT = 60.0f
     }
 
     @Provides
