@@ -17,7 +17,6 @@ import com.developers.sprintsync.tracking.analytics.ui.map.util.map.MapManager
 import com.developers.sprintsync.tracking.session.model.session.TrackStatus
 import com.developers.sprintsync.tracking.session.model.session.TrackerState
 import com.developers.sprintsync.tracking.session.model.track.Segment
-import com.developers.sprintsync.tracking.session.model.track.Segments
 import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.tracking.session.model.track.toLatLng
 import com.developers.sprintsync.tracking.session.service.manager.TrackingServiceController
@@ -55,9 +54,9 @@ class TrackingFragment : Fragment() {
             mapManager.setMapStyle(sessionViewModel.minimalMapStyle)
             updateProgressBarVisibility(false)
             setTrackDataObservers()
-            getNonEmptySegments()?.let {
+            getActiveSegments()?.let {
                 mapManager.addPolylines(it)
-                mapManager.adjustCameraToSegments(it, binding.mapView.width, binding.mapView.height)
+                mapManager.moveCameraToLocation(it.last().endLocation.toLatLng())
             }
         }
         setTrackerStateObservers()
@@ -332,10 +331,11 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    private fun getNonEmptySegments(): Segments? =
+    private fun getActiveSegments(): List<Segment.ActiveSegment>? =
         sessionViewModel.track.value
             ?.segments
             ?.takeIf { it.isNotEmpty() }
+            ?.filterIsInstance<Segment.ActiveSegment>()
 
     private fun navigateToSessionSummary() {
         findTopNavController().navigate(R.id.action_trackingFragment_to_sessionSummaryFragment)

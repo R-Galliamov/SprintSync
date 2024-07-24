@@ -50,6 +50,7 @@ class MapManager(
             val startLocation = segment.startLocation.toLatLng()
             val endLocation = segment.endLocation.toLatLng()
             addPolyline(startLocation, endLocation)
+            Log.d(TAG, "addPolyline")
         }
     }
 
@@ -107,10 +108,9 @@ class MapManager(
         onSnapshotReady: (Bitmap?) -> Unit,
     ) {
         mapStyle?.let { setMapStyle(it) }
+        adjustCameraToSegments(segments, mapWidth, mapHeight)
+        currentUserMarker?.remove()
         map.setOnMapLoadedCallback {
-            adjustCameraToSegments(segments, mapWidth, mapHeight)
-            currentUserMarker?.remove()
-
             map.snapshot { bitmap ->
                 if (bitmap != null) {
                     val resizedBitmap =
@@ -151,6 +151,7 @@ class MapManager(
         map.moveCamera(
             CameraUpdateFactory.newLatLngBounds(bounds, padding),
         )
+        Log.d(TAG, "adjustCameraToBounds")
     }
 
     companion object {
