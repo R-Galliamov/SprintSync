@@ -1,10 +1,13 @@
-package com.developers.sprintsync.tracking.analytics.ui.map.manager.map
+package com.developers.sprintsync.tracking.analytics.ui.map.util.map
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
 import com.developers.sprintsync.R
 import com.developers.sprintsync.global.manager.AppThemeManager
 import com.developers.sprintsync.global.util.extension.getBitmapDescriptor
+import com.developers.sprintsync.global.util.interfaces.Clearable
+import com.developers.sprintsync.tracking.analytics.ui.map.util.bitmap.BitmapCropper
 import com.developers.sprintsync.tracking.session.model.track.Segment
 import com.developers.sprintsync.tracking.session.model.track.Segments
 import com.developers.sprintsync.tracking.session.model.track.toLatLng
@@ -12,13 +15,10 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
-
-interface Clearable {
-    fun clear()
-}
 
 class MapManager(
     private val context: Context,
@@ -33,10 +33,16 @@ class MapManager(
 
     private val polylineColor = themeManager.getFourthlyColor()
 
-    private val polylineWidth = 7.5f
-
     fun initialize(map: GoogleMap) {
         this@MapManager._map = map
+    }
+
+    fun setMapStyle(mapStyleOptions: MapStyleOptions) {
+        val success = map.setMapStyle(mapStyleOptions)
+        Log.d(TAG, "setMapStyle: $success")
+        if (!success) {
+            Log.e(TAG, "Style parsing failed.")
+        }
     }
 
     fun addPolyline(segment: Segment) {
@@ -61,15 +67,19 @@ class MapManager(
         map.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 latLng,
-                15.0f,
+                ZOOM_LEVEL,
             ),
         )
     }
 
-    // TODO: add start point
-    fun moveCameraToSegments(segments: Segments) {
-        val bounds = getBounds(segments)
-        adjustCameraToBounds(bounds)
+    fun adjustCameraToSegments(
+        segments: Segments,
+        mapWidth: Int,
+        mapHeight: Int,
+    ) {
+        val bounds = MapCalculations.calculateBounds(segments)
+        val padding = MapCalculations.calculateTrackPadding(mapWidth, mapHeight)
+        adjustCameraToBounds(bounds, padding)
     }
 
     fun updateUserMarker(latLng: LatLng) {
@@ -87,16 +97,42 @@ class MapManager(
         }
     }
 
-    fun cleanUp() {
-        map.clear()
-        currentUserMarker?.remove()
-        currentUserMarker = null
-        _map = null
+    fun captureTrackSnapshot(
+        segments: Segments,
+        mapWidth: Int,
+        mapHeight: Int,
+        targetWidth: Int,
+        targetHeight: Int,
+        mapStyle: MapStyleOptions? = null,
+        onSnapshotReady: (Bitmap?) -> Unit,
+    ) {
+        mapStyle?.let { setMapStyle(it) }
+        map.setOnMapLoadedCallback {
+            adjustCameraToSegments(segments, mapWidth, mapHeight)
+            currentUserMarker?.remove()
+
+            map.snapshot { bitmap ->
+                if (bitmap != null) {
+                    val resizedBitmap =
+                        BitmapCropper.cropToTargetDimensions(bitmap, targetWidth, targetHeight)
+                    onSnapshotReady(resizedBitmap)
+                } else {
+                    Log.e(TAG, "Failed to capture map snapshot: Bitmap is null")
+                    onSnapshotReady(null)
+                }
+            }
+        }
     }
 
     override fun clear() {
         cleanUp()
-        Log.d("MyStack", "MapManager cleared, map: $_map")
+    }
+
+    private fun cleanUp() {
+        map.clear()
+        currentUserMarker?.remove()
+        currentUserMarker = null
+        _map = null
     }
 
     private fun addPolyline(
@@ -104,24 +140,23 @@ class MapManager(
         endLatLng: LatLng,
     ) {
         val polylineOptions =
-            PolylineOptions().color(polylineColor).width(polylineWidth).add(startLatLng, endLatLng)
+            PolylineOptions().color(polylineColor).width(POLYLINE_WIDTH).add(startLatLng, endLatLng)
         map.addPolyline(polylineOptions)
     }
 
-    // TODO: add width and height
-    private fun getBounds(segments: Segments): LatLngBounds {
-        val bounds = LatLngBounds.Builder()
-        for (segment in segments) {
-            if (segment is Segment.ActiveSegment) {
-                bounds.include(segment.endLocation.toLatLng())
-            }
-        }
-        return bounds.build()
+    private fun adjustCameraToBounds(
+        bounds: LatLngBounds,
+        padding: Int,
+    ) {
+        map.moveCamera(
+            CameraUpdateFactory.newLatLngBounds(bounds, padding),
+        )
     }
 
-    private fun adjustCameraToBounds(bounds: LatLngBounds) {
-        map.moveCamera(
-            CameraUpdateFactory.newLatLngBounds(bounds, 100),
-        )
+    companion object {
+        private const val ZOOM_LEVEL = 15.0f
+        private const val POLYLINE_WIDTH = 7.5f
+
+        private const val TAG = "MyStack: MapManager"
     }
 }

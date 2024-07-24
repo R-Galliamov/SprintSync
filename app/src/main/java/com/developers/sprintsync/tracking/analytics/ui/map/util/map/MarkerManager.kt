@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.analytics.ui.map.manager.map
+package com.developers.sprintsync.tracking.analytics.ui.map.util.map
 
 import android.content.Context
 import android.hardware.Sensor

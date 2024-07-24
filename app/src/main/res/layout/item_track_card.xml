@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/space.regular"
+    android:layout_marginEnd="@dimen/space.regular"
+    android:layout_marginBottom="@dimen/space.regular"
+    android:background="@drawable/bt_transparent"
+    android:clickable="true"
+    android:paddingBottom="@dimen/space.small">
+
+    <TextView
+        android:id="@+id/tvDate"
+        style="@style/SubTitleText.Gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="06.07.2024, Thu" />
+
+    <View
+        android:id="@+id/decorLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shape.strokeWidth"
+        android:layout_marginTop="@dimen/space.small"
+        android:background="?colorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDate" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvMapPreview"
+        android:layout_width="@dimen/mapPreview.width"
+        android:layout_height="@dimen/mapPreview.height"
+        android:layout_marginTop="@dimen/space.small"
+        android:layout_marginEnd="@dimen/space.small"
+        android:contentDescription="@string/map_preview"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/shape.cornerRadius"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/decorLine"
+        app:strokeColor="?colorOnPrimaryVariant"
+        app:strokeWidth="@dimen/shape.strokeWidth">
+
+        <ImageView
+            android:id="@+id/ivMapPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/map_preview"
+            android:src="@drawable/ic_map_32dp" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/ivDistance"
+        android:layout_width="@dimen/iconSize.small"
+        android:layout_height="@dimen/iconSize.small"
+        android:layout_marginStart="@dimen/space.small"
+        android:contentDescription="@string/distance"
+        android:src="@drawable/ic_distance_32dp"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="@id/cvMapPreview" />
+
+    <TextView
+        android:id="@+id/tvDistanceValue"
+        style="@style/SubTitleText.Gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space.small"
+        app:layout_constraintBottom_toBottomOf="@id/ivDistance"
+        app:layout_constraintStart_toEndOf="@id/ivDistance"
+        app:layout_constraintTop_toTopOf="@id/ivDistance"
+        tools:text="12.33 km" />
+
+    <ImageView
+        android:id="@+id/ivDuration"
+        android:layout_width="@dimen/iconSize.small"
+        android:layout_height="@dimen/iconSize.small"
+        android:layout_marginTop="@dimen/space.small"
+        android:contentDescription="@string/duration"
+        android:src="@drawable/ic_timer_32dp"
+        app:layout_constraintStart_toStartOf="@id/ivDistance"
+        app:layout_constraintTop_toBottomOf="@id/ivDistance" />
+
+    <TextView
+        android:id="@+id/tvDurationValue"
+        style="@style/SubTitleText.Gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space.small"
+        app:layout_constraintBottom_toBottomOf="@id/ivDuration"
+        app:layout_constraintStart_toEndOf="@id/ivDuration"
+        app:layout_constraintTop_toTopOf="@id/ivDuration"
+        tools:text="01:23:19" />
+
+    <ImageView
+        android:id="@+id/ivCalories"
+        android:layout_width="@dimen/iconSize.small"
+        android:layout_height="@dimen/iconSize.small"
+        android:layout_marginTop="@dimen/space.small"
+        android:contentDescription="@string/burned_kcal"
+        android:src="@drawable/ic_kcal_48dp"
+        app:layout_constraintStart_toStartOf="@id/ivDuration"
+        app:layout_constraintTop_toBottomOf="@id/ivDuration" />
+
+    <TextView
+        android:id="@+id/tvCaloriesValue"
+        style="@style/SubTitleText.Gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space.small"
+        app:layout_constraintBottom_toBottomOf="@id/ivCalories"
+        app:layout_constraintStart_toEndOf="@id/ivCalories"
+        app:layout_constraintTop_toTopOf="@id/ivCalories"
+        tools:text="230 kcal" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

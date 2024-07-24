@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.developers.sprintsync.tracking.dataStorage.repository.useCase.DeleteTrackByIdUseCase
-import com.developers.sprintsync.tracking.dataStorage.repository.useCase.GetLastTrackUseCase
+import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.DeleteTrackByIdUseCase
+import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetLastTrackUseCase
 import com.developers.sprintsync.tracking.session.model.track.Track
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

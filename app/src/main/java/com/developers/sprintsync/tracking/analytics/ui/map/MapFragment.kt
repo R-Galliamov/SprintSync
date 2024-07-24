@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentMapBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
-import com.developers.sprintsync.tracking.analytics.ui.map.manager.map.MapManager
+import com.developers.sprintsync.tracking.analytics.ui.map.util.map.MapManager
 import com.developers.sprintsync.tracking.analytics.viewModel.MapViewModel
 import com.developers.sprintsync.tracking.session.model.track.Segments
 import com.developers.sprintsync.tracking.session.model.track.Track
@@ -41,6 +41,7 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         updateProgressBarVisibility(true)
         initMap(savedInstanceState) {
+            mapManager.setMapStyle(viewModel.detailedMapStyle)
             setDataObserver()
         }
         setBackButton()
@@ -63,7 +64,11 @@ class MapFragment : Fragment() {
             getNonEmptySegments(track)?.let { segments ->
                 updateProgressBarVisibility(false)
                 mapManager.addPolylines(segments)
-                mapManager.moveCameraToSegments(segments)
+                mapManager.adjustCameraToSegments(
+                    segments,
+                    binding.mapView.width,
+                    binding.mapView.height,
+                )
             }
         }
     }

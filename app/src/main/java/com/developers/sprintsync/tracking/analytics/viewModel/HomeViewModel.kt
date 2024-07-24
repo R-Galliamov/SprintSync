@@ -5,7 +5,7 @@ import androidx.lifecycle.asLiveData
 import com.developers.sprintsync.tracking.analytics.dataManager.builder.TrackingStatsBuilder
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.TrackingStatisticsFormatter
 import com.developers.sprintsync.tracking.analytics.model.FormattedStatistics
-import com.developers.sprintsync.tracking.dataStorage.repository.useCase.GetAllTracksUseCase
+import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetAllTracksUseCase
 import com.developers.sprintsync.tracking.session.model.track.Track
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map

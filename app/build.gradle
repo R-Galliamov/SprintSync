@@ -85,7 +85,7 @@ dependencies {
     def room_version = "2.6.1"
     def gson_version = "2.11.0"
     def gson_extras_version = "1.2.0"
-    def reflection_version = "1.9.22"
+    def coil_version = "2.6.0"
 
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -126,6 +126,9 @@ dependencies {
     // Gson
     implementation "com.google.code.gson:gson:$gson_version"
     implementation "org.danilopianini:gson-extras:$gson_extras_version"
+
+    // Coil
+    implementation "io.coil-kt:coil:$coil_version"
 
     // SplashScreen
     implementation "androidx.core:core-splashscreen:$splash_screen_version"

@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.analytics.ui.map.manager.chart
+package com.developers.sprintsync.tracking.analytics.ui.map.util.chart
 
 import com.developers.sprintsync.tracking.analytics.model.PaceChartData
 import com.developers.sprintsync.tracking.session.model.track.Segment

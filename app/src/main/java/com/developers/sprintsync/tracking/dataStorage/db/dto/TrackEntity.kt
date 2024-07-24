@@ -17,7 +17,7 @@ data class TrackEntity(
     val bestPace: Float,
     val calories: Int,
     val segments: Segments,
-    val imageBitmap: Bitmap?,
+    val mapPreview: Bitmap?,
 ) {
     fun toDto() =
         Track(
@@ -29,7 +29,7 @@ data class TrackEntity(
             bestPace = bestPace,
             calories = calories,
             segments = segments,
-            imageBitmap = imageBitmap,
+            mapPreview = mapPreview,
         )
 
     companion object {
@@ -43,7 +43,7 @@ data class TrackEntity(
                 bestPace = dto.bestPace,
                 calories = dto.calories,
                 segments = dto.segments,
-                imageBitmap = dto.imageBitmap,
+                mapPreview = dto.mapPreview,
             )
     }
 }

@@ -6,7 +6,7 @@ import java.util.Locale
 
 class DateFormatter {
     companion object {
-        private const val DATE_FORMAT = "dd.MM.yyyy"
+        private const val DATE_FORMAT = "dd.MM.yyyy, EEE"
         private val defaultLocale by lazy { Locale.getDefault() }
 
         fun formatDate(

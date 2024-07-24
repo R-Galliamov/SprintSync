@@ -11,7 +11,7 @@ data class Track(
     val bestPace: Float,
     val calories: Int,
     val segments: Segments,
-    val imageBitmap: Bitmap?,
+    val mapPreview: Bitmap?,
 ) {
     companion object {
         val EMPTY_TRACK_DATA =
@@ -24,7 +24,7 @@ data class Track(
                 bestPace = 0f,
                 calories = 0,
                 segments = emptyList(),
-                imageBitmap = null,
+                mapPreview = null,
             )
     }
 }

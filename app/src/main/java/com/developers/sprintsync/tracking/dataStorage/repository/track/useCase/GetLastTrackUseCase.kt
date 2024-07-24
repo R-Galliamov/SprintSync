@@ -1,6 +1,6 @@
-package com.developers.sprintsync.tracking.dataStorage.repository.useCase
+package com.developers.sprintsync.tracking.dataStorage.repository.track.useCase
 
-import com.developers.sprintsync.tracking.dataStorage.repository.TrackRepository
+import com.developers.sprintsync.tracking.dataStorage.repository.track.TrackRepository
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

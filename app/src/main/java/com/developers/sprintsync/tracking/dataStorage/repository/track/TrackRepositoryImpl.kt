@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.dataStorage.repository
+package com.developers.sprintsync.tracking.dataStorage.repository.track
 
 import androidx.collection.LruCache
 import com.developers.sprintsync.tracking.dataStorage.db.dao.TrackDao
