@@ -4,6 +4,12 @@ import android.graphics.Bitmap
 
 class BitmapCropper {
     companion object {
+        private const val NINETY_DEGREES_ROTATION = 90f
+        private const val X_OFFSET_DIVISOR = 2
+        private const val Y_OFFSET_DIVISOR = 2
+        private const val INITIAL_X_OFFSET = 0
+        private const val INITIAL_Y_OFFSET = 0
+
         fun cropToTargetDimensions(
             bitmap: Bitmap,
             targetWidth: Int,
@@ -15,7 +21,7 @@ class BitmapCropper {
             return if (currentAspectRatio > aspectRatio) {
                 cropWidthToMatchAspectRatio(bitmap, aspectRatio)
             } else {
-                val rotatedBitmap = BitmapRotator.rotate(bitmap, 90f)
+                val rotatedBitmap = BitmapRotator.rotate(bitmap, NINETY_DEGREES_ROTATION)
                 cropHeightToMatchAspectRatio(rotatedBitmap, aspectRatio)
             }
         }
@@ -25,8 +31,8 @@ class BitmapCropper {
             aspectRatio: Float,
         ): Bitmap {
             val newWidth = (bitmap.height * aspectRatio).toInt()
-            val xOffset = (bitmap.width - newWidth) / 2
-            return Bitmap.createBitmap(bitmap, xOffset, 0, newWidth, bitmap.height)
+            val xOffset = (bitmap.width - newWidth) / X_OFFSET_DIVISOR
+            return Bitmap.createBitmap(bitmap, xOffset, INITIAL_Y_OFFSET, newWidth, bitmap.height)
         }
 
         private fun cropHeightToMatchAspectRatio(
@@ -35,8 +41,8 @@ class BitmapCropper {
         ): Bitmap {
             val newHeight = (bitmap.width / aspectRatio).toInt()
             val yOffset =
-                maxOf(0, (bitmap.height - newHeight) / 2)
-            return Bitmap.createBitmap(bitmap, 0, yOffset, bitmap.width, newHeight)
+                maxOf(INITIAL_Y_OFFSET, (bitmap.height - newHeight) / Y_OFFSET_DIVISOR)
+            return Bitmap.createBitmap(bitmap, INITIAL_X_OFFSET, yOffset, bitmap.width, newHeight)
         }
     }
 }
