@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
         binding.apply {
             tvTotalRunsValue.text = stat.runs
             tvTotalDistanceValue.text = stat.totalDistance
-            tvTotalKcalValue.text = stat.totalCalories
+            tvTotalKcalValue.text = stat.totalKiloCalories
         }
     }
 

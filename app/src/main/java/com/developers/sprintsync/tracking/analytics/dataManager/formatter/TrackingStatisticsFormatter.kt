@@ -11,7 +11,7 @@ class TrackingStatisticsFormatter {
             FormattedStatistics(
                 runs = stat.runs.toString(),
                 totalDistance = DistanceMapper.metersToPresentableKilometers(stat.totalDistance),
-                totalCalories = stat.totalCalories.toString(),
+                totalKiloCalories = CaloriesFormatter.formatCalories(stat.totalCalories),
                 longestDistance = DistanceMapper.metersToPresentableKilometers(stat.longestDistance),
                 bestPace = PaceMapper.formatPaceWithTwoDecimals(stat.bestPace),
                 maxDuration = DurationFormatter.formatToHhMmAndSs(stat.maxDuration),

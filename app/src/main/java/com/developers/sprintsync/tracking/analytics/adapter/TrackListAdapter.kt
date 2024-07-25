@@ -73,7 +73,7 @@ class TrackListAdapter(
 
     private fun formatDuration(durationMillis: Long): String = DurationFormatter.formatToHhMmSs(durationMillis)
 
-    private fun formatCalories(calories: Int): String = CaloriesFormatter.formatCalories(calories)
+    private fun formatCalories(calories: Int): String = CaloriesFormatter.formatCalories(calories, true)
 
     private fun loadBitmapIntoImageView(
         imageView: ImageView,

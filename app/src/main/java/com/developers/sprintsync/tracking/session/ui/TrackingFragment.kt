@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.CaloriesFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DurationFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.PaceMapper
@@ -180,7 +181,7 @@ class TrackingFragment : Fragment() {
         binding.apply {
             tvDistanceValue.text =
                 DistanceMapper.metersToPresentableKilometers(track.distanceMeters)
-            tvCaloriesValue.text = track.calories.toString()
+            tvCaloriesValue.text = CaloriesFormatter.formatCalories(track.calories)
             val currentPace = getPace(track)
             tvPaceValue.text = PaceMapper.formatPaceWithTwoDecimals(currentPace)
         }
