@@ -56,7 +56,7 @@ class TrackingFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
-        updateMapLoadingVisibility(true)
+        initLoadingViews()
         initMap(savedInstanceState) {
             mapManager.setMapStyle(sessionViewModel.minimalMapStyle)
             setTrackDataObservers()
@@ -109,6 +109,11 @@ class TrackingFragment : Fragment() {
         }
     }
 
+    private fun initLoadingViews() {
+        updateGeneralLoadingVisibility(false)
+        updateMapLoadingVisibility(true)
+    }
+
     private fun setTrackerStateObservers() {
         sessionViewModel.trackerState.observe(viewLifecycleOwner) { state ->
             updateTrackingControllerPanel(state)
@@ -151,6 +156,7 @@ class TrackingFragment : Fragment() {
             Log.d(TAG, "Track status : $status")
             when (status) {
                 is TrackStatus.Valid -> {
+                    updateGeneralLoadingVisibility(true)
                     sessionViewModel.track.value?.let { track ->
                         val targetWidth = resources.getDimensionPixelSize(R.dimen.mapPreview_width)
                         val targetHeight =
@@ -349,6 +355,21 @@ class TrackingFragment : Fragment() {
     }
 
     private fun mapLoadingIsVisible(): Boolean = binding.mapLoadingView.visibility == View.VISIBLE
+
+    private fun updateGeneralLoadingVisibility(isVisible: Boolean) {
+        val loadingBar = (binding.generalLoadingBar.drawable as? AnimatedVectorDrawable)
+        when (isVisible) {
+            true -> {
+                loadingBar?.start()
+                binding.generalLoadingView.visibility = View.VISIBLE
+            }
+
+            false -> {
+                loadingBar?.stop()
+                binding.generalLoadingView.visibility = View.GONE
+            }
+        }
+    }
 
     private fun getActiveSegments(): List<Segment.ActiveSegment>? =
         sessionViewModel.track.value

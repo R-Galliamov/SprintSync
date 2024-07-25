@@ -275,5 +275,18 @@
             android:src="@drawable/ic_lock_24dp" />
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/generalLoadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?colorPrimary">
+
+        <ImageView
+            android:id="@+id/generalLoadingBar"
+            android:layout_width="@dimen/progressBar.size"
+            android:layout_height="@dimen/progressBar.size"
+            android:layout_gravity="center"
+            android:src="@drawable/anim_loading_vector" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
