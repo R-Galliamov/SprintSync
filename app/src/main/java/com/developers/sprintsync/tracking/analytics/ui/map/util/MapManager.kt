@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.analytics.ui.map.util.map
+package com.developers.sprintsync.tracking.analytics.ui.map.util
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -7,7 +7,7 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.global.manager.AppThemeManager
 import com.developers.sprintsync.global.util.extension.getBitmapDescriptor
 import com.developers.sprintsync.global.util.interfaces.Clearable
-import com.developers.sprintsync.tracking.analytics.ui.map.util.bitmap.BitmapCropper
+import com.developers.sprintsync.tracking.analytics.ui.trackList.util.bitmap.BitmapCropper
 import com.developers.sprintsync.tracking.session.model.track.Segment
 import com.developers.sprintsync.tracking.session.model.track.Segments
 import com.developers.sprintsync.tracking.session.model.track.toLatLng
@@ -64,13 +64,21 @@ class MapManager(
         }
     }
 
-    fun moveCameraToLocation(latLng: LatLng) {
-        map.animateCamera(
-            CameraUpdateFactory.newLatLngZoom(
-                latLng,
-                ZOOM_LEVEL,
-            ),
-        )
+    fun moveCameraToLocation(
+        latLng: LatLng,
+        animate: Boolean = true,
+    ) {
+        if (animate) {
+            map.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    latLng,
+                    ZOOM_LEVEL,
+                ),
+            )
+        } else {
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL)
+            map.moveCamera(cameraUpdate)
+        }
     }
 
     fun adjustCameraToSegments(

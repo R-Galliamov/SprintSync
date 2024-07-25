@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.analytics.ui.map.util.map
+package com.developers.sprintsync.tracking.analytics.ui.map.util
 
 import com.developers.sprintsync.tracking.session.model.track.Segment
 import com.developers.sprintsync.tracking.session.model.track.Segments

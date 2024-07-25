@@ -1,9 +1,9 @@
-package com.developers.sprintsync.tracking.analytics.ui.map.util.chart
+package com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart
 
 import android.content.Context
 import com.developers.sprintsync.global.manager.AppThemeManager
-import com.developers.sprintsync.tracking.analytics.ui.map.util.chart.formatter.PaceChartDurationFormatter
-import com.developers.sprintsync.tracking.analytics.ui.map.util.chart.formatter.PaceChartPaceFormatter
+import com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart.formatter.PaceChartDurationFormatter
+import com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart.formatter.PaceChartPaceFormatter
 import com.developers.sprintsync.tracking.session.model.track.Segments
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis

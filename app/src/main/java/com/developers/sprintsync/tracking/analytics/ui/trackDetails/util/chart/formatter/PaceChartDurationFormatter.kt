@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.analytics.ui.map.util.chart.formatter
+package com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart.formatter
 
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.ValueFormatter

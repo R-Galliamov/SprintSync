@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.analytics.ui.map.util.bitmap
+package com.developers.sprintsync.tracking.analytics.ui.trackList.util.bitmap
 
 import android.graphics.Bitmap
 

@@ -49,4 +49,7 @@
     <dimen name="shape.strokeWidth">2dp</dimen>
     <dimen name="shape.cornerRadius">32dp</dimen>
 
+    <!--ProgressBar-->
+    <dimen name="progressBar.size">120dp</dimen>
+
 </resources>

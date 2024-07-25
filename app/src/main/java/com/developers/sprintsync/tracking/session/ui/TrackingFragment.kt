@@ -1,5 +1,6 @@
 package com.developers.sprintsync.tracking.session.ui
 
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,15 +15,17 @@ import com.developers.sprintsync.tracking.analytics.dataManager.formatter.Calori
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DurationFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.PaceMapper
-import com.developers.sprintsync.tracking.analytics.ui.map.util.map.MapManager
+import com.developers.sprintsync.tracking.analytics.ui.map.util.MapManager
 import com.developers.sprintsync.tracking.session.model.session.TrackStatus
 import com.developers.sprintsync.tracking.session.model.session.TrackerState
 import com.developers.sprintsync.tracking.session.model.track.Segment
 import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.tracking.session.model.track.toLatLng
 import com.developers.sprintsync.tracking.session.service.manager.TrackingServiceController
+import com.developers.sprintsync.tracking.session.ui.useCase.ManageMapCameraUseCase
 import com.developers.sprintsync.tracking.session.viewModel.TrackingSessionViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TrackingFragment : Fragment() {
@@ -34,6 +37,9 @@ class TrackingFragment : Fragment() {
     private val service by lazy { TrackingServiceController(requireContext()) }
 
     private val mapManager: MapManager by lazy { MapManager(requireContext()) }
+
+    @Inject
+    lateinit var manageMapCameraUseCase: ManageMapCameraUseCase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,10 +56,9 @@ class TrackingFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
-        updateProgressBarVisibility(true)
+        updateMapLoadingVisibility(true)
         initMap(savedInstanceState) {
             mapManager.setMapStyle(sessionViewModel.minimalMapStyle)
-            updateProgressBarVisibility(false)
             setTrackDataObservers()
             getActiveSegments()?.let {
                 mapManager.addPolylines(it)
@@ -125,8 +130,11 @@ class TrackingFragment : Fragment() {
         sessionViewModel.currentLocation.observe(viewLifecycleOwner) { location ->
             val latLng = location?.toLatLng()
             latLng?.let {
+                if (mapLoadingIsVisible()) {
+                    updateMapLoadingVisibility(false)
+                }
                 mapManager.updateUserMarker(it)
-                mapManager.moveCameraToLocation(it)
+                manageMapCameraUseCase(mapManager, it)
             }
         }
     }
@@ -325,12 +333,22 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    private fun updateProgressBarVisibility(isVisible: Boolean) {
+    private fun updateMapLoadingVisibility(isVisible: Boolean) {
+        val loadingBar = (binding.mapLoadingBar.drawable as? AnimatedVectorDrawable)
         when (isVisible) {
-            true -> binding.progressBar.visibility = View.VISIBLE
-            false -> binding.progressBar.visibility = View.GONE
+            true -> {
+                loadingBar?.start()
+                binding.mapLoadingView.visibility = View.VISIBLE
+            }
+
+            false -> {
+                loadingBar?.stop()
+                binding.mapLoadingView.visibility = View.GONE
+            }
         }
     }
+
+    private fun mapLoadingIsVisible(): Boolean = binding.mapLoadingView.visibility == View.VISIBLE
 
     private fun getActiveSegments(): List<Segment.ActiveSegment>? =
         sessionViewModel.track.value

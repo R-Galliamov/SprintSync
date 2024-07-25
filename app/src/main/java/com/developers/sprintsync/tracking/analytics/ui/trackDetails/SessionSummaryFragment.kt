@@ -11,7 +11,7 @@ import com.developers.sprintsync.databinding.FragmentSessionSummaryBinding
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DurationFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
 import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.PaceMapper
-import com.developers.sprintsync.tracking.analytics.ui.map.util.chart.PaceChartManager
+import com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart.PaceChartManager
 import com.developers.sprintsync.tracking.analytics.viewModel.SessionSummaryViewModel
 import com.developers.sprintsync.tracking.session.model.track.Track
 import com.github.mikephil.charting.charts.LineChart
