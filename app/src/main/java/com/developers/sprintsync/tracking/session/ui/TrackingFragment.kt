@@ -161,7 +161,7 @@ class TrackingFragment : Fragment() {
                         val targetWidth =
                             resources.getDimensionPixelSize(R.dimen.imageSize_mapPreview_width)
                         val targetHeight =
-                            resources.getDimensionPixelSize(R.dimen.imageSize_illustration_height)
+                            resources.getDimensionPixelSize(R.dimen.imageSize_mapPreview_height)
                         mapManager.captureTrackSnapshot(
                             track.segments,
                             binding.mapView.width,
