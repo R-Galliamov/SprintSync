@@ -22,9 +22,6 @@
                 android:name="trackId"
                 app:argType="integer" />
         </action>
-        <action
-            android:id="@+id/action_tabsFragment_to_testFragment"
-            app:destination="@id/testFragment" />
     </fragment>
 
     <fragment
@@ -101,8 +98,4 @@
             app:argType="integer" />
 
     </fragment>
-    <fragment
-        android:id="@+id/testFragment"
-        android:name="com.developers.sprintsync.tracking.session.ui.TestFragment"
-        android:label="TestFragment" />
 </navigation>

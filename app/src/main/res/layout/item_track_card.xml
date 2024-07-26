@@ -42,8 +42,8 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvMapPreview"
-        android:layout_width="@dimen/mapPreview.width"
-        android:layout_height="@dimen/mapPreview.height"
+        android:layout_width="@dimen/imageSize.mapPreview.width"
+        android:layout_height="@dimen/imageSize.mapPreview.height"
         android:layout_marginTop="@dimen/space.small"
         android:layout_marginEnd="@dimen/space.small"
         android:contentDescription="@string/map_preview"

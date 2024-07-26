@@ -38,5 +38,7 @@
     <string name="burned_kcal">Burned kcal</string>
     <string name="on_map">On map</string>
     <string name="map_preview">map preview</string>
+    <string name="empty_logs_state_title">Ready to hit the track? \n Your running journey starts here!</string>
+    <string name="empty_logs_state_description">No runs logged yet. Lace up your shoes, step outside, and start your adventure. Track your progress and enjoy the journey!</string>
 
 </resources>

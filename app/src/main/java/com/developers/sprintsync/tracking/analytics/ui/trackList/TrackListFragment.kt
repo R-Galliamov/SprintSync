@@ -52,8 +52,9 @@ class TrackListFragment : Fragment() {
         viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
             if (tracks.isNotEmpty()) {
                 adapter.submitList(tracks)
+                updateEmptyLogsStateUiVisibility(false)
             } else {
-                // TODO show empty view
+                updateEmptyLogsStateUiVisibility(true)
             }
         }
     }
@@ -68,6 +69,13 @@ class TrackListFragment : Fragment() {
                 trackId,
             )
         findTopNavController().navigate(action)
+    }
+
+    private fun updateEmptyLogsStateUiVisibility(isVisible: Boolean) {
+        when (isVisible) {
+            true -> binding.emptyLogsStateView.visibility = View.VISIBLE
+            false -> binding.emptyLogsStateView.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

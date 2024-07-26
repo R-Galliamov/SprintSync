@@ -23,6 +23,7 @@
     <dimen name="space.regular">20dp</dimen>
     <dimen name="space.big">32dp</dimen>
     <dimen name="space.large">40dp</dimen>
+    <dimen name="space.special.fabPadding">80dp</dimen>
 
     <!--Text-->
     <dimen name="textSize.small">16sp</dimen>
@@ -36,8 +37,9 @@
     <dimen name="iconSize.big">48dp</dimen>
 
     <!--Image-->
-    <dimen name="mapPreview.height">120dp</dimen>
-    <dimen name="mapPreview.width">160dp</dimen>
+    <dimen name="imageSize.mapPreview.height">120dp</dimen>
+    <dimen name="imageSize.mapPreview.width">160dp</dimen>
+    <dimen name="imageSize.illustration.height">200dp</dimen>
 
     <!--Button-->
     <dimen name="button.height.small">48dp</dimen>

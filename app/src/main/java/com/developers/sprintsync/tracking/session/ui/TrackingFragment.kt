@@ -158,9 +158,10 @@ class TrackingFragment : Fragment() {
                 is TrackStatus.Valid -> {
                     updateGeneralLoadingVisibility(true)
                     sessionViewModel.track.value?.let { track ->
-                        val targetWidth = resources.getDimensionPixelSize(R.dimen.mapPreview_width)
+                        val targetWidth =
+                            resources.getDimensionPixelSize(R.dimen.imageSize_mapPreview_width)
                         val targetHeight =
-                            resources.getDimensionPixelSize(R.dimen.mapPreview_height)
+                            resources.getDimensionPixelSize(R.dimen.imageSize_illustration_height)
                         mapManager.captureTrackSnapshot(
                             track.segments,
                             binding.mapView.width,
