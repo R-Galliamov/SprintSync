@@ -40,5 +40,9 @@
     <string name="map_preview">map preview</string>
     <string name="empty_logs_state_title">Ready to hit the track? \n Your running journey starts here!</string>
     <string name="empty_logs_state_description">No runs logged yet. Lace up your shoes, step outside, and start your adventure. Track your progress and enjoy the journey!</string>
+    <string name="location_request_title">Location usage</string>
+    <string name="location_request_description">Location access is essential for our app to work correctly. This will allow us to map your routes and provide accurate stats.</string>
+    <string name="loading_description">Please wait a moment, we are loading data.</string>
+    <string name="to_settings">To settings</string>
 
 </resources>

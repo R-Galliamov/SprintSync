@@ -178,7 +178,7 @@ class TrackingFragment : Fragment() {
                 }
 
                 is TrackStatus.Invalid -> {
-                    navigateUp()
+                    popBackStack()
                 }
 
                 is TrackStatus.Incomplete -> {
@@ -336,7 +336,7 @@ class TrackingFragment : Fragment() {
 
     private fun setBackButtonListener() {
         binding.btBack.setOnClickListener {
-            findTopNavController().navigateUp()
+            popBackStack()
         }
     }
 
@@ -382,7 +382,7 @@ class TrackingFragment : Fragment() {
         findTopNavController().navigate(R.id.action_trackingFragment_to_sessionSummaryFragment)
     }
 
-    private fun navigateUp() = findTopNavController().navigateUp()
+    private fun popBackStack() = findTopNavController().popBackStack()
 
     override fun onDestroyView() {
         super.onDestroyView()

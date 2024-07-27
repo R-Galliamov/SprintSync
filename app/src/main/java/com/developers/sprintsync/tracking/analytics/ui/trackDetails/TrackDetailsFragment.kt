@@ -86,7 +86,7 @@ class TrackDetailsFragment : Fragment() {
 
     private fun setBackButtonListener() {
         binding.btBack.setOnClickListener {
-            findNavController().navigateUp()
+            findNavController().popBackStack()
         }
     }
 
@@ -94,7 +94,7 @@ class TrackDetailsFragment : Fragment() {
     private fun setDeleteTrackButtonListener(trackId: Int) {
         binding.btDelete.setOnClickListener {
             viewModel.deleteTrackById(trackId)
-            findNavController().navigateUp()
+            findNavController().popBackStack()
         }
     }
 
