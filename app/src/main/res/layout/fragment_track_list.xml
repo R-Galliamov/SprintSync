@@ -59,6 +59,7 @@
         android:id="@+id/rvTrackingHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:orientation="vertical"
         android:paddingBottom="@dimen/space.large"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -7,8 +7,58 @@
     android:background="@color/white"
     tools:context=".global.ui.fragment.LocationRequestFragment">
 
+    <ImageView
+        android:id="@+id/btBack"
+        style="@style/TransparentButton"
+        android:layout_marginStart="@dimen/space.regular"
+        android:layout_marginTop="@dimen/space.regular"
+        android:contentDescription="@string/move_back"
+        android:src="@drawable/ic_cancel_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/emptyLogsStateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/imageSize.illustration.big.height"
+            android:layout_marginStart="@dimen/space.large"
+            android:layout_marginEnd="@dimen/space.large"
+            android:importantForAccessibility="no"
+            android:src="@drawable/im_location_request" />
+
+        <TextView
+            style="@style/SubTitleText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space.large"
+            android:gravity="center"
+            android:text="@string/location_request_title" />
+
+        <TextView
+            style="@style/RegularText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space.large"
+            android:layout_marginTop="@dimen/space.regular"
+            android:layout_marginEnd="@dimen/space.large"
+            android:gravity="center"
+            android:text="@string/location_request_description" />
+
+    </LinearLayout>
+
     <FrameLayout
-        android:id="@+id/btAllowPermission"
+        android:id="@+id/bt_confirm_permission"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button.height.regular"
         android:layout_marginStart="@dimen/space.large"
