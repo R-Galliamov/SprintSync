@@ -45,44 +45,40 @@
     </style>
 
 
-    <!-- Subtitles -->
-    <style name="SubTitleText" parent="Theme.SprintSync">
+    <!-- Regular -->
+    <style name="RegularText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
         <item name="android:textSize">@dimen/textSize.regular</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="SubTitleText.Gray">
+    <style name="RegularText.Gray">
         <item name="android:textColor">?colorOnPrimaryVariant</item>
     </style>
 
-    <style name="SubTitleText.Caps">
+    <style name="RegularText.Caps">
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="SubTitleText.Caps.Gray">
+    <style name="RegularText.Caps.Gray">
         <item name="android:textColor">?colorOnPrimaryVariant</item>
     </style>
 
-    <!-- Regular text -->
-    <style name="RegularText" parent="Theme.SprintSync">
+    <!-- Small text -->
+    <style name="SmallText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
         <item name="android:textSize">@dimen/textSize.small</item>
     </style>
 
-    <style name="RegularText.Big">
-        <item name="android:textSize">@dimen/textSize.regular</item>
-    </style>
-
-    <style name="RegularText.White">
+    <style name="SmallText.White">
         <item name="android:textColor">?colorPrimary</item>
     </style>
 
-    <style name="RegularText.Bold">
+    <style name="SmallText.Bold">
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="RegularText.Bold.Gray">
+    <style name="SmallText.Bold.Gray">
         <item name="android:textColor">?colorOnPrimaryVariant</item>
     </style>
 

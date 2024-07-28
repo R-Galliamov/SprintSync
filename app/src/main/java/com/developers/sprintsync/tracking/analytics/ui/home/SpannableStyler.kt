@@ -22,7 +22,7 @@ class SpannableStyler(
 
         val ssSpan = SpannableString(formattedDuration.ss)
         ssSpan.setSpan(
-            TextAppearanceSpan(context, R.style.SubTitleText_Gray),
+            TextAppearanceSpan(context, R.style.RegularText_Gray),
             0,
             ssSpan.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,

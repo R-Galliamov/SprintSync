@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/tvDate"
-        style="@style/SubTitleText.Gray"
+        style="@style/RegularText.Gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,13 +69,13 @@
         android:layout_height="@dimen/iconSize.small"
         android:layout_marginStart="@dimen/space.small"
         android:contentDescription="@string/distance"
-        android:src="@drawable/ic_distance_32dp"
+        android:src="@drawable/ic_distance_24dp"
         app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toTopOf="@id/cvMapPreview" />
 
     <TextView
         android:id="@+id/tvDistanceValue"
-        style="@style/SubTitleText.Gray"
+        style="@style/RegularText.Gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space.small"
@@ -96,7 +96,7 @@
 
     <TextView
         android:id="@+id/tvDurationValue"
-        style="@style/SubTitleText.Gray"
+        style="@style/RegularText.Gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space.small"
@@ -117,7 +117,7 @@
 
     <TextView
         android:id="@+id/tvCaloriesValue"
-        style="@style/SubTitleText.Gray"
+        style="@style/RegularText.Gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space.small"

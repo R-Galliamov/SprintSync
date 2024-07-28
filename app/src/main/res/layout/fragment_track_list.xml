@@ -36,7 +36,7 @@
             android:src="@drawable/im_empty_tracks_state_human" />
 
         <TextView
-            style="@style/SubTitleText.Gray"
+            style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space.regular"
@@ -44,7 +44,7 @@
             android:text="@string/empty_logs_state_title" />
 
         <TextView
-            style="@style/RegularText"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space.large"

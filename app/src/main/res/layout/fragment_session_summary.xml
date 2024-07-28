@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/tvPaceTrack"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space.large"
@@ -65,7 +65,7 @@
 
             <TextView
                 android:id="@+id/tvDistance"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.regular"
@@ -75,7 +75,7 @@
 
             <TextView
                 android:id="@+id/tvDistanceValue"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.regular"
@@ -86,7 +86,7 @@
 
             <TextView
                 android:id="@+id/tvDuration"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
@@ -96,7 +96,7 @@
 
             <TextView
                 android:id="@+id/tvDurationValue"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
@@ -106,7 +106,7 @@
 
             <TextView
                 android:id="@+id/tvAvgPaceValue"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
@@ -116,7 +116,7 @@
 
             <TextView
                 android:id="@+id/tvAvgPace"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
@@ -126,7 +126,7 @@
 
             <TextView
                 android:id="@+id/tvBestPace"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
@@ -136,7 +136,7 @@
 
             <TextView
                 android:id="@+id/tvBestPaceValue"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
@@ -146,7 +146,7 @@
 
             <TextView
                 android:id="@+id/tvCalories"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
@@ -178,7 +178,7 @@
 
                 <TextView
                     android:id="@+id/tvGoToMap"
-                    style="@style/SubTitleText.Gray"
+                    style="@style/RegularText.Gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/lag2"
@@ -196,7 +196,7 @@
 
             <TextView
                 android:id="@+id/tvCaloriesValue"
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"

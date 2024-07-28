@@ -28,7 +28,7 @@
 
     <TextView
         android:id="@+id/tvTrainingDesc"
-        style="@style/RegularText.White"
+        style="@style/SmallText.White"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space.small"
@@ -38,7 +38,7 @@
 
     <TextView
         android:id="@+id/tvTrainingTime"
-        style="@style/RegularText.White"
+        style="@style/SmallText.White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/lag2"
@@ -48,9 +48,9 @@
 
     <ImageView
         android:id="@+id/ivImage"
-        android:importantForAccessibility="no"
         android:layout_width="@dimen/lag25"
         android:layout_height="match_parent"
+        android:importantForAccessibility="no"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/tvProgressStatus"
-                style="@style/RegularText.Bold.Gray"
+                style="@style/SmallText.Bold.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/pbWeekGoal"
@@ -118,7 +118,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ivRunCounter" />
 
             <TextView
-                style="@style/RegularText.Big"
+                style="@style/RegularText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/lag1"
@@ -189,7 +189,7 @@
 
             <TextView
                 android:id="@+id/tvSteps"
-                style="@style/RegularText.Bold.Gray"
+                style="@style/SmallText.Bold.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/steps"
@@ -234,7 +234,7 @@
 
                 <TextView
                     android:id="@+id/tvRuns"
-                    style="@style/SubTitleText.Caps.Gray"
+                    style="@style/RegularText.Caps.Gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -257,7 +257,7 @@
 
                 <TextView
                     android:id="@+id/tvDistance"
-                    style="@style/SubTitleText.Caps.Gray"
+                    style="@style/RegularText.Caps.Gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -281,7 +281,7 @@
 
                 <TextView
                     android:id="@+id/tvKcal"
-                    style="@style/SubTitleText.Caps.Gray"
+                    style="@style/RegularText.Caps.Gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -292,7 +292,7 @@
         </LinearLayout>
 
         <TextView
-            style="@style/RegularText.Bold"
+            style="@style/SmallText.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/space.regular"
@@ -312,13 +312,13 @@
                 android:layout_marginStart="@dimen/space.regular"
                 android:layout_marginTop="@dimen/space.regular"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_distance_32dp"
+                android:src="@drawable/ic_distance_24dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvLongestDistance"
-                style="@style/SubTitleText.Caps.Gray"
+                style="@style/RegularText.Caps.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/lag2"
@@ -339,7 +339,7 @@
                 tools:text="12.3" />
 
             <TextView
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-6dp"
@@ -359,7 +359,7 @@
 
             <TextView
                 android:id="@+id/tvBestPace"
-                style="@style/SubTitleText.Caps.Gray"
+                style="@style/RegularText.Caps.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pace"
@@ -378,7 +378,7 @@
                 tools:text="2:12" />
 
             <TextView
-                style="@style/SubTitleText.Gray"
+                style="@style/RegularText.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-6dp"
@@ -400,7 +400,7 @@
 
             <TextView
                 android:id="@+id/tvMaxDuration"
-                style="@style/SubTitleText.Caps.Gray"
+                style="@style/RegularText.Caps.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/duration"
