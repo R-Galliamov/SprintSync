@@ -63,8 +63,8 @@
 
             <ImageView
                 android:id="@+id/ivWalkCounter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/iconSize.big"
+                android:layout_height="@dimen/iconSize.big"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="@dimen/lag4"
                 android:importantForAccessibility="no"
@@ -86,8 +86,8 @@
 
             <ImageView
                 android:id="@+id/ivRunCounter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/iconSize.big"
+                android:layout_height="@dimen/iconSize.big"
                 android:layout_marginTop="@dimen/lag4"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_run_48dp"
@@ -107,8 +107,8 @@
 
             <ImageView
                 android:id="@+id/ivKcalCounter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/iconSize.big"
+                android:layout_height="@dimen/iconSize.big"
                 android:layout_marginTop="@dimen/lag4"
                 android:layout_marginBottom="@dimen/lag4"
                 android:importantForAccessibility="no"
@@ -393,7 +393,7 @@
                 android:layout_marginTop="@dimen/lag12"
                 android:layout_marginBottom="@dimen/space.regular"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_timer_32dp"
+                android:src="@drawable/ic_duration_32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/ivBestPace"
                 app:layout_constraintTop_toBottomOf="@id/ivBestPace" />

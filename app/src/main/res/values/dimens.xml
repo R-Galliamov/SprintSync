@@ -52,7 +52,8 @@
     <dimen name="shape.strokeWidth">2dp</dimen>
     <dimen name="shape.cornerRadius">32dp</dimen>
 
-    <!--ProgressBar-->
+    <!--Specials-->
     <dimen name="progressBar.size">120dp</dimen>
+    <dimen name="chart.height">240dp</dimen>
 
 </resources>

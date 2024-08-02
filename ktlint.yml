@@ -1,0 +1,5 @@
+defaultRuleSets:
+  - kotlin
+
+rules:
+  max-line-length: 100

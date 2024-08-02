@@ -1,6 +1,7 @@
 package com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart
 
 import android.content.Context
+import com.developers.sprintsync.R
 import com.developers.sprintsync.global.manager.AppThemeManager
 import com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart.formatter.PaceChartDurationFormatter
 import com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart.formatter.PaceChartPaceFormatter
@@ -15,7 +16,7 @@ class PaceChartManager(
     private val context: Context,
 ) {
     private var _chart: LineChart? = null
-    private val chart get() = requireNotNull(_chart) { "Chart is not initialized" }
+    private val chart get() = requireNotNull(_chart) { context.getString(R.string.chart_is_not_initialized) }
 
     private val themeManager = AppThemeManager(context)
 
@@ -23,7 +24,7 @@ class PaceChartManager(
 
     fun initialize(chart: LineChart) {
         this@PaceChartManager._chart = chart
-        setChart()
+        setChartStyle()
     }
 
     fun setData(segments: Segments) {
@@ -62,7 +63,7 @@ class PaceChartManager(
         }
     }
 
-    private fun setChart() {
+    private fun setChartStyle() {
         setInteraction()
         setXAxisStyle()
         setYAxisStyle()
@@ -113,6 +114,6 @@ class PaceChartManager(
         private const val CHART_DATA_LABEL = "Pace"
         private const val Y_AXIS_MIN = 0f
         private const val Y_AXIS_OFFSET = 1f
-        private const val LINE_WIDTH = 3f
+        private const val LINE_WIDTH = 2f
     }
 }

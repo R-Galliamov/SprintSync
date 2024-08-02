@@ -74,6 +74,10 @@
         <item name="android:textColor">?colorPrimary</item>
     </style>
 
+    <style name="SmallText.Gray">
+        <item name="android:textColor">?colorOnPrimaryVariant</item>
+    </style>
+
     <style name="SmallText.Bold">
         <item name="android:textStyle">bold</item>
     </style>
@@ -108,5 +112,6 @@
         <item name="textSize">24</item>
         <item name="android:textStyle">bold</item>
     </style>
+
 
 </resources>

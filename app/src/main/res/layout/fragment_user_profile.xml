@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/space.regular"
+    android:layout_marginEnd="@dimen/space.regular"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".user.ui.userProfile.UserProfileFragment">
+
+    <TextView
+        style="@style/RegularText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weekly_progress_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shape.strokeWidth"
+        android:layout_marginStart="@dimen/space.regular"
+        android:layout_marginTop="@dimen/space.small"
+        android:layout_marginEnd="@dimen/space.regular"
+        android:background="?colorSecondary" />
+
+    <HorizontalScrollView
+        android:id="@+id/chartTabsScroller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space.small"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/chartTabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/chartTabDistance"
+                style="@style/RegularText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button.height.small"
+                android:layout_marginStart="@dimen/space.small"
+                android:background="@drawable/st_tab_thirdly"
+                android:drawablePadding="@dimen/space.small"
+                android:gravity="center"
+                android:paddingStart="@dimen/space.small"
+                android:paddingTop="@dimen/space.small"
+                android:paddingEnd="@dimen/space.small"
+                android:paddingBottom="@dimen/space.small"
+                android:text="@string/distance"
+                app:drawableStartCompat="@drawable/ic_distance_24dp" />
+
+            <TextView
+                android:id="@+id/chartTabDuration"
+                style="@style/RegularText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button.height.small"
+                android:background="@drawable/st_tab_thirdly"
+                android:drawablePadding="@dimen/space.small"
+                android:gravity="center"
+                android:paddingStart="@dimen/space.small"
+                android:paddingTop="@dimen/space.small"
+                android:paddingEnd="@dimen/space.small"
+                android:paddingBottom="@dimen/space.small"
+                android:text="@string/duration"
+                app:drawableStartCompat="@drawable/ic_duration_32dp" />
+
+            <TextView
+                android:id="@+id/chartTabCalories"
+                style="@style/RegularText.Gray"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button.height.small"
+                android:background="@drawable/st_tab_thirdly"
+                android:drawablePadding="@dimen/space.small"
+                android:gravity="center"
+                android:paddingStart="@dimen/space.small"
+                android:paddingTop="@dimen/space.small"
+                android:paddingEnd="@dimen/space.small"
+                android:paddingBottom="@dimen/space.small"
+                android:text="@string/burned_kcal"
+                app:drawableStartCompat="@drawable/ic_kcal_48dp" />
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space.regular"
+        android:background="@drawable/card_outlined_black"
+        android:paddingBottom="@dimen/space.small">
+
+        <com.github.mikephil.charting.charts.CombinedChart
+            android:id="@+id/weeklyChart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/chart.height" />
+    </FrameLayout>
+
+
+</LinearLayout>

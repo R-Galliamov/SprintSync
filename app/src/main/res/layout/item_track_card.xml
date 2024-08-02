@@ -90,7 +90,7 @@
         android:layout_height="@dimen/iconSize.small"
         android:layout_marginTop="@dimen/space.small"
         android:contentDescription="@string/duration"
-        android:src="@drawable/ic_timer_32dp"
+        android:src="@drawable/ic_duration_32dp"
         app:layout_constraintStart_toStartOf="@id/ivDistance"
         app:layout_constraintTop_toBottomOf="@id/ivDistance" />
 

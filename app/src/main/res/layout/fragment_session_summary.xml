@@ -55,7 +55,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/lag50"
+                android:layout_height="@dimen/chart.height"
                 android:layout_marginStart="@dimen/space.regular"
                 android:layout_marginTop="@dimen/space.small"
                 android:layout_marginEnd="@dimen/space.regular"

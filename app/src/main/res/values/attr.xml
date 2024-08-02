@@ -3,6 +3,7 @@
 
     <!-- App theme -->
     <declare-styleable name="Theme.SprintSync">
+        <attr name="colorPrimaryVariant" format="color"/>
         <attr name="colorOnPrimaryVariant" format="color"/>
         <attr name="colorThirdly" format="color"/>
         <attr name="colorThirdlyVariant" format="color"/>
