@@ -9,9 +9,11 @@ import android.view.View
 import com.developers.sprintsync.R
 import com.developers.sprintsync.global.manager.AppThemeManager
 
-class CircularProgressBar(private val context: Context, private val attrs: AttributeSet) :
-    View(context, attrs) {
-    private var appThemeManager = AppThemeManager(context)
+class CircularProgressBar(
+    private val context: Context,
+    private val attrs: AttributeSet,
+) : View(context, attrs) {
+    private var colors = AppThemeManager(context).Color()
 
     private var progress = Attributes().getProgress()
 
@@ -78,7 +80,7 @@ class CircularProgressBar(private val context: Context, private val attrs: Attri
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawOval(ovalBounds, backgroundPaint)
-        val angle = FULL_CIRCLE_DEGREES.toFloat() * progress / MAX_PROGRESS.toFloat()
+        val angle = FULL_CIRCLE_DEGREES * progress / MAX_PROGRESS.toFloat()
         canvas.drawArc(ovalBounds, START_ANGLE_DEGREES, angle, false, progressPaint)
     }
 
@@ -109,9 +111,9 @@ class CircularProgressBar(private val context: Context, private val attrs: Attri
         invalidate()
     }
 
-    private fun getDefaultProgressColor(): Int = appThemeManager.getThirdlyColor()
+    private fun getDefaultProgressColor(): Int = colors.thirdly
 
-    private fun getDefaultBackgroundColor(): Int = appThemeManager.getSecondaryColor()
+    private fun getDefaultBackgroundColor(): Int = colors.secondary
 
     companion object {
         private const val DEFAULT_STROKE_WIDTH = 20f

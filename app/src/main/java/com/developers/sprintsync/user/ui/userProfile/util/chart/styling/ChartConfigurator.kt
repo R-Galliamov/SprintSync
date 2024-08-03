@@ -14,17 +14,17 @@ import com.github.mikephil.charting.data.LineDataSet
 
 class ChartConfigurator(
     private val chart: CombinedChart,
-    private val themeManager: AppThemeManager,
 ) {
     private val axisStyler by lazy { ChartAxisStyler(chart) }
     private val barStyleProvider by lazy { ResourceTextStyleProvider(chart.context, R.style.ChartLabel_barLabel) }
+    private val colors by lazy { AppThemeManager(chart.context).Color() }
 
     fun configureChartAppearance(displayedYAxisValue: Float) {
         axisStyler.configureXAxis(R.style.ChartLabel_xAxis)
         axisStyler.configureYAxis(
             displayedYAxisValue,
             R.style.ChartLabel_yAxis,
-            themeManager.getOnPrimaryVariantColor(),
+            colors.onPrimaryVariant,
         )
         configureInteraction()
         configureChartDescription()
@@ -37,9 +37,9 @@ class ChartConfigurator(
 
     fun getBarConfiguration(data: WeeklyChartData) =
         BarConfiguration(
-            barColor = themeManager.getSecondaryColor(),
+            barColor = colors.secondary,
             barWidth = BAR_WIDTH,
-            missingBarColor = themeManager.getSecondaryVariantColor(),
+            missingBarColor = colors.secondaryVariant,
             missingBarHeight = calculateMissingBarHeight(data.data),
             barLabelColor = barStyleProvider.textColor,
             barLabelSizeDp = barStyleProvider.textSizeDp,
@@ -49,7 +49,7 @@ class ChartConfigurator(
 
     fun getLineConfiguration(data: WeeklyChartData) =
         LineConfiguration(
-            lineColor = themeManager.getFourthlyColor(),
+            lineColor = colors.fourthly,
             lineWidth = LINE_WIDTH,
             label = data.label,
             drawValues = false,

@@ -18,7 +18,7 @@ class PaceChartManager(
     private var _chart: LineChart? = null
     private val chart get() = requireNotNull(_chart) { context.getString(R.string.chart_is_not_initialized) }
 
-    private val themeManager = AppThemeManager(context)
+    private val colors = AppThemeManager(context).Color()
 
     private val preparer = PaceChartDataPreparer()
 
@@ -53,7 +53,7 @@ class PaceChartManager(
             setDrawFilled(false)
             lineWidth = LINE_WIDTH
             mode = LineDataSet.Mode.CUBIC_BEZIER
-            color = themeManager.getFourthlyColor()
+            color = this@PaceChartManager.colors.fourthly
         }
 
     private fun setInteraction() {

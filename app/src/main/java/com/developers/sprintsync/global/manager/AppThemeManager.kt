@@ -7,83 +7,87 @@ import com.developers.sprintsync.R
 class AppThemeManager(
     private val context: Context,
 ) {
-    fun getPrimaryColor(): Int {
+    inner class Color {
+        /*
+    val primary: Int by lazy {
         val typedValue = TypedValue()
         context.theme.resolveAttribute(
-            com.google.android.material.R.attr.colorPrimary,
+            R.attr.colorPrimary,
             typedValue,
             true,
         )
-        return typedValue.data
+        typedValue.data
     }
 
-    fun getPrimaryVariantColor(): Int {
+    val primaryVariant: Int by lazy {
         val typedValue = TypedValue()
         context.theme.resolveAttribute(
             R.attr.colorPrimaryVariant,
             typedValue,
             true,
         )
-        return typedValue.data
+        typedValue.data
     }
 
-    fun getOnPrimaryColor(): Int {
+    val onPrimary: Int by lazy {
         val typedValue = TypedValue()
         context.theme.resolveAttribute(
-            com.google.android.material.R.attr.colorOnPrimary,
+            R.attr.colorOnPrimary,
             typedValue,
             true,
         )
-        return typedValue.data
+        typedValue.data
     }
+         */
 
-    fun getOnPrimaryVariantColor(): Int {
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(
-            R.attr.colorOnPrimaryVariant,
-            typedValue,
-            true,
-        )
-        return typedValue.data
-    }
+        val onPrimaryVariant: Int by lazy {
+            val typedValue = TypedValue()
+            context.theme.resolveAttribute(
+                R.attr.colorOnPrimaryVariant,
+                typedValue,
+                true,
+            )
+            typedValue.data
+        }
 
-    fun getSecondaryColor(): Int {
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(
-            com.google.android.material.R.attr.colorSecondary,
-            typedValue,
-            true,
-        )
-        return typedValue.data
-    }
+        val secondary: Int by lazy {
+            val typedValue = TypedValue()
+            context.theme.resolveAttribute(
+                R.attr.colorSecondary,
+                typedValue,
+                true,
+            )
+            typedValue.data
+        }
 
-    fun getSecondaryVariantColor(): Int {
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(
-            com.google.android.material.R.attr.colorSecondaryVariant,
-            typedValue,
-            true,
-        )
-        return typedValue.data
-    }
+        val secondaryVariant: Int by lazy {
+            val typedValue = TypedValue()
+            context.theme.resolveAttribute(
+                R.attr.colorSecondaryVariant,
+                typedValue,
+                true,
+            )
+            typedValue.data
+        }
 
-    fun getThirdlyColor(): Int {
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(
-            R.attr.colorThirdly,
-            typedValue,
-            true,
-        )
-        return typedValue.data
-    }
+        val thirdly: Int by lazy {
+            val typedValue = TypedValue()
+            context.theme.resolveAttribute(
+                R.attr.colorThirdly,
+                typedValue,
+                true,
+            )
+            typedValue.data
+        }
 
-    fun getFourthlyColor(): Int {
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(
-            R.attr.colorFourthly,
-            typedValue,
-            true,
-        )
-        return typedValue.data
+        val fourthly: Int by lazy {
+            val typedValue = TypedValue()
+            context.theme.resolveAttribute(
+                R.attr.colorFourthly,
+                typedValue,
+                true,
+            )
+            typedValue.data
+        }
     }
 }

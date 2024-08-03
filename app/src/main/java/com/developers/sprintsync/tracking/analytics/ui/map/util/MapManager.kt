@@ -29,9 +29,9 @@ class MapManager(
 
     private var currentUserMarker: Marker? = null
 
-    private val themeManager = AppThemeManager(context)
+    private val colors = AppThemeManager(context).Color()
 
-    private val polylineColor = themeManager.getFourthlyColor()
+    private val polylineColor = colors.fourthly
 
     fun initialize(map: GoogleMap) {
         this@MapManager._map = map
