@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Text -->
-    <!-- Accents -->
+    <!-- Accent text -->
     <style name="TabloidText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
         <item name="android:textSize">@dimen/textSize.accent</item>
@@ -17,7 +17,7 @@
         <item name="android:textColor">?colorSecondary</item>
     </style>
 
-    <!-- Titles -->
+    <!-- Title text -->
     <style name="TitleText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
         <item name="android:textSize">@dimen/textSize.title</item>
@@ -45,7 +45,7 @@
     </style>
 
 
-    <!-- Regular -->
+    <!-- Regular text -->
     <style name="RegularText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
         <item name="android:textSize">@dimen/textSize.regular</item>
@@ -84,6 +84,26 @@
 
     <style name="SmallText.Bold.Gray">
         <item name="android:textColor">?colorOnPrimaryVariant</item>
+    </style>
+
+    <!-- Special text -->
+    <!-- Chart label -->
+    <style name="ChartLabel" parent="Theme.SprintSync">
+        <item name="android:textColor">?colorOnPrimaryVariant</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ChartLabel.xAxis">
+        <item name="android:textSize">@dimen/textSize.chart.xAxis</item>
+    </style>
+
+    <style name="ChartLabel.yAxis">
+        <item name="android:textSize">@dimen/textSize.chart.yAxis</item>
+        <item name="android:textColor">?colorFourthly</item>
+    </style>
+
+    <style name="ChartLabel.barLabel">
+        <item name="android:textSize">@dimen/textSize.chart.barLabel</item>
     </style>
 
     <!-- Buttons -->

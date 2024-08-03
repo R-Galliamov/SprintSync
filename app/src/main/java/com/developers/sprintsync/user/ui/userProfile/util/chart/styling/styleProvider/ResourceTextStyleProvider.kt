@@ -1,17 +1,24 @@
-package com.developers.sprintsync.user.ui.userProfile.util.chart.styleProvider
+package com.developers.sprintsync.user.ui.userProfile.util.chart.styling.styleProvider
 
 import android.content.Context
 import androidx.core.content.ContextCompat
 
-class ResourceChartAxisStyleProvider(
+class ResourceTextStyleProvider(
     private val context: Context,
     private val styleResId: Int,
-) : ChartAxisStyleProvider {
+) : TextStyleProvider {
     override val textColor: Int by lazy {
         val typedArray = context.obtainStyledAttributes(styleResId, intArrayOf(android.R.attr.textColor))
         val color = typedArray.getColor(INDEX_TEXT_COLOR, ContextCompat.getColor(context, android.R.color.black))
         typedArray.recycle()
         color
+    }
+
+    override val textSizeDp: Float by lazy {
+        val typedArray = context.obtainStyledAttributes(styleResId, intArrayOf(android.R.attr.textSize))
+        val textSizePx = typedArray.getDimension(INDEX_TEXT_SIZE, DEFAULT_TEXT_SIZE)
+        typedArray.recycle()
+        textSizePx / context.resources.displayMetrics.density // TODO replace with converter
     }
 
     override val typeface: android.graphics.Typeface? by lazy {
@@ -38,6 +45,8 @@ class ResourceChartAxisStyleProvider(
     }
 
     companion object {
+        private const val DEFAULT_TEXT_SIZE = 12f
+        private const val INDEX_TEXT_SIZE = 0
         private const val INDEX_TEXT_COLOR = 0
         private const val INDEX_TEXT_STYLE = 0
     }

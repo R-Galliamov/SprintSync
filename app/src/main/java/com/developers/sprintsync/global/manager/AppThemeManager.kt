@@ -27,6 +27,26 @@ class AppThemeManager(
         return typedValue.data
     }
 
+    fun getOnPrimaryColor(): Int {
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(
+            com.google.android.material.R.attr.colorOnPrimary,
+            typedValue,
+            true,
+        )
+        return typedValue.data
+    }
+
+    fun getOnPrimaryVariantColor(): Int {
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(
+            R.attr.colorOnPrimaryVariant,
+            typedValue,
+            true,
+        )
+        return typedValue.data
+    }
+
     fun getSecondaryColor(): Int {
         val typedValue = TypedValue()
         context.theme.resolveAttribute(
@@ -37,7 +57,7 @@ class AppThemeManager(
         return typedValue.data
     }
 
-    fun getSecondaryColorVariant(): Int {
+    fun getSecondaryVariantColor(): Int {
         val typedValue = TypedValue()
         context.theme.resolveAttribute(
             com.google.android.material.R.attr.colorSecondaryVariant,

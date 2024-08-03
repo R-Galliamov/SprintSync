@@ -1,10 +1,10 @@
-package com.developers.sprintsync.user.ui.userProfile.util.chart.formatter
+package com.developers.sprintsync.user.ui.userProfile.util.chart.styling.formatter
 
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.ValueFormatter
 import java.text.DateFormatSymbols
 
-class WeeklyChartDayFormatter : ValueFormatter() {
+class ChartDayFormatter : ValueFormatter() {
     private val dayNames =
         DateFormatSymbols.getInstance().shortWeekdays
 

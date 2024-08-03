@@ -2,6 +2,7 @@ package com.developers.sprintsync.user.ui.userProfile.util.chart
 
 import com.developers.sprintsync.global.manager.AppThemeManager
 import com.developers.sprintsync.user.model.chart.WeeklyChartData
+import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.ChartConfigurator
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.CombinedData
@@ -10,8 +11,8 @@ import com.github.mikephil.charting.data.LineData
 class ChartRenderer(
     private val chart: CombinedChart,
 ) {
-    private val configurator: WeeklyChartConfigurator by lazy {
-        WeeklyChartConfigurator(
+    private val configurator: ChartConfigurator by lazy {
+        ChartConfigurator(
             chart,
             AppThemeManager(chart.context),
         )
@@ -21,6 +22,7 @@ class ChartRenderer(
         val barData = createBarData(data)
         val lineData = createLineData(data)
         val combinedData = createCombinedData(barData, lineData)
+        configurator.configureChartAppearance(data.data.last().goal)
         configurator.setAxisLimits(combinedData)
         chart.data = combinedData
         refreshChart()
@@ -34,13 +36,13 @@ class ChartRenderer(
     }
 
     private fun createBarData(data: WeeklyChartData): BarData =
-        WeeklyChartDataTransformer
+        ChartDataTransformer
             .barDataBuilder()
             .configuration(configurator.getBarConfiguration(data))
             .build(data.data)
 
     private fun createLineData(data: WeeklyChartData): LineData =
-        WeeklyChartDataTransformer
+        ChartDataTransformer
             .lineDataBuilder()
             .configuration(configurator.getLineConfiguration(data))
             .build(data.data)

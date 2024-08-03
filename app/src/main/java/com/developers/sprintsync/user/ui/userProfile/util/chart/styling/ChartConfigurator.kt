@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.ui.userProfile.util.chart
+package com.developers.sprintsync.user.ui.userProfile.util.chart.styling
 
 import com.developers.sprintsync.R
 import com.developers.sprintsync.global.manager.AppThemeManager
@@ -6,19 +6,28 @@ import com.developers.sprintsync.user.model.chart.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.WeeklyChartData
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
+import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.styleProvider.ResourceTextStyleProvider
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.CombinedData
 import com.github.mikephil.charting.data.LineDataSet
 
-class WeeklyChartConfigurator(
+class ChartConfigurator(
     private val chart: CombinedChart,
     private val themeManager: AppThemeManager,
 ) {
-    private val axisStyler by lazy { WeeklyChartAxisStyler(chart) }
+    private val axisStyler by lazy { ChartAxisStyler(chart) }
+    private val barStyleProvider by lazy { ResourceTextStyleProvider(chart.context, R.style.ChartLabel_barLabel) }
 
-    init {
-        configureChartAppearance()
+    fun configureChartAppearance(displayedYAxisValue: Float) {
+        axisStyler.configureXAxis(R.style.ChartLabel_xAxis)
+        axisStyler.configureYAxis(
+            displayedYAxisValue,
+            R.style.ChartLabel_yAxis,
+            themeManager.getOnPrimaryVariantColor(),
+        )
+        configureInteraction()
+        configureChartDescription()
     }
 
     fun setAxisLimits(data: CombinedData) {
@@ -30,9 +39,12 @@ class WeeklyChartConfigurator(
         BarConfiguration(
             barColor = themeManager.getSecondaryColor(),
             barWidth = BAR_WIDTH,
-            missingBarColor = themeManager.getSecondaryColorVariant(),
+            missingBarColor = themeManager.getSecondaryVariantColor(),
             missingBarHeight = calculateMissingBarHeight(data.data),
-            label = data.label,
+            barLabelColor = barStyleProvider.textColor,
+            barLabelSizeDp = barStyleProvider.textSizeDp,
+            balLabelTypeFace = barStyleProvider.typeface,
+            dataLabel = data.label,
         )
 
     fun getLineConfiguration(data: WeeklyChartData) =
@@ -48,17 +60,13 @@ class WeeklyChartConfigurator(
 
     private fun calculateMissingBarHeight(data: List<DailyDataPoint>) = data.minOf { it.goal } * MISSING_BAR_MULTIPLIER
 
-    private fun configureChartAppearance() {
-        axisStyler.configureXAxis(R.style.SmallText_Bold_Gray)
-        axisStyler.configureYAxis()
-        configureInteraction()
-        configureChartDescription()
-    }
-
     private fun configureInteraction() {
         chart.apply {
-            setTouchEnabled(false)
+            setTouchEnabled(true)
             setPinchZoom(false)
+            isDoubleTapToZoomEnabled = false
+            // isDragEnabled = true
+            setScaleEnabled(false)
         }
     }
 
@@ -84,7 +92,7 @@ class WeeklyChartConfigurator(
         private const val BAR_WIDTH = 0.5f
         private const val LINE_WIDTH = 2f
         private const val MISSING_BAR_MULTIPLIER = 0.2f
-        private const val Y_AXIS_MULTIPLIER = 1.05f
+        private const val Y_AXIS_MULTIPLIER = 1.1f
         private const val X_AXIS_OFFSET = 0.5f
     }
 }

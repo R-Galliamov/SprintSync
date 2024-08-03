@@ -9,7 +9,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 
-class WeeklyChartDataTransformer {
+class ChartDataTransformer {
     class BarDataBuilder {
         private var config: BarConfiguration = BarConfiguration.EMPTY_CONFIGURATION
 
@@ -41,8 +41,12 @@ class WeeklyChartDataTransformer {
             config: BarConfiguration,
         ): BarDataSet {
             val entries = transformToPresentEntries(data)
-            return BarDataSet(entries, config.label).apply {
+            return BarDataSet(entries, config.dataLabel).apply {
                 config.barColor?.let { color = it }
+                config.barLabelColor?.let { valueTextColor = it }
+                config.balLabelTypeFace?.let { valueTypeface = it }
+                config.barLabelSizeDp?.let { valueTextSize = it }
+                isHighlightEnabled = false
             }
         }
 
@@ -51,8 +55,10 @@ class WeeklyChartDataTransformer {
             config: BarConfiguration,
         ): BarDataSet {
             val entries = transformToMissingEntries(data, config.missingBarHeight)
-            return BarDataSet(entries, config.label).apply {
+            return BarDataSet(entries, config.dataLabel).apply {
                 config.missingBarColor?.let { color = it }
+                setDrawValues(false)
+                isHighlightEnabled = false
             }
         }
 
@@ -99,6 +105,9 @@ class WeeklyChartDataTransformer {
                 config.lineWidth?.let { lineWidth = it }
                 config.lineColor?.let { color = it }
                 config.mode?.let { mode = it }
+                // enableDashedLine(30f, 10f, 0f)
+                setDrawHorizontalHighlightIndicator(false)
+                setDrawVerticalHighlightIndicator(false)
             }
         }
 

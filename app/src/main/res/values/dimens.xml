@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--Lags-->
+    <!-- Lags -->
     <dimen name="lag1">4dp</dimen>
     <dimen name="lag2">8dp</dimen>
     <dimen name="lag3">12dp</dimen>
@@ -18,42 +18,48 @@
     <dimen name="lag75">300dp</dimen>
     <dimen name="lag100">400dp</dimen>
 
-    <!--Space-->
+    <!-- Space -->
     <dimen name="space.small">10dp</dimen>
     <dimen name="space.regular">20dp</dimen>
     <dimen name="space.big">32dp</dimen>
     <dimen name="space.large">40dp</dimen>
     <dimen name="space.special.fabPadding">80dp</dimen>
 
-    <!--Text-->
+    <!-- Text -->
     <dimen name="textSize.small">16sp</dimen>
     <dimen name="textSize.regular">20sp</dimen>
     <dimen name="textSize.title">24sp</dimen>
     <dimen name="textSize.accent">40sp</dimen>
 
-    <!--Icon-->
+    <!-- Text specials -->
+    <dimen name="textSize.chart.xAxis">12sp</dimen>
+    <dimen name="textSize.chart.yAxis">10sp</dimen>
+    <dimen name="textSize.chart.barLabel">10sp</dimen>
+
+    <!-- Icon -->
     <dimen name="iconSize.small">24dp</dimen>
     <dimen name="iconSize.medium">32dp</dimen>
     <dimen name="iconSize.big">48dp</dimen>
 
-    <!--Image-->
+    <!-- Image -->
     <dimen name="imageSize.mapPreview.height">120dp</dimen>
     <dimen name="imageSize.mapPreview.width">160dp</dimen>
     <dimen name="imageSize.illustration.big.height">200dp</dimen>
     <dimen name="imageSize.illustration.small.height">48dp</dimen>
 
-    <!--Button-->
+    <!-- Button -->
     <dimen name="button.height.small">48dp</dimen>
     <dimen name="button.height.regular">72dp</dimen>
     <dimen name="button.circle.size.big">60dp</dimen>
     <dimen name="button.circle.size.large">120dp</dimen>
 
-    <!--Shape-->
+    <!-- Shape -->
     <dimen name="shape.strokeWidth">2dp</dimen>
     <dimen name="shape.cornerRadius">32dp</dimen>
 
-    <!--Specials-->
+    <!-- Specials -->
     <dimen name="progressBar.size">120dp</dimen>
     <dimen name="chart.height">240dp</dimen>
+
 
 </resources>
