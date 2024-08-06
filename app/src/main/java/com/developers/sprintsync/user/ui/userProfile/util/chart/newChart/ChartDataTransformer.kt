@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.ui.userProfile.util.chart
+package com.developers.sprintsync.user.ui.userProfile.util.chart.newChart
 
 import com.developers.sprintsync.user.model.chart.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
@@ -13,7 +13,7 @@ class ChartDataTransformer {
     class BarDataBuilder {
         private var config: BarConfiguration = BarConfiguration.EMPTY_CONFIGURATION
 
-        fun configuration(configuration: BarConfiguration) = apply { this.config = configuration }
+        fun setConfiguration(configuration: BarConfiguration) = apply { this.config = configuration }
 
         /*
         fun presentColor(color: Int) = apply { config = config.copy(barColor = color) }
@@ -32,7 +32,7 @@ class ChartDataTransformer {
             val presentDataSet = transformToPresentDataSet(data.filterIsInstance<DailyDataPoint.Present>(), config)
             val missingDataSet = transformToMissingDataSet(data.filterIsInstance<DailyDataPoint.Missing>(), config)
             return BarData(presentDataSet, missingDataSet).apply {
-                config.barWidth?.let { barWidth = it }
+                //config.barWidth?.let { barWidth = it }
             }
         }
 
@@ -74,7 +74,7 @@ class ChartDataTransformer {
     class LineDataBuilder {
         private var config: LineConfiguration = LineConfiguration.EMPTY_CONFIGURATION
 
-        fun configuration(configuration: LineConfiguration) = apply { this.config = configuration }
+        fun setConfiguration(configuration: LineConfiguration) = apply { this.config = configuration }
 
         /*
         fun color(color: Int) = apply { config = config.copy(lineColor = color) }

@@ -1,21 +1,23 @@
 package com.developers.sprintsync.user.ui.userProfile.util.chart.styling
 
-import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.valueFormatter.ChartDayFormatter
-import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.valueFormatter.FilteredYAxisValueFormatter
 import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.styleProvider.ResourceTextStyleProvider
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.formatter.ValueFormatter
 
 class ChartAxisStyler(
     private val chart: CombinedChart,
 ) {
-    fun configureXAxis(referenceTimeStamp : Long, styleResId: Int? = null) {
+    fun configureXAxis(
+        formatter: ValueFormatter,
+        styleResId: Int? = null,
+    ) {
         chart.xAxis.apply {
             position = XAxis.XAxisPosition.BOTTOM
             setDrawAxisLine(false)
             setDrawGridLines(false)
-            valueFormatter = ChartDayFormatter(referenceTimeStamp)
+            valueFormatter = formatter
         }
 
         styleResId?.let {
@@ -29,7 +31,7 @@ class ChartAxisStyler(
     }
 
     fun configureYAxis(
-        displayedValue: Float,
+        formatter: ValueFormatter,
         styleResId: Int? = null,
         rightAxisLineColor: Int? = null,
     ) {
@@ -38,7 +40,7 @@ class ChartAxisStyler(
             setDrawAxisLine(true)
             setDrawGridLines(false)
             setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-            valueFormatter = FilteredYAxisValueFormatter(displayedValue)
+            valueFormatter = formatter
             rightAxisLineColor?.let {
                 axisLineColor = it
             }

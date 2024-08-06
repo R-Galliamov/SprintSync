@@ -1,17 +1,37 @@
 package com.developers.sprintsync.user.ui.userProfile.util.chart.listener
 
-import android.util.Log
 import android.view.MotionEvent
+import com.developers.sprintsync.user.ui.userProfile.util.chart.newChart.AnimationHandler
+import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 
-open class ChartGestureListener : OnChartGestureListener {
+open class ChartGestureListener(
+    private val chart: CombinedChart,
+) : OnChartGestureListener {
+    private val animationHandler by lazy { AnimationHandler(chart) }
+
+    override fun onChartFling(
+        me1: MotionEvent?,
+        me2: MotionEvent?,
+        velocityX: Float,
+        velocityY: Float,
+    ) {
+        val barNumber = chart.maxVisibleCount
+        if (velocityX > FLING_VELOCITY_THRESHOLD) {
+            animationHandler.moveBars(-barNumber)
+        }
+
+        if (velocityX < FLING_VELOCITY_THRESHOLD) {
+            animationHandler.moveBars(barNumber)
+        }
+    }
+
     override fun onChartTranslate(
         me: MotionEvent?,
         dX: Float,
         dY: Float,
     ) {
-        Log.d("My stack", "onChartTranslate: $dX")
     }
 
     override fun onChartGestureStart(
@@ -35,19 +55,14 @@ open class ChartGestureListener : OnChartGestureListener {
     override fun onChartSingleTapped(me: MotionEvent?) {
     }
 
-    override fun onChartFling(
-        me1: MotionEvent?,
-        me2: MotionEvent?,
-        velocityX: Float,
-        velocityY: Float,
-    ) {
-        Log.d("My stack", "onChartFling: $velocityX")
-    }
-
     override fun onChartScale(
         me: MotionEvent?,
         scaleX: Float,
         scaleY: Float,
     ) {
+    }
+
+    companion object {
+        const val FLING_VELOCITY_THRESHOLD = 0
     }
 }

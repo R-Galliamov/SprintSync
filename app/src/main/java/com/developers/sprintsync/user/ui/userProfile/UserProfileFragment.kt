@@ -1,7 +1,6 @@
 package com.developers.sprintsync.user.ui.userProfile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUserProfileBinding
 import com.developers.sprintsync.user.ui.userProfile.util.chart.ChartDataLoader
-import com.developers.sprintsync.user.ui.userProfile.util.chart.ChartRenderer
+import com.developers.sprintsync.user.ui.userProfile.util.chart.newChart.ChartRenderer
 
 class UserProfileFragment : Fragment() {
     private var _binding: FragmentUserProfileBinding? = null
@@ -40,7 +39,7 @@ class UserProfileFragment : Fragment() {
         val testData3 = ChartDataLoader().testData3
         val testDataGeneral = ChartDataLoader().testDataGeneral
 
-        chartRenderer.renderData(testDataGeneral)
+        chartRenderer.renderChart(testDataGeneral)
     }
 
     private fun setScroller() {
