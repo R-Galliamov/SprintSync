@@ -11,6 +11,7 @@ import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.CombinedData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.listener.OnChartGestureListener
 
 class ChartConfigurator(
     private val chart: CombinedChart,
@@ -19,20 +20,30 @@ class ChartConfigurator(
     private val barStyleProvider by lazy { ResourceTextStyleProvider(chart.context, R.style.ChartLabel_barLabel) }
     private val colors by lazy { AppThemeManager(chart.context).Color() }
 
-    fun configureChartAppearance(displayedYAxisValue: Float) {
-        axisStyler.configureXAxis(R.style.ChartLabel_xAxis)
+    fun configureChart(
+        referenceTimeStamp: Long,
+        displayedYAxisValue: Float,
+        onGestureListener: OnChartGestureListener? = null,
+    ) {
+        axisStyler.configureXAxis(referenceTimeStamp, R.style.ChartLabel_xAxis)
         axisStyler.configureYAxis(
             displayedYAxisValue,
             R.style.ChartLabel_yAxis,
             colors.onPrimaryVariant,
         )
-        configureInteraction()
+
+        configureInteraction(onGestureListener)
         configureChartDescription()
     }
 
     fun setAxisLimits(data: CombinedData) {
         setYAxisLimits(data)
         setXAxisLimits(data)
+    }
+
+    fun configureVisibleRange() {
+        chart.setVisibleXRangeMaximum(MAX_VISIBLE_COUNT.toFloat())
+        //chart.moveViewToX(chart.data.xMax)
     }
 
     fun getBarConfiguration(data: WeeklyChartData) =
@@ -60,13 +71,13 @@ class ChartConfigurator(
 
     private fun calculateMissingBarHeight(data: List<DailyDataPoint>) = data.minOf { it.goal } * MISSING_BAR_MULTIPLIER
 
-    private fun configureInteraction() {
+    private fun configureInteraction(onGestureListener: OnChartGestureListener? = null) {
         chart.apply {
             setTouchEnabled(true)
-            setPinchZoom(false)
-            isDoubleTapToZoomEnabled = false
-            // isDragEnabled = true
+            isDragEnabled = false
             setScaleEnabled(false)
+            setPinchZoom(false)
+            onGestureListener?.let { onChartGestureListener = it }
         }
     }
 
@@ -89,10 +100,11 @@ class ChartConfigurator(
     }
 
     companion object {
+        private const val MAX_VISIBLE_COUNT = 7
         private const val BAR_WIDTH = 0.5f
         private const val LINE_WIDTH = 2f
         private const val MISSING_BAR_MULTIPLIER = 0.2f
-        private const val Y_AXIS_MULTIPLIER = 1.1f
+        private const val Y_AXIS_MULTIPLIER = 1.25f
         private const val X_AXIS_OFFSET = 0.5f
     }
 }

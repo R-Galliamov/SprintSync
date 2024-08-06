@@ -63,12 +63,12 @@ class ChartDataTransformer {
         }
 
         private fun transformToPresentEntries(data: List<DailyDataPoint.Present>): List<BarEntry> =
-            data.map { BarEntry(it.weekDay.index.toFloat(), it.value) }
+            data.map { BarEntry(it.dayIndex.toFloat(), it.value) }
 
         private fun transformToMissingEntries(
             data: List<DailyDataPoint.Missing>,
             missingBarHeight: Float,
-        ): List<BarEntry> = data.map { BarEntry(it.weekDay.index.toFloat(), missingBarHeight) }
+        ): List<BarEntry> = data.map { BarEntry(it.dayIndex.toFloat(), missingBarHeight) }
     }
 
     class LineDataBuilder {
@@ -112,7 +112,7 @@ class ChartDataTransformer {
         }
 
         private fun transformToLineEntries(data: List<DailyDataPoint>): List<BarEntry> =
-            data.map { BarEntry(it.weekDay.index.toFloat(), it.goal) }
+            data.map { BarEntry(it.dayIndex.toFloat(), it.goal) }
     }
 
     companion object {

@@ -1,15 +1,14 @@
 package com.developers.sprintsync.user.ui.userProfile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUserProfileBinding
-import com.developers.sprintsync.user.model.chart.DailyDataPoint
-import com.developers.sprintsync.user.model.chart.WeekDay
-import com.developers.sprintsync.user.model.chart.WeeklyChartData
+import com.developers.sprintsync.user.ui.userProfile.util.chart.ChartDataLoader
 import com.developers.sprintsync.user.ui.userProfile.util.chart.ChartRenderer
 
 class UserProfileFragment : Fragment() {
@@ -36,21 +35,12 @@ class UserProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setScroller()
 
-        val point1 = DailyDataPoint.Present(WeekDay.MONDAY, 2f, 1.9f)
-        val point2 = DailyDataPoint.Present(WeekDay.TUESDAY, 2f, 2.3f)
-        val point3 = DailyDataPoint.Present(WeekDay.WEDNESDAY, 2f, 2.1f)
-        val point4 = DailyDataPoint.Present(WeekDay.THURSDAY, 2f, 2.0f)
-        val point5 = DailyDataPoint.Missing(WeekDay.FRIDAY, 2f)
-        val point6 = DailyDataPoint.Present(WeekDay.SATURDAY, 2f, 1.8f)
-        val point7 = DailyDataPoint.Present(WeekDay.SUNDAY, 2f, 3f)
+        val testData1 = ChartDataLoader().testData1
+        val testData2 = ChartDataLoader().testData2
+        val testData3 = ChartDataLoader().testData3
+        val testDataGeneral = ChartDataLoader().testDataGeneral
 
-        // val point6 = DailyDataPoint(WeekDay.SATURDAY, 150f, 160f)
-        // val point7 = DailyDataPoint(WeekDay.SUNDAY, 160f, 170f)
-
-        val list = listOf(point1, point2, point3, point4, point5, point6, point7)
-
-        val testData = WeeklyChartData("Test", list)
-        chartRenderer.renderData(testData)
+        chartRenderer.renderData(testDataGeneral)
     }
 
     private fun setScroller() {

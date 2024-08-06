@@ -1,7 +1,7 @@
 package com.developers.sprintsync.user.ui.userProfile.util.chart.styling
 
-import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.formatter.ChartDayFormatter
-import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.formatter.FilteredYAxisValueFormatter
+import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.valueFormatter.ChartDayFormatter
+import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.valueFormatter.FilteredYAxisValueFormatter
 import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.styleProvider.ResourceTextStyleProvider
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.XAxis
@@ -10,12 +10,12 @@ import com.github.mikephil.charting.components.YAxis
 class ChartAxisStyler(
     private val chart: CombinedChart,
 ) {
-    fun configureXAxis(styleResId: Int? = null) {
+    fun configureXAxis(referenceTimeStamp : Long, styleResId: Int? = null) {
         chart.xAxis.apply {
             position = XAxis.XAxisPosition.BOTTOM
             setDrawAxisLine(false)
             setDrawGridLines(false)
-            valueFormatter = ChartDayFormatter()
+            valueFormatter = ChartDayFormatter(referenceTimeStamp)
         }
 
         styleResId?.let {
