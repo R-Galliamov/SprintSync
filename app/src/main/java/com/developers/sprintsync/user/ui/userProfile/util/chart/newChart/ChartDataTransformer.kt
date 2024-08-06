@@ -32,7 +32,7 @@ class ChartDataTransformer {
             val presentDataSet = transformToPresentDataSet(data.filterIsInstance<DailyDataPoint.Present>(), config)
             val missingDataSet = transformToMissingDataSet(data.filterIsInstance<DailyDataPoint.Missing>(), config)
             return BarData(presentDataSet, missingDataSet).apply {
-                //config.barWidth?.let { barWidth = it }
+                config.barWidth?.let { barWidth = it }
             }
         }
 

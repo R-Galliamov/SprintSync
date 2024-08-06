@@ -1,6 +1,5 @@
 package com.developers.sprintsync.user.ui.userProfile.util.chart.styling
 
-import android.util.Log
 import com.developers.sprintsync.R
 import com.developers.sprintsync.global.manager.AppThemeManager
 import com.developers.sprintsync.user.model.chart.configuration.ChartConfiguration
@@ -18,10 +17,10 @@ class ChartConfigurator(
     private val colors by lazy { AppThemeManager(chart.context).Color() }
 
     fun configureChart(config: ChartConfiguration) {
-        configureInteraction(config.onGestureListener)
-        configureChartDescription()
-       setAxisLimits()
+        configureAxisLimits()
         configureVisibleRange()
+        configureChartDescription()
+        configureInteraction(config.onGestureListener)
         axisStyler.configureXAxis(config.xValueFormatter, R.style.ChartLabel_xAxis)
         axisStyler.configureYAxis(
             config.yValueFormatter,
@@ -39,10 +38,11 @@ class ChartConfigurator(
     }
 
     private fun configureVisibleRange() {
-        chart.setVisibleXRangeMaximum(MAX_VISIBLE_COUNT.toFloat())
+        chart.setVisibleXRangeMaximum(VISIBLE_RANGE.toFloat())
+        chart.setVisibleXRangeMinimum(VISIBLE_RANGE.toFloat())
     }
 
-    private fun setAxisLimits() {
+    private fun configureAxisLimits() {
         setYAxisLimits()
         setXAxisLimits()
     }
@@ -55,17 +55,13 @@ class ChartConfigurator(
     }
 
     private fun setXAxisLimits() {
-        // val xAxis: XAxis = chart.xAxis
-        // Log.d("ChartConfigurator", "XAxisMin: ${chart.xChartMin}")
-        // Log.d("ChartConfigurator", "XAxisMax: ${chart.xChartMax}")
-        // xAxis.axisMinimum = chart.xChartMin - X_AXIS_OFFSET
-        // xAxis.axisMaximum = chart.xChartMax + X_AXIS_OFFSET
-        // Log.d("ChartConfigurator", "XAxisMin: ${xAxis.axisMinimum}")
-        // Log.d("ChartConfigurator", "XAxisMax: ${xAxis.axisMaximum}")
+        val xAxis: XAxis = chart.xAxis
+        xAxis.axisMinimum = chart.xChartMin - X_AXIS_OFFSET
+        xAxis.axisMaximum = chart.xChartMax + X_AXIS_OFFSET
     }
 
     companion object {
-        private const val MAX_VISIBLE_COUNT = 7
+        private const val VISIBLE_RANGE = 7
         private const val X_AXIS_OFFSET = 0.5f
         private const val Y_AXIS_HEIGHT_MULTIPLIER = 1.25f
     }

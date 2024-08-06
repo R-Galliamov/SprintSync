@@ -5,6 +5,7 @@ import com.developers.sprintsync.user.ui.userProfile.util.chart.newChart.Animati
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
+import kotlin.math.roundToInt
 
 open class ChartGestureListener(
     private val chart: CombinedChart,
@@ -17,7 +18,7 @@ open class ChartGestureListener(
         velocityX: Float,
         velocityY: Float,
     ) {
-        val barNumber = chart.maxVisibleCount
+        val barNumber = chart.visibleXRange.roundToInt()
         if (velocityX > FLING_VELOCITY_THRESHOLD) {
             animationHandler.moveBars(-barNumber)
         }
