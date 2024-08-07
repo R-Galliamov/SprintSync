@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUserProfileBinding
-import com.developers.sprintsync.user.ui.userProfile.util.chart.ChartDataLoader
-import com.developers.sprintsync.user.ui.userProfile.util.chart.newChart.ChartRenderer
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataLoader
+import com.developers.sprintsync.user.ui.userProfile.chart.ChartRenderer
 
 class UserProfileFragment : Fragment() {
     private var _binding: FragmentUserProfileBinding? = null

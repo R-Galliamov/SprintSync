@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.ui.userProfile.util.chart.newChart
+package com.developers.sprintsync.user.ui.userProfile.chart.data
 
 import com.developers.sprintsync.user.model.chart.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
@@ -9,10 +9,22 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 
+/**
+ * A class responsible for transforming chart data into formats suitable for display using MPAndroidChart library.
+ */
 class ChartDataTransformer {
+    /**
+     * A builder class for creating [BarData] objects.
+     */
     class BarDataBuilder {
         private var config: BarConfiguration = BarConfiguration.EMPTY_CONFIGURATION
 
+        /**
+         * Sets the configuration for the bar chart.
+         *
+         * @param configuration The [BarConfiguration] to apply.
+         * @return The builder instance for chaining.
+         */
         fun setConfiguration(configuration: BarConfiguration) = apply { this.config = configuration }
 
         /*
@@ -28,6 +40,12 @@ class ChartDataTransformer {
 
          */
 
+        /**
+         * Builds a [BarData] object from the provided list of [DailyDataPoint] objects.
+         *
+         * @param data The list of daily data points.
+         * @return A [BarData]object representing the bar chart data.
+         */
         fun build(data: List<DailyDataPoint>): BarData {
             val presentDataSet = transformToPresentDataSet(data.filterIsInstance<DailyDataPoint.Present>(), config)
             val missingDataSet = transformToMissingDataSet(data.filterIsInstance<DailyDataPoint.Missing>(), config)
@@ -63,7 +81,7 @@ class ChartDataTransformer {
         }
 
         private fun transformToPresentEntries(data: List<DailyDataPoint.Present>): List<BarEntry> =
-            data.map { BarEntry(it.dayIndex.toFloat(), it.value) }
+            data.map { BarEntry(it.dayIndex.toFloat(), it.actualValue) }
 
         private fun transformToMissingEntries(
             data: List<DailyDataPoint.Missing>,
@@ -71,9 +89,17 @@ class ChartDataTransformer {
         ): List<BarEntry> = data.map { BarEntry(it.dayIndex.toFloat(), missingBarHeight) }
     }
 
+    /**
+     * A builder class for creating [LineData] objects.
+     */
     class LineDataBuilder {
         private var config: LineConfiguration = LineConfiguration.EMPTY_CONFIGURATION
 
+        /**
+         * Sets the configuration for the line chart.
+         * @param configuration The [LineConfiguration] to apply.
+         * @return The builder instance for chaining.
+         */
         fun setConfiguration(configuration: LineConfiguration) = apply { this.config = configuration }
 
         /*
@@ -91,6 +117,12 @@ class ChartDataTransformer {
 
          */
 
+        /**
+         * Builds a [LineData] object from the provided list of [DailyDataPoint] objects.
+         *
+         * @param data The list of daily data points.
+         * @return A [LineData] object representing the line chart data.
+         */
         fun build(data: List<DailyDataPoint>): LineData = LineData(transformToLineDataSet(data, config))
 
         private fun transformToLineDataSet(
@@ -116,8 +148,18 @@ class ChartDataTransformer {
     }
 
     companion object {
+        /**
+         * Creates a new instance of [BarDataBuilder].
+         *
+         * @return A new [BarDataBuilder] instance.
+         */
         fun barDataBuilder() = BarDataBuilder()
 
+        /**
+         * Creates a new instance of [LineDataBuilder].
+         *
+         * @return A new [LineDataBuilder] instance.
+         */
         fun lineDataBuilder() = LineDataBuilder()
     }
 }

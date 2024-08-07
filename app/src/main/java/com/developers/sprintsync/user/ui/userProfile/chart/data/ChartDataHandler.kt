@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.ui.userProfile.util.chart.newChart
+package com.developers.sprintsync.user.ui.userProfile.chart.data
 
 import com.developers.sprintsync.user.model.chart.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
@@ -7,7 +7,18 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.CombinedData
 import com.github.mikephil.charting.data.LineData
 
+/**
+ * A class responsible for handling and preparing chart data for display.
+ */
 class ChartDataHandler {
+    /**
+     * Prepares combined data for a chart, including both bar and line data.
+     *
+     * @param data The list of daily data points to be displayed.
+     * @param barConfig The configuration for the bar chart.
+     * @param lineConfig The configuration for the line chart.
+     * @return A [CombinedData] object containing both bar and line data.
+     */
     fun prepareCombinedData(
         data: List<DailyDataPoint>,
         barConfig: BarConfiguration,
@@ -19,11 +30,24 @@ class ChartDataHandler {
         return combinedData
     }
 
+    /**
+     * Prepares bar chart data from the provided daily data points and configuration.*
+     * @param data The list of daily data points.
+     * @param config The configuration for the bar chart.
+     * @return A [BarData] object representing the bar chart data.
+     */
     private fun prepareBarData(
         data: List<DailyDataPoint>,
         config: BarConfiguration,
     ): BarData = ChartDataTransformer.barDataBuilder().setConfiguration(config).build(data)
 
+    /**
+     * Prepares line chart data from the provided daily data points and configuration.
+     *
+     * @param data The list of daily data points.
+     * @param config The configuration for the line chart.
+     * @return A [LineData] object representing the line chart data.
+     */
     private fun prepareLineData(
         data: List<DailyDataPoint>,
         config: LineConfiguration,

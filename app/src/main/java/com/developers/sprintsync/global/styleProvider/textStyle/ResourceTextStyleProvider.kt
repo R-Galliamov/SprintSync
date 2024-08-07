@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.ui.userProfile.util.chart.styling.styleProvider
+package com.developers.sprintsync.global.styleProvider.textStyle
 
 import android.content.Context
 import androidx.core.content.ContextCompat
