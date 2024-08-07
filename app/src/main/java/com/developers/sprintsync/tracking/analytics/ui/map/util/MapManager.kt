@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import com.developers.sprintsync.R
-import com.developers.sprintsync.global.manager.AppThemeManager
+import com.developers.sprintsync.global.styleProvider.AppThemeProvider
 import com.developers.sprintsync.global.util.extension.getBitmapDescriptor
 import com.developers.sprintsync.global.util.interfaces.Clearable
 import com.developers.sprintsync.tracking.analytics.ui.trackList.util.bitmap.BitmapCropper
@@ -29,7 +29,7 @@ class MapManager(
 
     private var currentUserMarker: Marker? = null
 
-    private val colors = AppThemeManager(context).Color()
+    private val colors = AppThemeProvider(context).Color()
 
     private val polylineColor = colors.fourthly
 

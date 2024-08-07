@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.ui.userProfile.util.chart.styling.valueFormatter
+package com.developers.sprintsync.user.ui.userProfile.chart.appearance.valueFormatter
 
 import com.github.mikephil.charting.formatter.ValueFormatter
 

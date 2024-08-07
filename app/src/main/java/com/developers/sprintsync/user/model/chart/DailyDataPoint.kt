@@ -7,7 +7,7 @@ sealed class DailyDataPoint(
     data class Present(
         override val dayIndex: Int,
         override val goal: Float,
-        val value: Float,
+        val actualValue: Float,
     ) : DailyDataPoint(dayIndex, goal)
 
     data class Missing(

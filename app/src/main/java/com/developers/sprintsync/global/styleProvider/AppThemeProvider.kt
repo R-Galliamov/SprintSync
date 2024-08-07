@@ -1,10 +1,10 @@
-package com.developers.sprintsync.global.manager
+package com.developers.sprintsync.global.styleProvider
 
 import android.content.Context
 import android.util.TypedValue
 import com.developers.sprintsync.R
 
-class AppThemeManager(
+class AppThemeProvider(
     private val context: Context,
 ) {
     inner class Color {

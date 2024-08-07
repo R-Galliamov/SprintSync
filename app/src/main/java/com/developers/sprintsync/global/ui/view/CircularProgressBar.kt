@@ -7,13 +7,13 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import com.developers.sprintsync.R
-import com.developers.sprintsync.global.manager.AppThemeManager
+import com.developers.sprintsync.global.styleProvider.AppThemeProvider
 
 class CircularProgressBar(
     private val context: Context,
     private val attrs: AttributeSet,
 ) : View(context, attrs) {
-    private var colors = AppThemeManager(context).Color()
+    private var colors = AppThemeProvider(context).Color()
 
     private var progress = Attributes().getProgress()
 

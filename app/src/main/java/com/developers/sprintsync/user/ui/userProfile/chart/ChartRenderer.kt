@@ -1,11 +1,19 @@
-package com.developers.sprintsync.user.ui.userProfile.util.chart.newChart
+package com.developers.sprintsync.user.ui.userProfile.chart
 
-import android.util.Log
 import com.developers.sprintsync.user.model.chart.WeeklyChartData
-import com.developers.sprintsync.user.ui.userProfile.util.chart.listener.ChartGestureListener
-import com.developers.sprintsync.user.ui.userProfile.util.chart.styling.ChartConfigurator
+import com.developers.sprintsync.user.ui.userProfile.chart.appearance.ChartConfigurator
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartConfigurationFactory
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataConfigurationFactory
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataHandler
+import com.developers.sprintsync.user.ui.userProfile.chart.interaction.ChartNavigator
+import com.developers.sprintsync.user.ui.userProfile.chart.interaction.listener.ChartGestureListener
 import com.github.mikephil.charting.charts.CombinedChart
 
+/**
+ * A class responsible for rendering a chart with the provided data.
+ *
+ * @param chart The [CombinedChart] instance to render the data on.
+ */
 class ChartRenderer(
     private val chart: CombinedChart,
 ) {
@@ -17,6 +25,11 @@ class ChartRenderer(
 
     private val chartConfigFactory by lazy { ChartConfigurationFactory() }
 
+    /**
+     * Renders the chart with the provided [WeeklyChartData].
+     *
+     * @param data The weekly chart data to be displayed.
+     */
     fun renderChart(data: WeeklyChartData) {
         val combinedData =
             dataHandler.prepareCombinedData(
@@ -26,14 +39,11 @@ class ChartRenderer(
             )
         chart.data = combinedData
 
-        Log.d("Chart", "xMax = ${combinedData.xMax}")
-        Log.d("Chart", "xMin = ${combinedData.xMin}")
-
         configurator.configureChart(
             chartConfigFactory.createConfiguration(
                 data.data.last().goal,
                 data.referenceTimestamp,
-                ChartGestureListener(chart),
+                ChartGestureListener(chart, ChartNavigator(data), configurator),
             ),
         )
 

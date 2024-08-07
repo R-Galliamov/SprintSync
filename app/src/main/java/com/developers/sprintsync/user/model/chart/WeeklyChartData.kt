@@ -5,5 +5,3 @@ data class WeeklyChartData(
     val referenceTimestamp: Long,
     val data: List<DailyDataPoint>,
 )
-
-

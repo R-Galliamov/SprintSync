@@ -2,7 +2,7 @@ package com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart
 
 import android.content.Context
 import com.developers.sprintsync.R
-import com.developers.sprintsync.global.manager.AppThemeManager
+import com.developers.sprintsync.global.styleProvider.AppThemeProvider
 import com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart.formatter.PaceChartDurationFormatter
 import com.developers.sprintsync.tracking.analytics.ui.trackDetails.util.chart.formatter.PaceChartPaceFormatter
 import com.developers.sprintsync.tracking.session.model.track.Segments
@@ -18,7 +18,7 @@ class PaceChartManager(
     private var _chart: LineChart? = null
     private val chart get() = requireNotNull(_chart) { context.getString(R.string.chart_is_not_initialized) }
 
-    private val colors = AppThemeManager(context).Color()
+    private val colors = AppThemeProvider(context).Color()
 
     private val preparer = PaceChartDataPreparer()
 
