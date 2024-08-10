@@ -7,16 +7,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUserProfileBinding
+import com.developers.sprintsync.user.ui.userProfile.chart.ChartConfigurationType
+import com.developers.sprintsync.user.ui.userProfile.chart.ChartManagerImpl
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataLoader
-import com.developers.sprintsync.user.ui.userProfile.chart.ChartRenderer
 
 class UserProfileFragment : Fragment() {
     private var _binding: FragmentUserProfileBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
-    private val chartRenderer: ChartRenderer by lazy { ChartRenderer(binding.weeklyChart) }
+    private val chartManager: ChartManagerImpl by lazy { ChartManagerImpl(binding.progressChart) }
 
     private var selectedTab = -1
+
+    val testDataDistance = ChartDataLoader.Distance().testDataGeneral
+
+    val testDataDuration = ChartDataLoader.Duration().testDataGeneral
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,14 +37,9 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+
+        chartManager.presetChartConfiguration(ChartConfigurationType.WEEKLY, testDataDuration.referenceTimestamp)
         setScroller()
-
-        val testData1 = ChartDataLoader().testData1
-        val testData2 = ChartDataLoader().testData2
-        val testData3 = ChartDataLoader().testData3
-        val testDataGeneral = ChartDataLoader().testDataGeneral
-
-        chartRenderer.renderChart(testDataGeneral)
     }
 
     private fun setScroller() {
@@ -50,6 +50,8 @@ class UserProfileFragment : Fragment() {
 
             selectedTab = binding.chartTabs.indexOfChild(binding.chartTabDistance)
             scrollToSelectedTab(binding.chartTabDistance)
+
+            chartManager.displayData(ChartDataLoader.Distance().testDataGeneral)
         }
         binding.chartTabDuration.setOnClickListener {
             binding.chartTabDistance.isSelected = false
@@ -58,6 +60,8 @@ class UserProfileFragment : Fragment() {
 
             selectedTab = binding.chartTabs.indexOfChild(binding.chartTabDuration)
             scrollToSelectedTab(binding.chartTabDuration)
+
+            chartManager.displayData(ChartDataLoader.Duration().testDataGeneral)
         }
         binding.chartTabCalories.setOnClickListener {
             binding.chartTabDistance.isSelected = false

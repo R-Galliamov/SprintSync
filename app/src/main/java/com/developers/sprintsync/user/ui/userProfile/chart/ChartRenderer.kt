@@ -1,59 +1,160 @@
 package com.developers.sprintsync.user.ui.userProfile.chart
 
-import com.developers.sprintsync.user.model.chart.WeeklyChartData
-import com.developers.sprintsync.user.ui.userProfile.chart.appearance.ChartConfigurator
-import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartConfigurationFactory
+import com.developers.sprintsync.user.model.chart.ChartData
+import com.developers.sprintsync.user.model.chart.DailyDataPoint
+import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurator
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataCalculator
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataConfigurationFactory
-import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataHandler
-import com.developers.sprintsync.user.ui.userProfile.chart.interaction.ChartNavigator
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataPreparer
+import com.developers.sprintsync.user.ui.userProfile.chart.data.WeekChartConfigurationFactory
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.listener.ChartGestureListener
+import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
 import com.github.mikephil.charting.charts.CombinedChart
+import com.github.mikephil.charting.data.CombinedData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 
-/**
- * A class responsible for rendering a chart with the provided data.
- *
- * @param chart The [CombinedChart] instance to render the data on.
- */
-class ChartRenderer(
+abstract class ChartManager {
+    abstract val displayedData: MutableStateFlow<List<DailyDataPoint>>
+
+    abstract fun presetChartConfiguration(
+        configType: ChartConfigurationType,
+        referencedTypeStamp: Long,
+    )
+
+    abstract fun displayData(data: ChartData)
+
+    abstract fun displayEntry(dayIndex: Int)
+
+    abstract fun displayRange(rangeIndex: Int)
+}
+
+class ChartManagerImpl(
     private val chart: CombinedChart,
-) {
-    private val dataHandler = ChartDataHandler()
+) : ChartManager() {
+    // TODO Should navigator be reset after switch the configuration?
+    private val navigator: ChartNavigator by lazy { ChartNavigator(chart) }
 
-    private val dataConfigFactory by lazy { ChartDataConfigurationFactory(chart.context) }
+    private var dailyPoints: List<DailyDataPoint> = listOf()
 
-    private val configurator: ChartConfigurator by lazy { ChartConfigurator(chart) }
+    override val displayedData: MutableStateFlow<List<DailyDataPoint>> = MutableStateFlow(emptyList())
 
-    private val chartConfigFactory by lazy { ChartConfigurationFactory() }
+    private var navigatorStateScope: CoroutineScope? = null
+    private val dispatcher = Dispatchers.IO
 
-    /**
-     * Renders the chart with the provided [WeeklyChartData].
-     *
-     * @param data The weekly chart data to be displayed.
-     */
-    fun renderChart(data: WeeklyChartData) {
-        val combinedData =
-            dataHandler.prepareCombinedData(
-                data.data,
-                dataConfigFactory.createBarConfiguration(data),
-                dataConfigFactory.createLineConfiguration(data),
-            )
-        chart.data = combinedData
+    private val configurator = ChartConfigurator(chart)
 
-        configurator.configureChart(
-            chartConfigFactory.createConfiguration(
-                data.data.last().goal,
-                data.referenceTimestamp,
-                ChartGestureListener(chart, ChartNavigator(data), configurator),
-            ),
-        )
+    private val calculator = ChartDataCalculator()
 
-        refreshChart()
-    }
-
-    private fun refreshChart() {
-        chart.data?.let {
-            chart.notifyDataSetChanged()
-            chart.invalidate()
+    override fun presetChartConfiguration(
+        configType: ChartConfigurationType,
+        referencedTypeStamp: Long,
+    ) {
+        when (configType) {
+            ChartConfigurationType.WEEKLY -> {
+                val config =
+                    WeekChartConfigurationFactory().createConfiguration(
+                        referencedTypeStamp,
+                        ChartGestureListener(navigator),
+                    )
+                configurator.presetConfig(config)
+            }
         }
     }
+
+    override fun displayData(data: ChartData) {
+        this.dailyPoints = data.dailyPoints
+
+        val chartData = transformToCombinedData(data)
+        chart.data = chartData
+
+        configurator.applyConfiguration()
+
+        navigator.invalidate()
+
+        if (navigatorStateScope == null) {
+            initNavigatorStateListener()
+            displayRange(Int.MAX_VALUE)
+        }
+    }
+
+    override fun displayEntry(dayIndex: Int) {
+        TODO("Not yet implemented")
+    }
+
+
+
+    override fun displayRange(rangeIndex: Int) {
+        navigator.displayRange(rangeIndex)
+    }
+
+    private fun initNavigatorStateScope() {
+        navigatorStateScope = CoroutineScope(dispatcher)
+    }
+
+    private fun initNavigatorStateListener() {
+        initNavigatorStateScope()
+        /*
+        navigatorStateScope?.launch {
+            navigator.navigatorState.collect { state ->
+                if (displayedData.value.isNotEmpty()) {
+                    updateDisplayedData(state.minVisibleEntryIndex, state.maxVisibleEntryIndex)
+                    withContext(Dispatchers.Main) {
+                        Log.d("ChartManager", "DisplayedValues = ${displayedData.value}")
+                        scaleUpMaximum(displayedData.value) {
+                            updateYAxisLabel(displayedData.value)
+                        }
+                    }
+                }
+            }
+        }
+
+         */
+    }
+
+    private fun transformToCombinedData(data: ChartData): CombinedData {
+        val dataConfigFactory = ChartDataConfigurationFactory(chart.context)
+        return ChartDataPreparer().prepareCombinedData(
+            data.dailyPoints,
+            dataConfigFactory.createBarConfiguration(data),
+            dataConfigFactory.createLineConfiguration(data),
+        )
+    }
+
+    private fun updateDisplayedData(
+        minVisibleEntryIndex: Int,
+        maxVisibleEntryIndex: Int,
+    ) {
+        val displayedEntries =
+            DataHandlerClass().getListOfData(dailyPoints, minVisibleEntryIndex, maxVisibleEntryIndex)
+        displayedData.value = displayedEntries
+    }
+
+    private fun scaleUpMaximum(
+        displayedData: List<DailyDataPoint>,
+        onScalingEnd: () -> Unit,
+    ) {
+        val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
+        configurator.scaleUpMaximum(maxVisibleDataValue) {
+            onScalingEnd()
+        }
+    }
+
+    private fun updateYAxisLabel(displayedData: List<DailyDataPoint>) {
+        val label = calculator.calculateLastGoal(displayedData)
+        configurator.selectYLabel(label)
+    }
+}
+
+class DataHandlerClass {
+    fun getListOfData(
+        data: List<DailyDataPoint>,
+        fromIndex: Int,
+        toIndex: Int,
+    ): List<DailyDataPoint> = data.subList(fromIndex, toIndex)
+}
+
+enum class ChartConfigurationType {
+    WEEKLY,
 }

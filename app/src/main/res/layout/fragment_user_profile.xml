@@ -94,7 +94,7 @@
         android:background="@drawable/card_outlined_black">
 
         <com.github.mikephil.charting.charts.CombinedChart
-            android:id="@+id/weeklyChart"
+            android:id="@+id/progress_chart"
             android:layout_width="match_parent"
             android:layout_height="@dimen/chart.height"
             android:layout_marginEnd="@dimen/space.small"

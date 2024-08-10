@@ -10,7 +10,7 @@ import com.github.mikephil.charting.data.LineData
 /**
  * A class responsible for handling and preparing chart data for display.
  */
-class ChartDataHandler {
+class ChartDataPreparer {
     /**
      * Prepares combined data for a chart, including both bar and line data.
      *

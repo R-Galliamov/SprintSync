@@ -26,6 +26,8 @@ class ChartDataCalculator {
      */
     fun calculateMaxGoal(data: List<DailyDataPoint>): Float = data.maxOfOrNull { it.goal } ?: DEFAULT_VALUE
 
+    fun calculateLastGoal(data: List<DailyDataPoint>): Float = data.last().goal
+
     /**
      * Calculates the maximum actual value from a list of [DailyDataPoint] objects, considering only present data points.
      *

@@ -1,7 +1,7 @@
 package com.developers.sprintsync.user.model.chart
 
-data class WeeklyChartData(
+data class ChartData(
     val label: String,
     val referenceTimestamp: Long,
-    val data: List<DailyDataPoint>,
+    val dailyPoints: List<DailyDataPoint>,
 )

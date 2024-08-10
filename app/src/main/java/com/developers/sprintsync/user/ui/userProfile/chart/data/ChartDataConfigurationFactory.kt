@@ -5,7 +5,7 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.global.styleProvider.AppThemeProvider
 import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyleProvider
 import com.developers.sprintsync.user.model.chart.DailyDataPoint
-import com.developers.sprintsync.user.model.chart.WeeklyChartData
+import com.developers.sprintsync.user.model.chart.ChartData
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
 import com.github.mikephil.charting.data.LineDataSet
@@ -22,17 +22,17 @@ class ChartDataConfigurationFactory(
     private val barStyleProvider by lazy { ResourceTextStyleProvider(context, R.style.ChartLabel_barLabel) }
 
     /**
-     * Creates a [BarConfiguration] instance based on the provided [WeeklyChartData].
+     * Creates a [BarConfiguration] instance based on the provided [ChartData].
      *
      * @param data The weekly chart data to configure the bar chart.
      * @return A configured [BarConfiguration] object.
      */
-    fun createBarConfiguration(data: WeeklyChartData): BarConfiguration =
+    fun createBarConfiguration(data: ChartData): BarConfiguration =
         BarConfiguration(
             barColor = colors.secondary,
             barWidth = BAR_WIDTH,
             missingBarColor = colors.secondaryVariant,
-            missingBarHeight = calculateMissingBarHeight(data.data),
+            missingBarHeight = calculateMissingBarHeight(data.dailyPoints),
             barLabelColor = barStyleProvider.textColor,
             barLabelSizeDp = barStyleProvider.textSizeDp,
             balLabelTypeFace = barStyleProvider.typeface,
@@ -40,12 +40,12 @@ class ChartDataConfigurationFactory(
         )
 
     /**
-     * Creates a [LineConfiguration] instance based on the provided [WeeklyChartData].
+     * Creates a [LineConfiguration] instance based on the provided [ChartData].
      *
      * @param data The weekly chart data to configure the line chart.
      * @return A configured[LineConfiguration] object.
      */
-    fun createLineConfiguration(data: WeeklyChartData): LineConfiguration =
+    fun createLineConfiguration(data: ChartData): LineConfiguration =
         LineConfiguration(
             lineColor = colors.fourthly,
             lineWidth = LINE_WIDTH,

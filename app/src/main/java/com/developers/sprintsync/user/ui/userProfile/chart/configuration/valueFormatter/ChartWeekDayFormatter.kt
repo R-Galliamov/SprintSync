@@ -1,5 +1,6 @@
-package com.developers.sprintsync.user.ui.userProfile.chart.appearance.valueFormatter
+package com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter
 
+import android.util.Log
 import com.github.mikephil.charting.formatter.ValueFormatter
 import java.text.SimpleDateFormat
 import java.time.Instant
