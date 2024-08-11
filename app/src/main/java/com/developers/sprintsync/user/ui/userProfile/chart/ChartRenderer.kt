@@ -1,5 +1,7 @@
 package com.developers.sprintsync.user.ui.userProfile.chart
 
+import android.util.Log
+import com.developers.sprintsync.global.util.extension.combineAndCollectLatest
 import com.developers.sprintsync.user.model.chart.ChartData
 import com.developers.sprintsync.user.model.chart.DailyDataPoint
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurator
@@ -14,6 +16,8 @@ import com.github.mikephil.charting.data.CombinedData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 abstract class ChartManager {
     abstract val displayedData: MutableStateFlow<List<DailyDataPoint>>
@@ -70,20 +74,19 @@ class ChartManagerImpl(
         chart.data = chartData
 
         configurator.applyConfiguration()
+        configurator.refreshChart()
 
         navigator.invalidate()
 
         if (navigatorStateScope == null) {
             initNavigatorStateListener()
-            displayRange(Int.MAX_VALUE)
+            displayRange(Int.MIN_VALUE)
         }
     }
 
     override fun displayEntry(dayIndex: Int) {
         TODO("Not yet implemented")
     }
-
-
 
     override fun displayRange(rangeIndex: Int) {
         navigator.displayRange(rangeIndex)
@@ -95,22 +98,29 @@ class ChartManagerImpl(
 
     private fun initNavigatorStateListener() {
         initNavigatorStateScope()
-        /*
+
         navigatorStateScope?.launch {
-            navigator.navigatorState.collect { state ->
-                if (displayedData.value.isNotEmpty()) {
-                    updateDisplayedData(state.minVisibleEntryIndex, state.maxVisibleEntryIndex)
-                    withContext(Dispatchers.Main) {
-                        Log.d("ChartManager", "DisplayedValues = ${displayedData.value}")
-                        scaleUpMaximum(displayedData.value) {
-                            updateYAxisLabel(displayedData.value)
+            navigator.rangeLimits.combineAndCollectLatest(
+                navigator.indices,
+                CoroutineScope(Dispatchers.IO),
+                { limits, indices -> Pair(limits, indices) },
+            ) { result ->
+                navigator.executeIfDataLoaded(result.first, result.second) { loadedLimits, loadedIndices ->
+                    updateDisplayedData(
+                        loadedIndices.firstDisplayedEntryIndex,
+                        loadedLimits.chartRange,
+                    )
+                    navigatorStateScope?.launch {
+                        withContext(Dispatchers.Main) {
+                            scaleUpMaximum(displayedData.value) {
+                                updateYAxisLabel(displayedData.value)
+                                configurator.refreshChart()
+                            }
                         }
                     }
                 }
             }
         }
-
-         */
     }
 
     private fun transformToCombinedData(data: ChartData): CombinedData {
@@ -123,11 +133,12 @@ class ChartManagerImpl(
     }
 
     private fun updateDisplayedData(
-        minVisibleEntryIndex: Int,
-        maxVisibleEntryIndex: Int,
+        firstVisibleEntryIndex: Int,
+        range: Int,
     ) {
+        val toIndexExclusive = firstVisibleEntryIndex + range
         val displayedEntries =
-            DataHandlerClass().getListOfData(dailyPoints, minVisibleEntryIndex, maxVisibleEntryIndex)
+            DataHandlerClass().getListOfData(dailyPoints, firstVisibleEntryIndex, toIndexExclusive)
         displayedData.value = displayedEntries
     }
 
@@ -135,7 +146,9 @@ class ChartManagerImpl(
         displayedData: List<DailyDataPoint>,
         onScalingEnd: () -> Unit,
     ) {
+        Log.d("My stack: ChartManagerImpl", "$displayedData")
         val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
+        Log.d("My stack: ChartManagerImpl", "scaleUpMaximum: $maxVisibleDataValue")
         configurator.scaleUpMaximum(maxVisibleDataValue) {
             onScalingEnd()
         }
@@ -150,9 +163,11 @@ class ChartManagerImpl(
 class DataHandlerClass {
     fun getListOfData(
         data: List<DailyDataPoint>,
-        fromIndex: Int,
-        toIndex: Int,
-    ): List<DailyDataPoint> = data.subList(fromIndex, toIndex)
+        fromIndexInclusive: Int,
+        toIndexExclusive: Int,
+    ): List<DailyDataPoint> {
+        return data.subList(fromIndexInclusive, toIndexExclusive)
+    }
 }
 
 enum class ChartConfigurationType {

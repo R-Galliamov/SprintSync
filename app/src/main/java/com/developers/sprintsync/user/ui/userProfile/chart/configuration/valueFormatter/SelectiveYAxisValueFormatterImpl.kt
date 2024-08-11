@@ -7,9 +7,15 @@ class SelectiveYAxisValueFormatterImpl : SelectiveYAxisValueFormatter() {
         selectedValue = value
     }
 
+
+    /**
+     * Doesn't work if value is more than 7000
+     *
+
+     */
     override fun getFormattedValue(value: Float): String =
         if (value == selectedValue) {
-            value.toString()
+            value.toInt().toString()
         } else {
             ""
         }

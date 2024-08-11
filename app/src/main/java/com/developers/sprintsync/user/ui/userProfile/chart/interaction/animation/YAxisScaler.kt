@@ -19,6 +19,8 @@ class YAxisScaler(
             startValue = startValue,
             targetValue = targetValue,
             animationUpdateListener = { newValue ->
+                axisLeft.axisMinimum = 0f
+                axisRight.axisMinimum = 0f
                 axisLeft.axisMaximum = newValue
                 axisRight.axisMaximum = newValue
                 chart.notifyDataSetChanged()

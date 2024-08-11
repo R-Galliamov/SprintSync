@@ -40,7 +40,6 @@ class ChartConfigurator(
             configureVisibleRange(it.visibleXRange.toFloat())
             configureInteraction(it.onGestureListener)
         }
-        refreshChart()
         resetConfig()
     }
 

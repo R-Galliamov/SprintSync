@@ -87,13 +87,15 @@ class ChartAxisConfigurator(
     private fun configureYAxis() {
         yAxisLeft.isEnabled = false
         yAxisRight.apply {
-            setDrawAxisLine(true)
+            setDrawAxisLine(false)
             setDrawGridLines(false)
-            setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+            setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+            xOffset = X_AXIS_Y_LABEL_OFFSET
         }
     }
 
     companion object {
         private const val X_AXIS_OFFSET = 0.5f
+        private const val X_AXIS_Y_LABEL_OFFSET = -10f
     }
 }
