@@ -11,6 +11,7 @@ import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataPrepare
 import com.developers.sprintsync.user.ui.userProfile.chart.data.WeekChartConfigurationFactory
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.listener.ChartGestureListener
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
+import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigatorStateMachine
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.data.CombinedData
 import kotlinx.coroutines.CoroutineScope
@@ -38,7 +39,6 @@ class ChartManagerImpl(
     private val chart: CombinedChart,
 ) : ChartManager() {
     // TODO Should navigator be reset after switch the configuration?
-    private val navigator: ChartNavigator by lazy { ChartNavigator(chart) }
 
     private var dailyPoints: List<DailyDataPoint> = listOf()
 
@@ -50,6 +50,24 @@ class ChartManagerImpl(
     private val configurator = ChartConfigurator(chart)
 
     private val calculator = ChartDataCalculator()
+
+    private val navigatorStateMachine =
+        object : ChartNavigatorStateMachine() {
+            override fun handleDataLoadingWhenInitialLoad() {
+                Log.d(TAG + "STATE MACHINE", "handleDataLoadingWhenInitialLoad")
+                navigator.displayRange(Int.MAX_VALUE)
+
+                val rangeLimits = navigator.rangeLimits.value
+                val indices = navigator.indices.value
+                navigator.executeIfDataLoaded(rangeLimits, indices) { loadedLimits, loadedIndices ->
+                    updateDisplayedData(loadedIndices.firstDisplayedEntryIndex, loadedLimits.chartRange)
+                    scaleUpMaximum(displayedData.value)
+                    updateYAxisLabel(displayedData.value)
+                }
+            }
+        }
+
+    private val navigator: ChartNavigator by lazy { ChartNavigator(chart, navigatorStateMachine) }
 
     override fun presetChartConfiguration(
         configType: ChartConfigurationType,
@@ -80,7 +98,7 @@ class ChartManagerImpl(
 
         if (navigatorStateScope == null) {
             initNavigatorStateListener()
-            displayRange(Int.MIN_VALUE)
+            // displayRange(Int.MIN_VALUE)
         }
     }
 
@@ -105,14 +123,16 @@ class ChartManagerImpl(
                 CoroutineScope(Dispatchers.IO),
                 { limits, indices -> Pair(limits, indices) },
             ) { result ->
+                Log.d(TAG + "STATE MACHINE", "Before update: $result")
                 navigator.executeIfDataLoaded(result.first, result.second) { loadedLimits, loadedIndices ->
+                    Log.d(TAG + "STATE MACHINE", "After update: $result")
                     updateDisplayedData(
                         loadedIndices.firstDisplayedEntryIndex,
                         loadedLimits.chartRange,
                     )
                     navigatorStateScope?.launch {
                         withContext(Dispatchers.Main) {
-                            scaleUpMaximum(displayedData.value) {
+                            scaleUpMaximumAnimated(displayedData.value) {
                                 updateYAxisLabel(displayedData.value)
                                 configurator.refreshChart()
                             }
@@ -142,14 +162,17 @@ class ChartManagerImpl(
         displayedData.value = displayedEntries
     }
 
-    private fun scaleUpMaximum(
+    private fun scaleUpMaximum(displayedData: List<DailyDataPoint>) {
+        val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
+        configurator.scaleUpMaximum(maxVisibleDataValue)
+    }
+
+    private fun scaleUpMaximumAnimated(
         displayedData: List<DailyDataPoint>,
         onScalingEnd: () -> Unit,
     ) {
-        Log.d("My stack: ChartManagerImpl", "$displayedData")
         val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
-        Log.d("My stack: ChartManagerImpl", "scaleUpMaximum: $maxVisibleDataValue")
-        configurator.scaleUpMaximum(maxVisibleDataValue) {
+        configurator.scaleUpMaximumAnimated(maxVisibleDataValue) {
             onScalingEnd()
         }
     }
@@ -158,6 +181,10 @@ class ChartManagerImpl(
         val label = calculator.calculateLastGoal(displayedData)
         configurator.selectYLabel(label)
     }
+
+    companion object {
+        private const val TAG = "My stack: ChartManagerImpl"
+    }
 }
 
 class DataHandlerClass {
@@ -165,9 +192,7 @@ class DataHandlerClass {
         data: List<DailyDataPoint>,
         fromIndexInclusive: Int,
         toIndexExclusive: Int,
-    ): List<DailyDataPoint> {
-        return data.subList(fromIndexInclusive, toIndexExclusive)
-    }
+    ): List<DailyDataPoint> = data.subList(fromIndexInclusive, toIndexExclusive)
 }
 
 enum class ChartConfigurationType {

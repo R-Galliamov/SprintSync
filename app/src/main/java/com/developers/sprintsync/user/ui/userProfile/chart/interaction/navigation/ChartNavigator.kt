@@ -7,18 +7,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlin.math.roundToInt
 
-/*
 enum class NavigatorState {
     INITIAL_LOAD,
-    DATA_LOADED
+    DATA_LOADED,
 }
 
 sealed class NavigatorEvent {
     data object DataLoading : NavigatorEvent()
+
     data object DataUpdate : NavigatorEvent()
 }
 
-class ChartNavigatorStateMachine {
+abstract class ChartNavigatorStateMachine {
     private var state: NavigatorState = NavigatorState.INITIAL_LOAD
 
     fun handleEvent(event: NavigatorEvent) {
@@ -28,12 +28,18 @@ class ChartNavigatorStateMachine {
         }
     }
 
+    abstract fun handleDataLoadingWhenInitialLoad()
+
     private fun handleInitialLoad(event: NavigatorEvent) {
         when (event) {
             is NavigatorEvent.DataLoading -> {
                 // Handle initial data loading
+                // display range
+                // scale up maximum without animation
+                handleDataLoadingWhenInitialLoad()
                 state = NavigatorState.DATA_LOADED
             }
+
             is NavigatorEvent.DataUpdate -> {
                 // Ignore updates in the initial load state
             }
@@ -46,13 +52,13 @@ class ChartNavigatorStateMachine {
                 // Handle data loading (e.g., reset navigator)
                 // if configuration changed for example
             }
+
             is NavigatorEvent.DataUpdate -> {
                 // Handle data update (e.g., keep current view)
             }
         }
     }
 }
-*/
 
 sealed class RangeLimitsState {
     data object Undefined : RangeLimitsState()
@@ -92,10 +98,9 @@ class ViewportIndicesStateFactory {
 
 class ChartNavigator(
     private val chart: CombinedChart,
+    private val stateMachine: ChartNavigatorStateMachine,
 ) {
     private val barAnimator = BarAnimator(chart)
-
-    private val stateMachine = ChartNavigatorStateMachine()
 
     private val _rangeLimitsState: MutableStateFlow<RangeLimitsState> = MutableStateFlow(RangeLimitsState.Undefined)
     val rangeLimits = _rangeLimitsState.asStateFlow()
@@ -107,14 +112,13 @@ class ChartNavigator(
         val range = chart.visibleXRange.roundToInt()
         val maxRangeIndex = (chart.data.maxEntryCountSet.entryCount / range) - INDEX_OFFSET
 
-       // stateMachine.handleEvent(NavigatorEvent.DataLoading)
-
-
         _rangeLimitsState.value = RangeLimitsState.Loaded(range, maxRangeIndex)
 
         if (indices.value is ViewportIndicesState.Undefined) {
             _indicesState.value = ViewportIndicesStateFactory.createDefault()
         }
+
+        stateMachine.handleEvent(NavigatorEvent.DataLoading)
     }
 
     // TODO write index converter to x position
@@ -125,6 +129,8 @@ class ChartNavigator(
      * Pass [Int.MIN_VALUE] to display first range.
      */
     fun displayRange(rangeIndex: Int) {
+        stateMachine.handleEvent(NavigatorEvent.DataUpdate)
+
         val rangeLimits = rangeLimits.value
         val indices = indices.value
 
@@ -133,6 +139,7 @@ class ChartNavigator(
         }
 
         executeIfDataLoaded(rangeLimits, indices) { loadedLimits, loadedIndices ->
+            Log.d("My stack: ChartNavigator", "displayRange: $rangeIndex")
             val currentRangeIndex = loadedIndices.displayedRangeIndex
 
             val shiftRanges = rangeIndex - currentRangeIndex

@@ -43,11 +43,15 @@ class ChartConfigurator(
         resetConfig()
     }
 
-    fun scaleUpMaximum(
+    fun scaleUpMaximum(maxDataValue: Float) {
+        yAxisScaler.scaleUpMaximum(chart, maxDataValue)
+    }
+
+    fun scaleUpMaximumAnimated(
         maxDataValue: Float,
         onAnimationEnd: (() -> Unit)? = null,
     ) {
-        yAxisScaler.scaleUpMaximum(chart, maxDataValue, onAnimationEnd)
+        yAxisScaler.scaleUpMaximumAnimated(chart, maxDataValue, onAnimationEnd)
     }
 
     fun selectYLabel(value: Float) {

@@ -8,28 +8,45 @@ class YAxisScaler(
     fun scaleUpMaximum(
         chart: CombinedChart,
         maxDisplayedDataValue: Float,
+    ) {
+        val newMaxValue = maxDisplayedDataValue * yAxisOffsetMultiplier
+        updateYAxis(chart, newMaxValue)
+    }
+
+    fun scaleUpMaximumAnimated(
+        chart: CombinedChart,
+        maxDisplayedDataValue: Float,
         onAnimationEnd: (() -> Unit)? = null,
     ) {
         val targetValue = maxDisplayedDataValue * yAxisOffsetMultiplier
-        val axisLeft = chart.axisLeft
-        val axisRight = chart.axisRight
-        val startValue = axisLeft.axisMaximum
+        val startValue = chart.axisLeft.axisMaximum
 
         Animator.animate(
             startValue = startValue,
             targetValue = targetValue,
             animationUpdateListener = { newValue ->
-                axisLeft.axisMinimum = 0f
-                axisRight.axisMinimum = 0f
-                axisLeft.axisMaximum = newValue
-                axisRight.axisMaximum = newValue
-                chart.notifyDataSetChanged()
-                chart.invalidate()
+                updateYAxis(chart, newValue)
             },
             animationEndListener = {
                 onAnimationEnd?.invoke()
             },
         )
+    }
+
+    private fun updateYAxis(
+        chart: CombinedChart,
+        newMaxValue: Float,
+    ) {
+        val leftAxis = chart.axisLeft
+        val rightAxis = chart.axisRight
+
+        leftAxis.axisMinimum = 0f
+        rightAxis.axisMinimum = 0f
+        leftAxis.axisMaximum = newMaxValue
+        rightAxis.axisMaximum = newMaxValue
+
+        chart.notifyDataSetChanged()
+        chart.invalidate()
     }
 
     companion object {
