@@ -19,8 +19,6 @@ class ChartConfigurator(
 
     private val colors by lazy { AppThemeProvider(chart.context).Color() }
 
-    private var configToBeApplied: ChartConfiguration? = null
-
     init {
         configureChartDescription()
         axisConfigurator.styleXAxisLabels(R.style.ChartLabel_xAxis)
@@ -28,19 +26,14 @@ class ChartConfigurator(
         axisConfigurator.styleYAxisRightLine(colors.onPrimaryVariant)
     }
 
-    fun presetConfig(config: ChartConfiguration) {
-        this.configToBeApplied = config
-    }
-
-    fun applyConfiguration() {
-        configToBeApplied?.let {
+    fun applyConfiguration(configToBeApplied: ChartConfiguration) {
+        configToBeApplied.let {
             axisConfigurator.configureXAxisLimits()
             axisConfigurator.setXValueFormatter(it.xValueFormatter)
             axisConfigurator.setYValueFormatter(it.yValueFormatter)
             configureVisibleRange(it.visibleXRange.toFloat())
             configureInteraction(it.onGestureListener)
         }
-        resetConfig()
     }
 
     fun scaleUpMaximum(maxDataValue: Float) {
@@ -75,10 +68,6 @@ class ChartConfigurator(
     private fun configureVisibleRange(visibleRange: Float) {
         chart.setVisibleXRangeMaximum(visibleRange)
         chart.setVisibleXRangeMinimum(visibleRange)
-    }
-
-    private fun resetConfig() {
-        configToBeApplied = null
     }
 
     companion object {

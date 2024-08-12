@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlin.math.roundToInt
 
+/*
 enum class NavigatorState {
     INITIAL_LOAD,
     DATA_LOADED,
@@ -240,3 +241,5 @@ class ChartNavigator(
         private const val TAG = "My stack: ChartNavigator"
     }
 }
+
+ */
