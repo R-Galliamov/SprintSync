@@ -1,6 +1,6 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data
 
-import com.developers.sprintsync.user.model.chart.DailyDataPoint
+import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 
 /**
  * A utility class for performing calculations on chart data.

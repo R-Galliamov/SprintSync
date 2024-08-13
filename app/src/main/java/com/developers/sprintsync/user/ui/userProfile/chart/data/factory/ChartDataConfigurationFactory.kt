@@ -1,11 +1,11 @@
-package com.developers.sprintsync.user.ui.userProfile.chart.data
+package com.developers.sprintsync.user.ui.userProfile.chart.data.factory
 
 import android.content.Context
 import com.developers.sprintsync.R
 import com.developers.sprintsync.global.styleProvider.AppThemeProvider
 import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyleProvider
-import com.developers.sprintsync.user.model.chart.DailyDataPoint
-import com.developers.sprintsync.user.model.chart.ChartData
+import com.developers.sprintsync.user.model.chart.chartData.ChartData
+import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
 import com.github.mikephil.charting.data.LineDataSet

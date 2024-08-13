@@ -1,6 +1,5 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter
 
-import android.util.Log
 import com.github.mikephil.charting.formatter.ValueFormatter
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -27,8 +26,7 @@ class ChartWeekDayFormatter(
      */
     override fun getFormattedValue(value: Float): String {
         val timestamp = Instant.ofEpochMilli(referenceTimestamp).plus(value.toLong(), ChronoUnit.DAYS).toEpochMilli()
-        dayOfWeekFormat.format(Date(timestamp))
-        return value.toString()
+        return dayOfWeekFormat.format(Date(timestamp))
     }
 
     companion object {

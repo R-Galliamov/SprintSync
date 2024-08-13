@@ -1,22 +1,20 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter
 
+import android.util.Log
+
 class SelectiveYAxisValueFormatterImpl : SelectiveYAxisValueFormatter() {
     private var selectedValue: Float? = null
 
-    override fun selectYAxisValue(value: Float) {
+    override fun selectYAxisValue(value: Float?) {
         selectedValue = value
     }
 
-
-    /**
-     * Doesn't work if value is more than 7000
-     *
-
-     */
-    override fun getFormattedValue(value: Float): String =
-        if (value == selectedValue) {
+    override fun getFormattedValue(value: Float): String {
+        Log.d("My stack: SelectiveYAxisValueFormatterImpl", "getFormattedValue: $value")
+        return if (value == selectedValue) {
             value.toInt().toString()
         } else {
             ""
         }
+    }
 }

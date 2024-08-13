@@ -1,230 +1,206 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation
 
 import android.util.Log
-import com.developers.sprintsync.user.ui.userProfile.chart.interaction.animation.BarAnimator
+import com.developers.sprintsync.user.model.chart.navigator.NavigatorState
+import com.developers.sprintsync.user.model.chart.navigator.RangeLimits
+import com.developers.sprintsync.user.model.chart.navigator.ViewportIndices
+import com.developers.sprintsync.user.ui.userProfile.chart.interaction.animation.BarScrollAnimator
 import com.github.mikephil.charting.charts.CombinedChart
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlin.math.roundToInt
-
-/*
-enum class NavigatorState {
-    INITIAL_LOAD,
-    DATA_LOADED,
-}
-
-sealed class NavigatorEvent {
-    data object DataLoading : NavigatorEvent()
-
-    data object DataUpdate : NavigatorEvent()
-}
-
-abstract class ChartNavigatorStateMachine {
-    private var state: NavigatorState = NavigatorState.INITIAL_LOAD
-
-    fun handleEvent(event: NavigatorEvent) {
-        when (state) {
-            NavigatorState.INITIAL_LOAD -> handleInitialLoad(event)
-            NavigatorState.DATA_LOADED -> handleDataLoaded(event)
-        }
-    }
-
-    abstract fun handleDataLoadingWhenInitialLoad()
-
-    private fun handleInitialLoad(event: NavigatorEvent) {
-        when (event) {
-            is NavigatorEvent.DataLoading -> {
-                // Handle initial data loading
-                // display range
-                // scale up maximum without animation
-                handleDataLoadingWhenInitialLoad()
-                state = NavigatorState.DATA_LOADED
-            }
-
-            is NavigatorEvent.DataUpdate -> {
-                // Ignore updates in the initial load state
-            }
-        }
-    }
-
-    private fun handleDataLoaded(event: NavigatorEvent) {
-        when (event) {
-            is NavigatorEvent.DataLoading -> {
-                // Handle data loading (e.g., reset navigator)
-                // if configuration changed for example
-            }
-
-            is NavigatorEvent.DataUpdate -> {
-                // Handle data update (e.g., keep current view)
-            }
-        }
-    }
-}
-
-sealed class RangeLimitsState {
-    data object Undefined : RangeLimitsState()
-
-    data class Loaded(
-        val chartRange: Int,
-        val maxRangeIndex: Int,
-    ) : RangeLimitsState()
-}
-
-sealed class ViewportIndicesState {
-    data object Undefined : ViewportIndicesState()
-
-    data class Loaded(
-        val displayedRangeIndex: Int,
-        val firstDisplayedEntryIndex: Int,
-    ) : ViewportIndicesState()
-}
-
-class ViewportIndicesStateFactory {
-    companion object {
-        fun create(
-            rangeIndex: Int,
-            chartRange: Int,
-        ) = ViewportIndicesState.Loaded(
-            displayedRangeIndex = rangeIndex,
-            firstDisplayedEntryIndex = rangeIndex * chartRange,
-        )
-
-        fun createDefault() =
-            ViewportIndicesState.Loaded(
-                displayedRangeIndex = 0,
-                firstDisplayedEntryIndex = 0,
-            )
-    }
-}
 
 class ChartNavigator(
     private val chart: CombinedChart,
-    private val stateMachine: ChartNavigatorStateMachine,
 ) {
-    private val barAnimator = BarAnimator(chart)
+    private val barScrollAnimator = BarScrollAnimator(chart)
 
-    private val _rangeLimitsState: MutableStateFlow<RangeLimitsState> = MutableStateFlow(RangeLimitsState.Undefined)
-    val rangeLimits = _rangeLimitsState.asStateFlow()
+    private var _state: MutableStateFlow<NavigatorState> = MutableStateFlow(NavigatorState.Initialised)
+    val state = _state.asStateFlow()
 
-    private val _indicesState: MutableStateFlow<ViewportIndicesState> = MutableStateFlow(ViewportIndicesState.Undefined)
-    val indices = _indicesState.asStateFlow()
-
+    // Must be called when chart data is loaded
     fun invalidate() {
         val range = chart.visibleXRange.roundToInt()
         val maxRangeIndex = (chart.data.maxEntryCountSet.entryCount / range) - INDEX_OFFSET
+        val rangeLimits = RangeLimits(range, maxRangeIndex)
+        _state.update {
+            when (val currentState = state.value) {
+                is NavigatorState.Initialised -> NavigatorState.DataLoaded(rangeLimits)
+                is NavigatorState.DataLoaded -> {
+                    if (currentState.rangeLimits != rangeLimits) {
+                        NavigatorState.DataLoaded(rangeLimits)
+                    } else {
+                        currentState
+                    }
+                }
 
-        _rangeLimitsState.value = RangeLimitsState.Loaded(range, maxRangeIndex)
-
-        if (indices.value is ViewportIndicesState.Undefined) {
-            _indicesState.value = ViewportIndicesStateFactory.createDefault()
+                is NavigatorState.ViewportActive -> {
+                    NavigatorState.ViewportActive.DataReloaded(rangeLimits, currentState.viewportIndices)
+                }
+            }
         }
-
-        stateMachine.handleEvent(NavigatorEvent.DataLoading)
     }
 
-    // TODO write index converter to x position
+    fun commitDataReload() {
+        when (val currentState = state.value) {
+            is NavigatorState.Initialised -> return
+            is NavigatorState.DataLoaded -> return
+            is NavigatorState.ViewportActive.InitialDisplay -> return
+            is NavigatorState.ViewportActive.Navigating -> return
+            is NavigatorState.ViewportActive.DataReloaded -> {
+                _state.update {
+                    NavigatorState.ViewportActive.Navigating(
+                        currentState.rangeLimits,
+                        currentState.viewportIndices,
+                    )
+                }
+            }
+        }
+    }
 
-    /**
-     * Displays a range of data in the chart.
-     * Pass [Int.MAX_VALUE] to display last range.
-     * Pass [Int.MIN_VALUE] to display first range.
-     */
+    // Works only when data is loaded. Must be called to show first range
     fun displayRange(rangeIndex: Int) {
-        stateMachine.handleEvent(NavigatorEvent.DataUpdate)
-
-        val rangeLimits = rangeLimits.value
-        val indices = indices.value
-
-        if (indices is ViewportIndicesState.Undefined) {
-            _indicesState.value = ViewportIndicesStateFactory.createDefault()
-        }
-
-        executeIfDataLoaded(rangeLimits, indices) { loadedLimits, loadedIndices ->
-            Log.d("My stack: ChartNavigator", "displayRange: $rangeIndex")
-            val currentRangeIndex = loadedIndices.displayedRangeIndex
-
-            val shiftRanges = rangeIndex - currentRangeIndex
-            updateIndicesByShift(shiftRanges)
-
-            val updatedIndices = _indicesState.value as ViewportIndicesState.Loaded
-
-            val firstIndexToBeDisplayed = updatedIndices.firstDisplayedEntryIndex
-            chart.moveViewToX(firstIndexToBeDisplayed - 0.5f)
+        when (state.value) {
+            is NavigatorState.Initialised -> return
+            is NavigatorState.DataLoaded, is NavigatorState.ViewportActive -> {
+                handleRangeChange(rangeIndex)
+            }
         }
     }
 
+    // works only when viewport is initialised meaning first range is displayed. Must be called to shift range
+    // TODO delegate logic to another class
     fun navigateRange(
         direction: NavigationDirection,
         shiftRanges: Int = DEFAULT_RANGE_SHIFT,
     ) {
-        val indices = indices.value
-        val limits = rangeLimits.value
+        when (val currentState = state.value) {
+            is NavigatorState.Initialised, is NavigatorState.DataLoaded -> return
+            is NavigatorState.ViewportActive ->
+                handleViewportNavigation(
+                    currentState,
+                    direction,
+                    shiftRanges,
+                )
+        }
+    }
 
-        executeIfDataLoaded(limits, indices) { loadedLimits, loadedIndices ->
-            val range = loadedLimits.chartRange
-            val maxRangeIndex = loadedLimits.maxRangeIndex
+    fun resetToInitial() {
+        _state.value = NavigatorState.Initialised
+    }
 
-            val minEntryIndex = loadedIndices.firstDisplayedEntryIndex
-            val rangeIndex = loadedIndices.displayedRangeIndex
+    private fun handleViewportNavigation(
+        currentState: NavigatorState.ViewportActive,
+        direction: NavigationDirection,
+        shiftRanges: Int,
+    ) {
+        val range = currentState.rangeLimits.chartRange
+        val maxRangeIndex = currentState.rangeLimits.maxRangeIndex
+        val minEntryIndex = currentState.viewportIndices.firstDisplayedEntryIndex
+        val rangeIndex = currentState.viewportIndices.displayedRangeIndex
 
-            when (direction) {
-                NavigationDirection.PREVIOUS -> {
-                    if (minEntryIndex > FIRST_INDEX) {
-                        barAnimator.moveBars(minEntryIndex, -range * shiftRanges)
-                        updateIndicesByShift(-shiftRanges)
-                    }
-                }
+        when (direction) {
+            NavigationDirection.PREVIOUS ->
+                handlePreviousNavigation(
+                    currentState,
+                    rangeIndex,
+                    minEntryIndex,
+                    range,
+                    shiftRanges,
+                )
 
-                NavigationDirection.NEXT -> {
-                    if (rangeIndex < maxRangeIndex) {
-                        barAnimator.moveBars(minEntryIndex, range * shiftRanges)
-                        updateIndicesByShift(shiftRanges)
-                    }
+            NavigationDirection.NEXT ->
+                handleNextNavigation(
+                    currentState,
+                    rangeIndex,
+                    minEntryIndex,
+                    range,
+                    shiftRanges,
+                    maxRangeIndex,
+                )
+        }
+    }
+
+    private fun handlePreviousNavigation(
+        currentState: NavigatorState.ViewportActive,
+        displayedRangeIndex: Int,
+        displayedFirstEntryIndex: Int,
+        range: Int,
+        shiftRanges: Int,
+    ) {
+        if (displayedRangeIndex > FIRST_INDEX) {
+            barScrollAnimator.moveBars(displayedFirstEntryIndex, range * -shiftRanges)
+            updateIndicesByShift(currentState, -shiftRanges)
+        }
+    }
+
+    private fun handleNextNavigation(
+        currentState: NavigatorState.ViewportActive,
+        displayedRangeIndex: Int,
+        displayedFirstEntryIndex: Int,
+        range: Int,
+        shiftRanges: Int,
+        maxRangeIndex: Int,
+    ) {
+        if (displayedRangeIndex < maxRangeIndex) {
+            barScrollAnimator.moveBars(displayedFirstEntryIndex, range * shiftRanges)
+            updateIndicesByShift(currentState, shiftRanges)
+        }
+    }
+
+    private fun handleRangeChange(rangeIndex: Int) {
+        val rangeLimits =
+            when (val currentState = state.value) {
+                is NavigatorState.DataLoaded -> currentState.rangeLimits
+                is NavigatorState.ViewportActive -> currentState.rangeLimits
+                else -> return
+            }
+
+        val coercedRangeIndex = rangeIndex.coerceIn(FIRST_INDEX, rangeLimits.maxRangeIndex)
+
+        val firstIndexToBeDisplayed = coercedRangeIndex * rangeLimits.chartRange
+        chart.moveViewToX(firstIndexToBeDisplayed - 0.5f) // TODO add entry index converter to x position
+        _state.value =
+            when (state.value) {
+                is NavigatorState.DataLoaded ->
+                    NavigatorState.ViewportActive.InitialDisplay(
+                        rangeLimits,
+                        ViewportIndices(coercedRangeIndex, firstIndexToBeDisplayed),
+                    )
+
+                is NavigatorState.ViewportActive ->
+                    NavigatorState.ViewportActive.Navigating(
+                        rangeLimits,
+                        ViewportIndices(coercedRangeIndex, firstIndexToBeDisplayed),
+                    )
+
+                else -> {
+                    Log.d("My stack: ChartNavigator", "Wrong state: ${state.value}")
+                    return
                 }
             }
-        }
     }
 
-    fun executeIfDataLoaded(
-        rangeLimits: RangeLimitsState,
-        indices: ViewportIndicesState,
-        action: (validRangeLimits: RangeLimitsState.Loaded, validIndices: ViewportIndicesState.Loaded) -> Unit,
+    private fun updateIndicesByShift(
+        currentState: NavigatorState.ViewportActive,
+        shiftRanges: Int,
     ) {
-        when (rangeLimits) {
-            is RangeLimitsState.Loaded ->
-                when (indices) {
-                    is ViewportIndicesState.Loaded -> {
-                        action.invoke(rangeLimits, indices)
-                    }
+        val rangeLimits = currentState.rangeLimits
+        val indices = currentState.viewportIndices
 
-                    ViewportIndicesState.Undefined -> return
-                }
+        val range = rangeLimits.chartRange
+        val maxRangeIndex = rangeLimits.maxRangeIndex
 
-            is RangeLimitsState.Undefined -> return
-        }
-    }
+        val currentRangeIndex = indices.displayedRangeIndex
 
-    private fun updateIndicesByShift(shiftRanges: Int) {
-        val indices = indices.value
-        val limits = rangeLimits.value
+        val coercedRangeIndex = (currentRangeIndex + shiftRanges).coerceIn(FIRST_INDEX, maxRangeIndex)
 
-        executeIfDataLoaded(limits, indices) { loadedLimits, loadedIndices ->
-            val range = loadedLimits.chartRange
-            val maxRangeIndex = loadedLimits.maxRangeIndex
-
-            val currentRangeIndex = loadedIndices.displayedRangeIndex
-            val newRangeIndex =
-                if (currentRangeIndex + shiftRanges < FIRST_INDEX) {
-                    FIRST_INDEX
-                } else if (currentRangeIndex + shiftRanges > maxRangeIndex) {
-                    maxRangeIndex
-                } else {
-                    currentRangeIndex + shiftRanges
-                }
-
-            val updatedIndices = ViewportIndicesStateFactory.create(rangeIndex = newRangeIndex, chartRange = range)
-            _indicesState.value = updatedIndices
-        }
+        _state.value =
+            NavigatorState.ViewportActive.Navigating(
+                rangeLimits,
+                ViewportIndices(coercedRangeIndex, coercedRangeIndex * range),
+            )
     }
 
     enum class NavigationDirection {
@@ -241,5 +217,3 @@ class ChartNavigator(
         private const val TAG = "My stack: ChartNavigator"
     }
 }
-
- */

@@ -1,17 +1,18 @@
-package com.developers.sprintsync.user.ui.userProfile.chart
+package com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager
 
 import android.util.Log
-import com.developers.sprintsync.user.model.chart.ChartData
-import com.developers.sprintsync.user.model.chart.DailyDataPoint
+import com.developers.sprintsync.user.model.chart.chartData.ChartData
+import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.configuration.ChartConfiguration
-import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurator
+import com.developers.sprintsync.user.model.chart.navigator.NavigatorState
+import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
+import com.developers.sprintsync.user.ui.userProfile.chart.configuration.configurator.ChartConfigurator
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataCalculator
-import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataConfigurationFactory
-import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataPreparer
-import com.developers.sprintsync.user.ui.userProfile.chart.data.WeekChartConfigurationFactory
+import com.developers.sprintsync.user.ui.userProfile.chart.data.factory.ChartDataConfigurationFactory
+import com.developers.sprintsync.user.ui.userProfile.chart.data.factory.WeekChartConfigurationFactory
+import com.developers.sprintsync.user.ui.userProfile.chart.data.transformer.ChartDataPreparer
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.listener.ChartGestureListener
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
-import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.NavigatorState
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.data.CombinedData
 import kotlinx.coroutines.CoroutineScope
@@ -19,24 +20,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-abstract class ChartManager {
-    abstract val displayedData: MutableStateFlow<List<DailyDataPoint>>
-
-    abstract fun presetChartConfiguration(
-        configType: ChartConfigurationType,
-        referencedTypeStamp: Long,
-    )
-
-    abstract fun displayData(data: ChartData)
-
-    abstract fun displayEntry(dayIndex: Int)
-
-    abstract fun displayRange(rangeIndex: Int)
-}
-
 class ChartManagerImpl(
     private val chart: CombinedChart,
 ) : ChartManager() {
+    // TODO try to map from navigator state
     private var dailyPoints: List<DailyDataPoint> = listOf()
 
     override val displayedData: MutableStateFlow<List<DailyDataPoint>> = MutableStateFlow(emptyList())
@@ -112,6 +99,7 @@ class ChartManagerImpl(
 
                     is NavigatorState.DataLoaded -> { // Keep showing loading bar
                         Log.d(TAG, "NavigatorState.DataLoaded")
+                        navigator.displayRange(Int.MAX_VALUE)
                     }
 
                     is NavigatorState.ViewportActive -> {
@@ -122,16 +110,26 @@ class ChartManagerImpl(
                         )
                         when (state) {
                             is NavigatorState.ViewportActive.InitialDisplay -> {
-                                navigator.displayRange(Int.MAX_VALUE)
+                                Log.d(TAG, "InitialDisplay")
                                 scaleUpMaximum(displayedData.value)
                                 updateYAxisLabel(displayedData.value)
                                 configurator.refreshChart()
                             }
 
                             is NavigatorState.ViewportActive.Navigating -> {
+                                Log.d(TAG, "Navigating")
                                 scaleUpMaximumAnimated(displayedData.value) {
                                     updateYAxisLabel(displayedData.value)
                                     configurator.refreshChart()
+                                }
+                            }
+
+                            is NavigatorState.ViewportActive.DataReloaded -> {
+                                Log.d(TAG, "DataReloaded")
+                                scaleUpMaximumAnimated(displayedData.value) {
+                                    updateYAxisLabel(displayedData.value)
+                                    configurator.refreshChart()
+                                    navigator.commitDataReload()
                                 }
                             }
                         }
@@ -156,7 +154,7 @@ class ChartManagerImpl(
     ) {
         val toIndexExclusive = firstVisibleEntryIndex + range
         val displayedEntries =
-            DataHandlerClass().getListOfData(dailyPoints, firstVisibleEntryIndex, toIndexExclusive)
+            dailyPoints.subList(firstVisibleEntryIndex, toIndexExclusive)
         displayedData.value = displayedEntries
     }
 
@@ -187,16 +185,4 @@ class ChartManagerImpl(
     companion object {
         private const val TAG = "My stack: ChartManagerImpl"
     }
-}
-
-class DataHandlerClass {
-    fun getListOfData(
-        data: List<DailyDataPoint>,
-        fromIndexInclusive: Int,
-        toIndexExclusive: Int,
-    ): List<DailyDataPoint> = data.subList(fromIndexInclusive, toIndexExclusive)
-}
-
-enum class ChartConfigurationType {
-    WEEKLY,
 }

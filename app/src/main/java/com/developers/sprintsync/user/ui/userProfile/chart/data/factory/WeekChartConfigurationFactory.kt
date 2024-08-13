@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.ui.userProfile.chart.data
+package com.developers.sprintsync.user.ui.userProfile.chart.data.factory
 
 import com.developers.sprintsync.user.model.chart.configuration.ChartConfiguration
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.ChartWeekDayFormatter

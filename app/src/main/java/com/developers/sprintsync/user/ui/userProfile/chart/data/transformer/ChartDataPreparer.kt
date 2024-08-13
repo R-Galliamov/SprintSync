@@ -1,6 +1,6 @@
-package com.developers.sprintsync.user.ui.userProfile.chart.data
+package com.developers.sprintsync.user.ui.userProfile.chart.data.transformer
 
-import com.developers.sprintsync.user.model.chart.DailyDataPoint
+import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
 import com.github.mikephil.charting.data.BarData

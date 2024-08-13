@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.ui.userProfile.chart.configuration
+package com.developers.sprintsync.user.ui.userProfile.chart.configuration.configurator
 
 import android.util.Log
 import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyleProvider
@@ -52,6 +52,7 @@ class ChartAxisConfigurator(
         }
     }
 
+    // TODO delete this method
     fun styleYAxisRightLine(color: Int) {
         yAxisRight.apply {
             axisLineColor = color
@@ -70,7 +71,6 @@ class ChartAxisConfigurator(
 
     fun selectYValueLabel(value: Float) {
         formatter?.selectYAxisValue(value)
-
         chart.notifyDataSetChanged()
         chart.invalidate()
         Log.d("My stack: ChartAxisConfigurator", "selectYValueLabel: $value")
@@ -87,6 +87,8 @@ class ChartAxisConfigurator(
     private fun configureYAxis() {
         yAxisLeft.isEnabled = false
         yAxisRight.apply {
+            yAxisRight.setLabelCount(Int.MAX_VALUE)
+            axisMinimum = Y_AXIS_MINIMUM
             setDrawAxisLine(false)
             setDrawGridLines(false)
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
@@ -95,6 +97,7 @@ class ChartAxisConfigurator(
     }
 
     companion object {
+        private const val Y_AXIS_MINIMUM = 0f
         private const val X_AXIS_OFFSET = 0.5f
         private const val X_AXIS_Y_LABEL_OFFSET = -10f
     }

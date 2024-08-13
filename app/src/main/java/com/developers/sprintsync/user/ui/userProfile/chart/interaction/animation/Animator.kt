@@ -3,7 +3,9 @@ package com.developers.sprintsync.user.ui.userProfile.chart.interaction.animatio
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
 import android.animation.ValueAnimator
-import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class Animator {
     companion object {
@@ -14,48 +16,50 @@ class Animator {
             animationUpdateListener: (Float) -> Unit,
             animationEndListener: (() -> Unit)? = null,
         ) {
-            val distance = targetValue - startValue
+            CoroutineScope(Dispatchers.Main).launch {
+                val distance = targetValue - startValue
 
-            // Log.d(TAG, "startX: $startValue, targetX: $targetValue, distance: $distance")
+                // Log.d(TAG, "startX: $startValue, targetX: $targetValue, distance: $distance")
 
-            val startTime = System.currentTimeMillis()
-            val endTime = startTime + durationMillis
+                val startTime = System.currentTimeMillis()
+                val endTime = startTime + durationMillis
 
-            val animator = ValueAnimator.ofFloat(ANIMATION_START_VALUE, ANIMATION_END_VALUE)
-            animator.duration = durationMillis
+                val animator = ValueAnimator.ofFloat(ANIMATION_START_VALUE, ANIMATION_END_VALUE)
+                animator.duration = durationMillis
 
-            animator.addUpdateListener {
-                val currentTime = System.currentTimeMillis()
-                if (currentTime < endTime) {
-                    val progress = (currentTime - startTime) / durationMillis.toFloat()
-                    val newValue = startValue + (distance * progress)
-                    animationUpdateListener(newValue)
-                    // Log.d(TAG, "new Value: $newValue")
-                } else {
-                    animationUpdateListener(targetValue)
-                    Log.d(TAG, "final Value: $targetValue")
+                animator.addUpdateListener {
+                    val currentTime = System.currentTimeMillis()
+                    if (currentTime < endTime) {
+                        val progress = (currentTime - startTime) / durationMillis.toFloat()
+                        val newValue = startValue + (distance * progress)
+                        animationUpdateListener(newValue)
+                        // Log.d(TAG, "new Value: $newValue")
+                    } else {
+                        animationUpdateListener(targetValue)
+                        // Log.d(TAG, "final Value: $targetValue")
+                    }
                 }
+
+                animator.addListener(
+                    object : AnimatorListener {
+                        override fun onAnimationStart(p0: Animator) {
+                        }
+
+                        override fun onAnimationEnd(p0: Animator) {
+                            animationEndListener?.invoke()
+                            // Log.d(TAG, "onAnimationEnd")
+                        }
+
+                        override fun onAnimationCancel(p0: Animator) {
+                        }
+
+                        override fun onAnimationRepeat(p0: Animator) {
+                        }
+                    },
+                )
+
+                animator.start()
             }
-
-            animator.addListener(
-                object : AnimatorListener {
-                    override fun onAnimationStart(p0: Animator) {
-                    }
-
-                    override fun onAnimationEnd(p0: Animator) {
-                        animationEndListener?.invoke()
-                        Log.d(TAG, "onAnimationEnd")
-                    }
-
-                    override fun onAnimationCancel(p0: Animator) {
-                    }
-
-                    override fun onAnimationRepeat(p0: Animator) {
-                    }
-                },
-            )
-
-            animator.start()
         }
 
         private const val ANIMATION_DURATION_MILLIS = 200L

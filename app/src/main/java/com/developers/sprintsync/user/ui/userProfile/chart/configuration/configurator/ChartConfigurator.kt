@@ -1,10 +1,10 @@
-package com.developers.sprintsync.user.ui.userProfile.chart.configuration
+package com.developers.sprintsync.user.ui.userProfile.chart.configuration.configurator
 
 import com.developers.sprintsync.R
 import com.developers.sprintsync.global.styleProvider.AppThemeProvider
 import com.developers.sprintsync.user.model.chart.configuration.ChartConfiguration
-import com.developers.sprintsync.user.ui.userProfile.chart.interaction.ChartInteractionHandler
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.animation.YAxisScaler
+import com.developers.sprintsync.user.ui.userProfile.chart.interaction.handler.ChartInteractionHandler
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.listener.OnChartGestureListener
 

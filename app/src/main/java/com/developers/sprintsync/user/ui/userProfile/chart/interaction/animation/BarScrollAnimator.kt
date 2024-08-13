@@ -2,7 +2,7 @@ package com.developers.sprintsync.user.ui.userProfile.chart.interaction.animatio
 
 import com.github.mikephil.charting.charts.CombinedChart
 
-class BarAnimator(
+class BarScrollAnimator(
     private val chart: CombinedChart,
 ) {
     fun moveBars(

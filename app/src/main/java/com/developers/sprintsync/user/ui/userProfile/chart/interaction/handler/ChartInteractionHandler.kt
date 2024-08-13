@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.ui.userProfile.chart.interaction
+package com.developers.sprintsync.user.ui.userProfile.chart.interaction.handler
 
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.listener.OnChartGestureListener

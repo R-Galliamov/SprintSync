@@ -1,12 +1,13 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data
 
-import com.developers.sprintsync.user.model.chart.DailyDataPoint
-import com.developers.sprintsync.user.model.chart.ChartData
+import com.developers.sprintsync.user.model.chart.chartData.ChartData
+import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 
 class ChartDataLoader {
     companion object {
         val referenceTimestamp = System.currentTimeMillis()
     }
+
     class Duration {
         private val point1 = DailyDataPoint.Present(0, 10f, 10f)
         private val point2 = DailyDataPoint.Present(1, 10f, 10f)
@@ -24,24 +25,24 @@ class ChartDataLoader {
         private val point13 = DailyDataPoint.Missing(12, 20f)
         private val point14 = DailyDataPoint.Missing(13, 20f)
 
-        private val point15 = DailyDataPoint.Present(14, 30f, 10f)
-        private val point16 = DailyDataPoint.Present(15, 30f, 10f)
-        private val point17 = DailyDataPoint.Present(16, 30f, 10f)
-        private val point18 = DailyDataPoint.Present(17, 30f, 10f)
-        private val point19 = DailyDataPoint.Missing(18, 30f)
-        private val point20 = DailyDataPoint.Missing(19, 30f)
-        private val point21 = DailyDataPoint.Missing(20, 30f)
+        private val point15 = DailyDataPoint.Present(14, 120f, 90f)
+        private val point16 = DailyDataPoint.Present(15, 120f, 80f)
+        private val point17 = DailyDataPoint.Present(16, 120f, 140f)
+        private val point18 = DailyDataPoint.Present(17, 150f, 130f)
+        private val point19 = DailyDataPoint.Missing(18, 150f)
+        private val point20 = DailyDataPoint.Missing(19, 150f)
+        private val point21 = DailyDataPoint.Missing(20, 150f)
 
         private val list1 =
             listOf(
                 point1,
                 point2,
-                 point3,
-                 point4,
-                 point5,
-                 point6,
-                 point7,
-                 point8,
+                point3,
+                point4,
+                point5,
+                point6,
+                point7,
+                point8,
             )
 
         private val list2 = listOf(point8, point9, point10, point11, point12, point13, point14)
@@ -72,15 +73,15 @@ class ChartDataLoader {
         private val point11 = DailyDataPoint.Present(10, 2f, 1f)
         private val point12 = DailyDataPoint.Missing(11, 3f)
         private val point13 = DailyDataPoint.Missing(12, 3f)
-        private val point14 = DailyDataPoint.Missing(13, 5f)
+        private val point14 = DailyDataPoint.Present(13, 3f, 3.3f)
 
-        private val point15 = DailyDataPoint.Present(14, 3.1f, 1f)
-        private val point16 = DailyDataPoint.Present(15, 3f, 1f)
-        private val point17 = DailyDataPoint.Present(16, 3f, 1f)
-        private val point18 = DailyDataPoint.Present(17, 3f, 1f)
+        private val point15 = DailyDataPoint.Present(14, 3f, 0.7f)
+        private val point16 = DailyDataPoint.Present(15, 3f, 1.9f)
+        private val point17 = DailyDataPoint.Present(16, 3f, 3f)
+        private val point18 = DailyDataPoint.Present(17, 3f, 2.9f)
         private val point19 = DailyDataPoint.Missing(18, 3f)
-        private val point20 = DailyDataPoint.Missing(19, 3f)
-        private val point21 = DailyDataPoint.Present(20, 1000f, 1000f)
+        private val point20 = DailyDataPoint.Missing(19, 2f)
+        private val point21 = DailyDataPoint.Present(20, 3f, 3.3f)
 
         private val list1 =
             listOf(
