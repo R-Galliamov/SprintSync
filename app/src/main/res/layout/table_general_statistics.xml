@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="1">
+
+    <TableRow>
+        <TextView
+            android:id="@+id/tvMaxWorkoutStreak"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/max_workout_streak" />
+        <TextView
+            android:id="@+id/tvMaxWorkoutStreakValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="6" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:id="@+id/tvTotalWorkoutDays"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/total_workout_days" />
+        <TextView
+            android:id="@+id/tvTotalWorkoutDaysValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="43" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:id="@+id/tvTotalDistance"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/total_distance" />
+        <TextView
+            android:id="@+id/tvTotalDistanceValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="21.33 km" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:id="@+id/tvTotalDuration"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/total_duration" />
+        <TextView
+            android:id="@+id/tvTotalDurationValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="12:13:14" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:id="@+id/tvAvgPace"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/avg_pace" />
+        <TextView
+            android:id="@+id/tvAvgPaceValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="5:67" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:id="@+id/tvBestPace"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/best_pace" />
+        <TextView
+            android:id="@+id/tvBestPaceValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="2:45" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:id="@+id/tvTotalBurnedKcal"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/total_burned_kcal" />
+        <TextView
+            android:id="@+id/tvTotalBurnedKcalValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="32000" />
+    </TableRow>
+</TableLayout>

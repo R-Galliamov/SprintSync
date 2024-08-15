@@ -65,8 +65,8 @@ class UserProfileViewModel
         fun setScroller(binding: FragmentUserProfileBinding) {
             val tabs =
                 listOf(
-                    binding.chartTabDistance to dataLoader.distance,
-                    binding.chartTabDuration to dataLoader.duration,
+                    binding.chartTabsScroller.chartTabDistance to dataLoader.distance,
+                    binding.chartTabsScroller.chartTabDuration to dataLoader.duration,
                     // binding.chartTabCalories to ChartDataLoader.Calories()
                 )
 
@@ -77,7 +77,7 @@ class UserProfileViewModel
 
                     // Select the clicked tab
                     tab.isSelected = true
-                    selectedTab = binding.chartTabs.indexOfChild(tab)
+                    selectedTab = binding.chartTabsScroller.tabs.indexOfChild(tab)
                     scrollToSelectedTab(binding, tab)
 
                     // Display the corresponding data
@@ -90,12 +90,12 @@ class UserProfileViewModel
             binding: FragmentUserProfileBinding,
             selectedTab: View,
         ) {
-            binding.chartTabsScroller.post {
+            binding.chartTabsScroller.root.post {
                 val selectedViewCenterX = selectedTab.left + selectedTab.width / 2
-                val scrollViewCenterX = binding.chartTabs.width / 2
+                val scrollViewCenterX = binding.chartTabsScroller.tabs.width / 2
                 val scrollToX = selectedViewCenterX - scrollViewCenterX
 
-                binding.chartTabsScroller.smoothScrollTo(scrollToX, 0)
+                binding.chartTabsScroller.root.smoothScrollTo(scrollToX, 0)
             }
         }
     }

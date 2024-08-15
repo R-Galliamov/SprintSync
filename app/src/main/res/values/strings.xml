@@ -44,9 +44,15 @@
     <string name="location_request_description">Location access is essential for our app to work correctly. This will allow us to map your routes and provide accurate stats.</string>
     <string name="loading_description">Please wait a moment, we are loading data.</string>
     <string name="to_settings">To settings</string>
-    <string name="weekly_progress_title">Weekly progress</string>
+    <string name="weekly_overview_title">Weekly overview</string>
     <string name="chart_is_not_initialized">Chart is not initialized</string>
     <string name="previous_range">Previous range</string>
     <string name="next_range">Next range</string>
+    <string name="general_overview">General overview</string>
+    <string name="total_distance">Total distance</string>
+    <string name="total_duration">Total duration</string>
+    <string name="total_burned_kcal">Total burned kcal</string>
+    <string name="total_workout_days">Total workout days</string>
+    <string name="max_workout_streak">Max workout streak</string>
 
 </resources>
