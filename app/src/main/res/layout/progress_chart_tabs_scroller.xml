@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/space.small"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/tabs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/chartTabDistance"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button.height.small"
+            android:background="@drawable/st_tab_thirdly"
+            android:drawablePadding="@dimen/space.small"
+            android:gravity="center"
+            android:paddingStart="@dimen/space.small"
+            android:paddingTop="@dimen/space.small"
+            android:paddingEnd="@dimen/space.small"
+            android:paddingBottom="@dimen/space.small"
+            android:text="@string/distance"
+            app:drawableStartCompat="@drawable/ic_distance_24dp" />
+
+        <TextView
+            android:id="@+id/chartTabDuration"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button.height.small"
+            android:background="@drawable/st_tab_thirdly"
+            android:drawablePadding="@dimen/space.small"
+            android:gravity="center"
+            android:paddingStart="@dimen/space.small"
+            android:paddingTop="@dimen/space.small"
+            android:paddingEnd="@dimen/space.small"
+            android:paddingBottom="@dimen/space.small"
+            android:text="@string/duration"
+            app:drawableStartCompat="@drawable/ic_duration_32dp" />
+
+        <TextView
+            android:id="@+id/chartTabCalories"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button.height.small"
+            android:background="@drawable/st_tab_thirdly"
+            android:drawablePadding="@dimen/space.small"
+            android:gravity="center"
+            android:paddingStart="@dimen/space.small"
+            android:paddingTop="@dimen/space.small"
+            android:paddingEnd="@dimen/space.small"
+            android:paddingBottom="@dimen/space.small"
+            android:text="@string/burned_kcal"
+            app:drawableStartCompat="@drawable/ic_kcal_48dp" />
+    </LinearLayout>
+
+</HorizontalScrollView>

@@ -49,18 +49,21 @@ class UserProfileFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.dateRange.collect { dateRange ->
-                    binding.tvDayMonthRange.text = dateRange.dayMonthRange
-                    binding.tvYearRange.text = dateRange.yearsRange
+                    binding.progressChartNavigator.apply {
+                        tvDayMonthRange.text = dateRange.dayMonthRange
+                        tvYearRange.text = dateRange.yearsRange
+                    }
                 }
             }
         }
     }
 
     private fun setRangeNavigatingButtons() {
-        binding.btPreviousRange.setOnClickListener {
+
+        binding.progressChartNavigator.btPreviousRange.setOnClickListener {
             viewModel.navigateRange(ChartNavigator.NavigationDirection.PREVIOUS)
         }
-        binding.btNextRange.setOnClickListener {
+        binding.progressChartNavigator.btNextRange.setOnClickListener {
             viewModel.navigateRange(ChartNavigator.NavigationDirection.NEXT)
         }
     }

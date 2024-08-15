@@ -1,153 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/space.regular"
-    android:layout_marginEnd="@dimen/space.regular"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context=".user.ui.userProfile.UserProfileFragment">
-
-    <TextView
-        style="@style/RegularText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/weekly_progress_title"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/shape.strokeWidth"
-        android:layout_marginStart="@dimen/space.regular"
-        android:layout_marginTop="@dimen/space.small"
-        android:layout_marginEnd="@dimen/space.regular"
-        android:background="?colorSecondary" />
-
-    <HorizontalScrollView
-        android:id="@+id/chartTabsScroller"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space.small"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/chartTabs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/chartTabDistance"
-                style="@style/RegularText.Gray"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/button.height.small"
-                android:layout_marginStart="@dimen/space.small"
-                android:background="@drawable/st_tab_thirdly"
-                android:drawablePadding="@dimen/space.small"
-                android:gravity="center"
-                android:paddingStart="@dimen/space.small"
-                android:paddingTop="@dimen/space.small"
-                android:paddingEnd="@dimen/space.small"
-                android:paddingBottom="@dimen/space.small"
-                android:text="@string/distance"
-                app:drawableStartCompat="@drawable/ic_distance_24dp" />
-
-            <TextView
-                android:id="@+id/chartTabDuration"
-                style="@style/RegularText.Gray"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/button.height.small"
-                android:background="@drawable/st_tab_thirdly"
-                android:drawablePadding="@dimen/space.small"
-                android:gravity="center"
-                android:paddingStart="@dimen/space.small"
-                android:paddingTop="@dimen/space.small"
-                android:paddingEnd="@dimen/space.small"
-                android:paddingBottom="@dimen/space.small"
-                android:text="@string/duration"
-                app:drawableStartCompat="@drawable/ic_duration_32dp" />
-
-            <TextView
-                android:id="@+id/chartTabCalories"
-                style="@style/RegularText.Gray"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/button.height.small"
-                android:background="@drawable/st_tab_thirdly"
-                android:drawablePadding="@dimen/space.small"
-                android:gravity="center"
-                android:paddingStart="@dimen/space.small"
-                android:paddingTop="@dimen/space.small"
-                android:paddingEnd="@dimen/space.small"
-                android:paddingBottom="@dimen/space.small"
-                android:text="@string/burned_kcal"
-                app:drawableStartCompat="@drawable/ic_kcal_48dp" />
-        </LinearLayout>
-
-    </HorizontalScrollView>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space.regular"
-        android:background="@drawable/card_outlined_black">
-
-        <com.github.mikephil.charting.charts.CombinedChart
-            android:id="@+id/progress_chart"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/chart.height"
-            android:layout_marginEnd="@dimen/space.small"
-            android:layout_marginBottom="@dimen/space.small" />
-    </FrameLayout>
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space.regular"
         android:layout_marginTop="@dimen/space.regular"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_marginEnd="@dimen/space.regular"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/space.special.fabPadding"
+        tools:context=".user.ui.userProfile.UserProfileFragment">
 
-        <!-- TODO: add ripple effect -->
-        <ImageView
-            android:id="@+id/btPreviousRange"
+        <TextView
+            style="@style/RegularText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/space.small"
-            android:contentDescription="@string/previous_range"
-            android:src="@drawable/ic_arrow_left_32dp" />
+            android:text="@string/weekly_overview_title"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/shape.strokeWidth"
+            android:layout_marginStart="@dimen/space.regular"
+            android:layout_marginTop="@dimen/space.small"
+            android:layout_marginEnd="@dimen/space.regular"
+            android:background="?colorSecondary" />
+
+
+        <include
+            android:id="@+id/chartTabsScroller"
+            layout="@layout/progress_chart_tabs_scroller"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/space.small" />
 
-            <TextView
-                android:id="@+id/tvDayMonthRange"
-                style="@style/RegularText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="06 Jun - 13 Jun" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space.regular"
+            android:background="@drawable/card_outlined_black">
 
+            <com.github.mikephil.charting.charts.CombinedChart
+                android:id="@+id/progress_chart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/chart.height"
+                android:layout_marginEnd="@dimen/space.small"
+                android:layout_marginBottom="@dimen/space.small" />
+        </FrameLayout>
 
-            <TextView
-                android:id="@+id/tvYearRange"
-                style="@style/SmallText.Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="2024" />
-        </LinearLayout>
+        <include
+            android:id="@+id/progressChartNavigator"
+            layout="@layout/progress_chart_navigator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space.regular" />
 
-        <ImageView
-            android:id="@+id/btNextRange"
+        <include
+            android:id="@+id/weeklyStatisticsTable"
+            layout="@layout/table_weekly_statistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space.regular"
+            android:layout_marginTop="@dimen/space.regular"
+            android:layout_marginEnd="@dimen/space.regular" />
+
+        <TextView
+            style="@style/RegularText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space.small"
-            android:contentDescription="@string/next_range"
-            android:src="@drawable/ic_arrow_right_32dp" />
+            android:layout_marginTop="@dimen/space.large"
+            android:text="@string/general_overview"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/shape.strokeWidth"
+            android:layout_marginStart="@dimen/space.regular"
+            android:layout_marginTop="@dimen/space.small"
+            android:layout_marginEnd="@dimen/space.regular"
+            android:background="?colorSecondary" />
+
+        <include
+            android:id="@+id/generalStatisticsTable"
+            layout="@layout/table_general_statistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space.regular"
+            android:layout_marginTop="@dimen/space.small"
+            android:layout_marginEnd="@dimen/space.regular"
+            app:layout_constraintTop_toBottomOf="@+id/generalOverview" />
 
     </LinearLayout>
 
-
-</LinearLayout>
+</ScrollView>
