@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 class ChartManagerImpl(
     private val chart: CombinedChart,
 ) : ChartManager() {
-    // TODO try to map from navigator state
     private var dailyPoints: List<DailyDataPoint> = listOf()
 
     override val displayedData: MutableStateFlow<List<DailyDataPoint>> = MutableStateFlow(emptyList())
@@ -41,7 +40,7 @@ class ChartManagerImpl(
         initNavigatorStateListener()
     }
 
-    private val navigator: ChartNavigator by lazy { ChartNavigator(chart) }
+    override val navigator: ChartNavigator by lazy { ChartNavigator(chart) }
 
     override fun presetChartConfiguration(
         configType: ChartConfigurationType,
@@ -77,10 +76,6 @@ class ChartManagerImpl(
 
     override fun displayEntry(dayIndex: Int) {
         TODO("Not yet implemented")
-    }
-
-    override fun displayRange(rangeIndex: Int) {
-        navigator.displayRange(rangeIndex)
     }
 
     private fun initNavigatorStateScope() {

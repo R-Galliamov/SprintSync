@@ -214,7 +214,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_arrow_left_32dp"
+            android:src="@drawable/ic_arrow_left_white_32dp"
             app:layout_constraintStart_toStartOf="parent" />
     </FrameLayout>
 

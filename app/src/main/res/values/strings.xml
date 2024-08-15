@@ -46,5 +46,7 @@
     <string name="to_settings">To settings</string>
     <string name="weekly_progress_title">Weekly progress</string>
     <string name="chart_is_not_initialized">Chart is not initialized</string>
+    <string name="previous_range">Previous range</string>
+    <string name="next_range">Next range</string>
 
 </resources>

@@ -101,5 +101,53 @@
             android:layout_marginBottom="@dimen/space.small" />
     </FrameLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space.regular"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <!-- TODO: add ripple effect -->
+        <ImageView
+            android:id="@+id/btPreviousRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/space.small"
+            android:contentDescription="@string/previous_range"
+            android:src="@drawable/ic_arrow_left_32dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDayMonthRange"
+                style="@style/RegularText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="06 Jun - 13 Jun" />
+
+
+            <TextView
+                android:id="@+id/tvYearRange"
+                style="@style/SmallText.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2024" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btNextRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space.small"
+            android:contentDescription="@string/next_range"
+            android:src="@drawable/ic_arrow_right_32dp" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

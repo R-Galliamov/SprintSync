@@ -4,11 +4,15 @@ import com.developers.sprintsync.user.model.chart.chartData.ChartData
 import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 
 class ChartDataLoader {
-    companion object {
-        val referenceTimestamp = System.currentTimeMillis()
+    val referenceTimestamp = 1703980800000
+    val duration = Duration()
+    val distance = Distance()
+
+    abstract class Data {
+        abstract val testData: ChartData
     }
 
-    class Duration {
+    class Duration : Data() {
         private val point1 = DailyDataPoint.Present(0, 10f, 10f)
         private val point2 = DailyDataPoint.Present(1, 10f, 10f)
         private val point3 = DailyDataPoint.Present(2, 10f, 10f)
@@ -42,7 +46,6 @@ class ChartDataLoader {
                 point5,
                 point6,
                 point7,
-                point8,
             )
 
         private val list2 = listOf(point8, point9, point10, point11, point12, point13, point14)
@@ -51,14 +54,16 @@ class ChartDataLoader {
 
         private val listGeneral = list1.plus(list2).plus(list3)
 
-        val testData1 = ChartData("Test", referenceTimestamp, list1)
-        val testData2 = ChartData("Test", referenceTimestamp, list2)
-        val testData3 = ChartData("Test", referenceTimestamp, list3)
+        val testData1 = ChartData("Test", list1)
+        val testData2 = ChartData("Test", list2)
+        val testData3 = ChartData("Test", list3)
 
-        val testDataGeneral = ChartData("Test", referenceTimestamp, listGeneral)
+        val testDataGeneral = ChartData("Test", listGeneral)
+
+        override val testData: ChartData = testDataGeneral
     }
 
-    class Distance {
+    class Distance : Data() {
         private val point1 = DailyDataPoint.Present(0, 1f, 1f)
         private val point2 = DailyDataPoint.Present(1, 1f, 1f)
         private val point3 = DailyDataPoint.Present(2, 1f, 1f)
@@ -100,10 +105,12 @@ class ChartDataLoader {
 
         private val listGeneral = list1.plus(list2).plus(list3)
 
-        val testData1 = ChartData("Test", referenceTimestamp, list1)
-        val testData2 = ChartData("Test", referenceTimestamp, list2)
-        val testData3 = ChartData("Test", referenceTimestamp, list3)
+        val testData1 = ChartData("Test", list1)
+        val testData2 = ChartData("Test", list2)
+        val testData3 = ChartData("Test", list3)
 
-        val testDataGeneral = ChartData("Test", referenceTimestamp, listGeneral)
+        val testDataGeneral = ChartData("Test", listGeneral)
+
+        override val testData: ChartData = testDataGeneral
     }
 }
