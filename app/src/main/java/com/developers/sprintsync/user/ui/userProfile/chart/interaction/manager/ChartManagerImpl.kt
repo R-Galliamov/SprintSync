@@ -5,8 +5,8 @@ import com.developers.sprintsync.user.model.chart.configuration.ChartConfigurati
 import com.developers.sprintsync.user.model.chart.navigator.NavigatorState
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.configurator.ChartConfigurator
-import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartData
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataCalculator
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataPoints
 import com.developers.sprintsync.user.ui.userProfile.chart.data.factory.ChartDataConfigurationFactory
 import com.developers.sprintsync.user.ui.userProfile.chart.data.factory.WeekChartConfigurationFactory
 import com.developers.sprintsync.user.ui.userProfile.chart.data.transformer.ChartDataPreparer
@@ -22,9 +22,9 @@ import kotlinx.coroutines.launch
 class ChartManagerImpl(
     private val chart: CombinedChart,
 ) : ChartManager() {
-    private var dailyPoints: ChartData = listOf()
+    private var dailyPoints: ChartDataPoints = mapOf()
 
-    override val displayedData: MutableStateFlow<ChartData> = MutableStateFlow(emptyList())
+    override val displayedData: MutableStateFlow<ChartDataPoints> = MutableStateFlow(mapOf())
 
     private var navigatorStateScope: CoroutineScope? = null
     private val dispatcher = Dispatchers.IO
@@ -73,7 +73,7 @@ class ChartManagerImpl(
         }
     }
 
-    override fun displayData(data: ChartData) {
+    override fun displayData(data: ChartDataPoints) {
         this.dailyPoints = data
 
         val chartData = transformToCombinedData(data)
@@ -149,11 +149,11 @@ class ChartManagerImpl(
         }
     }
 
-    private fun transformToCombinedData(data: ChartData): CombinedData {
+    private fun transformToCombinedData(data: ChartDataPoints): CombinedData {
         val dataConfigFactory = ChartDataConfigurationFactory(chart.context)
         return ChartDataPreparer().prepareCombinedData(
             data,
-            dataConfigFactory.createBarConfiguration(data),
+            dataConfigFactory.createBarConfiguration(data.values.toList()),
             dataConfigFactory.createLineConfiguration(),
         )
     }
@@ -164,27 +164,27 @@ class ChartManagerImpl(
     ) {
         val toIndexExclusive = firstVisibleEntryIndex + range
         val displayedEntries =
-            dailyPoints.subList(firstVisibleEntryIndex, toIndexExclusive)
+            dailyPoints.filterKeys { it in firstVisibleEntryIndex until toIndexExclusive }
         displayedData.value = displayedEntries
     }
 
-    private fun scaleUpMaximum(displayedData: ChartData) {
-        val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
+    private fun scaleUpMaximum(displayedData: ChartDataPoints) {
+        val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData.values.toList())
         configurator.scaleUpMaximum(maxVisibleDataValue)
     }
 
     private fun scaleUpMaximumAnimated(
-        displayedData: ChartData,
+        displayedData: ChartDataPoints,
         onScalingEnd: () -> Unit,
     ) {
-        val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
+        val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData.values.toList())
         configurator.scaleUpMaximumAnimated(maxVisibleDataValue) {
             onScalingEnd()
         }
     }
 
-    private fun updateYAxisLabel(displayedData: ChartData) {
-        val label = calculator.calculateLastGoal(displayedData)
+    private fun updateYAxisLabel(displayedData: ChartDataPoints) {
+        val label = calculator.calculateLastGoal(displayedData.values.toList())
         configurator.selectYLabel(label)
     }
 

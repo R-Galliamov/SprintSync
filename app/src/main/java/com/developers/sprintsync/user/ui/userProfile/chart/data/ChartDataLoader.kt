@@ -24,8 +24,8 @@ class ChartDataLoader
             CoroutineScope(Dispatchers.IO).launch {
                 tracks.collect { trackList ->
                     if (trackList.isEmpty()) return@collect
-                    val chartDataPreparer = ChartDataPreparer()
-                    val set = chartDataPreparer.transformDataToChartSet(trackList, WeekDay.FRIDAY)
+                    val chartWeeklyDataPreparer = ChartWeeklyDataPreparer()
+                    val set = chartWeeklyDataPreparer.transformDataToChartSet(trackList, WeekDay.TUESDAY)
                     chartDataSet = set
                 }
             }

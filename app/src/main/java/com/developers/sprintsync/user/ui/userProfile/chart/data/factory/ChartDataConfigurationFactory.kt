@@ -6,8 +6,8 @@ import com.developers.sprintsync.global.styleProvider.AppThemeProvider
 import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyleProvider
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
-import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartData
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataCalculator
+import com.developers.sprintsync.user.ui.userProfile.chart.data.DailyValues
 import com.github.mikephil.charting.data.LineDataSet
 
 /**
@@ -22,12 +22,12 @@ class ChartDataConfigurationFactory(
     private val barStyleProvider by lazy { ResourceTextStyleProvider(context, R.style.ChartLabel_barLabel) }
     private val calculator = ChartDataCalculator()
 
-    fun createBarConfiguration(data: ChartData): BarConfiguration =
+    fun createBarConfiguration(dailyValues: List<DailyValues>): BarConfiguration =
         BarConfiguration(
             barColor = colors.secondary,
             barWidth = BAR_WIDTH,
             missingBarColor = colors.secondaryVariant,
-            missingBarHeight = calculateMissingBarHeight(data),
+            missingBarHeight = calculateMissingBarHeight(dailyValues),
             barLabelColor = barStyleProvider.textColor,
             barLabelSizeDp = barStyleProvider.textSizeDp,
             balLabelTypeFace = barStyleProvider.typeface,
@@ -43,8 +43,8 @@ class ChartDataConfigurationFactory(
             mode = LineDataSet.Mode.HORIZONTAL_BEZIER,
         )
 
-    private fun calculateMissingBarHeight(data: ChartData): Float =
-        calculator.calculateMaxOfGoalAndActualValue(data) * MISSING_BAR_MULTIPLIER
+    private fun calculateMissingBarHeight(dailyValues: List<DailyValues>): Float =
+        calculator.calculateMaxOfGoalAndActualValue(dailyValues) * MISSING_BAR_MULTIPLIER
 
     companion object {
         private const val BAR_WIDTH = 0.5f

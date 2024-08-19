@@ -1,23 +1,21 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data
 
-import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
-
 /**
  * A utility class for performing calculations on chart data.
  */
 class ChartDataCalculator {
-    fun calculateMaxOfGoalAndActualValue(list: ChartData): Float {
-        val maxGoal = calculateMaxGoal(list)
-        val maxValue = calculateMaxActualValue(list)
+    fun calculateMaxOfGoalAndActualValue(dailyValues: List<DailyValues>): Float {
+        val maxGoal = calculateMaxGoal(dailyValues)
+        val maxValue = calculateMaxActualValue(dailyValues)
         return maxOf(maxGoal, maxValue)
     }
 
-    fun calculateMaxGoal(data: ChartData): Float = data.maxOfOrNull { it.goal } ?: DEFAULT_VALUE
+    fun calculateMaxGoal(data: List<DailyValues>): Float = data.maxOfOrNull { it.goal } ?: DEFAULT_VALUE
 
-    fun calculateLastGoal(data: ChartData): Float = data.last().goal
+    fun calculateLastGoal(data: List<DailyValues>): Float = data.last().goal
 
-    private fun calculateMaxActualValue(data: ChartData): Float =
-        data.filterIsInstance<DailyDataPoint.Present>().maxOfOrNull {
+    private fun calculateMaxActualValue(data: List<DailyValues>): Float =
+        data.filterIsInstance<DailyValues.Present>().maxOfOrNull {
             it.actualValue
         } ?: DEFAULT_VALUE
 

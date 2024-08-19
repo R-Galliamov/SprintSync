@@ -1,9 +1,9 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data.transformer
 
-import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
-import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartData
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataPoints
+import com.developers.sprintsync.user.ui.userProfile.chart.data.DailyValues
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -41,22 +41,21 @@ class ChartDataTransformer {
 
          */
 
-        /**
-         * Builds a [BarData] object from the provided list of [DailyDataPoint] objects.
-         *
-         * @param data The list of daily data points.
-         * @return A [BarData]object representing the bar chart data.
-         */
-        fun build(data: ChartData): BarData {
-            val presentDataSet = transformToPresentDataSet(data.filterIsInstance<DailyDataPoint.Present>(), config)
-            val missingDataSet = transformToMissingDataSet(data.filterIsInstance<DailyDataPoint.Missing>(), config)
+        fun build(data: ChartDataPoints): BarData {
+            val presentData =
+                data.filterValues { it is DailyValues.Present }.mapValues { it.value as DailyValues.Present }
+            val missingData =
+                data.filterValues { it is DailyValues.Missing }.mapValues { it.value as DailyValues.Missing }
+
+            val presentDataSet = transformToPresentDataSet(presentData, config)
+            val missingDataSet = transformToMissingDataSet(missingData, config)
             return BarData(presentDataSet, missingDataSet).apply {
                 config.barWidth?.let { barWidth = it }
             }
         }
 
         private fun transformToPresentDataSet(
-            data: List<DailyDataPoint.Present>,
+            data: Map<Int, DailyValues.Present>,
             config: BarConfiguration,
         ): BarDataSet {
             val entries = transformToPresentEntries(data)
@@ -70,7 +69,7 @@ class ChartDataTransformer {
         }
 
         private fun transformToMissingDataSet(
-            data: List<DailyDataPoint.Missing>,
+            data: Map<Int, DailyValues.Missing>,
             config: BarConfiguration,
         ): BarDataSet {
             val entries = transformToMissingEntries(data, config.missingBarHeight)
@@ -81,13 +80,13 @@ class ChartDataTransformer {
             }
         }
 
-        private fun transformToPresentEntries(data: List<DailyDataPoint.Present>): List<BarEntry> =
-            data.map { BarEntry(it.dayIndex.toFloat(), it.actualValue) }
+        private fun transformToPresentEntries(data: Map<Int, DailyValues.Present>): List<BarEntry> =
+            data.map { BarEntry(it.key.toFloat(), it.value.actualValue) }
 
         private fun transformToMissingEntries(
-            data: List<DailyDataPoint.Missing>,
+            data: Map<Int, DailyValues.Missing>,
             missingBarHeight: Float,
-        ): List<BarEntry> = data.map { BarEntry(it.dayIndex.toFloat(), missingBarHeight) }
+        ): List<BarEntry> = data.map { BarEntry(it.key.toFloat(), missingBarHeight) }
     }
 
     /**
@@ -118,16 +117,10 @@ class ChartDataTransformer {
 
          */
 
-        /**
-         * Builds a [LineData] object from the provided list of [DailyDataPoint] objects.
-         *
-         * @param data The list of daily data points.
-         * @return A [LineData] object representing the line chart data.
-         */
-        fun build(data: ChartData): LineData = LineData(transformToLineDataSet(data, config))
+        fun build(data: ChartDataPoints): LineData = LineData(transformToLineDataSet(data, config))
 
         private fun transformToLineDataSet(
-            data: ChartData,
+            data: ChartDataPoints,
             config: LineConfiguration,
         ): LineDataSet {
             val entries = transformToLineEntries(data)
@@ -144,7 +137,8 @@ class ChartDataTransformer {
             }
         }
 
-        private fun transformToLineEntries(data: ChartData): List<BarEntry> = data.map { BarEntry(it.dayIndex.toFloat(), it.goal) }
+        private fun transformToLineEntries(data: ChartDataPoints): List<BarEntry> =
+            data.map { BarEntry(it.key.toFloat(), it.value.goal) }
     }
 
     companion object {

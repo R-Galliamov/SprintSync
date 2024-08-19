@@ -7,6 +7,7 @@ import com.developers.sprintsync.databinding.FragmentUserProfileBinding
 import com.developers.sprintsync.user.model.FormattedDateRange
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataLoader
+import com.developers.sprintsync.user.ui.userProfile.chart.data.Metric
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManager
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManagerImpl
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
@@ -48,8 +49,8 @@ class UserProfileViewModel
                     _dateRange.update {
                         DateRangeFormatter().formatRange(
                             dataLoader.chartDataSet.referenceTimestamp,
-                            data.first().dayIndex,
-                            data.last().dayIndex,
+                            data.keys.min(),
+                            data.keys.max(),
                         )
                     }
                 }
@@ -63,10 +64,12 @@ class UserProfileViewModel
         fun navigateRange(direction: ChartNavigator.NavigationDirection) = chartManager.navigateRange(direction)
 
         fun setScroller(binding: FragmentUserProfileBinding) {
+            val chartDataSet = dataLoader.chartDataSet
+
             val tabs =
                 listOf(
-                    binding.chartTabsScroller.chartTabDistance to dataLoader.chartDataSet.distance,
-                    binding.chartTabsScroller.chartTabDuration to dataLoader.chartDataSet.duration,
+                    binding.chartTabsScroller.chartTabDistance to chartDataSet.data[Metric.DISTANCE],
+                    binding.chartTabsScroller.chartTabDuration to chartDataSet.data[Metric.DURATION],
                     // binding.chartTabCalories to ChartDataLoader.Calories()
                 )
 
@@ -81,7 +84,9 @@ class UserProfileViewModel
                     scrollToSelectedTab(binding, tab)
 
                     // Display the corresponding data
-                    chartManager.displayData(chartData)
+                    chartData?.let {
+                        chartManager.displayData(chartData)
+                    }
                 }
             }
         }
