@@ -1,6 +1,7 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data
 
 import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetAllTracksUseCase
+import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.WeekDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,8 +25,8 @@ class ChartDataLoader
             CoroutineScope(Dispatchers.IO).launch {
                 tracks.collect { trackList ->
                     if (trackList.isEmpty()) return@collect
-                    val chartDataPreparer = ChartDataPreparer()
-                    val set = chartDataPreparer.transformDataToChartSet(trackList, WeekDay.FRIDAY)
+                    val chartWeeklyDataPreparer = ChartWeeklyDataPreparer()
+                    val set = chartWeeklyDataPreparer.transformDataToChartSet(trackList, WeekDay.TUESDAY)
                     chartDataSet = set
                 }
             }
