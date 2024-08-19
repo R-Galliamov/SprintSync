@@ -1,116 +1,33 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data
 
-import com.developers.sprintsync.user.model.chart.chartData.ChartData
-import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
+import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetAllTracksUseCase
+import com.developers.sprintsync.user.model.chart.chartData.WeekDay
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChartDataLoader {
-    val referenceTimestamp = 1703980800000
-    val duration = Duration()
-    val distance = Distance()
+class ChartDataLoader
+    @Inject
+    constructor(
+        private val getAllTracksUseCase: GetAllTracksUseCase,
+    ) {
+        var chartDataSet: ChartDataSet = ChartDataSet.EMPTY
 
-    abstract class Data {
-        abstract val testData: ChartData
+        init {
+            initCollector()
+        }
+
+        private fun initCollector() {
+            val tracks = TrackTestContainer().tracks
+
+            CoroutineScope(Dispatchers.IO).launch {
+                tracks.collect { trackList ->
+                    if (trackList.isEmpty()) return@collect
+                    val chartDataPreparer = ChartDataPreparer()
+                    val set = chartDataPreparer.transformDataToChartSet(trackList, WeekDay.FRIDAY)
+                    chartDataSet = set
+                }
+            }
+        }
     }
-
-    class Duration : Data() {
-        private val point1 = DailyDataPoint.Present(0, 10f, 10f)
-        private val point2 = DailyDataPoint.Present(1, 10f, 10f)
-        private val point3 = DailyDataPoint.Present(2, 10f, 10f)
-        private val point4 = DailyDataPoint.Present(3, 10f, 10f)
-        private val point5 = DailyDataPoint.Missing(4, 10f)
-        private val point6 = DailyDataPoint.Missing(5, 10f)
-        private val point7 = DailyDataPoint.Missing(6, 10f)
-
-        private val point8 = DailyDataPoint.Present(7, 20f, 10f)
-        private val point9 = DailyDataPoint.Present(8, 20f, 10f)
-        private val point10 = DailyDataPoint.Present(9, 20f, 10f)
-        private val point11 = DailyDataPoint.Present(10, 20f, 10f)
-        private val point12 = DailyDataPoint.Missing(11, 20f)
-        private val point13 = DailyDataPoint.Missing(12, 20f)
-        private val point14 = DailyDataPoint.Missing(13, 20f)
-
-        private val point15 = DailyDataPoint.Present(14, 120f, 90f)
-        private val point16 = DailyDataPoint.Present(15, 120f, 80f)
-        private val point17 = DailyDataPoint.Present(16, 120f, 140f)
-        private val point18 = DailyDataPoint.Present(17, 150f, 130f)
-        private val point19 = DailyDataPoint.Missing(18, 150f)
-        private val point20 = DailyDataPoint.Missing(19, 150f)
-        private val point21 = DailyDataPoint.Missing(20, 150f)
-
-        private val list1 =
-            listOf(
-                point1,
-                point2,
-                point3,
-                point4,
-                point5,
-                point6,
-                point7,
-            )
-
-        private val list2 = listOf(point8, point9, point10, point11, point12, point13, point14)
-
-        private val list3 = listOf(point15, point16, point17, point18, point19, point20, point21)
-
-        private val listGeneral = list1.plus(list2).plus(list3)
-
-        val testData1 = ChartData("Test", list1)
-        val testData2 = ChartData("Test", list2)
-        val testData3 = ChartData("Test", list3)
-
-        val testDataGeneral = ChartData("Test", listGeneral)
-
-        override val testData: ChartData = testDataGeneral
-    }
-
-    class Distance : Data() {
-        private val point1 = DailyDataPoint.Present(0, 1f, 1f)
-        private val point2 = DailyDataPoint.Present(1, 1f, 1f)
-        private val point3 = DailyDataPoint.Present(2, 1f, 1f)
-        private val point4 = DailyDataPoint.Present(3, 1f, 1f)
-        private val point5 = DailyDataPoint.Missing(4, 1f)
-        private val point6 = DailyDataPoint.Missing(5, 1f)
-        private val point7 = DailyDataPoint.Missing(6, 2f)
-
-        private val point8 = DailyDataPoint.Present(7, 2.7f, 1f)
-        private val point9 = DailyDataPoint.Present(8, 2f, 1f)
-        private val point10 = DailyDataPoint.Present(9, 2f, 1f)
-        private val point11 = DailyDataPoint.Present(10, 2f, 1f)
-        private val point12 = DailyDataPoint.Missing(11, 3f)
-        private val point13 = DailyDataPoint.Missing(12, 3f)
-        private val point14 = DailyDataPoint.Present(13, 3f, 3.3f)
-
-        private val point15 = DailyDataPoint.Present(14, 3f, 0.7f)
-        private val point16 = DailyDataPoint.Present(15, 3f, 1.9f)
-        private val point17 = DailyDataPoint.Present(16, 3f, 3f)
-        private val point18 = DailyDataPoint.Present(17, 3f, 2.9f)
-        private val point19 = DailyDataPoint.Missing(18, 3f)
-        private val point20 = DailyDataPoint.Missing(19, 2f)
-        private val point21 = DailyDataPoint.Present(20, 3f, 3.3f)
-
-        private val list1 =
-            listOf(
-                point1,
-                point2,
-                point3,
-                point4,
-                point5,
-                point6,
-                point7,
-            )
-
-        private val list2 = listOf(point8, point9, point10, point11, point12, point13, point14)
-
-        private val list3 = listOf(point15, point16, point17, point18, point19, point20, point21)
-
-        private val listGeneral = list1.plus(list2).plus(list3)
-
-        val testData1 = ChartData("Test", list1)
-        val testData2 = ChartData("Test", list2)
-        val testData3 = ChartData("Test", list3)
-
-        val testDataGeneral = ChartData("Test", listGeneral)
-
-        override val testData: ChartData = testDataGeneral
-    }
-}

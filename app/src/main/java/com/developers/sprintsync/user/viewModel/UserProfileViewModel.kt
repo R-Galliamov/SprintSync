@@ -24,9 +24,9 @@ import javax.inject.Inject
 @HiltViewModel
 class UserProfileViewModel
     @Inject
-    constructor() : ViewModel() {
-        private val dataLoader = ChartDataLoader()
-
+    constructor(
+        private val dataLoader: ChartDataLoader,
+    ) : ViewModel() {
         private var _chartManager: ChartManager? = null
         private val chartManager get() = checkNotNull(_chartManager) { "ChartManager is not initialized" }
 
@@ -47,7 +47,7 @@ class UserProfileViewModel
                     if (data.isEmpty()) return@collect
                     _dateRange.update {
                         DateRangeFormatter().formatRange(
-                            dataLoader.referenceTimestamp,
+                            dataLoader.chartDataSet.referenceTimestamp,
                             data.first().dayIndex,
                             data.last().dayIndex,
                         )
@@ -57,7 +57,7 @@ class UserProfileViewModel
         }
 
         fun setWeeklyConfiguration() {
-            chartManager.presetChartConfiguration(ChartConfigurationType.WEEKLY, dataLoader.referenceTimestamp)
+            chartManager.presetChartConfiguration(ChartConfigurationType.WEEKLY, dataLoader.chartDataSet.referenceTimestamp)
         }
 
         fun navigateRange(direction: ChartNavigator.NavigationDirection) = chartManager.navigateRange(direction)
@@ -65,12 +65,12 @@ class UserProfileViewModel
         fun setScroller(binding: FragmentUserProfileBinding) {
             val tabs =
                 listOf(
-                    binding.chartTabsScroller.chartTabDistance to dataLoader.distance,
-                    binding.chartTabsScroller.chartTabDuration to dataLoader.duration,
+                    binding.chartTabsScroller.chartTabDistance to dataLoader.chartDataSet.distance,
+                    binding.chartTabsScroller.chartTabDuration to dataLoader.chartDataSet.duration,
                     // binding.chartTabCalories to ChartDataLoader.Calories()
                 )
 
-            tabs.forEach { (tab, dataLoader) ->
+            tabs.forEach { (tab, chartData) ->
                 tab.setOnClickListener {
                     // Deselect all tabs
                     tabs.forEach { (t, _) -> t.isSelected = false }
@@ -81,7 +81,7 @@ class UserProfileViewModel
                     scrollToSelectedTab(binding, tab)
 
                     // Display the corresponding data
-                    chartManager.displayData(dataLoader.testData)
+                    chartManager.displayData(chartData)
                 }
             }
         }
@@ -97,5 +97,9 @@ class UserProfileViewModel
 
                 binding.chartTabsScroller.root.smoothScrollTo(scrollToX, 0)
             }
+        }
+
+        fun onDestroy() {
+            _chartManager = null
         }
     }

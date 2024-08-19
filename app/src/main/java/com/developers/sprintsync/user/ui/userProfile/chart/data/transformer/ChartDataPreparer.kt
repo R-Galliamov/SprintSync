@@ -1,8 +1,8 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data.transformer
 
-import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartData
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.CombinedData
 import com.github.mikephil.charting.data.LineData
@@ -20,7 +20,7 @@ class ChartDataPreparer {
      * @return A [CombinedData] object containing both bar and line data.
      */
     fun prepareCombinedData(
-        data: List<DailyDataPoint>,
+        data: ChartData,
         barConfig: BarConfiguration,
         lineConfig: LineConfiguration,
     ): CombinedData {
@@ -37,7 +37,7 @@ class ChartDataPreparer {
      * @return A [BarData] object representing the bar chart data.
      */
     private fun prepareBarData(
-        data: List<DailyDataPoint>,
+        data: ChartData,
         config: BarConfiguration,
     ): BarData = ChartDataTransformer.barDataBuilder().setConfiguration(config).build(data)
 
@@ -49,7 +49,7 @@ class ChartDataPreparer {
      * @return A [LineData] object representing the line chart data.
      */
     private fun prepareLineData(
-        data: List<DailyDataPoint>,
+        data: ChartData,
         config: LineConfiguration,
     ): LineData = ChartDataTransformer.lineDataBuilder().setConfiguration(config).build(data)
 }

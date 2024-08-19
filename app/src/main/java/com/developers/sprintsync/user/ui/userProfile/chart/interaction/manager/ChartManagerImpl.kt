@@ -1,12 +1,11 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager
 
 import android.util.Log
-import com.developers.sprintsync.user.model.chart.chartData.ChartData
-import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.configuration.ChartConfiguration
 import com.developers.sprintsync.user.model.chart.navigator.NavigatorState
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.configurator.ChartConfigurator
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartData
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataCalculator
 import com.developers.sprintsync.user.ui.userProfile.chart.data.factory.ChartDataConfigurationFactory
 import com.developers.sprintsync.user.ui.userProfile.chart.data.factory.WeekChartConfigurationFactory
@@ -23,9 +22,9 @@ import kotlinx.coroutines.launch
 class ChartManagerImpl(
     private val chart: CombinedChart,
 ) : ChartManager() {
-    private var dailyPoints: List<DailyDataPoint> = listOf()
+    private var dailyPoints: ChartData = listOf()
 
-    override val displayedData: MutableStateFlow<List<DailyDataPoint>> = MutableStateFlow(emptyList())
+    override val displayedData: MutableStateFlow<ChartData> = MutableStateFlow(emptyList())
 
     private var navigatorStateScope: CoroutineScope? = null
     private val dispatcher = Dispatchers.IO
@@ -39,6 +38,22 @@ class ChartManagerImpl(
     init {
         initNavigatorStateListener()
     }
+
+    // TODO was crash here
+    // FATAL EXCEPTION: DefaultDispatcher-worker-1 (Ask Gemini)
+    //   Process: com.developers.sprintsync, PID: 5674
+    //   java.lang.NullPointerException: Attempt to invoke interface method 'java.lang.Object kotlin.Lazy.getValue()' on a null object reference
+    //   	at com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManagerImpl.getNavigator(ChartManagerImpl.kt:42)
+    //   	at com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManagerImpl$initNavigatorStateListener$1.invokeSuspend(ChartManagerImpl.kt:88)
+    //   	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+    //   	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+    //   	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+    //   	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+    //   	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+    //   	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+    //   	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+    //   	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+    //   	Suppressed: kotlinx.coroutines.internal.DiagnosticCoroutineContextException: [StandaloneCoroutine{Cancelling}@859e2c8, Dispatchers.IO]
 
     override val navigator: ChartNavigator by lazy { ChartNavigator(chart) }
 
@@ -59,7 +74,7 @@ class ChartManagerImpl(
     }
 
     override fun displayData(data: ChartData) {
-        this.dailyPoints = data.dailyPoints
+        this.dailyPoints = data
 
         val chartData = transformToCombinedData(data)
         chart.data = chartData
@@ -137,9 +152,9 @@ class ChartManagerImpl(
     private fun transformToCombinedData(data: ChartData): CombinedData {
         val dataConfigFactory = ChartDataConfigurationFactory(chart.context)
         return ChartDataPreparer().prepareCombinedData(
-            data.dailyPoints,
+            data,
             dataConfigFactory.createBarConfiguration(data),
-            dataConfigFactory.createLineConfiguration(data),
+            dataConfigFactory.createLineConfiguration(),
         )
     }
 
@@ -153,13 +168,13 @@ class ChartManagerImpl(
         displayedData.value = displayedEntries
     }
 
-    private fun scaleUpMaximum(displayedData: List<DailyDataPoint>) {
+    private fun scaleUpMaximum(displayedData: ChartData) {
         val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
         configurator.scaleUpMaximum(maxVisibleDataValue)
     }
 
     private fun scaleUpMaximumAnimated(
-        displayedData: List<DailyDataPoint>,
+        displayedData: ChartData,
         onScalingEnd: () -> Unit,
     ) {
         val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
@@ -168,7 +183,7 @@ class ChartManagerImpl(
         }
     }
 
-    private fun updateYAxisLabel(displayedData: List<DailyDataPoint>) {
+    private fun updateYAxisLabel(displayedData: ChartData) {
         val label = calculator.calculateLastGoal(displayedData)
         configurator.selectYLabel(label)
     }

@@ -3,6 +3,7 @@ package com.developers.sprintsync.user.ui.userProfile.chart.data.transformer
 import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartData
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -46,7 +47,7 @@ class ChartDataTransformer {
          * @param data The list of daily data points.
          * @return A [BarData]object representing the bar chart data.
          */
-        fun build(data: List<DailyDataPoint>): BarData {
+        fun build(data: ChartData): BarData {
             val presentDataSet = transformToPresentDataSet(data.filterIsInstance<DailyDataPoint.Present>(), config)
             val missingDataSet = transformToMissingDataSet(data.filterIsInstance<DailyDataPoint.Missing>(), config)
             return BarData(presentDataSet, missingDataSet).apply {
@@ -59,7 +60,7 @@ class ChartDataTransformer {
             config: BarConfiguration,
         ): BarDataSet {
             val entries = transformToPresentEntries(data)
-            return BarDataSet(entries, config.dataLabel).apply {
+            return BarDataSet(entries, null).apply {
                 config.barColor?.let { color = it }
                 config.barLabelColor?.let { valueTextColor = it }
                 config.balLabelTypeFace?.let { valueTypeface = it }
@@ -73,7 +74,7 @@ class ChartDataTransformer {
             config: BarConfiguration,
         ): BarDataSet {
             val entries = transformToMissingEntries(data, config.missingBarHeight)
-            return BarDataSet(entries, config.dataLabel).apply {
+            return BarDataSet(entries, null).apply {
                 config.missingBarColor?.let { color = it }
                 setDrawValues(false)
                 isHighlightEnabled = false
@@ -123,14 +124,14 @@ class ChartDataTransformer {
          * @param data The list of daily data points.
          * @return A [LineData] object representing the line chart data.
          */
-        fun build(data: List<DailyDataPoint>): LineData = LineData(transformToLineDataSet(data, config))
+        fun build(data: ChartData): LineData = LineData(transformToLineDataSet(data, config))
 
         private fun transformToLineDataSet(
-            data: List<DailyDataPoint>,
+            data: ChartData,
             config: LineConfiguration,
         ): LineDataSet {
             val entries = transformToLineEntries(data)
-            return LineDataSet(entries, config.label).apply {
+            return LineDataSet(entries, null).apply {
                 config.drawValues?.let { setDrawValues(it) }
                 config.drawCircles?.let { setDrawCircles(it) }
                 config.drawFilled?.let { setDrawFilled(it) }
@@ -143,8 +144,7 @@ class ChartDataTransformer {
             }
         }
 
-        private fun transformToLineEntries(data: List<DailyDataPoint>): List<BarEntry> =
-            data.map { BarEntry(it.dayIndex.toFloat(), it.goal) }
+        private fun transformToLineEntries(data: ChartData): List<BarEntry> = data.map { BarEntry(it.dayIndex.toFloat(), it.goal) }
     }
 
     companion object {

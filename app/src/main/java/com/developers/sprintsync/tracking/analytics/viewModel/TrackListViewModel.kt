@@ -10,7 +10,7 @@ import javax.inject.Inject
 class TrackListViewModel
     @Inject
     constructor(
-        private val getAllTracksUseCase: GetAllTracksUseCase,
+        getAllTracksUseCase: GetAllTracksUseCase,
     ) : ViewModel() {
         val tracks = getAllTracksUseCase.tracks.asLiveData()
     }

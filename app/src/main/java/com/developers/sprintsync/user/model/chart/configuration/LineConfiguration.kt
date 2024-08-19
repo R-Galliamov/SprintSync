@@ -5,7 +5,6 @@ import com.github.mikephil.charting.data.LineDataSet
 data class LineConfiguration(
     val lineColor: Int?,
     val lineWidth: Float?,
-    val label: String?,
     val drawValues: Boolean?,
     val drawCircles: Boolean?,
     val drawFilled: Boolean?,
@@ -16,7 +15,6 @@ data class LineConfiguration(
             LineConfiguration(
                 lineColor = null,
                 lineWidth = null,
-                label = null,
                 drawValues = null,
                 drawCircles = null,
                 drawFilled = null,

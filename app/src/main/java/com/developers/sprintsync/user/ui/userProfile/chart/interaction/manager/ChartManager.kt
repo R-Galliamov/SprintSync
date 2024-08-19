@@ -1,15 +1,12 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager
 
-import com.developers.sprintsync.user.model.chart.chartData.ChartData
-import com.developers.sprintsync.user.model.chart.chartData.DailyDataPoint
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartData
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
-import com.github.mikephil.charting.charts.CombinedChart
 import kotlinx.coroutines.flow.MutableStateFlow
 
 abstract class ChartManager {
-
-    abstract val displayedData: MutableStateFlow<List<DailyDataPoint>>
+    abstract val displayedData: MutableStateFlow<ChartData>
 
     abstract val navigator: ChartNavigator
 

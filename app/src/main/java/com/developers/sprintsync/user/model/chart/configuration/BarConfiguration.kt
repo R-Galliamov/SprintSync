@@ -8,7 +8,6 @@ data class BarConfiguration(
     val barLabelColor: Int?,
     val barLabelSizeDp: Float?,
     val balLabelTypeFace: android.graphics.Typeface?,
-    val dataLabel: String?,
 ) {
     companion object {
         val EMPTY_CONFIGURATION =
@@ -20,7 +19,6 @@ data class BarConfiguration(
                 barLabelColor = null,
                 barLabelSizeDp = null,
                 balLabelTypeFace = null,
-                dataLabel = null,
             )
     }
 }

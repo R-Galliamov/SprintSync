@@ -4,9 +4,9 @@ import com.developers.sprintsync.tracking.session.model.track.Track
 import kotlinx.coroutines.flow.Flow
 
 interface TrackRepository {
+    // CREATE
     val tracks: Flow<List<Track>>
 
-    // CREATE
     suspend fun saveTrack(track: Track)
 
     // READ

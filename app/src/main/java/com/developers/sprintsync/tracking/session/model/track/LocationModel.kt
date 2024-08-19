@@ -10,6 +10,7 @@ value class Latitude(
 
 @JvmInline
 value class Longitude(
+
     val value: Double,
 )
 

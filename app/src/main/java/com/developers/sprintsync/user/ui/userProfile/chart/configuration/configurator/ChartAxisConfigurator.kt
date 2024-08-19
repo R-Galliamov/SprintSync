@@ -93,6 +93,7 @@ class ChartAxisConfigurator(
             setDrawGridLines(false)
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
             xOffset = X_AXIS_Y_LABEL_OFFSET
+            yOffset = X_AXIS_X_LABEL_OFFSET
         }
     }
 
@@ -100,5 +101,6 @@ class ChartAxisConfigurator(
         private const val Y_AXIS_MINIMUM = 0f
         private const val X_AXIS_OFFSET = 0.5f
         private const val X_AXIS_Y_LABEL_OFFSET = -10f
+        private const val X_AXIS_X_LABEL_OFFSET = 10f
     }
 }

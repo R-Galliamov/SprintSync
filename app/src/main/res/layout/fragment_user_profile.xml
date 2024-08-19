@@ -46,6 +46,7 @@
             android:layout_marginTop="@dimen/space.regular"
             android:background="@drawable/card_outlined_black">
 
+            <!-- TODO: scrolling works bad inside another scroll view -->
             <com.github.mikephil.charting.charts.CombinedChart
                 android:id="@+id/progress_chart"
                 android:layout_width="match_parent"

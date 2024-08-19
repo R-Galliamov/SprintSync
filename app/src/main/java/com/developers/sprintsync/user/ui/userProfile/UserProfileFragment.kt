@@ -50,6 +50,8 @@ class UserProfileFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.dateRange.collect { dateRange ->
                     binding.progressChartNavigator.apply {
+
+                        // TODO : doesn't work when no last data in range
                         tvDayMonthRange.text = dateRange.dayMonthRange
                         tvYearRange.text = dateRange.yearsRange
                     }
@@ -59,7 +61,6 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun setRangeNavigatingButtons() {
-
         binding.progressChartNavigator.btPreviousRange.setOnClickListener {
             viewModel.navigateRange(ChartNavigator.NavigationDirection.PREVIOUS)
         }
@@ -70,6 +71,7 @@ class UserProfileFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.onDestroy()
         _binding = null
     }
 }
