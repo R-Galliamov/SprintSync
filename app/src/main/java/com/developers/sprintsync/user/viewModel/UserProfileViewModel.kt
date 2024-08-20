@@ -8,6 +8,7 @@ import com.developers.sprintsync.user.model.FormattedDateRange
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataLoader
+import com.developers.sprintsync.user.ui.userProfile.chart.data.Metric
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManager
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManagerImpl
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator

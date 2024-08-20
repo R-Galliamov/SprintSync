@@ -8,6 +8,7 @@ import com.developers.sprintsync.user.model.chart.chartData.DailyValues
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataCalculator
+import com.developers.sprintsync.user.ui.userProfile.chart.data.DailyValues
 import com.github.mikephil.charting.data.LineDataSet
 
 /**
