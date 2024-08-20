@@ -7,8 +7,7 @@ import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyl
 import com.developers.sprintsync.user.model.chart.chartData.DailyValues
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
-import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataCalculator
-import com.developers.sprintsync.user.ui.userProfile.chart.data.DailyValues
+import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartValuesCalculator
 import com.github.mikephil.charting.data.LineDataSet
 
 /**
@@ -21,7 +20,7 @@ class ChartDataConfigurationFactory(
 ) {
     private val colors by lazy { AppThemeProvider(context).Color() }
     private val barStyleProvider by lazy { ResourceTextStyleProvider(context, R.style.ChartLabel_barLabel) }
-    private val calculator = ChartDataCalculator()
+    private val calculator = ChartValuesCalculator()
 
     fun createBarConfiguration(dailyValues: List<DailyValues>): BarConfiguration =
         BarConfiguration(

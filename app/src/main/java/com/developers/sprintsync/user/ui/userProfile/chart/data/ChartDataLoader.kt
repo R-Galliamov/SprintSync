@@ -3,8 +3,11 @@ package com.developers.sprintsync.user.ui.userProfile.chart.data
 import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetAllTracksUseCase
 import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.WeekDay
+import com.developers.sprintsync.user.ui.userProfile.chart.data.preparation.ChartWeeklyDataPreparer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,7 +16,8 @@ class ChartDataLoader
     constructor(
         private val getAllTracksUseCase: GetAllTracksUseCase,
     ) {
-        var chartDataSet: ChartDataSet = ChartDataSet.EMPTY
+        private var _chartDataSet = MutableStateFlow(ChartDataSet.EMPTY)
+        val chartDataSet get() = _chartDataSet
 
         init {
             initCollector()
@@ -26,8 +30,8 @@ class ChartDataLoader
                 tracks.collect { trackList ->
                     if (trackList.isEmpty()) return@collect
                     val chartWeeklyDataPreparer = ChartWeeklyDataPreparer()
-                    val set = chartWeeklyDataPreparer.transformDataToChartSet(trackList, WeekDay.TUESDAY)
-                    chartDataSet = set
+                    val dataSet = chartWeeklyDataPreparer.prepareChartSet(trackList, WeekDay.MONDAY)
+                    _chartDataSet.update { dataSet }
                 }
             }
         }

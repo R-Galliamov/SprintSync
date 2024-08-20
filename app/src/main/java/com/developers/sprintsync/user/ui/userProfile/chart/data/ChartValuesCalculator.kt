@@ -5,7 +5,7 @@ import com.developers.sprintsync.user.model.chart.chartData.DailyValues
 /**
  * A utility class for performing calculations on chart data.
  */
-class ChartDataCalculator {
+class ChartValuesCalculator {
     fun calculateMaxOfGoalAndActualValue(dailyValues: List<DailyValues>): Float {
         val maxGoal = calculateMaxGoal(dailyValues)
         val maxValue = calculateMaxActualValue(dailyValues)

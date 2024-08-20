@@ -1,14 +1,11 @@
 package com.developers.sprintsync.user.viewModel
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.ViewModel
-import com.developers.sprintsync.databinding.FragmentUserProfileBinding
 import com.developers.sprintsync.user.model.FormattedDateRange
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataLoader
-import com.developers.sprintsync.user.ui.userProfile.chart.data.Metric
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManager
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManagerImpl
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
@@ -32,80 +29,76 @@ class UserProfileViewModel
         private var _chartManager: ChartManager? = null
         private val chartManager get() = checkNotNull(_chartManager) { "ChartManager is not initialized" }
 
+        private val chartDataSet get() = dataLoader.chartDataSet
+
         private var _dateRange: MutableStateFlow<FormattedDateRange> = MutableStateFlow(FormattedDateRange.EMPTY)
         val dateRange get() = _dateRange.asStateFlow()
 
-        private var selectedTab: Int = -1
+        private var _selectedMetric: MutableStateFlow<Metric> = MutableStateFlow(Metric.DISTANCE)
+        val selectedMetric get() = _selectedMetric.asStateFlow()
+
+        private var _chartConfiguration: MutableStateFlow<ChartConfigurationType> =
+            MutableStateFlow(ChartConfigurationType.WEEKLY)
+        val chartConfiguration get() = _chartConfiguration.asStateFlow()
 
         fun initChartManager(chart: CombinedChart) {
-            _chartManager = ChartManagerImpl(chart)
+            _chartManager = ChartManagerImpl(chart).apply {
+                presetChartConfiguration(chartConfiguration.value)
+            }
+            initChartDataSetListener()
+            initSelectedMetricListener()
             initDisplayedDataListener()
             Log.d("UserProfileViewModel", "ChartManager initialized")
         }
 
+        fun selectMetric(metric: Metric) {
+            _selectedMetric.update { metric }
+        }
+
+        fun navigateRange(direction: ChartNavigator.NavigationDirection) = chartManager.navigateRange(direction)
+
+        fun onDestroy() {
+            _chartManager = null
+        }
+
+        private fun initChartDataSetListener() {
+            CoroutineScope(Dispatchers.IO).launch {
+                chartDataSet.collect { chartDataSet ->
+                    if (chartDataSet.data.isEmpty()) return@collect
+                    val indexedValues = chartDataSet.data[selectedMetric.value]
+                    if (indexedValues.isNullOrEmpty()) return@collect
+                    chartManager.displayData(indexedValues, chartDataSet.referenceTimestamp)
+                }
+            }
+        }
+
+        private fun initSelectedMetricListener() {
+            CoroutineScope(Dispatchers.IO).launch {
+                selectedMetric.collect { metric ->
+                    val indexedValues = chartDataSet.value.data[metric]
+                    if (indexedValues.isNullOrEmpty()) return@collect
+                    chartManager.displayData(indexedValues, chartDataSet.value.referenceTimestamp)
+                }
+            }
+        }
+
         private fun initDisplayedDataListener() {
             CoroutineScope(Dispatchers.IO).launch {
-                chartManager.displayedData.collect { data ->
-                    if (data.isEmpty()) return@collect
+                chartManager.displayedData.collect { displayedData ->
+                    if (displayedData.isEmpty()) return@collect
+                    val referenceTimestamp = chartDataSet.value.referenceTimestamp
                     _dateRange.update {
                         DateRangeFormatter().formatRange(
-                            dataLoader.chartDataSet.referenceTimestamp,
-                            data.keys.min(),
-                            data.keys.max(),
+                            referenceTimestamp,
+                            displayedData.keys.min(),
+                            displayedData.keys.max(),
                         )
                     }
                 }
             }
         }
 
-        fun setWeeklyConfiguration() {
-            chartManager.presetChartConfiguration(ChartConfigurationType.WEEKLY, dataLoader.chartDataSet.referenceTimestamp)
-        }
-
-        fun navigateRange(direction: ChartNavigator.NavigationDirection) = chartManager.navigateRange(direction)
-
-        fun setScroller(binding: FragmentUserProfileBinding) {
-            val chartDataSet = dataLoader.chartDataSet
-
-            val tabs =
-                listOf(
-                    binding.chartTabsScroller.chartTabDistance to chartDataSet.data[Metric.DISTANCE],
-                    binding.chartTabsScroller.chartTabDuration to chartDataSet.data[Metric.DURATION],
-                    // binding.chartTabCalories to ChartDataLoader.Calories()
-                )
-
-            tabs.forEach { (tab, chartData) ->
-                tab.setOnClickListener {
-                    // Deselect all tabs
-                    tabs.forEach { (t, _) -> t.isSelected = false }
-
-                    // Select the clicked tab
-                    tab.isSelected = true
-                    selectedTab = binding.chartTabsScroller.tabs.indexOfChild(tab)
-                    scrollToSelectedTab(binding, tab)
-
-                    // Display the corresponding data
-                    chartData?.let {
-                        chartManager.displayData(chartData)
-                    }
-                }
-            }
-        }
-
-        private fun scrollToSelectedTab(
-            binding: FragmentUserProfileBinding,
-            selectedTab: View,
-        ) {
-            binding.chartTabsScroller.root.post {
-                val selectedViewCenterX = selectedTab.left + selectedTab.width / 2
-                val scrollViewCenterX = binding.chartTabsScroller.tabs.width / 2
-                val scrollToX = selectedViewCenterX - scrollViewCenterX
-
-                binding.chartTabsScroller.root.smoothScrollTo(scrollToX, 0)
-            }
-        }
-
-        fun onDestroy() {
-            _chartManager = null
+        companion object {
+            private const val TAG = "My Stack: UserProfileViewModel"
         }
     }
