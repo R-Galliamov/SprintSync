@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.HorizontalScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUserProfileBinding
+import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
 import com.developers.sprintsync.user.viewModel.UserProfileViewModel
 import kotlinx.coroutines.launch
@@ -37,8 +39,7 @@ class UserProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.initChartManager(binding.progressChart)
-        viewModel.setWeeklyConfiguration()
-        viewModel.setScroller(binding)
+        setScroller()
 
         initDataRangeListener()
 
@@ -50,7 +51,6 @@ class UserProfileFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.dateRange.collect { dateRange ->
                     binding.progressChartNavigator.apply {
-
                         // TODO : doesn't work when no last data in range
                         tvDayMonthRange.text = dateRange.dayMonthRange
                         tvYearRange.text = dateRange.yearsRange
@@ -73,5 +73,37 @@ class UserProfileFragment : Fragment() {
         super.onDestroyView()
         viewModel.onDestroy()
         _binding = null
+    }
+
+    private fun setScroller() {
+        binding.chartTabsScroller.chartTabDistance.isSelected = true
+
+        val tabs =
+            listOf(
+                binding.chartTabsScroller.chartTabDistance to Metric.DISTANCE,
+                binding.chartTabsScroller.chartTabDuration to Metric.DURATION,
+            )
+
+        tabs.forEach { (tab, metric) ->
+            tab.setOnClickListener {
+                tabs.forEach { (t, _) -> t.isSelected = false }
+                tab.isSelected = true
+                viewModel.selectMetric(metric)
+                scrollToSelectedTab(binding.chartTabsScroller.root, tab)
+            }
+        }
+    }
+
+    private fun scrollToSelectedTab(
+        scroller: HorizontalScrollView,
+        selectedTab: View,
+    ) {
+        scroller.post {
+            val selectedViewCenterX = selectedTab.left + selectedTab.width / 2
+            val scrollViewCenterX = binding.chartTabsScroller.tabs.width / 2
+            val scrollToX = selectedViewCenterX - scrollViewCenterX
+
+            binding.chartTabsScroller.root.smoothScrollTo(scrollToX, 0)
+        }
     }
 }

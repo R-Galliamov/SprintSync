@@ -10,12 +10,12 @@ abstract class ChartManager {
 
     abstract val navigator: ChartNavigator
 
-    abstract fun presetChartConfiguration(
-        configType: ChartConfigurationType,
-        referencedTypeStamp: Long,
-    )
+    abstract fun presetChartConfiguration(configType: ChartConfigurationType)
 
-    abstract fun displayData(data: IndexedDailyValues)
+    abstract fun displayData(
+        data: IndexedDailyValues,
+        referencedTimestamp: Long,
+    )
 
     abstract fun displayEntry(dayIndex: Int)
 
