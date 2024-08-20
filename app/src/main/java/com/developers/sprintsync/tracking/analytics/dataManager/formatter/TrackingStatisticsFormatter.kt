@@ -1,7 +1,9 @@
 package com.developers.sprintsync.tracking.analytics.dataManager.formatter
 
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.PaceMapper
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.CaloriesFormatter
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DistanceFormatter
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DurationFormatter
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.PaceFormatter
 import com.developers.sprintsync.tracking.analytics.model.FormattedStatistics
 import com.developers.sprintsync.tracking.analytics.model.TrackingStatistics
 
@@ -10,10 +12,10 @@ class TrackingStatisticsFormatter {
         fun format(stat: TrackingStatistics): FormattedStatistics =
             FormattedStatistics(
                 runs = stat.runs.toString(),
-                totalDistance = DistanceMapper.metersToPresentableKilometers(stat.totalDistance),
+                totalDistance = DistanceFormatter.metersToPresentableKilometers(stat.totalDistance),
                 totalKiloCalories = CaloriesFormatter.formatCalories(stat.totalCalories),
-                longestDistance = DistanceMapper.metersToPresentableKilometers(stat.longestDistance),
-                bestPace = PaceMapper.formatPaceWithTwoDecimals(stat.bestPace),
+                longestDistance = DistanceFormatter.metersToPresentableKilometers(stat.longestDistance),
+                bestPace = PaceFormatter.formatPaceWithTwoDecimals(stat.bestPace),
                 maxDuration = DurationFormatter.formatToHhMmAndSs(stat.maxDuration),
             )
     }

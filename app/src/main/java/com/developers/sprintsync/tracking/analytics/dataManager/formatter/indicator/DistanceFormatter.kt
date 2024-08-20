@@ -1,9 +1,9 @@
-package com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator
+package com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator
 
 import com.developers.sprintsync.global.util.extension.roundedDownNearestTen
 import java.util.Locale
 
-class DistanceMapper {
+class DistanceFormatter {
     companion object {
         private const val METERS_IN_KILOMETERS = 1000
 

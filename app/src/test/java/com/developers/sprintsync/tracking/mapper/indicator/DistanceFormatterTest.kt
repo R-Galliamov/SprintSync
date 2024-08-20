@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.mapper.indicator
 
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DistanceFormatter
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -8,7 +8,7 @@ import org.junit.runners.JUnit4
 import java.util.Locale
 
 @RunWith(JUnit4::class)
-class DistanceMapperTest {
+class DistanceFormatterTest {
     @Test
     fun metersToPresentableDistance_returnsCorrectlyFormattedDistanceInKilometers() {
         // Arrange
@@ -17,7 +17,7 @@ class DistanceMapperTest {
         Locale.setDefault(Locale.US)
 
         // Act
-        val result = DistanceMapper.metersToPresentableKilometers(distanceInMeters)
+        val result = DistanceFormatter.metersToPresentableKilometers(distanceInMeters)
 
         // Assert
         assertEquals(expectedFormattedDistance, result)
@@ -31,7 +31,7 @@ class DistanceMapperTest {
         Locale.setDefault(Locale.GERMANY)
 
         // Act
-        val result = DistanceMapper.metersToPresentableKilometers(distanceInMeters)
+        val result = DistanceFormatter.metersToPresentableKilometers(distanceInMeters)
 
         // Assert
         assertEquals(expectedDistanceInKilometers, result)
@@ -44,7 +44,7 @@ class DistanceMapperTest {
         val expectedDistanceInKilometers = 1.5f
 
         // Act
-        val result = DistanceMapper.metersToKilometers(distanceInMeters)
+        val result = DistanceFormatter.metersToKilometers(distanceInMeters)
 
         // Assert
         assertEquals(expectedDistanceInKilometers, result)

@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.ImageLoader
 import coil.request.ImageRequest
 import com.developers.sprintsync.databinding.ItemTrackCardBinding
-import com.developers.sprintsync.tracking.analytics.dataManager.formatter.CaloriesFormatter
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.CaloriesFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DateFormatter
-import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DurationFormatter
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DurationFormatter
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DistanceFormatter
 import com.developers.sprintsync.tracking.session.model.track.Track
 
 class TrackListAdapter(
@@ -69,7 +69,7 @@ class TrackListAdapter(
 
     private fun formatDate(timestamp: Long): String = DateFormatter.formatDate(timestamp)
 
-    private fun formatDistance(distanceMeters: Int): String = DistanceMapper.metersToPresentableKilometers(distanceMeters, true)
+    private fun formatDistance(distanceMeters: Int): String = DistanceFormatter.metersToPresentableKilometers(distanceMeters, true)
 
     private fun formatDuration(durationMillis: Long): String = DurationFormatter.formatToHhMmSs(durationMillis)
 

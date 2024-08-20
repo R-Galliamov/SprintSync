@@ -5,8 +5,10 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.global.styleProvider.AppThemeProvider
 import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyleProvider
 import com.developers.sprintsync.user.model.chart.chartData.DailyValues
+import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
+import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.entries.DistanceValueFormatter
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartValuesCalculator
 import com.github.mikephil.charting.data.LineDataSet
 
@@ -22,7 +24,10 @@ class ChartDataConfigurationFactory(
     private val barStyleProvider by lazy { ResourceTextStyleProvider(context, R.style.ChartLabel_barLabel) }
     private val calculator = ChartValuesCalculator()
 
-    fun createBarConfiguration(dailyValues: List<DailyValues>): BarConfiguration =
+    fun createBarConfiguration(
+        metric: Metric,
+        dailyValues: List<DailyValues>,
+    ): BarConfiguration =
         BarConfiguration(
             barColor = colors.secondary,
             barWidth = BAR_WIDTH,
@@ -31,6 +36,11 @@ class ChartDataConfigurationFactory(
             barLabelColor = barStyleProvider.textColor,
             barLabelSizeDp = barStyleProvider.textSizeDp,
             balLabelTypeFace = barStyleProvider.typeface,
+            valueFormatter =
+                when (metric) {
+                    Metric.DISTANCE -> DistanceValueFormatter()
+                    Metric.DURATION -> null
+                },
         )
 
     fun createLineConfiguration(): LineConfiguration =

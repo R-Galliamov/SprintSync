@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter
+package com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.axis
 
 import com.github.mikephil.charting.formatter.ValueFormatter
 import java.text.SimpleDateFormat

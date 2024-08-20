@@ -1,5 +1,7 @@
 package com.developers.sprintsync.user.model.chart.configuration
 
+import com.github.mikephil.charting.formatter.ValueFormatter
+
 data class BarConfiguration(
     val barColor: Int?,
     val barWidth: Float?,
@@ -8,6 +10,7 @@ data class BarConfiguration(
     val barLabelColor: Int?,
     val barLabelSizeDp: Float?,
     val balLabelTypeFace: android.graphics.Typeface?,
+    val valueFormatter: ValueFormatter? = null,
 ) {
     companion object {
         val EMPTY_CONFIGURATION =

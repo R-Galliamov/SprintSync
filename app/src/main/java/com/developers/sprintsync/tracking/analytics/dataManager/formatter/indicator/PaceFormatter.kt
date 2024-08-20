@@ -1,8 +1,8 @@
-package com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator
+package com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator
 
 import java.util.Locale
 
-class PaceMapper {
+class PaceFormatter {
     companion object {
         fun formatPaceWithTwoDecimals(pace: Float): String = formatPace(pace, 2)
 

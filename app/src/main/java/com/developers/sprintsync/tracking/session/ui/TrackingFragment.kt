@@ -11,10 +11,10 @@ import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
-import com.developers.sprintsync.tracking.analytics.dataManager.formatter.CaloriesFormatter
-import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DurationFormatter
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.DistanceMapper
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.PaceMapper
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.CaloriesFormatter
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DurationFormatter
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DistanceFormatter
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.PaceFormatter
 import com.developers.sprintsync.tracking.analytics.ui.map.util.MapManager
 import com.developers.sprintsync.tracking.session.model.session.TrackStatus
 import com.developers.sprintsync.tracking.session.model.session.TrackerState
@@ -195,10 +195,10 @@ class TrackingFragment : Fragment() {
     private fun updateTrackingData(track: Track) {
         binding.apply {
             tvDistanceValue.text =
-                DistanceMapper.metersToPresentableKilometers(track.distanceMeters)
+                DistanceFormatter.metersToPresentableKilometers(track.distanceMeters)
             tvCaloriesValue.text = CaloriesFormatter.formatCalories(track.calories)
             val currentPace = getPace(track)
-            tvPaceValue.text = PaceMapper.formatPaceWithTwoDecimals(currentPace)
+            tvPaceValue.text = PaceFormatter.formatPaceWithTwoDecimals(currentPace)
         }
     }
 

@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.mapper.indicator
 
-import com.developers.sprintsync.tracking.analytics.dataManager.mapper.indicator.PaceMapper
+import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.PaceFormatter
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -8,7 +8,7 @@ import org.junit.runners.JUnit4
 import java.util.Locale
 
 @RunWith(JUnit4::class)
-class PaceMapperTest {
+class PaceFormatterTest {
     @Test
     fun paceToPresentablePace_returnsCorrectlyFormattedRoundedUpPace() {
         // Arrange
@@ -17,7 +17,7 @@ class PaceMapperTest {
         Locale.setDefault(Locale.US)
 
         // Act
-        val result = PaceMapper.formatPaceWithTwoDecimals(pace)
+        val result = PaceFormatter.formatPaceWithTwoDecimals(pace)
 
         // Assert
         assertEquals(expected, result)
@@ -31,7 +31,7 @@ class PaceMapperTest {
         Locale.setDefault(Locale.US)
 
         // Act
-        val result = PaceMapper.formatPaceWithTwoDecimals(pace)
+        val result = PaceFormatter.formatPaceWithTwoDecimals(pace)
 
         // Assert
         assertEquals(expected, result)
@@ -45,7 +45,7 @@ class PaceMapperTest {
         Locale.setDefault(Locale.GERMANY)
 
         // Act
-        val result = PaceMapper.formatPaceWithTwoDecimals(pace)
+        val result = PaceFormatter.formatPaceWithTwoDecimals(pace)
 
         // Assert
         assertEquals(expected, result)
@@ -59,7 +59,7 @@ class PaceMapperTest {
         Locale.setDefault(Locale.GERMANY)
 
         // Act
-        val result = PaceMapper.formatPaceWithTwoDecimals(pace)
+        val result = PaceFormatter.formatPaceWithTwoDecimals(pace)
 
         // Assert
         assertEquals(expected, result)

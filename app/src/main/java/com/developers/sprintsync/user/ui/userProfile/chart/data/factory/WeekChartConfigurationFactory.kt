@@ -1,8 +1,8 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data.factory
 
 import com.developers.sprintsync.user.model.chart.configuration.ChartConfiguration
-import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.ChartWeekDayFormatter
-import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.SelectiveYAxisValueFormatterImpl
+import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.axis.ChartWeekDayFormatter
+import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.axis.SelectiveYAxisValueFormatterImpl
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.animation.YAxisScaler
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.listener.ChartGestureListener
 

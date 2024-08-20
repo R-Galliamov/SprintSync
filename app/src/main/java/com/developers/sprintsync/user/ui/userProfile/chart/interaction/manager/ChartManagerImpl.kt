@@ -2,6 +2,7 @@ package com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager
 
 import android.util.Log
 import com.developers.sprintsync.user.model.chart.chartData.IndexedDailyValues
+import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.navigator.NavigatorState
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.configurator.ChartConfigurator
@@ -15,15 +16,18 @@ import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.data.CombinedData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ChartManagerImpl(
     private val chart: CombinedChart,
 ) : ChartManager() {
-    private var dailyPoints: IndexedDailyValues = mapOf()
+    private var generalIndexedValues: IndexedDailyValues = mapOf()
 
-    override val displayedData: MutableStateFlow<IndexedDailyValues> = MutableStateFlow(mapOf())
+    private val _displayedData: MutableStateFlow<IndexedDailyValues> = MutableStateFlow(mapOf())
+    override val displayedData get() = _displayedData.asStateFlow()
 
     private var navigatorStateScope: CoroutineScope? = null
     private val dispatcher = Dispatchers.IO
@@ -43,38 +47,34 @@ class ChartManagerImpl(
     }
 
     override fun displayData(
+        metric: Metric,
         data: IndexedDailyValues,
         referencedTimestamp: Long,
     ) {
         Log.d("ChartManagerImpl", "Try to display data")
         if (data.isEmpty()) return
-        if (dailyPoints == data) return
+        if (generalIndexedValues == data) return
         Log.d("ChartManagerImpl", "Chart data displayed")
-
-        this.dailyPoints = data
-
-        val chartData = transformToCombinedData(data)
-        chart.data = chartData
-
-        _navigator ?: let {
-            initNavigator(chart)
-            initNavigatorStateListener(navigator)
+        this.generalIndexedValues = data
+        val chartData = transformToCombinedData(metric, data)
+        cancelNavigatorStateScope()
+        chart.post {
+            chart.data = chartData
+            _navigator ?: initNavigator(chart)
+            navigatorStateScope ?: initNavigatorStateListener(metric, navigator)
+            chartConfigurationType?.let {
+                val config =
+                    WeekChartConfigurationFactory().createConfiguration(
+                        referencedTimestamp,
+                        ChartGestureListener(navigator),
+                    )
+                navigator.resetToInitial()
+                configurator.applyConfiguration(config)
+                resetConfig()
+            }
+            configurator.refreshChart()
+            navigator.invalidate()
         }
-
-        chartConfigurationType?.let {
-            val config =
-                WeekChartConfigurationFactory().createConfiguration(
-                    referencedTimestamp,
-                    ChartGestureListener(navigator),
-                )
-
-            navigator.resetToInitial()
-            configurator.applyConfiguration(config)
-            resetConfig()
-        }
-
-        configurator.refreshChart()
-        navigator.invalidate()
     }
 
     override fun displayEntry(dayIndex: Int) {
@@ -91,7 +91,16 @@ class ChartManagerImpl(
         navigatorStateScope = CoroutineScope(dispatcher)
     }
 
-    private fun initNavigatorStateListener(navigator: ChartNavigator) {
+    private fun cancelNavigatorStateScope() {
+        Log.d("ChartManagerImpl", "NavigatorStateScope canceled")
+        navigatorStateScope?.cancel()
+        navigatorStateScope = null
+    }
+
+    private fun initNavigatorStateListener(
+        metric: Metric,
+        navigator: ChartNavigator,
+    ) {
         Log.d("ChartManagerImpl", "NavigatorStateListener initialized")
         initNavigatorStateScope()
 
@@ -117,14 +126,14 @@ class ChartManagerImpl(
                             is NavigatorState.ViewportActive.InitialDisplay -> {
                                 Log.d(TAG, "InitialDisplay")
                                 scaleUpMaximum(displayedData.value)
-                                updateYAxisLabel(displayedData.value)
+                                updateYAxisLabel(metric, displayedData.value)
                                 configurator.refreshChart()
                             }
 
                             is NavigatorState.ViewportActive.Navigating -> {
                                 Log.d(TAG, "Navigating")
                                 scaleUpMaximumAnimated(displayedData.value) {
-                                    updateYAxisLabel(displayedData.value)
+                                    updateYAxisLabel(metric, displayedData.value)
                                     configurator.refreshChart()
                                 }
                             }
@@ -132,7 +141,7 @@ class ChartManagerImpl(
                             is NavigatorState.ViewportActive.DataReloaded -> {
                                 Log.d(TAG, "DataReloaded")
                                 scaleUpMaximumAnimated(displayedData.value) {
-                                    updateYAxisLabel(displayedData.value)
+                                    updateYAxisLabel(metric, displayedData.value)
                                     configurator.refreshChart()
                                     navigator.commitDataReload()
                                 }
@@ -144,12 +153,15 @@ class ChartManagerImpl(
         }
     }
 
-    private fun transformToCombinedData(data: IndexedDailyValues): CombinedData {
+    private fun transformToCombinedData(
+        metric: Metric,
+        data: IndexedDailyValues,
+    ): CombinedData {
         Log.d("ChartManagerImpl", "Chart data transformed")
         val dataConfigFactory = ChartDataConfigurationFactory(chart.context)
         return ChartDataPreparer().prepareCombinedData(
             data,
-            dataConfigFactory.createBarConfiguration(data.values.toList()),
+            dataConfigFactory.createBarConfiguration(metric, data.values.toList()),
             dataConfigFactory.createLineConfiguration(),
         )
     }
@@ -161,8 +173,8 @@ class ChartManagerImpl(
         Log.d("ChartManagerImpl", "Chart data updated")
         val toIndexExclusive = firstVisibleEntryIndex + range
         val displayedEntries =
-            dailyPoints.filterKeys { it in firstVisibleEntryIndex until toIndexExclusive }
-        displayedData.value = displayedEntries
+            generalIndexedValues.filterKeys { it in firstVisibleEntryIndex until toIndexExclusive }
+        _displayedData.value = displayedEntries
     }
 
     private fun scaleUpMaximum(displayedData: IndexedDailyValues) {
@@ -182,10 +194,13 @@ class ChartManagerImpl(
         }
     }
 
-    private fun updateYAxisLabel(displayedData: IndexedDailyValues) {
+    private fun updateYAxisLabel(
+        metric: Metric,
+        displayedData: IndexedDailyValues,
+    ) {
         Log.d("ChartManagerImpl", "Chart label updated")
         val label = calculator.calculateLastGoal(displayedData.values.toList())
-        configurator.selectYLabel(label)
+        configurator.selectYLabel(metric, label)
     }
 
     private fun resetConfig() {

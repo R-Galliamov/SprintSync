@@ -2,6 +2,7 @@ package com.developers.sprintsync.user.ui.userProfile.chart.configuration.config
 
 import com.developers.sprintsync.R
 import com.developers.sprintsync.global.styleProvider.AppThemeProvider
+import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.configuration.ChartConfiguration
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.animation.YAxisScaler
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.handler.ChartInteractionHandler
@@ -47,8 +48,11 @@ class ChartConfigurator(
         yAxisScaler.scaleUpMaximumAnimated(chart, maxDataValue, onAnimationEnd)
     }
 
-    fun selectYLabel(value: Float) {
-        axisConfigurator.selectYValueLabel(value)
+    fun selectYLabel(
+        metric: Metric,
+        value: Float,
+    ) {
+        axisConfigurator.selectYValueLabel(metric, value)
         refreshChart()
     }
 

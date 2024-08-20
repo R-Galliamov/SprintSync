@@ -42,9 +42,10 @@ class UserProfileViewModel
         val chartConfiguration get() = _chartConfiguration.asStateFlow()
 
         fun initChartManager(chart: CombinedChart) {
-            _chartManager = ChartManagerImpl(chart).apply {
-                presetChartConfiguration(chartConfiguration.value)
-            }
+            _chartManager =
+                ChartManagerImpl(chart).apply {
+                    presetChartConfiguration(chartConfiguration.value)
+                }
             initChartDataSetListener()
             initSelectedMetricListener()
             initDisplayedDataListener()
@@ -67,7 +68,7 @@ class UserProfileViewModel
                     if (chartDataSet.data.isEmpty()) return@collect
                     val indexedValues = chartDataSet.data[selectedMetric.value]
                     if (indexedValues.isNullOrEmpty()) return@collect
-                    chartManager.displayData(indexedValues, chartDataSet.referenceTimestamp)
+                    chartManager.displayData(selectedMetric.value, indexedValues, chartDataSet.referenceTimestamp)
                 }
             }
         }
@@ -77,7 +78,7 @@ class UserProfileViewModel
                 selectedMetric.collect { metric ->
                     val indexedValues = chartDataSet.value.data[metric]
                     if (indexedValues.isNullOrEmpty()) return@collect
-                    chartManager.displayData(indexedValues, chartDataSet.value.referenceTimestamp)
+                    chartManager.displayData(selectedMetric.value, indexedValues, chartDataSet.value.referenceTimestamp)
                 }
             }
         }

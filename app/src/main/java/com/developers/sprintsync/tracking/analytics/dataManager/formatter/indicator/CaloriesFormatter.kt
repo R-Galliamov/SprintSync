@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.analytics.dataManager.formatter
+package com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator
 
 class CaloriesFormatter {
     companion object {

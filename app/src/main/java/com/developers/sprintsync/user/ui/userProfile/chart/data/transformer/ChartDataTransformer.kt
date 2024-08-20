@@ -64,6 +64,7 @@ class ChartDataTransformer {
                 config.barLabelColor?.let { valueTextColor = it }
                 config.balLabelTypeFace?.let { valueTypeface = it }
                 config.barLabelSizeDp?.let { valueTextSize = it }
+                config.valueFormatter?.let { valueFormatter = it }
                 isHighlightEnabled = false
             }
         }

@@ -24,7 +24,7 @@ class ChartDataSetCreator(
         var currentDayTimestamp = earliestDayTimestamp
         var dayIndex = indexedDailyValues.size
 
-        val goalValue = 1000.0f // TODO: Replace with actual goal value
+        val goalValue = 3600000.0f // TODO: Replace with actual goal value
 
         val data = mutableMapOf<Metric, MutableMap<Int, DailyValues>>()
 

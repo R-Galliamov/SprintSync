@@ -2,7 +2,8 @@ package com.developers.sprintsync.user.ui.userProfile.chart.configuration.config
 
 import android.util.Log
 import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyleProvider
-import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.SelectiveYAxisValueFormatter
+import com.developers.sprintsync.user.model.chart.chartData.Metric
+import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.axis.SelectiveYAxisValueFormatter
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -69,8 +70,11 @@ class ChartAxisConfigurator(
         yAxisRight.valueFormatter = formatter
     }
 
-    fun selectYValueLabel(value: Float) {
-        formatter?.selectYAxisValue(value)
+    fun selectYValueLabel(
+        metric: Metric,
+        value: Float,
+    ) {
+        formatter?.selectYAxisValue(metric, value)
         chart.notifyDataSetChanged()
         chart.invalidate()
         Log.d("My stack: ChartAxisConfigurator", "selectYValueLabel: $value")
