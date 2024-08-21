@@ -1,13 +1,13 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager
 
-import com.developers.sprintsync.user.model.chart.chartData.IndexedDailyValues
+import com.developers.sprintsync.user.model.chart.chartData.DailyValues
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
 import kotlinx.coroutines.flow.StateFlow
 
 abstract class ChartManager {
-    abstract val displayedData: StateFlow<IndexedDailyValues>
+    abstract val displayedData: StateFlow<Map<Int, DailyValues>>
 
     abstract val navigator: ChartNavigator
 
@@ -15,7 +15,7 @@ abstract class ChartManager {
 
     abstract fun displayData(
         metric: Metric,
-        data: IndexedDailyValues,
+        data: List<DailyValues>,
         referencedTimestamp: Long,
     )
 

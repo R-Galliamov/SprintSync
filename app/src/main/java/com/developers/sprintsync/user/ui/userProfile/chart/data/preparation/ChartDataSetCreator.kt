@@ -1,61 +1,82 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data.preparation
 
+import com.developers.sprintsync.global.util.extension.setOrAdd
 import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.DailyValues
-import com.developers.sprintsync.user.model.chart.chartData.IndexedDailyValues
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.chartData.MetricsMap
 import com.developers.sprintsync.user.model.chart.chartData.TimestampMetricsMap
+import com.developers.sprintsync.user.model.chart.chartData.util.time.TimeUtils
 
 class ChartDataSetCreator(
     private val preparationHelper: ChartPreparationHelper,
+    private val goalsProvider: DailyGoalsProvider,
 ) {
     fun createDataSet(
         timestampMetrics: TimestampMetricsMap,
-        indexedDailyValues: IndexedDailyValues,
+        dailyValuesList: List<DailyValues>,
     ): ChartDataSet {
         val minKey = timestampMetrics.keys.min()
-        val firstTimestamp = preparationHelper.shiftTimestamp(minKey, -indexedDailyValues.size)
+        val firstTimestamp = TimeUtils.shiftTimestampByDays(minKey, -dailyValuesList.size)
 
-        // Find the earliest and latest days to cover the full range
         val earliestDayTimestamp = timestampMetrics.keys.min()
         val latestDayTimestamp = timestampMetrics.keys.max()
 
         var currentDayTimestamp = earliestDayTimestamp
-        var dayIndex = indexedDailyValues.size
+        var dayIndex = dailyValuesList.size
 
-        val goalValue = 3600000.0f // TODO: Replace with actual goal value
+        var data = mutableMapOf<Metric, MutableList<DailyValues>>()
 
-        val data = mutableMapOf<Metric, MutableMap<Int, DailyValues>>()
-
-        indexedDailyValues.forEach { (day, dailyValues) ->
+        dailyValuesList.forEach { dailyValues ->
             Metric.entries.forEach { metric ->
-                data.getOrPut(metric) { mutableMapOf() }[day] = dailyValues
+                data.getOrPut(metric) { mutableListOf() }.add(dailyValues)
             }
         }
 
         while (currentDayTimestamp <= latestDayTimestamp) {
             val dayValues: MetricsMap? = timestampMetrics[currentDayTimestamp]
-            dayValues?.let { dayMetrics ->
+            val goalValues: MetricsMap = goalsProvider.getGoalsForTimestamp(currentDayTimestamp)
 
+            dayValues?.let { dayMetrics ->
                 dayMetrics.forEach { (metric, value) ->
-                    val indexedDayValues = data.getOrPut(metric) { mutableMapOf() }
-                    val currentDayValue = indexedDayValues.getOrDefault(dayIndex, DailyValues.Present(goalValue, value))
-                    data.getOrPut(metric) { mutableMapOf() }[dayIndex] = currentDayValue
+                    val goal = goalValues.getOrDefault(metric, 0f)
+
+                    val dailyValuesForMetric = data.getOrPut(metric) { mutableListOf() }
+
+                    val currentDayValues =
+                        dailyValuesForMetric.getOrNull(dayIndex) ?: DailyValues.Present(
+                            goal = goal,
+                            actualValue = value,
+                        )
+                    val dataDailyValues = data.getOrPut(metric) { mutableListOf() }
+                    dataDailyValues.setOrAdd(dayIndex, currentDayValues)
                 }
             } ?: run {
-                data.forEach { (_, dataPoints) ->
-                    dataPoints[dayIndex] = DailyValues.Missing(goalValue)
+                data.forEach { (metric, indexedValues) ->
+                    val goal = goalValues.getOrDefault(metric, 0f)
+                    indexedValues.add(DailyValues.Missing(goal))
                 }
             }
-            currentDayTimestamp = preparationHelper.shiftTimestamp(currentDayTimestamp, 1)
+            currentDayTimestamp = TimeUtils.shiftTimestampByDays(currentDayTimestamp, 1)
             dayIndex++
         }
 
-        data.forEach { (metric, dataPoints) ->
-            data[metric] = preparationHelper.padDataPointsToRange(dataPoints, goalValue).toMutableMap()
-        }
+        data = padDataToRange(data, latestDayTimestamp)
 
         return ChartDataSet(firstTimestamp, data)
+    }
+
+    private fun padDataToRange(
+        data: MutableMap<Metric, MutableList<DailyValues>>,
+        latestDayTimestamp: Long,
+    ): MutableMap<Metric, MutableList<DailyValues>> {
+        val goals = goalsProvider.getGoalsForTimestamp(latestDayTimestamp)
+
+        data.forEach { (metric, dailyValuesList) ->
+            val goal = goals[metric] ?: 0f
+            val paddedDailyValues = preparationHelper.padIndexedValuesToRange(dailyValuesList, goal)
+            data[metric] = paddedDailyValues.toMutableList()
+        }
+        return data
     }
 }

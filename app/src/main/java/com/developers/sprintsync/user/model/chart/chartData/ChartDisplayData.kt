@@ -2,5 +2,5 @@ package com.developers.sprintsync.user.model.chart.chartData
 
 data class ChartDisplayData(
     val metric: Metric,
-    val data: IndexedDailyValues,
+    val data: List<DailyValues>,
 )

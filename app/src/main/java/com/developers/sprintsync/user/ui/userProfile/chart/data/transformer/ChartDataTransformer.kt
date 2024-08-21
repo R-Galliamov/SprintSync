@@ -1,7 +1,6 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data.transformer
 
 import com.developers.sprintsync.user.model.chart.chartData.DailyValues
-import com.developers.sprintsync.user.model.chart.chartData.IndexedDailyValues
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
 import com.github.mikephil.charting.data.BarData
@@ -41,24 +40,20 @@ class ChartDataTransformer {
 
          */
 
-        fun build(data: IndexedDailyValues): BarData {
-            val presentData =
-                data.filterValues { it is DailyValues.Present }.mapValues { it.value as DailyValues.Present }
-            val missingData =
-                data.filterValues { it is DailyValues.Missing }.mapValues { it.value as DailyValues.Missing }
-
-            val presentDataSet = transformToPresentDataSet(presentData, config)
-            val missingDataSet = transformToMissingDataSet(missingData, config)
+        fun build(data: List<DailyValues>): BarData {
+            val presentDataSet = transformToPresentDataSet(data, config)
+            val missingDataSet = transformToMissingDataSet(data, config)
             return BarData(presentDataSet, missingDataSet).apply {
                 config.barWidth?.let { barWidth = it }
             }
         }
 
         private fun transformToPresentDataSet(
-            data: Map<Int, DailyValues.Present>,
+            data: List<DailyValues>,
             config: BarConfiguration,
         ): BarDataSet {
-            val entries = transformToPresentEntries(data)
+            val presentDaysMap = transformToPresentDaysMap(data)
+            val entries = transformToPresentEntries(presentDaysMap)
             return BarDataSet(entries, null).apply {
                 config.barColor?.let { color = it }
                 config.barLabelColor?.let { valueTextColor = it }
@@ -69,11 +64,25 @@ class ChartDataTransformer {
             }
         }
 
+        private fun transformToPresentDaysMap(data: List<DailyValues>): Map<Int, DailyValues.Present> {
+            val presentDaysMap = mutableMapOf<Int, DailyValues.Present>()
+            data.forEachIndexed { index, dailyValues ->
+                if (dailyValues is DailyValues.Present) {
+                    presentDaysMap[index] = dailyValues
+                }
+            }
+            return presentDaysMap
+        }
+
+        private fun transformToMissingDaysIndices(data: List<DailyValues>): Set<Int> =
+            data.indices.filter { data[it] is DailyValues.Missing }.toSet()
+
         private fun transformToMissingDataSet(
-            data: Map<Int, DailyValues.Missing>,
+            data: List<DailyValues>,
             config: BarConfiguration,
         ): BarDataSet {
-            val entries = transformToMissingEntries(data, config.missingBarHeight)
+            val missingDaysIndices = transformToMissingDaysIndices(data)
+            val entries = transformToMissingEntries(missingDaysIndices, config.missingBarHeight)
             return BarDataSet(entries, null).apply {
                 config.missingBarColor?.let { color = it }
                 setDrawValues(false)
@@ -82,12 +91,12 @@ class ChartDataTransformer {
         }
 
         private fun transformToPresentEntries(data: Map<Int, DailyValues.Present>): List<BarEntry> =
-            data.map { BarEntry(it.key.toFloat(), it.value.actualValue) }
+            data.map { (index, dailyValues) -> BarEntry(index.toFloat(), dailyValues.actualValue) }
 
         private fun transformToMissingEntries(
-            data: Map<Int, DailyValues.Missing>,
+            indexes: Set<Int>,
             missingBarHeight: Float,
-        ): List<BarEntry> = data.map { BarEntry(it.key.toFloat(), missingBarHeight) }
+        ) = indexes.map { index -> BarEntry(index.toFloat(), missingBarHeight) }
     }
 
     /**
@@ -118,10 +127,10 @@ class ChartDataTransformer {
 
          */
 
-        fun build(data: IndexedDailyValues): LineData = LineData(transformToLineDataSet(data, config))
+        fun build(data: List<DailyValues>): LineData = LineData(transformToLineDataSet(data, config))
 
         private fun transformToLineDataSet(
-            data: IndexedDailyValues,
+            data: List<DailyValues>,
             config: LineConfiguration,
         ): LineDataSet {
             val entries = transformToLineEntries(data)
@@ -138,8 +147,10 @@ class ChartDataTransformer {
             }
         }
 
-        private fun transformToLineEntries(data: IndexedDailyValues): List<BarEntry> =
-            data.map { BarEntry(it.key.toFloat(), it.value.goal) }
+        private fun transformToLineEntries(data: List<DailyValues>): List<BarEntry> =
+            data.mapIndexed { index, dailyValues ->
+                BarEntry(index.toFloat(), dailyValues.goal)
+            }
     }
 
     companion object {

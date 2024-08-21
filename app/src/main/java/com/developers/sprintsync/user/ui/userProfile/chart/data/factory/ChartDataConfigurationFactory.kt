@@ -59,6 +59,6 @@ class ChartDataConfigurationFactory(
     companion object {
         private const val BAR_WIDTH = 0.5f
         private const val LINE_WIDTH = 2f
-        private const val MISSING_BAR_MULTIPLIER = 0.2f
+        private const val MISSING_BAR_MULTIPLIER = 0.05f
     }
 }

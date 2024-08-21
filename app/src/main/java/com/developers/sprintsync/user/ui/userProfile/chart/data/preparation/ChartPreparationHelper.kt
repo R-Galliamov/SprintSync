@@ -2,8 +2,8 @@ package com.developers.sprintsync.user.ui.userProfile.chart.data.preparation
 
 import com.developers.sprintsync.global.util.extension.isMultipleOf
 import com.developers.sprintsync.tracking.session.model.track.Track
+import com.developers.sprintsync.user.model.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.DailyValues
-import com.developers.sprintsync.user.model.chart.chartData.IndexedDailyValues
 import java.util.Calendar
 
 class ChartPreparationHelper {
@@ -16,30 +16,31 @@ class ChartPreparationHelper {
         return weekDayIndex
     }
 
-    fun prepareChartDataPoints(
+    fun prepareIndexedValues(
         firstDataIndex: Int,
         startIndex: Int,
-        goalValue: Float,
-    ): IndexedDailyValues {
-        val dataPoints = mutableMapOf<Int, DailyValues>()
+        goals: List<DailyGoal>,
+    ): List<DailyValues> {
+        val goalValue = goals.firstOrNull()?.value ?: 0f
+
+        val dailyValues = mutableListOf<DailyValues>()
         if (hasMissingStartData(firstDataIndex, startIndex)) {
             val shiftDays = calculateShiftDays(firstDataIndex, startIndex)
-            repeat(shiftDays) { dayIndex ->
-                dataPoints[dayIndex] = DailyValues.Missing(goalValue)
+            repeat(shiftDays) {
+                dailyValues.add(DailyValues.Missing(goalValue))
             }
         }
-        return dataPoints
+        return dailyValues
     }
 
-    fun padDataPointsToRange(
-        dataPoints: MutableMap<Int, DailyValues>,
-        goalValue: Float,
-    ): IndexedDailyValues {
-        while (!dataPoints.size.isMultipleOf(DAYS_IN_WEEK)) {
-            val lastDayIndex = dataPoints.keys.maxOrNull() ?: 0 // Handle the case of an empty map
-            dataPoints[lastDayIndex.inc()] = DailyValues.Missing(goalValue)
+    fun padIndexedValuesToRange(
+        dailyValuesList: MutableList<DailyValues>,
+        goal: Float,
+    ): List<DailyValues> {
+        while (!dailyValuesList.size.isMultipleOf(DAYS_IN_WEEK)) {
+            dailyValuesList.add(DailyValues.Missing(goal))
         }
-        return dataPoints
+        return dailyValuesList
     }
 
     private fun hasMissingStartData(
@@ -51,15 +52,6 @@ class ChartPreparationHelper {
         firstDataIndex: Int,
         startIndex: Int,
     ) = DAYS_IN_WEEK - ((startIndex - firstDataIndex + DAYS_IN_WEEK) % DAYS_IN_WEEK)
-
-    fun shiftTimestamp(
-        timestamp: Long,
-        shiftDays: Int,
-    ): Long {
-        val calendar = Calendar.getInstance().apply { timeInMillis = timestamp }
-        calendar.add(Calendar.DAY_OF_YEAR, shiftDays)
-        return calendar.timeInMillis
-    }
 
     companion object {
         private const val DAYS_IN_WEEK = 7
