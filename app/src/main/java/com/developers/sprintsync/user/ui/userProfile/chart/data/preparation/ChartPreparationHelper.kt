@@ -2,6 +2,7 @@ package com.developers.sprintsync.user.ui.userProfile.chart.data.preparation
 
 import com.developers.sprintsync.global.util.extension.isMultipleOf
 import com.developers.sprintsync.tracking.session.model.track.Track
+import com.developers.sprintsync.user.model.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.DailyValues
 import com.developers.sprintsync.user.model.chart.chartData.IndexedDailyValues
 import java.util.Calendar
@@ -16,11 +17,13 @@ class ChartPreparationHelper {
         return weekDayIndex
     }
 
-    fun prepareChartDataPoints(
+    fun prepareIndexedValues(
         firstDataIndex: Int,
         startIndex: Int,
-        goalValue: Float,
+        goals: List<DailyGoal>,
     ): IndexedDailyValues {
+        val goalValue = goals.firstOrNull()?.value ?: 666f
+
         val dataPoints = mutableMapOf<Int, DailyValues>()
         if (hasMissingStartData(firstDataIndex, startIndex)) {
             val shiftDays = calculateShiftDays(firstDataIndex, startIndex)
@@ -31,13 +34,13 @@ class ChartPreparationHelper {
         return dataPoints
     }
 
-    fun padDataPointsToRange(
+    fun padIndexedValuesToRange(
         dataPoints: MutableMap<Int, DailyValues>,
-        goalValue: Float,
+        goal: Float,
     ): IndexedDailyValues {
         while (!dataPoints.size.isMultipleOf(DAYS_IN_WEEK)) {
             val lastDayIndex = dataPoints.keys.maxOrNull() ?: 0 // Handle the case of an empty map
-            dataPoints[lastDayIndex.inc()] = DailyValues.Missing(goalValue)
+            dataPoints[lastDayIndex.inc()] = DailyValues.Missing(goal)
         }
         return dataPoints
     }
@@ -51,15 +54,6 @@ class ChartPreparationHelper {
         firstDataIndex: Int,
         startIndex: Int,
     ) = DAYS_IN_WEEK - ((startIndex - firstDataIndex + DAYS_IN_WEEK) % DAYS_IN_WEEK)
-
-    fun shiftTimestamp(
-        timestamp: Long,
-        shiftDays: Int,
-    ): Long {
-        val calendar = Calendar.getInstance().apply { timeInMillis = timestamp }
-        calendar.add(Calendar.DAY_OF_YEAR, shiftDays)
-        return calendar.timeInMillis
-    }
 
     companion object {
         private const val DAYS_IN_WEEK = 7

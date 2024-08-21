@@ -1,6 +1,7 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data
 
 import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetAllTracksUseCase
+import com.developers.sprintsync.user.model.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.WeekDay
 import com.developers.sprintsync.user.ui.userProfile.chart.data.preparation.ChartWeeklyDataPreparer
@@ -25,12 +26,13 @@ class ChartDataLoader
 
         private fun initCollector() {
             val tracks = TrackTestContainer().tracks
+            val goals: List<DailyGoal> = TrackTestContainer().goals
 
             CoroutineScope(Dispatchers.IO).launch {
                 tracks.collect { trackList ->
                     if (trackList.isEmpty()) return@collect
                     val chartWeeklyDataPreparer = ChartWeeklyDataPreparer()
-                    val dataSet = chartWeeklyDataPreparer.prepareChartSet(trackList, WeekDay.MONDAY)
+                    val dataSet = chartWeeklyDataPreparer.prepareChartSet(trackList, goals, WeekDay.MONDAY)
                     _chartDataSet.update { dataSet }
                 }
             }

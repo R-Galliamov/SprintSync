@@ -29,18 +29,15 @@ class ChartManagerImpl(
     private val _displayedData: MutableStateFlow<IndexedDailyValues> = MutableStateFlow(mapOf())
     override val displayedData get() = _displayedData.asStateFlow()
 
-    private var navigatorStateScope: CoroutineScope? = null
-    private val dispatcher = Dispatchers.IO
-
     private val configurator = ChartConfigurator(chart)
-
-    private val calculator = ChartValuesCalculator()
-
     private var chartConfigurationType: ChartConfigurationType? = null
 
     private var _navigator: ChartNavigator? = null
-
     override val navigator get() = checkNotNull(_navigator) { "Navigator is not initialized" }
+    private var navigatorStateScope: CoroutineScope? = null
+    private val dispatcher = Dispatchers.IO
+
+    private val calculator = ChartValuesCalculator()
 
     override fun presetChartConfiguration(configType: ChartConfigurationType) {
         chartConfigurationType = configType

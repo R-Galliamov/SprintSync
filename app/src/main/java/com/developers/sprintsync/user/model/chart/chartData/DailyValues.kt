@@ -6,7 +6,11 @@ sealed class DailyValues(
     data class Present(
         override val goal: Float,
         val actualValue: Float,
-    ) : DailyValues(goal)
+    ) : DailyValues(goal) {
+        companion object {
+            val EMPTY = Present(0f, 0f)
+        }
+    }
 
     data class Missing(
         override val goal: Float,
