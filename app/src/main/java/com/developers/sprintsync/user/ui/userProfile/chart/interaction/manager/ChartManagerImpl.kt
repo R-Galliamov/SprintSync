@@ -1,9 +1,11 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager
 
 import android.util.Log
+import com.developers.sprintsync.user.model.chart.chartData.ChartDisplayData
 import com.developers.sprintsync.user.model.chart.chartData.DailyValues
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.navigator.NavigatorState
+import com.developers.sprintsync.user.model.chart.navigator.RangePosition
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.configurator.ChartConfigurator
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartValuesCalculator
@@ -24,10 +26,10 @@ import kotlinx.coroutines.launch
 class ChartManagerImpl(
     private val chart: CombinedChart,
 ) : ChartManager() {
-    private var generalDailyValues: List<DailyValues> = emptyList()
+    private var _generalData: List<DailyValues> = emptyList()
 
-    private val _displayedData: MutableStateFlow<Map<Int, DailyValues>> = MutableStateFlow(emptyMap())
-    override val displayedData get() = _displayedData.asStateFlow()
+    private val _displayData: MutableStateFlow<ChartDisplayData> = MutableStateFlow(ChartDisplayData.EMPTY)
+    override val displayData get() = _displayData.asStateFlow()
 
     private val configurator = ChartConfigurator(chart)
     private var chartConfigurationType: ChartConfigurationType? = null
@@ -50,9 +52,9 @@ class ChartManagerImpl(
     ) {
         Log.d("ChartManagerImpl", "Try to display data")
         if (data.isEmpty()) return
-        if (generalDailyValues == data) return
+        if (_generalData == data) return
         Log.d("ChartManagerImpl", "Chart data displayed")
-        this.generalDailyValues = data
+        this._generalData = data
         val chartData = transformToCombinedData(metric, data)
         cancelNavigatorStateScope()
         chart.post {
@@ -119,8 +121,11 @@ class ChartManagerImpl(
                         updateDisplayedData(
                             state.viewportIndices.firstDisplayedEntryIndex,
                             state.rangeLimits.chartRange,
+                            state.rangePosition
                         )
-                        val displayedDataList = displayedData.value.values.toList()
+                        val displayedDataList =
+                            displayData.value.data.values
+                                .toList()
                         when (state) {
                             is NavigatorState.ViewportActive.InitialDisplay -> {
                                 Log.d(TAG, "InitialDisplay")
@@ -168,15 +173,22 @@ class ChartManagerImpl(
     private fun updateDisplayedData(
         firstVisibleEntryIndex: Int,
         range: Int,
+        rangePosition: RangePosition,
     ) {
         Log.d("ChartManagerImpl", "Chart data updated")
         val toIndexExclusive = firstVisibleEntryIndex + range
         val displayedEntries =
-            generalDailyValues.subList(firstVisibleEntryIndex, toIndexExclusive.coerceAtMost(generalDailyValues.size))
-        _displayedData.value =
+            _generalData.subList(firstVisibleEntryIndex, toIndexExclusive.coerceAtMost(_generalData.size))
+        val indexedDailyValues =
             displayedEntries
                 .mapIndexed { index, dailyValues -> (firstVisibleEntryIndex + index) to dailyValues }
                 .toMap()
+
+        _displayData.value =
+            ChartDisplayData(
+                data = indexedDailyValues,
+                rangePosition = rangePosition,
+            )
     }
 
     private fun scaleUpMaximum(displayedData: List<DailyValues>) {

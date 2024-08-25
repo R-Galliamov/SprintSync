@@ -1,6 +1,7 @@
 package com.developers.sprintsync.user.ui.userProfile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUserProfileBinding
 import com.developers.sprintsync.user.model.chart.chartData.Metric
+import com.developers.sprintsync.user.model.chart.navigator.RangePosition
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
 import com.developers.sprintsync.user.viewModel.UserProfileViewModel
 import kotlinx.coroutines.launch
@@ -54,7 +56,9 @@ class UserProfileFragment : Fragment() {
                         // TODO : doesn't work when no last data in range
                         tvDayMonthRange.text = dateRange.dayMonthRange
                         tvYearRange.text = dateRange.yearsRange
+                        Log.d(TAG, "RangePosition ${dateRange.position}")
                     }
+                    updateNavigatingButtonsUI(dateRange.position)
                 }
             }
         }
@@ -66,6 +70,35 @@ class UserProfileFragment : Fragment() {
         }
         binding.progressChartNavigator.btNextRange.setOnClickListener {
             viewModel.navigateRange(ChartNavigator.NavigationDirection.NEXT)
+        }
+    }
+
+    private fun updateNavigatingButtonsUI(rangePosition: RangePosition) {
+        when (rangePosition) {
+            RangePosition.NOT_INITIALIZED -> {
+                binding.progressChartNavigator.btPreviousRange.isEnabled = false
+                binding.progressChartNavigator.btNextRange.isEnabled = false
+            }
+
+            RangePosition.FIRST -> {
+                binding.progressChartNavigator.btPreviousRange.isEnabled = false
+                binding.progressChartNavigator.btNextRange.isEnabled = true
+            }
+
+            RangePosition.MIDDLE -> {
+                binding.progressChartNavigator.btPreviousRange.isEnabled = true
+                binding.progressChartNavigator.btNextRange.isEnabled = true
+            }
+
+            RangePosition.LAST -> {
+                binding.progressChartNavigator.btPreviousRange.isEnabled = true
+                binding.progressChartNavigator.btNextRange.isEnabled = false
+            }
+
+            RangePosition.ONLY -> {
+                binding.progressChartNavigator.btPreviousRange.isEnabled = false
+                binding.progressChartNavigator.btNextRange.isEnabled = false
+            }
         }
     }
 
@@ -105,5 +138,9 @@ class UserProfileFragment : Fragment() {
 
             binding.chartTabsScroller.root.smoothScrollTo(scrollToX, 0)
         }
+    }
+
+    companion object {
+        private const val TAG = "My stack, UserProfileFragment"
     }
 }

@@ -1,0 +1,29 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?colorPrimaryVariant">
+    <item android:id="@android:id/mask">
+        <shape android:shape="oval">
+            <solid android:color="?colorPrimaryVariant" />
+        </shape>
+    </item>
+
+    <item android:id="@android:id/background">
+        <layer-list>
+            <item>
+                <vector
+                    android:width="32dp"
+                    android:height="32dp"
+                    android:viewportWidth="128"
+                    android:viewportHeight="128">
+
+                    <path
+                        android:fillColor="?colorOnPrimaryVariant"
+                        android:pathData="M51.5,25.5C55.66,25.14 58.83,26.81 61,30.5C68.67,40.17 76.33,49.83 84,59.5C84.78,60.73 85.28,62.06 85.5,63.5C76.59,76.78 66.59,89.28 55.5,101C48.43,101.75 45.93,98.58 48,91.5C56.02,82.31 63.85,72.98 71.5,63.5C64.24,53.98 56.74,44.65 49,35.5C46.71,31.32 47.55,27.98 51.5,25.5Z" />
+
+                </vector>
+
+            </item>
+
+        </layer-list>
+    </item>
+</ripple>
+

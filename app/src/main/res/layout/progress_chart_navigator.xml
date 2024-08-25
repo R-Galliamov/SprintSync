@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space.small"
         android:contentDescription="@string/previous_range"
-        android:src="@drawable/ic_arrow_left_32dp" />
+        android:src="@drawable/bt_previous_selector_32dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -42,6 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space.small"
         android:contentDescription="@string/next_range"
-        android:src="@drawable/ic_arrow_right_32dp" />
+        android:src="@drawable/bt_next_selector_32dp" />
 
 </LinearLayout>
