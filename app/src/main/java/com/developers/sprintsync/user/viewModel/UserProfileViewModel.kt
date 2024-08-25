@@ -3,6 +3,7 @@ package com.developers.sprintsync.user.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.developers.sprintsync.user.model.FormattedDateRange
+import com.developers.sprintsync.user.model.chart.chartData.ChartDisplayData
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartDataLoader
@@ -85,14 +86,15 @@ class UserProfileViewModel
 
         private fun initDisplayedDataListener() {
             CoroutineScope(Dispatchers.IO).launch {
-                chartManager.displayedData.collect { displayedData ->
-                    if (displayedData.isEmpty()) return@collect
+                chartManager.displayData.collect { displayedData ->
+                    if (displayedData == ChartDisplayData.EMPTY) return@collect
                     val referenceTimestamp = chartDataSet.value.referenceTimestamp
                     _dateRange.update {
                         DateRangeFormatter().formatRange(
                             referenceTimestamp,
-                            displayedData.keys.min(),
-                            displayedData.keys.max(),
+                            displayedData.rangePosition,
+                            displayedData.data.keys.min(),
+                            displayedData.data.keys.max(),
                         )
                     }
                 }

@@ -6,9 +6,12 @@ import com.developers.sprintsync.user.model.chart.navigator.RangeLimits
 import com.developers.sprintsync.user.model.chart.navigator.ViewportIndices
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.animation.BarScrollAnimator
 import com.github.mikephil.charting.charts.CombinedChart
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class ChartNavigator(
@@ -36,7 +39,10 @@ class ChartNavigator(
                 }
 
                 is NavigatorState.ViewportActive -> {
-                    NavigatorState.ViewportActive.DataReloaded(rangeLimits, currentState.viewportIndices)
+                    NavigatorState.ViewportActive.DataReloaded(
+                        rangeLimits,
+                        currentState.viewportIndices,
+                    )
                 }
             }
         }
@@ -160,26 +166,29 @@ class ChartNavigator(
         val coercedRangeIndex = rangeIndex.coerceIn(FIRST_INDEX, rangeLimits.maxRangeIndex)
 
         val firstIndexToBeDisplayed = coercedRangeIndex * rangeLimits.chartRange
-        chart.moveViewToX(firstIndexToBeDisplayed - 0.5f) // TODO add entry index converter to x position
-        _state.value =
-            when (state.value) {
-                is NavigatorState.DataLoaded ->
-                    NavigatorState.ViewportActive.InitialDisplay(
-                        rangeLimits,
-                        ViewportIndices(coercedRangeIndex, firstIndexToBeDisplayed),
-                    )
 
-                is NavigatorState.ViewportActive ->
-                    NavigatorState.ViewportActive.Navigating(
-                        rangeLimits,
-                        ViewportIndices(coercedRangeIndex, firstIndexToBeDisplayed),
-                    )
+        CoroutineScope(Dispatchers.Main).launch {
+            chart.moveViewToX(firstIndexToBeDisplayed - 0.5f) // TODO add entry index converter to x position
+            _state.value =
+                when (state.value) {
+                    is NavigatorState.DataLoaded ->
+                        NavigatorState.ViewportActive.InitialDisplay(
+                            rangeLimits,
+                            ViewportIndices(coercedRangeIndex, firstIndexToBeDisplayed),
+                        )
 
-                else -> {
-                    Log.d("My stack: ChartNavigator", "Wrong state: ${state.value}")
-                    return
+                    is NavigatorState.ViewportActive ->
+                        NavigatorState.ViewportActive.Navigating(
+                            rangeLimits,
+                            ViewportIndices(coercedRangeIndex, firstIndexToBeDisplayed),
+                        )
+
+                    else -> {
+                        Log.d("My stack: ChartNavigator", "Wrong state: ${state.value}")
+                        return@launch
+                    }
                 }
-            }
+        }
     }
 
     private fun updateIndicesByShift(

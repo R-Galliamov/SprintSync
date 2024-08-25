@@ -1,5 +1,6 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager
 
+import com.developers.sprintsync.user.model.chart.chartData.ChartDisplayData
 import com.developers.sprintsync.user.model.chart.chartData.DailyValues
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
@@ -7,7 +8,7 @@ import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigatio
 import kotlinx.coroutines.flow.StateFlow
 
 abstract class ChartManager {
-    abstract val displayedData: StateFlow<Map<Int, DailyValues>>
+    abstract val displayData: StateFlow<ChartDisplayData>
 
     abstract val navigator: ChartNavigator
 
