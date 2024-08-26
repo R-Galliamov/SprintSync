@@ -1,6 +1,7 @@
 package com.developers.sprintsync.user.ui.userProfile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +17,11 @@ import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.navigator.RangePosition
 import com.developers.sprintsync.user.model.statistics.GeneralStatistics
 import com.developers.sprintsync.user.model.statistics.WeeklyStatistics
+import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManager
+import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManagerImpl
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
 import com.developers.sprintsync.user.viewModel.UserProfileViewModel
+import com.github.mikephil.charting.charts.CombinedChart
 import kotlinx.coroutines.launch
 
 class UserProfileFragment : Fragment() {
@@ -25,6 +29,9 @@ class UserProfileFragment : Fragment() {
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
     private val viewModel by activityViewModels<UserProfileViewModel>()
+
+    private var _chartManager: ChartManager? = null
+    private val chartManager get() = checkNotNull(_chartManager) { "ChartManager is not initialized" }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,22 +47,48 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.initChartManager(binding.progressChart)
+        Log.d(TAG, "onViewCreated")
         setScroller()
-
+        initChartManager(binding.progressChart)
         initDataRangeListener()
-
         initWeeklyStatisticsListener()
         initGeneralStatisticsListener()
-
         setRangeNavigatingButtons()
+        chartManager.presetChartConfiguration(viewModel.chartConfiguration.value)
+        initChartDataUpdateEvent()
+        initDisplayDataListener()
+    }
+
+    private fun initChartManager(chart: CombinedChart) {
+        _chartManager = ChartManagerImpl(chart)
+    }
+
+    private fun initDisplayDataListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                chartManager.displayData.collect {
+                    viewModel.onDisplayedDataChanged(it)
+                }
+            }
+        }
+    }
+
+    private fun initChartDataUpdateEvent() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.chartDataUpdateEvent.collect { event ->
+                    if (event == null) return@collect
+                    chartManager.displayData(event.metric, event.dailyValues, event.referenceTimestamp)
+                }
+            }
+        }
     }
 
     private fun initWeeklyStatisticsListener() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.weeklyStatistics.collect { weeklyStatistics ->
+                    Log.d(TAG, "WeeklyStatistics updated: $weeklyStatistics")
                     if (weeklyStatistics == WeeklyStatistics.EMPTY) return@collect
                     binding.weeklyStatisticsTable.apply {
                         tvWorkoutsValue.text = weeklyStatistics.workouts
@@ -88,7 +121,7 @@ class UserProfileFragment : Fragment() {
                         tvBestPaceValue.text = generalStatistics.bestPace
                         tvTotalBurnedKcalValue.text = generalStatistics.totalBurnedKcal
                     }
-                    }
+                }
             }
         }
     }
@@ -110,10 +143,10 @@ class UserProfileFragment : Fragment() {
 
     private fun setRangeNavigatingButtons() {
         binding.progressChartNavigator.btPreviousRange.setOnClickListener {
-            viewModel.navigateRange(ChartNavigator.NavigationDirection.PREVIOUS)
+            chartManager.navigateRange(ChartNavigator.NavigationDirection.PREVIOUS)
         }
         binding.progressChartNavigator.btNextRange.setOnClickListener {
-            viewModel.navigateRange(ChartNavigator.NavigationDirection.NEXT)
+            chartManager.navigateRange(ChartNavigator.NavigationDirection.NEXT)
         }
     }
 
@@ -158,7 +191,7 @@ class UserProfileFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.onDestroy()
+        _chartManager = null
         _binding = null
     }
 
@@ -195,6 +228,6 @@ class UserProfileFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "My stack, UserProfileFragment"
+        private const val TAG = "My stack: UserProfileFragment"
     }
 }

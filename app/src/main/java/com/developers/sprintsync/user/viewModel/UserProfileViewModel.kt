@@ -4,40 +4,48 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetTracksFlowUseCase
+import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.user.model.FormattedDateRange
+import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.ChartDisplayData
+import com.developers.sprintsync.user.model.chart.chartData.DailyValues
 import com.developers.sprintsync.user.model.chart.chartData.Metric
+import com.developers.sprintsync.user.model.chart.chartData.WeekDay
 import com.developers.sprintsync.user.model.statistics.GeneralStatistics
 import com.developers.sprintsync.user.model.statistics.WeeklyStatistics
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
-import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManager
-import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManagerImpl
-import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
+import com.developers.sprintsync.user.ui.userProfile.chart.data.preparation.ChartWeeklyDataPreparer
 import com.developers.sprintsync.user.ui.userProfile.util.formatter.DateRangeFormatter
 import com.developers.sprintsync.user.ui.userProfile.util.formatter.GeneralStatisticsFormatter
 import com.developers.sprintsync.user.ui.userProfile.util.formatter.WeeklyStatisticsFormatter
-import com.github.mikephil.charting.charts.CombinedChart
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class ChartDataUpdateEvent(
+    val metric: Metric,
+    val dailyValues: List<DailyValues>,
+    val referenceTimestamp: Long,
+)
+
 @HiltViewModel
 class UserProfileViewModel
     @Inject
     constructor(
-        private val dataLoader: ChartDataLoader,
         private val timeWindowTrackFilter: TimeWindowTrackFilter,
         private val getTracksFlowUseCase: GetTracksFlowUseCase,
+        private val chartDataPreparer: ChartWeeklyDataPreparer,
+        private val goalsRepository: GoalsRepository,
     ) : ViewModel() {
-        private var _chartManager: ChartManager? = null
-        private val chartManager get() = checkNotNull(_chartManager) { "ChartManager is not initialized" }
+        private val _chartDataUpdateEvent = MutableStateFlow<ChartDataUpdateEvent?>(null)
+        val chartDataUpdateEvent get() = _chartDataUpdateEvent
 
-        private val chartDataSet get() = dataLoader.chartDataSet
+        private val goals = goalsRepository.goals
+
+        private val tracksState = MutableStateFlow<List<Track>>(emptyList())
 
         private var _dateRange: MutableStateFlow<FormattedDateRange> = MutableStateFlow(FormattedDateRange.EMPTY)
         val dateRange get() = _dateRange.asStateFlow()
@@ -57,80 +65,87 @@ class UserProfileViewModel
         private var _generalStatistics: MutableStateFlow<GeneralStatistics> = MutableStateFlow(GeneralStatistics.EMPTY)
         val generalStatistics get() = _generalStatistics.asStateFlow()
 
+        private val chartDataSet = MutableStateFlow(ChartDataSet.EMPTY)
+
         init {
-            initTracksFlowListener()
-        }
-
-        private fun initTracksFlowListener() {
-            viewModelScope.launch {
-                getTracksFlowUseCase.tracks.collect { tracks ->
-                    val generalStatistics = generalStatisticsFormatter.formatStatistics(tracks)
-                    _generalStatistics.update { generalStatistics }
-                }
-            }
-        }
-
-        fun initChartManager(chart: CombinedChart) {
-            _chartManager =
-                ChartManagerImpl(chart).apply {
-                    presetChartConfiguration(chartConfiguration.value)
-                }
-            initChartDataSetListener()
             initSelectedMetricListener()
-            initDisplayedDataListener()
-            Log.d("UserProfileViewModel", "ChartManager initialized")
+            initChartDataSetListener()
+            initTracksFlowListener()
         }
 
         fun selectMetric(metric: Metric) {
             _selectedMetric.update { metric }
         }
 
-        fun navigateRange(direction: ChartNavigator.NavigationDirection) = chartManager.navigateRange(direction)
+        fun onDisplayedDataChanged(displayedData: ChartDisplayData) {
+            if (displayedData == ChartDisplayData.EMPTY) return
+            val referenceTimestamp = chartDataSet.value.referenceTimestamp
 
-        fun onDestroy() {
-            _chartManager = null
+            val minIndex = displayedData.data.keys.min()
+            val maxIndex = displayedData.data.keys.max()
+            val filteredTracks =
+                timeWindowTrackFilter.filterTracks(tracksState.value, referenceTimestamp, minIndex, maxIndex)
+            val weeklyStatistics = weeklyStatisticsFormatter.formatWeeklyStatistics(filteredTracks)
+
+            _weeklyStatistics.update {
+                weeklyStatistics
+            }
+
+            _dateRange.update {
+                DateRangeFormatter().formatRange(
+                    referenceTimestamp,
+                    displayedData.rangePosition,
+                    displayedData.data.keys.min(),
+                    displayedData.data.keys.max(),
+                )
+            }
+        }
+
+        private fun initTracksFlowListener() {
+            viewModelScope.launch {
+                getTracksFlowUseCase.tracks.collect { tracks ->
+                    if (tracks.isEmpty()) return@collect
+                    tracksState.update { tracks }
+
+                    val generalStatistics = generalStatisticsFormatter.formatStatistics(tracks)
+                    _generalStatistics.update { generalStatistics }
+
+                    chartDataSet.update {
+                        chartDataPreparer.prepareChartSet(tracks, goals, WeekDay.MONDAY)
+                    }
+                }
+            }
         }
 
         private fun initChartDataSetListener() {
-            CoroutineScope(Dispatchers.IO).launch {
+            viewModelScope.launch {
                 chartDataSet.collect { chartDataSet ->
+                    Log.d(TAG, "ChartDataSet updated: $chartDataSet")
                     if (chartDataSet.data.isEmpty()) return@collect
                     val indexedValues = chartDataSet.data[selectedMetric.value]
                     if (indexedValues.isNullOrEmpty()) return@collect
-                    chartManager.displayData(selectedMetric.value, indexedValues, chartDataSet.referenceTimestamp)
+
+                    _chartDataUpdateEvent.update {
+                        ChartDataUpdateEvent(
+                            selectedMetric.value,
+                            indexedValues,
+                            chartDataSet.referenceTimestamp,
+                        )
+                    }
                 }
             }
         }
 
         private fun initSelectedMetricListener() {
-            CoroutineScope(Dispatchers.IO).launch {
+            viewModelScope.launch {
                 selectedMetric.collect { metric ->
                     val indexedValues = chartDataSet.value.data[metric]
                     if (indexedValues.isNullOrEmpty()) return@collect
-                    chartManager.displayData(selectedMetric.value, indexedValues, chartDataSet.value.referenceTimestamp)
-                }
-            }
-        }
-
-        private fun initDisplayedDataListener() {
-            CoroutineScope(Dispatchers.IO).launch {
-                chartManager.displayData.collect { displayedData ->
-                    if (displayedData == ChartDisplayData.EMPTY) return@collect
-                    val referenceTimestamp = chartDataSet.value.referenceTimestamp
-
-                    val minIndex = displayedData.data.keys.min()
-                    val maxIndex = displayedData.data.keys.max()
-                    val filteredTracks = timeWindowTrackFilter.filterTracks(referenceTimestamp, minIndex, maxIndex)
-                    val weeklyStatistics = weeklyStatisticsFormatter.formatWeeklyStatistics(filteredTracks)
-
-                    _weeklyStatistics.update { weeklyStatistics }
-
-                    _dateRange.update {
-                        DateRangeFormatter().formatRange(
-                            referenceTimestamp,
-                            displayedData.rangePosition,
-                            displayedData.data.keys.min(),
-                            displayedData.data.keys.max(),
+                    _chartDataUpdateEvent.update {
+                        ChartDataUpdateEvent(
+                            selectedMetric.value,
+                            indexedValues,
+                            chartDataSet.value.referenceTimestamp,
                         )
                     }
                 }

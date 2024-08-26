@@ -16,6 +16,8 @@ class ChartValuesCalculator {
 
     fun calculateLastGoal(data: List<DailyValues>): Float = data.last().goal
 
+    fun calculateMinGoal(data: List<DailyValues>): Float = data.minOfOrNull { it.goal } ?: DEFAULT_VALUE
+
     private fun calculateMaxActualValue(data: List<DailyValues>): Float =
         data.filterIsInstance<DailyValues.Present>().maxOfOrNull {
             it.actualValue

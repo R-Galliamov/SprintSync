@@ -1,5 +1,6 @@
 package com.developers.sprintsync.tracking.dataStorage.repository.track.useCase
 
+import android.util.Log
 import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.user.model.chart.chartData.util.time.TimeUtils
 import com.developers.sprintsync.user.model.chart.chartData.util.time.TimestampBuilder
@@ -16,13 +17,19 @@ class FilterTracksUseCase
             referenceTimestamp: Long,
             fromDayIndex: Int,
             toDayIndex: Int,
-        ): Flow<List<Track>> =
-            getTracksFlowUseCase.tracks.map { tracks ->
+        ): Flow<List<Track>> {
+            Log.d("FilterTracksUseCase", "Start filtering tracks called")
+            return getTracksFlowUseCase.tracks.map { tracks ->
+                Log.d("FilterTracksUseCase", "Start filtering tracks")
                 val fromTimestamp = TimeUtils.shiftTimestampByDays(referenceTimestamp, fromDayIndex)
                 val toTimestamp =
-                    TimestampBuilder(referenceTimestamp).startOfDayTimestamp().shiftTimestampByDays(toDayIndex.inc()).build()
+                    TimestampBuilder(referenceTimestamp)
+                        .startOfDayTimestamp()
+                        .shiftTimestampByDays(toDayIndex.inc())
+                        .build()
                 tracks.filter { track ->
                     track.timestamp in fromTimestamp..toTimestamp
                 }
             }
+        }
     }

@@ -4,26 +4,28 @@ import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.user.model.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.WeekDay
+import javax.inject.Inject
 
-// TODO : Sometimes launched before fragment is open
-class ChartWeeklyDataPreparer {
-    private val dailyMetricsAggregator = DailyMetricsAggregator()
-    private val chartPreparationHelper = ChartPreparationHelper()
+class ChartWeeklyDataPreparer
+    @Inject
+    constructor() {
+        private val dailyMetricsAggregator = DailyMetricsAggregator()
+        private val chartPreparationHelper = ChartPreparationHelper()
 
-    fun prepareChartSet(
-        tracks: List<Track>,
-        goals: List<DailyGoal>,
-        startDay: WeekDay,
-    ): ChartDataSet {
-        val goalsProvider = DailyGoalsProvider(goals)
-        val chartDataSetCreator = ChartDataSetCreator(chartPreparationHelper, goalsProvider)
+        fun prepareChartSet(
+            tracks: List<Track>,
+            goals: List<DailyGoal>,
+            startDay: WeekDay,
+        ): ChartDataSet {
+            val goalsProvider = DailyGoalsProvider(goals)
+            val chartDataSetCreator = ChartDataSetCreator(chartPreparationHelper, goalsProvider)
 
-        val firstTimestamp = chartPreparationHelper.findEarliestTimestamp(tracks) ?: return ChartDataSet.EMPTY
-        val firstDataIndex = chartPreparationHelper.calculateWeekDayIndexFromTimestamp(firstTimestamp)
-        val startIndex = startDay.index
-        val preparedIndexedValues = chartPreparationHelper.prepareIndexedValues(firstDataIndex, startIndex, goals)
-        val timestampMetrics = dailyMetricsAggregator.calculateMetricsForEachTrackingDay(tracks)
+            val firstTimestamp = chartPreparationHelper.findEarliestTimestamp(tracks) ?: return ChartDataSet.EMPTY
+            val firstDataIndex = chartPreparationHelper.calculateWeekDayIndexFromTimestamp(firstTimestamp)
+            val startIndex = startDay.index
+            val preparedIndexedValues = chartPreparationHelper.prepareIndexedValues(firstDataIndex, startIndex, goals)
+            val timestampMetrics = dailyMetricsAggregator.calculateMetricsForEachTrackingDay(tracks)
 
-        return chartDataSetCreator.createDataSet(timestampMetrics, preparedIndexedValues)
+            return chartDataSetCreator.createDataSet(timestampMetrics, preparedIndexedValues)
+        }
     }
-}
