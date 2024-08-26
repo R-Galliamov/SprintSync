@@ -16,15 +16,9 @@ class DurationFormatter {
 
         private val defaultLocale by lazy { Locale.getDefault() }
 
-        fun formatToHhMm(
-            durationMillis: Long,
-            locale: Locale = defaultLocale,
-        ): String = formatDuration(durationMillis, TIME_FORMAT_HH_MM, locale)
+        fun formatToHhMm(durationMillis: Long): String = formatDuration(durationMillis, TIME_FORMAT_HH_MM)
 
-        fun formatToHhMmSs(
-            durationMillis: Long,
-            locale: Locale = defaultLocale,
-        ): String = formatDuration(durationMillis, TIME_FORMAT_HH_MM_SS, locale)
+        fun formatToHhMmSs(durationMillis: Long): String = formatDuration(durationMillis, TIME_FORMAT_HH_MM_SS)
 
         fun formatToHhMmAndSs(
             durationMillis: Long,
@@ -45,8 +39,8 @@ class DurationFormatter {
         private fun formatDuration(
             durationMillis: Long,
             format: String,
-            locale: Locale = Locale.getDefault(),
         ): String {
+            val locale: Locale = Locale.getDefault()
             val hours = TimeUnit.MILLISECONDS.toHours(durationMillis)
             val minutes =
                 TimeUnit.MILLISECONDS.toMinutes(durationMillis) % HOURS_TO_MINUTES

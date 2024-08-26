@@ -1,5 +1,7 @@
 package com.developers.sprintsync.user.model.chart.chartData
 
+import java.util.Calendar
+
 enum class WeekDay(
     val index: Int,
 ) {
@@ -10,4 +12,16 @@ enum class WeekDay(
     FRIDAY(4),
     SATURDAY(5),
     SUNDAY(6),
+    ;
+
+    fun toCalendarWeekDay(): Int =
+        when (this) {
+            MONDAY -> Calendar.MONDAY
+            TUESDAY -> Calendar.TUESDAY
+            WEDNESDAY -> Calendar.WEDNESDAY
+            THURSDAY -> Calendar.THURSDAY
+            FRIDAY -> Calendar.FRIDAY
+            SATURDAY -> Calendar.SATURDAY
+            SUNDAY -> Calendar.SUNDAY
+        }
 }

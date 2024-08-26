@@ -1,10 +1,9 @@
 package com.developers.sprintsync.user.ui.userProfile.util.formatter
 
 import com.developers.sprintsync.user.model.FormattedDateRange
+import com.developers.sprintsync.user.model.chart.chartData.util.time.TimeUtils
 import com.developers.sprintsync.user.model.chart.navigator.RangePosition
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 import java.util.Locale
 
 class DateRangeFormatter {
@@ -48,23 +47,16 @@ class DateRangeFormatter {
     ): Pair<String, String> {
         val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
         val timestampFirst =
-            calculateTimestamp(referenceTimestamp, firstDayIndex)
+            shiftTimestampByDays(referenceTimestamp, firstDayIndex)
         val timestampLast =
-            calculateTimestamp(referenceTimestamp, lastDayIndex)
+            shiftTimestampByDays(referenceTimestamp, lastDayIndex)
         return Pair(dateFormat.format(timestampFirst), dateFormat.format(timestampLast))
     }
 
-    private fun calculateTimestamp(
+    private fun shiftTimestampByDays(
         referenceTimestamp: Long,
         dayIndex: Int,
-    ): Long {
-        val timestampLast =
-            Instant
-                .ofEpochMilli(referenceTimestamp)
-                .plus(dayIndex.toLong(), ChronoUnit.DAYS)
-                .toEpochMilli()
-        return timestampLast
-    }
+    ): Long = TimeUtils.shiftTimestampByDays(referenceTimestamp, dayIndex)
 
     companion object {
         private const val DAY_MONT_RANGE_UNIT_PATTERN = "dd MMM"

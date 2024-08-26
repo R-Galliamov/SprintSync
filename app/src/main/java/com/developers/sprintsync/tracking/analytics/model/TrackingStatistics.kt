@@ -9,7 +9,7 @@ data class TrackingStatistics(
     val maxDuration: Long,
 ) {
     companion object {
-        val EMPTY_TRACKING_STATS =
+        val EMPTY =
             TrackingStatistics(
                 runs = 0,
                 totalDistance = 0,

@@ -54,5 +54,8 @@
     <string name="total_burned_kcal">Total burned kcal</string>
     <string name="total_workout_days">Total workout days</string>
     <string name="max_workout_streak">Max workout streak</string>
+    <string name="best_distance">Longest distance</string>
+    <string name="workout_days">Workout days</string>
+    <string name="total_workouts">Total workouts</string>
 
 </resources>

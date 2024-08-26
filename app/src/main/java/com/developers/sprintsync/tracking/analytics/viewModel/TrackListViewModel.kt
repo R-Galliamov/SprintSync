@@ -2,7 +2,7 @@ package com.developers.sprintsync.tracking.analytics.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetAllTracksUseCase
+import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetTracksFlowUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -10,7 +10,7 @@ import javax.inject.Inject
 class TrackListViewModel
     @Inject
     constructor(
-        getAllTracksUseCase: GetAllTracksUseCase,
+        getTracksFlowUseCase: GetTracksFlowUseCase,
     ) : ViewModel() {
-        val tracks = getAllTracksUseCase.tracks.asLiveData()
+        val tracks = getTracksFlowUseCase.tracks.asLiveData()
     }

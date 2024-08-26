@@ -1,7 +1,7 @@
 package com.developers.sprintsync.tracking.dataStorage.di.repository
 
 import com.developers.sprintsync.tracking.dataStorage.repository.track.TrackRepository
-import com.developers.sprintsync.tracking.dataStorage.repository.track.TrackRepositoryImpl
+import com.developers.sprintsync.tracking.dataStorage.repository.track.TestRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ import javax.inject.Singleton
 abstract class TrackRepositoryModule {
     @Binds
     @Singleton
-    abstract fun bindTrackRepository(impl: TrackRepositoryImpl): TrackRepository
+    abstract fun bindTrackRepository(impl: TestRepository): TrackRepository
 }

@@ -1,7 +1,6 @@
 package com.developers.sprintsync.user.ui.userProfile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,8 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUserProfileBinding
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.navigator.RangePosition
+import com.developers.sprintsync.user.model.statistics.GeneralStatistics
+import com.developers.sprintsync.user.model.statistics.WeeklyStatistics
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
 import com.developers.sprintsync.user.viewModel.UserProfileViewModel
 import kotlinx.coroutines.launch
@@ -45,7 +46,51 @@ class UserProfileFragment : Fragment() {
 
         initDataRangeListener()
 
+        initWeeklyStatisticsListener()
+        initGeneralStatisticsListener()
+
         setRangeNavigatingButtons()
+    }
+
+    private fun initWeeklyStatisticsListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.weeklyStatistics.collect { weeklyStatistics ->
+                    if (weeklyStatistics == WeeklyStatistics.EMPTY) return@collect
+                    binding.weeklyStatisticsTable.apply {
+                        tvWorkoutsValue.text = weeklyStatistics.workouts
+                        tvWorkoutDaysValue.text = weeklyStatistics.workoutDays
+                        tvTotalDistanceValue.text = weeklyStatistics.totalDistance
+                        tvTotalDurationValue.text = weeklyStatistics.totalDuration
+                        tvBestDistanceValue.text = weeklyStatistics.bestDistance
+                        tvBestDurationValue.text = weeklyStatistics.bestDuration
+                        tvAvgPaceValue.text = weeklyStatistics.avgPace
+                        tvBestPaceValue.text = weeklyStatistics.bestPace
+                        tvTotalBurnedKcalValue.text = weeklyStatistics.totalCalories
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initGeneralStatisticsListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.generalStatistics.collect { generalStatistics ->
+                    if (generalStatistics == GeneralStatistics.EMPTY) return@collect
+                    binding.generalStatisticsTable.apply {
+                        tvTotalWorkoutsValue.text = generalStatistics.totalWorkoutDays
+                        tvMaxWorkoutStreakValue.text = generalStatistics.maxWorkoutStreak
+                        tvTotalWorkoutDaysValue.text = generalStatistics.totalWorkoutDays
+                        tvTotalDistanceValue.text = generalStatistics.totalDistance
+                        tvTotalDurationValue.text = generalStatistics.totalDuration
+                        tvAvgPaceValue.text = generalStatistics.avgPace
+                        tvBestPaceValue.text = generalStatistics.bestPace
+                        tvTotalBurnedKcalValue.text = generalStatistics.totalBurnedKcal
+                    }
+                    }
+            }
+        }
     }
 
     private fun initDataRangeListener() {
@@ -56,7 +101,6 @@ class UserProfileFragment : Fragment() {
                         // TODO : doesn't work when no last data in range
                         tvDayMonthRange.text = dateRange.dayMonthRange
                         tvYearRange.text = dateRange.yearsRange
-                        Log.d(TAG, "RangePosition ${dateRange.position}")
                     }
                     updateNavigatingButtonsUI(dateRange.position)
                 }

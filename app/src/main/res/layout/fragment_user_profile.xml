@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space.regular"
-        android:layout_marginTop="@dimen/space.regular"
         android:layout_marginEnd="@dimen/space.regular"
         android:gravity="center_horizontal"
         android:orientation="vertical"

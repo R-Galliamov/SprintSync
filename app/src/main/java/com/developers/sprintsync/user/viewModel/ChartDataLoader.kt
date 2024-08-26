@@ -1,9 +1,10 @@
-package com.developers.sprintsync.user.ui.userProfile.chart.data
+package com.developers.sprintsync.user.viewModel
 
-import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetAllTracksUseCase
+import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetTracksFlowUseCase
 import com.developers.sprintsync.user.model.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.WeekDay
+import com.developers.sprintsync.tracking.dataStorage.repository.track.TestRepository
 import com.developers.sprintsync.user.ui.userProfile.chart.data.preparation.ChartWeeklyDataPreparer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,7 @@ import javax.inject.Inject
 class ChartDataLoader
     @Inject
     constructor(
-        private val getAllTracksUseCase: GetAllTracksUseCase,
+        private val getTracksFlowUseCase: GetTracksFlowUseCase,
     ) {
         private var _chartDataSet = MutableStateFlow(ChartDataSet.EMPTY)
         val chartDataSet get() = _chartDataSet
@@ -25,8 +26,8 @@ class ChartDataLoader
         }
 
         private fun initCollector() {
-            val tracks = TrackTestContainer().tracks
-            val goals: List<DailyGoal> = TrackTestContainer().goals
+            val tracks = TestRepository().tracks
+            val goals: List<DailyGoal> = TestRepository().goals
 
             CoroutineScope(Dispatchers.IO).launch {
                 tracks.collect { trackList ->

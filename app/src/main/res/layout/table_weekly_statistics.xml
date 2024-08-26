@@ -8,6 +8,44 @@
     <TableRow>
 
         <TextView
+            android:id="@+id/tvWorkouts"
+            style="@style/RegularText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/workouts" />
+
+        <TextView
+            android:id="@+id/tvWorkoutsValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="8" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/tvWorkoutDays"
+            style="@style/RegularText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/workout_days" />
+
+        <TextView
+            android:id="@+id/tvWorkoutDaysValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="5/7" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
             android:id="@+id/tvTotalDistance"
             style="@style/RegularText"
             android:layout_width="wrap_content"
@@ -41,6 +79,44 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             tools:text="12:13:14" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/tvBestDistance"
+            style="@style/RegularText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/best_distance" />
+
+        <TextView
+            android:id="@+id/tvBestDistanceValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="2.33 km" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/tvBestDuration"
+            style="@style/RegularText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/best_distance" />
+
+        <TextView
+            android:id="@+id/tvBestDurationValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            tools:text="00:12:13" />
     </TableRow>
 
     <TableRow>
@@ -99,4 +175,6 @@
             android:gravity="end"
             tools:text="32000" />
     </TableRow>
+
+
 </TableLayout>

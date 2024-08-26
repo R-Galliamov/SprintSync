@@ -19,7 +19,6 @@ class SelectiveYAxisValueFormatterImpl : SelectiveYAxisValueFormatter() {
     }
 
     override fun getFormattedValue(value: Float): String {
-        Log.d("My stack: SelectiveYAxisValueFormatterImpl", "getFormattedValue: $value")
         return if (value == selectedValue) {
             when (metric) {
                 Metric.DISTANCE -> DistanceFormatter.metersToPresentableKilometers(value.toInt(), true)

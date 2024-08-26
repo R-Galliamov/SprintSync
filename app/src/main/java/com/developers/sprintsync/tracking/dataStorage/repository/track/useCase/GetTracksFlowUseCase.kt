@@ -5,7 +5,7 @@ import com.developers.sprintsync.tracking.session.model.track.Track
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAllTracksUseCase
+class GetTracksFlowUseCase
     @Inject
     constructor(
         repository: TrackRepository,
