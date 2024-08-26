@@ -54,7 +54,7 @@ class ChartDataConfigurationFactory(
         )
 
     private fun calculateMissingBarHeight(dailyValues: List<DailyValues>): Float =
-        calculator.calculateMaxOfGoalAndActualValue(dailyValues) * MISSING_BAR_MULTIPLIER
+        calculator.calculateMinGoal(dailyValues) * MISSING_BAR_MULTIPLIER
 
     companion object {
         private const val BAR_WIDTH = 0.5f

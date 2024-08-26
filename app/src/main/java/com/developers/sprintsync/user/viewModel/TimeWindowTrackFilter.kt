@@ -1,25 +1,39 @@
 package com.developers.sprintsync.user.viewModel
 
-import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.FilterTracksUseCase
 import com.developers.sprintsync.tracking.session.model.track.Track
+import com.developers.sprintsync.user.model.chart.chartData.util.time.TimeUtils
+import com.developers.sprintsync.user.model.chart.chartData.util.time.TimestampBuilder
 import javax.inject.Inject
 
 class TimeWindowTrackFilter
     @Inject
-    constructor(
-        private val filterTracksUseCase: FilterTracksUseCase,
-    ) {
-        suspend fun filterTracks(
+    constructor() {
+        fun filterTracks(
+            tracks: List<Track>,
             referenceTimestamp: Long,
             fromDayIndex: Int,
             toDayIndex: Int,
         ): List<Track> {
-            val filteredTracks = mutableListOf<Track>()
-            filterTracksUseCase(referenceTimestamp, fromDayIndex, toDayIndex).collect { tracks ->
-                filteredTracks.addAll(tracks)
+            val fromTimestamp = calculateFromTimestamp(referenceTimestamp, fromDayIndex)
+            val toTimestamp = calculateToTimestamp(referenceTimestamp, toDayIndex)
+            return tracks.filter { track ->
+                track.timestamp in fromTimestamp..toTimestamp
             }
-            return filteredTracks
         }
+
+        private fun calculateFromTimestamp(
+            referenceTimestamp: Long,
+            fromDayIndex: Int,
+        ): Long = TimeUtils.shiftTimestampByDays(referenceTimestamp, fromDayIndex)
+
+        private fun calculateToTimestamp(
+            referenceTimestamp: Long,
+            toDayIndex: Int,
+        ): Long =
+            TimestampBuilder(referenceTimestamp)
+                .startOfDayTimestamp()
+                .shiftTimestampByDays(toDayIndex.inc())
+                .build()
 
         companion object {
             private const val TAG = "My Stack: WeeklyStatisticsLoader"

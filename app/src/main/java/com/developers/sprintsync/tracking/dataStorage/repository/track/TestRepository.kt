@@ -3,10 +3,18 @@ package com.developers.sprintsync.tracking.dataStorage.repository.track
 import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.user.model.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.Metric
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.update
 import java.util.Calendar
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class TestRepository
     @Inject
     constructor() : TrackRepository {
@@ -55,26 +63,20 @@ class TestRepository
                 Track(6, mondayTimestamp3, 3600000, 1000, 5.0f, 4.5f, 300, listOf(), null),
             )
 
-        val goals =
-            listOf(
-                DailyGoal(mondayTimestamp1, Metric.DISTANCE, 1000f),
-                DailyGoal(mondayTimestamp1 + 1, Metric.DISTANCE, 2000f),
-                DailyGoal(wendsdayTimestamp1, Metric.DISTANCE, 2000f),
-                DailyGoal(mondayTimestamp2, Metric.DISTANCE, 3000f),
-                DailyGoal(mondayTimestamp3, Metric.DISTANCE, 4000f),
-            )
-
-        override val tracks = flowOf(tracklist)
+        private val _tracks = MutableStateFlow(tracklist)
+        override val tracks: Flow<List<Track>> = _tracks.asStateFlow()
 
         override suspend fun saveTrack(track: Track) {
-            TODO("Not yet implemented")
+            _tracks.update {
+                it + track
+            }
         }
 
-        override fun getTrackById(id: Int): Track {
-            TODO("Not yet implemented")
-        }
+        override fun getTrackById(id: Int): Track = tracklist.first { it.id == id }
 
         override suspend fun deleteTrackById(id: Int) {
-            TODO("Not yet implemented")
+            _tracks.update { track ->
+                track.filter { it.id != id }
+            }
         }
     }
