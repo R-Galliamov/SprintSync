@@ -31,8 +31,8 @@ class ChartAxisConfigurator(
     }
 
     fun configureXAxisLimits() {
-        xAxis.axisMinimum = chart.data.xMin - X_AXIS_OFFSET
-        xAxis.axisMaximum = chart.data.xMax + X_AXIS_OFFSET
+      xAxis.axisMinimum = chart.data.xMin - X_AXIS_OFFSET
+      xAxis.axisMaximum = chart.data.xMax + X_AXIS_OFFSET
     }
 
     fun styleXAxisLabels(styleResId: Int) {

@@ -20,6 +20,8 @@ class ChartConfigurator(
 
     private val colors by lazy { AppThemeProvider(chart.context).Color() }
 
+    private var configuration: ChartConfiguration? = null
+
     init {
         configureChartDescription()
         axisConfigurator.styleXAxisLabels(R.style.ChartLabel_xAxis)
@@ -28,6 +30,7 @@ class ChartConfigurator(
     }
 
     fun applyConfiguration(configToBeApplied: ChartConfiguration) {
+        configuration = configToBeApplied
         configToBeApplied.let {
             axisConfigurator.configureXAxisLimits()
             axisConfigurator.setXValueFormatter(it.xValueFormatter)
@@ -59,6 +62,10 @@ class ChartConfigurator(
     fun refreshChart() {
         chart.notifyDataSetChanged()
         chart.invalidate()
+        axisConfigurator.configureXAxisLimits()
+        configuration?.let {
+            configureVisibleRange(it.visibleXRange.toFloat())
+        }
     }
 
     private fun configureInteraction(onGestureListener: OnChartGestureListener? = null) =

@@ -46,8 +46,10 @@ class Animator {
                         }
 
                         override fun onAnimationEnd(p0: Animator) {
-                            animationEndListener?.invoke()
                             // Log.d(TAG, "onAnimationEnd")
+                            animator.cancel()
+                            animationUpdateListener(targetValue)
+                            animationEndListener?.invoke()
                         }
 
                         override fun onAnimationCancel(p0: Animator) {

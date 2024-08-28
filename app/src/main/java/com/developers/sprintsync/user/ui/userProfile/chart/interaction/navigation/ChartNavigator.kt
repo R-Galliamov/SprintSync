@@ -25,7 +25,7 @@ class ChartNavigator(
     // Must be called when chart data is loaded
     fun invalidate() {
         val range = chart.visibleXRange.roundToInt()
-        val maxRangeIndex = (chart.data.maxEntryCountSet.entryCount / range) - INDEX_OFFSET
+        val maxRangeIndex = calculateMaxRangeIndex(range)
         val rangeLimits = RangeLimits(range, maxRangeIndex)
         _state.update {
             when (val currentState = state.value) {
@@ -169,7 +169,7 @@ class ChartNavigator(
 
         CoroutineScope(Dispatchers.Main).launch {
             chart.moveViewToX(firstIndexToBeDisplayed - 0.5f) // TODO add entry index converter to x position
-            _state.value =
+            _state.update {
                 when (state.value) {
                     is NavigatorState.DataLoaded ->
                         NavigatorState.ViewportActive.InitialDisplay(
@@ -188,6 +188,7 @@ class ChartNavigator(
                         return@launch
                     }
                 }
+            }
         }
     }
 
@@ -211,6 +212,12 @@ class ChartNavigator(
                 rangeLimits,
                 ViewportIndices(coercedRangeIndex, coercedRangeIndex * range),
             )
+    }
+
+    private fun calculateMaxRangeIndex(range: Int): Int {
+        Log.d(TAG, "calculateMaxRangeIndex: state = ${state.value}")
+        val entryCount = chart.data.maxEntryCountSet.entryCount
+        return (entryCount / range) - INDEX_OFFSET
     }
 
     enum class NavigationDirection {

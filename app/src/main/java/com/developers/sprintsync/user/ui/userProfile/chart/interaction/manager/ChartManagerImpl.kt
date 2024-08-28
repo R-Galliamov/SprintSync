@@ -66,8 +66,8 @@ class ChartManagerImpl(
         cancelNavigatorStateScope()
         chart.post {
             chart.data = chartData
-            _navigator ?: initNavigator(chart)
 
+            _navigator ?: initNavigator(chart) //TODO sometimes it doesn't work
             navigatorStateScope ?: initNavigatorStateListener(metric, navigator)
             chartConfigurationType?.let {
                 val config =
@@ -80,7 +80,9 @@ class ChartManagerImpl(
                 resetConfig()
             }
             configurator.refreshChart()
-            navigator.invalidate()
+            chart.post {
+                navigator.invalidate()
+            }
         }
     }
 
@@ -149,12 +151,12 @@ class ChartManagerImpl(
                                 Log.d(TAG, "NavigatorState.Navigating")
                                 scaleUpMaximumAnimated(displayedDataList) {
                                     updateYAxisLabel(metric, displayedDataList)
-                                    configurator.refreshChart()
                                 }
                             }
 
                             is NavigatorState.ViewportActive.DataReloaded -> {
                                 Log.d(TAG, "NavigatorState.DataReloaded")
+                                navigator.displayRange(Int.MAX_VALUE)
                                 navigator.commitDataReload()
                                 /*
                                 scaleUpMaximumAnimated(displayedDataList) {
@@ -215,7 +217,6 @@ class ChartManagerImpl(
         displayedData: List<DailyValues>,
         onScalingEnd: () -> Unit,
     ) {
-        Log.d("ChartManagerImpl", "Chart maximum scaled up animated")
         val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
         configurator.scaleUpMaximumAnimated(maxVisibleDataValue) {
             onScalingEnd()
