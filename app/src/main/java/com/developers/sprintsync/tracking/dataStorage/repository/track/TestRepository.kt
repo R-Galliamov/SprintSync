@@ -1,14 +1,9 @@
 package com.developers.sprintsync.tracking.dataStorage.repository.track
 
 import com.developers.sprintsync.tracking.session.model.track.Track
-import com.developers.sprintsync.user.model.DailyGoal
-import com.developers.sprintsync.user.model.chart.chartData.Metric
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import java.util.Calendar
 import javax.inject.Inject
@@ -25,11 +20,39 @@ class TestRepository
                     set(2024, Calendar.AUGUST, 5) // Assume this is a Monday
                 }.timeInMillis
 
-        val wendsdayTimestamp1 =
+        val tuesdayTimestamp =
+            Calendar
+                .getInstance()
+                .apply {
+                    set(2024, Calendar.AUGUST, 6)
+                }.timeInMillis
+
+        val wednesdayTimestamp1 =
             Calendar
                 .getInstance()
                 .apply {
                     set(2024, Calendar.AUGUST, 7)
+                }.timeInMillis
+
+        val thursdayTimestamp1 =
+            Calendar
+                .getInstance()
+                .apply {
+                    set(2024, Calendar.AUGUST, 8)
+                }.timeInMillis
+
+        val fridayTimestamp1 =
+            Calendar
+                .getInstance()
+                .apply {
+                    set(2024, Calendar.AUGUST, 9)
+                }.timeInMillis
+
+        val saturdayTimestamp1 =
+            Calendar
+                .getInstance()
+                .apply {
+                    set(2024, Calendar.AUGUST, 10)
                 }.timeInMillis
 
         val sundayTimestamp1 =
@@ -55,12 +78,16 @@ class TestRepository
 
         val tracklist =
             listOf(
-                Track(1, mondayTimestamp1, 3600000, 1000, 5.0f, 4.5f, 300, listOf(), null),
-                Track(2, mondayTimestamp1, 3600000, 1550, 5.0f, 4.5f, 300, listOf(), null),
-                Track(3, wendsdayTimestamp1, 3600000, 1000, 5.0f, 4.5f, 300, listOf(), null),
-                Track(4, sundayTimestamp1, 3600000, 1000, 5.0f, 4.5f, 300, listOf(), null),
-                Track(5, mondayTimestamp2, 3600000, 1000, 5.0f, 4.5f, 300, listOf(), null),
-                Track(6, mondayTimestamp3, 3600000, 1000, 5.0f, 4.5f, 300, listOf(), null),
+                Track(1, mondayTimestamp1, 3600000, 1000, 5.0f, 4.5f, 30000, listOf(), null),
+                Track(2, mondayTimestamp1, 3600000, 1550, 5.0f, 4.5f, 30000, listOf(), null),
+                //Track(2, tuesdayTimestamp, 3600000, 1550, 5.0f, 4.5f, 300, listOf(), null),
+                Track(3, wednesdayTimestamp1, 3600000, 1000, 5.0f, 4.5f, 30000, listOf(), null),
+                Track(3, thursdayTimestamp1, 3600000, 1000, 5.0f, 4.5f, 30000, listOf(), null),
+                Track(3, fridayTimestamp1, 3600000, 1000, 5.0f, 4.5f, 30000, listOf(), null),
+                Track(3, saturdayTimestamp1, 3600000, 1000, 5.0f, 4.5f, 30000, listOf(), null),
+                Track(4, sundayTimestamp1, 3600000, 1000, 5.0f, 4.5f, 30000, listOf(), null),
+                Track(5, mondayTimestamp2, 3600000, 1000, 5.0f, 4.5f, 30000, listOf(), null),
+                // Track(6, mondayTimestamp3, 3600000, 1000, 5.0f, 4.5f, 300, listOf(), null),
             )
 
         private val _tracks = MutableStateFlow(tracklist)

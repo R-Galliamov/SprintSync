@@ -116,7 +116,7 @@ class UserProfileFragment : Fragment() {
                 viewModel.generalStatistics.collect { generalStatistics ->
                     if (generalStatistics == GeneralStatistics.EMPTY) return@collect
                     binding.generalStatisticsTable.apply {
-                        tvTotalWorkoutsValue.text = generalStatistics.totalWorkoutDays
+                        tvTotalWorkoutsValue.text = generalStatistics.totalWorkouts
                         tvMaxWorkoutStreakValue.text = generalStatistics.maxWorkoutStreak
                         tvTotalWorkoutDaysValue.text = generalStatistics.totalWorkoutDays
                         tvTotalDistanceValue.text = generalStatistics.totalDistance
@@ -202,11 +202,17 @@ class UserProfileFragment : Fragment() {
     private fun setScroller() {
         binding.chartTabsScroller.chartTabDistance.isSelected = true
 
-        val tabs =
-            listOf(
-                binding.chartTabsScroller.chartTabDistance to Metric.DISTANCE,
-                binding.chartTabsScroller.chartTabDuration to Metric.DURATION,
-            )
+        val tabs: MutableList<Pair<View, Metric>> = mutableListOf()
+
+        Metric.entries.forEach { metric ->
+            with(binding.chartTabsScroller) {
+                when (metric) {
+                    Metric.DISTANCE -> tabs.add(chartTabDistance to Metric.DISTANCE)
+                    Metric.DURATION -> tabs.add(chartTabDuration to Metric.DURATION)
+                    Metric.CALORIES -> tabs.add(chartTabCalories to Metric.CALORIES)
+                }
+            }
+        }
 
         tabs.forEach { (tab, metric) ->
             tab.setOnClickListener {

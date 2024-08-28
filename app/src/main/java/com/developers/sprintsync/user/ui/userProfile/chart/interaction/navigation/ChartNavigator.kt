@@ -200,6 +200,7 @@ class ChartNavigator(
 
         val range = rangeLimits.chartRange
         val maxRangeIndex = rangeLimits.maxRangeIndex
+        if (maxRangeIndex < FIRST_INDEX) return
 
         val currentRangeIndex = indices.displayedRangeIndex
 

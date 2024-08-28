@@ -9,9 +9,7 @@ import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.user.model.statistics.WeeklyStatistics
 
 class WeeklyStatisticsFormatter {
-    fun formatWeeklyStatistics(
-        tracks: List<Track>,
-    ): WeeklyStatistics {
+    fun formatWeeklyStatistics(tracks: List<Track>): WeeklyStatistics {
         if (tracks.isEmpty()) return WeeklyStatistics.EMPTY
         val calculator = TrackStatisticsCalculator(tracks)
 

@@ -8,6 +8,7 @@ class TrackStatisticsCalculator(
 ) {
     val numberOfWorkouts = tracks.size
     val workoutDays = calculateWorkoutDays(tracks)
+    val maxWorkoutStreak = calculateWorkoutStreak(tracks)
     val totalDistanceMeters = tracks.sumOf { it.distanceMeters }
     val totalDurationMillis = tracks.sumOf { it.durationMillis }
     val longestDistanceMeters = tracks.maxOf { it.distanceMeters }
@@ -17,4 +18,17 @@ class TrackStatisticsCalculator(
     val totalCaloriesBurned = tracks.sumOf { it.calories }
 
     private fun calculateWorkoutDays(tracks: List<Track>): Int = tracks.map { TimeUtils.startOfDayTimestamp(it.timestamp) }.distinct().size
+
+    private fun calculateWorkoutStreak(tracks: List<Track>): Int {
+        val workoutDaysTimestamps = tracks.map { TimeUtils.startOfDayTimestamp(it.timestamp) }.distinct().sorted()
+
+        var nextDayTimestamp = TimeUtils.shiftTimestampByDays(workoutDaysTimestamps.first(), 1)
+        var maxStreak = 1
+        workoutDaysTimestamps.forEach {
+            if (it == nextDayTimestamp) maxStreak++
+            nextDayTimestamp = TimeUtils.shiftTimestampByDays(it, 1)
+        }
+
+        return maxStreak
+    }
 }

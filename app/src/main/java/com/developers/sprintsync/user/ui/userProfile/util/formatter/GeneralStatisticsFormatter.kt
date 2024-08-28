@@ -13,7 +13,8 @@ class GeneralStatisticsFormatter {
         if (tracks.isEmpty()) return GeneralStatistics.EMPTY
         val calculator = TrackStatisticsCalculator(tracks)
 
-        val maxWorkoutStreak = calculator.numberOfWorkouts
+        val totalWorkouts = calculator.numberOfWorkouts
+        val maxWorkoutStreak = calculator.maxWorkoutStreak
         val totalWorkoutDays = calculator.workoutDays
         val totalDistance = calculator.totalDistanceMeters
         val totalDuration = calculator.totalDurationMillis
@@ -22,6 +23,7 @@ class GeneralStatisticsFormatter {
         val totalCalories = calculator.totalCaloriesBurned
 
         return GeneralStatistics(
+            totalWorkouts = totalWorkouts.toString(),
             maxWorkoutStreak = maxWorkoutStreak.toString(),
             totalWorkoutDays = totalWorkoutDays.toString(),
             totalDistance = DistanceFormatter.metersToPresentableKilometers(totalDistance, true),

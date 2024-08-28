@@ -8,7 +8,9 @@ import com.developers.sprintsync.user.model.chart.chartData.DailyValues
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.user.model.chart.configuration.LineConfiguration
+import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.entries.CaloriesValueFormatter
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.entries.DistanceValueFormatter
+import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.entries.DurationValueFormatter
 import com.developers.sprintsync.user.ui.userProfile.chart.data.ChartValuesCalculator
 import com.github.mikephil.charting.data.LineDataSet
 
@@ -39,7 +41,8 @@ class ChartDataConfigurationFactory(
             valueFormatter =
                 when (metric) {
                     Metric.DISTANCE -> DistanceValueFormatter()
-                    Metric.DURATION -> null
+                    Metric.DURATION -> DurationValueFormatter()
+                    Metric.CALORIES -> CaloriesValueFormatter()
                 },
         )
 

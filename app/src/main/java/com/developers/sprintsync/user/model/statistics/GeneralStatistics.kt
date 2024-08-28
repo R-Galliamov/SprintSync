@@ -1,6 +1,7 @@
 package com.developers.sprintsync.user.model.statistics
 
 data class GeneralStatistics(
+    val totalWorkouts: String,
     val maxWorkoutStreak: String,
     val totalWorkoutDays: String,
     val totalDistance: String,
@@ -12,6 +13,7 @@ data class GeneralStatistics(
     companion object {
         val EMPTY =
             GeneralStatistics(
+                totalWorkouts = "",
                 maxWorkoutStreak = "",
                 totalWorkoutDays = "",
                 totalDistance = "",

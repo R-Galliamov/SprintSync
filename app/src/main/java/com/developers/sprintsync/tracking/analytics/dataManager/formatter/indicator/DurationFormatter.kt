@@ -11,10 +11,20 @@ class DurationFormatter {
         private const val TIME_FORMAT_HH_MM = "%02d:%02d"
         private const val TIME_FORMAT_SS = ":%02d"
 
+        private const val TIME_FORMAT_MIN = "%1\$d min"
+
         private const val HOURS_TO_MINUTES = 60
         private const val MINUTES_TO_SECONDS = 60
 
         private val defaultLocale by lazy { Locale.getDefault() }
+
+        fun formatToMm(
+            durationMillis: Long,
+            showUnits: Boolean = false,
+        ): String {
+            val minutes = TimeUnit.MILLISECONDS.toMinutes(durationMillis)
+            return if (showUnits) TIME_FORMAT_MIN.format(minutes) else minutes.toString()
+        }
 
         fun formatToHhMm(durationMillis: Long): String = formatDuration(durationMillis, TIME_FORMAT_HH_MM)
 

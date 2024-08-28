@@ -14,7 +14,7 @@ class GoalsRepository
             listOf(
                 DailyGoal(testRepository.mondayTimestamp1, Metric.DISTANCE, 1000f),
                 DailyGoal(testRepository.mondayTimestamp1 + 1, Metric.DISTANCE, 2000f),
-                DailyGoal(testRepository.wendsdayTimestamp1, Metric.DISTANCE, 2000f),
+                DailyGoal(testRepository.wednesdayTimestamp1, Metric.DISTANCE, 2000f),
                 DailyGoal(testRepository.mondayTimestamp2, Metric.DISTANCE, 3000f),
                 DailyGoal(testRepository.mondayTimestamp3, Metric.DISTANCE, 4000f),
             )
