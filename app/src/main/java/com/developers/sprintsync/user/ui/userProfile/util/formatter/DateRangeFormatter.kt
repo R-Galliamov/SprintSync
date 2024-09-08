@@ -1,6 +1,6 @@
 package com.developers.sprintsync.user.ui.userProfile.util.formatter
 
-import com.developers.sprintsync.user.model.FormattedDateRange
+import com.developers.sprintsync.user.model.ui.FormattedDateRange
 import com.developers.sprintsync.user.model.chart.chartData.util.time.TimeUtils
 import com.developers.sprintsync.user.model.chart.navigator.RangePosition
 import java.text.SimpleDateFormat

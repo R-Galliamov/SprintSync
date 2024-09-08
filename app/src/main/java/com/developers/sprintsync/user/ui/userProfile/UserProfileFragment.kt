@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -13,13 +12,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUserProfileBinding
-import com.developers.sprintsync.user.model.chart.chartData.Metric
-import com.developers.sprintsync.user.model.chart.navigator.RangePosition
+import com.developers.sprintsync.global.util.extension.findTopNavController
 import com.developers.sprintsync.user.model.statistics.GeneralStatistics
 import com.developers.sprintsync.user.model.statistics.WeeklyStatistics
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManager
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.manager.ChartManagerImpl
 import com.developers.sprintsync.user.ui.userProfile.chart.interaction.navigation.ChartNavigator
+import com.developers.sprintsync.user.ui.userProfile.util.scroller.ChartTabsScrollerManager
+import com.developers.sprintsync.user.ui.userProfile.util.scroller.RangeNavigatingManager
 import com.developers.sprintsync.user.viewModel.UserProfileViewModel
 import com.github.mikephil.charting.charts.CombinedChart
 import kotlinx.coroutines.launch
@@ -32,6 +32,9 @@ class UserProfileFragment : Fragment() {
 
     private var _chartManager: ChartManager? = null
     private val chartManager get() = checkNotNull(_chartManager) { "ChartManager is not initialized" }
+
+    private val tabsScroller = ChartTabsScrollerManager()
+    private val rangeNavigator = RangeNavigatingManager()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,8 +50,9 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated")
-        setScroller()
+        tabsScroller.setScroller(binding.chartTabsScroller) {
+            viewModel.selectMetric(it)
+        }
         initChartManager(binding.progressChart)
         initDataRangeListener()
         initWeeklyStatisticsListener()
@@ -57,17 +61,22 @@ class UserProfileFragment : Fragment() {
         chartManager.presetChartConfiguration(viewModel.chartConfiguration.value)
         initChartDataUpdateEvent()
         initDisplayDataListener()
+        setUpdateGoalsButtonListener()
     }
 
     private fun initChartManager(chart: CombinedChart) {
         _chartManager = ChartManagerImpl(chart)
     }
 
-    private fun initDisplayDataListener() {
+    private fun initDataRangeListener() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                chartManager.displayData.collect {
-                    viewModel.onDisplayedDataChanged(it)
+                viewModel.dateRange.collect { dateRange ->
+                    binding.progressChartNavigator.apply {
+                        tvDayMonthRange.text = dateRange.dayMonthRange
+                        tvYearRange.text = dateRange.yearsRange
+                    }
+                    rangeNavigator.updateNavigatingButtonsUI(binding.progressChartNavigator, dateRange.position)
                 }
             }
         }
@@ -130,16 +139,11 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-    private fun initDataRangeListener() {
+    private fun initDisplayDataListener() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.dateRange.collect { dateRange ->
-                    binding.progressChartNavigator.apply {
-                        // TODO : doesn't work when no last data in range
-                        tvDayMonthRange.text = dateRange.dayMonthRange
-                        tvYearRange.text = dateRange.yearsRange
-                    }
-                    updateNavigatingButtonsUI(dateRange.position)
+                chartManager.displayData.collect {
+                    viewModel.onDisplayedDataChanged(it)
                 }
             }
         }
@@ -154,42 +158,9 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-    private fun updateNavigatingButtonsUI(rangePosition: RangePosition) {
-        when (rangePosition) {
-            RangePosition.NOT_INITIALIZED -> {
-                binding.progressChartNavigator.apply {
-                    btPreviousRange.isEnabled = false
-                    btNextRange.isEnabled = false
-                }
-            }
-
-            RangePosition.FIRST -> {
-                binding.progressChartNavigator.apply {
-                    btPreviousRange.isEnabled = false
-                    btNextRange.isEnabled = true
-                }
-            }
-
-            RangePosition.MIDDLE -> {
-                binding.progressChartNavigator.apply {
-                    btPreviousRange.isEnabled = true
-                    btNextRange.isEnabled = true
-                }
-            }
-
-            RangePosition.LAST -> {
-                binding.progressChartNavigator.apply {
-                    btPreviousRange.isEnabled = true
-                    btNextRange.isEnabled = false
-                }
-            }
-
-            RangePosition.ONLY -> {
-                binding.progressChartNavigator.apply {
-                    btPreviousRange.isEnabled = false
-                    btNextRange.isEnabled = false
-                }
-            }
+    private fun setUpdateGoalsButtonListener() {
+        binding.btUpdateGoals.root.setOnClickListener {
+            findTopNavController().navigate(R.id.action_tabsFragment_to_updateGoalsFragment)
         }
     }
 
@@ -197,44 +168,6 @@ class UserProfileFragment : Fragment() {
         super.onDestroyView()
         _chartManager = null
         _binding = null
-    }
-
-    private fun setScroller() {
-        binding.chartTabsScroller.chartTabDistance.isSelected = true
-
-        val tabs: MutableList<Pair<View, Metric>> = mutableListOf()
-
-        Metric.entries.forEach { metric ->
-            with(binding.chartTabsScroller) {
-                when (metric) {
-                    Metric.DISTANCE -> tabs.add(chartTabDistance to Metric.DISTANCE)
-                    Metric.DURATION -> tabs.add(chartTabDuration to Metric.DURATION)
-                    Metric.CALORIES -> tabs.add(chartTabCalories to Metric.CALORIES)
-                }
-            }
-        }
-
-        tabs.forEach { (tab, metric) ->
-            tab.setOnClickListener {
-                tabs.forEach { (t, _) -> t.isSelected = false }
-                tab.isSelected = true
-                viewModel.selectMetric(metric)
-                scrollToSelectedTab(binding.chartTabsScroller.root, tab)
-            }
-        }
-    }
-
-    private fun scrollToSelectedTab(
-        scroller: HorizontalScrollView,
-        selectedTab: View,
-    ) {
-        scroller.post {
-            val selectedViewCenterX = selectedTab.left + selectedTab.width / 2
-            val scrollViewCenterX = binding.chartTabsScroller.tabs.width / 2
-            val scrollToX = selectedViewCenterX - scrollViewCenterX
-
-            binding.chartTabsScroller.root.smoothScrollTo(scrollToX, 0)
-        }
     }
 
     companion object {

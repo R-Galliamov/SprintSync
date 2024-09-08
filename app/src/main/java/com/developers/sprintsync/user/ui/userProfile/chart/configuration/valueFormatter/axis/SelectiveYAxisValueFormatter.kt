@@ -6,6 +6,8 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 abstract class SelectiveYAxisValueFormatter : ValueFormatter() {
     abstract fun selectYAxisValue(
         metric: Metric,
-        value: Float?,
+        value: Float,
+        yAxisMax: Float,
+        yAxisLabelCount: Int,
     )
 }

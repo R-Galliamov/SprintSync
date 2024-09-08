@@ -1,5 +1,6 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data.preparation
 
+import android.util.Log
 import com.developers.sprintsync.global.util.extension.setOrAdd
 import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.DailyValues
@@ -62,7 +63,7 @@ class ChartDataSetCreator(
         }
 
         data = padDataToRange(data, latestDayTimestamp)
-
+        Log.d(TAG, "createDataSet: $data")
         return ChartDataSet(firstTimestamp, data)
     }
 
@@ -78,5 +79,9 @@ class ChartDataSetCreator(
             data[metric] = paddedDailyValues.toMutableList()
         }
         return data
+    }
+
+    companion object {
+        private const val TAG = "My Stack: ChartDataSetCreator"
     }
 }

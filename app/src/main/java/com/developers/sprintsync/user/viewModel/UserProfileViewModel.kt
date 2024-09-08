@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetTracksFlowUseCase
 import com.developers.sprintsync.tracking.session.model.track.Track
-import com.developers.sprintsync.user.model.ChartDataUpdateEvent
-import com.developers.sprintsync.user.model.FormattedDateRange
+import com.developers.sprintsync.user.dataStorage.repository.dailyGoal.useCase.GetDailyGoalsFlowUseCase
+import com.developers.sprintsync.user.model.ui.ChartDataUpdateEvent
+import com.developers.sprintsync.user.model.DailyGoal
+import com.developers.sprintsync.user.model.ui.FormattedDateRange
 import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.ChartDisplayData
 import com.developers.sprintsync.user.model.chart.chartData.Metric
@@ -18,6 +20,7 @@ import com.developers.sprintsync.user.ui.userProfile.chart.data.preparation.Char
 import com.developers.sprintsync.user.ui.userProfile.util.formatter.DateRangeFormatter
 import com.developers.sprintsync.user.ui.userProfile.util.formatter.GeneralStatisticsFormatter
 import com.developers.sprintsync.user.ui.userProfile.util.formatter.WeeklyStatisticsFormatter
+import com.developers.sprintsync.user.util.TimeWindowTrackFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,13 +34,13 @@ class UserProfileViewModel
     constructor(
         private val timeWindowTrackFilter: TimeWindowTrackFilter,
         private val getTracksFlowUseCase: GetTracksFlowUseCase,
+        private val getDailyGoalsFLowUseCase: GetDailyGoalsFlowUseCase,
         private val chartDataPreparer: ChartWeeklyDataPreparer,
-        private val goalsRepository: GoalsRepository,
     ) : ViewModel() {
         private val _chartDataUpdateEvent = MutableStateFlow<ChartDataUpdateEvent?>(null)
         val chartDataUpdateEvent get() = _chartDataUpdateEvent
 
-        private val goals = goalsRepository.goals
+        private val goalsState = MutableStateFlow<List<DailyGoal>>(emptyList())
 
         private val tracksState = MutableStateFlow<List<Track>>(emptyList())
 
@@ -65,6 +68,7 @@ class UserProfileViewModel
             initSelectedMetricListener()
             initChartDataSetListener()
             initTracksFlowListener()
+            initGoalsFlowListener()
         }
 
         fun selectMetric(metric: Metric) {
@@ -105,7 +109,22 @@ class UserProfileViewModel
                     _generalStatistics.update { generalStatistics }
 
                     chartDataSet.update {
-                        chartDataPreparer.prepareChartSet(tracks, goals, WeekDay.MONDAY)
+                        chartDataPreparer.prepareChartSet(tracks, goalsState.value, WeekDay.MONDAY)
+                    }
+                }
+            }
+        }
+
+        private fun initGoalsFlowListener() {
+            viewModelScope.launch {
+                getDailyGoalsFLowUseCase.dailyGoals.collect { goals ->
+                    goalsState.update {
+                        Log.d(TAG, "initGoalsFlowListener: $goals")
+                        goals
+                    }
+                    chartDataSet.update {
+                        Log.d(TAG, "initGoalsFlowListener, start updating chart $it")
+                        chartDataPreparer.prepareChartSet(tracksState.value, goals, WeekDay.MONDAY)
                     }
                 }
             }

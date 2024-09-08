@@ -1,8 +1,8 @@
-package com.developers.sprintsync.tracking.dataStorage.di.db
+package com.developers.sprintsync.global.dataStorage.di
 
 import android.content.Context
 import androidx.room.Room
-import com.developers.sprintsync.tracking.dataStorage.db.AppDb
+import com.developers.sprintsync.global.dataStorage.db.AppDb
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

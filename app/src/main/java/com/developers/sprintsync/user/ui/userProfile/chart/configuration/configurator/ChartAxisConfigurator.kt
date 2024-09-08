@@ -1,6 +1,5 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.configuration.configurator
 
-import android.util.Log
 import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyleProvider
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.valueFormatter.axis.SelectiveYAxisValueFormatter
@@ -31,8 +30,8 @@ class ChartAxisConfigurator(
     }
 
     fun configureXAxisLimits() {
-      xAxis.axisMinimum = chart.data.xMin - X_AXIS_OFFSET
-      xAxis.axisMaximum = chart.data.xMax + X_AXIS_OFFSET
+        xAxis.axisMinimum = chart.data.xMin - X_AXIS_OFFSET
+        xAxis.axisMaximum = chart.data.xMax + X_AXIS_OFFSET
     }
 
     fun styleXAxisLabels(styleResId: Int) {
@@ -74,10 +73,7 @@ class ChartAxisConfigurator(
         metric: Metric,
         value: Float,
     ) {
-        formatter?.selectYAxisValue(metric, value)
-        chart.notifyDataSetChanged()
-        chart.invalidate()
-        Log.d("My stack: ChartAxisConfigurator", "selectYValueLabel: $value")
+        formatter?.selectYAxisValue(metric, value, chart.axisLeft.axisMaximum, Y_AXIS_LABEL_COUNT)
     }
 
     private fun configureXAxis() {
@@ -91,20 +87,24 @@ class ChartAxisConfigurator(
     private fun configureYAxis() {
         yAxisLeft.isEnabled = false
         yAxisRight.apply {
-            yAxisRight.setLabelCount(Int.MAX_VALUE)
+            yAxisRight.setLabelCount(Y_AXIS_LABEL_COUNT, true)
             axisMinimum = Y_AXIS_MINIMUM
             setDrawAxisLine(false)
             setDrawGridLines(false)
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-            xOffset = X_AXIS_Y_LABEL_OFFSET
-            yOffset = X_AXIS_X_LABEL_OFFSET
+            xOffset = Y_AXIS_X_LABEL_OFFSET
+            yOffset = Y_AXIS_Y_LABEL_OFFSET
         }
     }
 
     companion object {
         private const val Y_AXIS_MINIMUM = 0f
         private const val X_AXIS_OFFSET = 0.5f
-        private const val X_AXIS_Y_LABEL_OFFSET = -10f
-        private const val X_AXIS_X_LABEL_OFFSET = 10f
+        private const val Y_AXIS_X_LABEL_OFFSET = -10f
+        private const val Y_AXIS_Y_LABEL_OFFSET = 10f
+
+        private const val Y_AXIS_LABEL_COUNT = 25
+
+        private const val TAG = "My stack: ChartAxisConfigurator"
     }
 }

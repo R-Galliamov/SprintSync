@@ -57,5 +57,8 @@
     <string name="best_distance">Longest distance</string>
     <string name="workout_days">Workout days</string>
     <string name="total_workouts">Total workouts</string>
+    <string name="update_goals">Update goals</string>
+    <string name="daily_goals">Daily goals</string>
+    <string name="save">Save</string>
 
 </resources>

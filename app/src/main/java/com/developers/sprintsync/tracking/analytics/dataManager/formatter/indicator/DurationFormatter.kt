@@ -4,7 +4,6 @@ import com.developers.sprintsync.tracking.analytics.model.FormattedDurationParts
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-// TODO: create enum class for patterns
 class DurationFormatter {
     companion object {
         private const val TIME_FORMAT_HH_MM_SS = "%02d:%02d:%02d"

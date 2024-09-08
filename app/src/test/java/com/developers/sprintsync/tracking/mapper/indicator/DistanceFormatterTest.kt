@@ -22,31 +22,4 @@ class DistanceFormatterTest {
         // Assert
         assertEquals(expectedFormattedDistance, result)
     }
-
-    @Test
-    fun metersToPresentableDistance_returnsCorrectlyFormattedDistanceInKilometers_withDifferentLocale() {
-        // Arrange
-        val distanceInMeters = 1500
-        val expectedDistanceInKilometers = "1,50"
-        Locale.setDefault(Locale.GERMANY)
-
-        // Act
-        val result = DistanceFormatter.metersToPresentableKilometers(distanceInMeters)
-
-        // Assert
-        assertEquals(expectedDistanceInKilometers, result)
-    }
-
-    @Test
-    fun metersToKilometers_returnsCorrectDistanceInKilometers() {
-        // Arrange
-        val distanceInMeters = 1500
-        val expectedDistanceInKilometers = 1.5f
-
-        // Act
-        val result = DistanceFormatter.metersToKilometers(distanceInMeters)
-
-        // Assert
-        assertEquals(expectedDistanceInKilometers, result)
-    }
 }

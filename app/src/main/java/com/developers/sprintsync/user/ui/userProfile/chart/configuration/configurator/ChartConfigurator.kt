@@ -56,7 +56,6 @@ class ChartConfigurator(
         value: Float,
     ) {
         axisConfigurator.selectYValueLabel(metric, value)
-        refreshChart()
     }
 
     fun refreshChart() {

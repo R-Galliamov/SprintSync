@@ -25,7 +25,10 @@ class ChartWeeklyDataPreparer
             val startIndex = startDay.index
             val preparedIndexedValues = chartPreparationHelper.prepareIndexedValues(firstDataIndex, startIndex, goals)
             val timestampMetrics = dailyMetricsAggregator.calculateMetricsForEachTrackingDay(tracks)
-
             return chartDataSetCreator.createDataSet(timestampMetrics, preparedIndexedValues)
+        }
+
+        companion object {
+            private const val TAG = "My Stack: ChartWeeklyDataPreparer"
         }
     }

@@ -22,6 +22,10 @@
                 android:name="trackId"
                 app:argType="integer" />
         </action>
+        <action
+            android:id="@+id/action_tabsFragment_to_updateGoalsFragment"
+            app:destination="@id/updateGoalsFragment"
+           />
     </fragment>
 
     <fragment
@@ -98,4 +102,9 @@
             app:argType="integer" />
 
     </fragment>
+    <fragment
+        android:id="@+id/updateGoalsFragment"
+        android:name="com.developers.sprintsync.user.ui.updateGoals.UpdateGoalsFragment"
+        android:label="fragment_update_goals"
+        tools:layout="@layout/fragment_update_goals" />
 </navigation>

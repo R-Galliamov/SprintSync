@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.viewModel
+package com.developers.sprintsync.user.util
 
 import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.user.model.chart.chartData.util.time.TimeUtils

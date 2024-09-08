@@ -151,6 +151,7 @@ class ChartManagerImpl(
                                 Log.d(TAG, "NavigatorState.Navigating")
                                 scaleUpMaximumAnimated(displayedDataList) {
                                     updateYAxisLabel(metric, displayedDataList)
+                                    configurator.refreshChart()
                                 }
                             }
 
