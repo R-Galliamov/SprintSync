@@ -4,18 +4,21 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DateFormatter {
-    companion object {
-        private const val DATE_FORMAT = "dd.MM.yyyy, EEE"
-        private val defaultLocale by lazy { Locale.getDefault() }
+object DateFormatter {
+    fun formatDate(
+        timestamp: Long,
+        pattern: Pattern,
+    ): String {
+        val locale = Locale.getDefault()
+        val date = Date(timestamp)
+        val format = SimpleDateFormat(pattern.format, locale)
+        return format.format(date)
+    }
 
-        fun formatDate(
-            timestamp: Long,
-            locale: Locale = defaultLocale,
-        ): String {
-            val date = Date(timestamp)
-            val format = SimpleDateFormat(DATE_FORMAT, locale)
-            return format.format(date)
-        }
+    enum class Pattern(
+        val format: String,
+    ) {
+        DAY_MONTH_YEAR("dd.MM.yyyy"),
+        DAY_MONTH_YEAR_WEEK_DAY("dd.MM.yyyy, EEE"),
     }
 }

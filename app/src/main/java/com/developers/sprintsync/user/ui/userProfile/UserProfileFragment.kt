@@ -1,7 +1,6 @@
 package com.developers.sprintsync.user.ui.userProfile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,9 +49,10 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        tabsScroller.setScroller(binding.chartTabsScroller) {
-            viewModel.selectMetric(it)
+        tabsScroller.setScroller(binding.chartTabsScroller) { metric ->
+            viewModel.selectMetric(metric)
         }
+        initSelectedMetricListener()
         initChartManager(binding.progressChart)
         initDataRangeListener()
         initWeeklyStatisticsListener()
@@ -61,7 +61,18 @@ class UserProfileFragment : Fragment() {
         chartManager.presetChartConfiguration(viewModel.chartConfiguration.value)
         initChartDataUpdateEvent()
         initDisplayDataListener()
+        initDailyGoalsUpdateTimestampListener()
         setUpdateGoalsButtonListener()
+    }
+
+    private fun initSelectedMetricListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedMetric.collect { metric ->
+                    tabsScroller.selectMetricTab(metric)
+                }
+            }
+        }
     }
 
     private fun initChartManager(chart: CombinedChart) {
@@ -101,7 +112,6 @@ class UserProfileFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.weeklyStatistics.collect { weeklyStatistics ->
-                    Log.d(TAG, "WeeklyStatistics updated: $weeklyStatistics")
                     if (weeklyStatistics == WeeklyStatistics.EMPTY) return@collect
                     binding.weeklyStatisticsTable.apply {
                         tvWorkoutsValue.text = weeklyStatistics.workouts
@@ -144,6 +154,16 @@ class UserProfileFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 chartManager.displayData.collect {
                     viewModel.onDisplayedDataChanged(it)
+                }
+            }
+        }
+    }
+
+    private fun initDailyGoalsUpdateTimestampListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.dailyGoalsUpdateDate.collect { timestamp ->
+                    binding.btUpdateGoals.tvUpdateTime.text = timestamp.toString()
                 }
             }
         }

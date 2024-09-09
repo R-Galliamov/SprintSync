@@ -6,24 +6,27 @@ import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetTracksFlowUseCase
 import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.user.dataStorage.repository.dailyGoal.useCase.GetDailyGoalsFlowUseCase
-import com.developers.sprintsync.user.model.ui.ChartDataUpdateEvent
+import com.developers.sprintsync.user.dataStorage.repository.dailyGoal.useCase.GetDailyGoalsUpdateTimestampUseCase
 import com.developers.sprintsync.user.model.DailyGoal
-import com.developers.sprintsync.user.model.ui.FormattedDateRange
 import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.ChartDisplayData
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.chartData.WeekDay
 import com.developers.sprintsync.user.model.statistics.GeneralStatistics
 import com.developers.sprintsync.user.model.statistics.WeeklyStatistics
+import com.developers.sprintsync.user.model.ui.ChartDataUpdateEvent
+import com.developers.sprintsync.user.model.ui.FormattedDateRange
 import com.developers.sprintsync.user.ui.userProfile.chart.configuration.ChartConfigurationType
 import com.developers.sprintsync.user.ui.userProfile.chart.data.preparation.ChartWeeklyDataPreparer
 import com.developers.sprintsync.user.ui.userProfile.util.formatter.DateRangeFormatter
 import com.developers.sprintsync.user.ui.userProfile.util.formatter.GeneralStatisticsFormatter
+import com.developers.sprintsync.user.ui.userProfile.util.formatter.UpdateDateFormatter
 import com.developers.sprintsync.user.ui.userProfile.util.formatter.WeeklyStatisticsFormatter
 import com.developers.sprintsync.user.util.TimeWindowTrackFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,10 +38,15 @@ class UserProfileViewModel
         private val timeWindowTrackFilter: TimeWindowTrackFilter,
         private val getTracksFlowUseCase: GetTracksFlowUseCase,
         private val getDailyGoalsFLowUseCase: GetDailyGoalsFlowUseCase,
+        getDailyGoalsUpdateTimestampUseCase: GetDailyGoalsUpdateTimestampUseCase,
         private val chartDataPreparer: ChartWeeklyDataPreparer,
+        private val dateFormatter: UpdateDateFormatter,
     ) : ViewModel() {
         private val _chartDataUpdateEvent = MutableStateFlow<ChartDataUpdateEvent?>(null)
         val chartDataUpdateEvent get() = _chartDataUpdateEvent
+
+        val dailyGoalsUpdateDate =
+            getDailyGoalsUpdateTimestampUseCase().map { dateFormatter.formatTimestamp(it) }
 
         private val goalsState = MutableStateFlow<List<DailyGoal>>(emptyList())
 

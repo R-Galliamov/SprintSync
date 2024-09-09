@@ -5,32 +5,48 @@ import com.developers.sprintsync.databinding.ProgressChartTabsScrollerBinding
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 
 class ChartTabsScrollerManager {
+    private val tabs = mutableMapOf<Metric, View>()
+    private var scrollerView: ProgressChartTabsScrollerBinding? = null
+
     fun setScroller(
         scrollerView: ProgressChartTabsScrollerBinding,
         onTabSelected: (metric: Metric) -> Unit,
     ) {
-        scrollerView.chartTabDistance.isSelected = true
+        this.scrollerView = scrollerView
+        initTabs(scrollerView)
+        setOnTabClickListener(onTabSelected)
+    }
 
-        val tabs: MutableList<Pair<View, Metric>> = mutableListOf()
+    fun selectMetricTab(metric: Metric) {
+        val tab = tabs[metric]
+        tab?.let { updateTabsUi(tab) }
+    }
 
+    private fun initTabs(scrollerView: ProgressChartTabsScrollerBinding) {
         Metric.entries.forEach { metric ->
-            with(scrollerView) {
+            val tab =
                 when (metric) {
-                    Metric.DISTANCE -> tabs.add(chartTabDistance to Metric.DISTANCE)
-                    Metric.DURATION -> tabs.add(chartTabDuration to Metric.DURATION)
-                    Metric.CALORIES -> tabs.add(chartTabCalories to Metric.CALORIES)
+                    Metric.DISTANCE -> scrollerView.chartTabDistance
+                    Metric.DURATION -> scrollerView.chartTabDuration
+                    Metric.CALORIES -> scrollerView.chartTabCalories
                 }
-            }
+            tabs[metric] = tab
         }
+    }
 
-        tabs.forEach { (tab, metric) ->
+    private fun setOnTabClickListener(onTabSelected: (metric: Metric) -> Unit) {
+        tabs.forEach { (metric, tab) ->
             tab.setOnClickListener {
-                tabs.forEach { (t, _) -> t.isSelected = false }
-                tab.isSelected = true
+                updateTabsUi(tab)
                 onTabSelected(metric)
-                scrollToSelectedTab(scrollerView, tab)
             }
         }
+    }
+
+    private fun updateTabsUi(selectedTab: View) {
+        tabs.values.forEach { t -> t.isSelected = false }
+        selectedTab.isSelected = true
+        scrollerView?.let { scrollToSelectedTab(it, selectedTab) }
     }
 
     private fun scrollToSelectedTab(

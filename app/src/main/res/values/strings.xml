@@ -60,5 +60,6 @@
     <string name="update_goals">Update goals</string>
     <string name="daily_goals">Daily goals</string>
     <string name="save">Save</string>
+    <string name="last_update">Last update:</string>
 
 </resources>
