@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking.analytics.dataManager.formatter
+package com.developers.sprintsync.global.util.formatter
 
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -18,6 +18,8 @@ object DateFormatter {
     enum class Pattern(
         val format: String,
     ) {
+        YEAR("yyyy"),
+        DAY_MONTH("dd MMM"),
         DAY_MONTH_YEAR("dd.MM.yyyy"),
         DAY_MONTH_YEAR_WEEK_DAY("dd.MM.yyyy, EEE"),
     }

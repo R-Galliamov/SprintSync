@@ -1,10 +1,9 @@
 package com.developers.sprintsync.user.ui.userProfile.util.formatter
 
-import com.developers.sprintsync.user.model.ui.FormattedDateRange
+import com.developers.sprintsync.global.util.formatter.DateFormatter
 import com.developers.sprintsync.user.model.chart.chartData.util.time.TimeUtils
 import com.developers.sprintsync.user.model.chart.navigator.RangePosition
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.developers.sprintsync.user.model.ui.FormattedDateRange
 
 class DateRangeFormatter {
     fun formatRange(
@@ -14,8 +13,8 @@ class DateRangeFormatter {
         lastDayIndex: Int,
     ): FormattedDateRange {
         val dayMonthRange =
-            getFormattedRange(referenceTimestamp, firstDayIndex, lastDayIndex, DAY_MONT_RANGE_UNIT_PATTERN)
-        val yearsRange = getFormattedRange(referenceTimestamp, firstDayIndex, lastDayIndex, YEAR_RANGE_UNIT_PATTERN)
+            getFormattedRange(referenceTimestamp, firstDayIndex, lastDayIndex, DateFormatter.Pattern.DAY_MONTH)
+        val yearsRange = getFormattedRange(referenceTimestamp, firstDayIndex, lastDayIndex, DateFormatter.Pattern.YEAR)
         return FormattedDateRange(dayMonthRange, yearsRange, rangePosition)
     }
 
@@ -23,7 +22,7 @@ class DateRangeFormatter {
         referenceTimestamp: Long,
         firstDayIndex: Int,
         lastDayIndex: Int,
-        pattern: String,
+        pattern: DateFormatter.Pattern,
     ): String {
         val (formattedFirstDate, formattedLastDate) =
             formatDates(
@@ -43,14 +42,15 @@ class DateRangeFormatter {
         referenceTimestamp: Long,
         firstDayIndex: Int,
         lastDayIndex: Int,
-        pattern: String,
+        pattern: DateFormatter.Pattern,
     ): Pair<String, String> {
-        val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
         val timestampFirst =
             shiftTimestampByDays(referenceTimestamp, firstDayIndex)
         val timestampLast =
             shiftTimestampByDays(referenceTimestamp, lastDayIndex)
-        return Pair(dateFormat.format(timestampFirst), dateFormat.format(timestampLast))
+        val dateFirst = DateFormatter.formatDate(timestampFirst, pattern)
+        val dateLast = DateFormatter.formatDate(timestampLast, pattern)
+        return Pair(dateFirst, dateLast)
     }
 
     private fun shiftTimestampByDays(
@@ -59,8 +59,6 @@ class DateRangeFormatter {
     ): Long = TimeUtils.shiftTimestampByDays(referenceTimestamp, dayIndex)
 
     companion object {
-        private const val DAY_MONT_RANGE_UNIT_PATTERN = "dd MMM"
-        private const val YEAR_RANGE_UNIT_PATTERN = "yyyy"
         private const val RANGE_SEPARATOR = "-"
     }
 }

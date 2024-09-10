@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.ImageLoader
 import coil.request.ImageRequest
 import com.developers.sprintsync.databinding.ItemTrackCardBinding
-import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DateFormatter
+import com.developers.sprintsync.global.util.formatter.DateFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.CaloriesFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DistanceFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DurationFormatter

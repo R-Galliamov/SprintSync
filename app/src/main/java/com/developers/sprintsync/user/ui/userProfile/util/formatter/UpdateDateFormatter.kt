@@ -2,7 +2,7 @@ package com.developers.sprintsync.user.ui.userProfile.util.formatter
 
 import android.content.Context
 import com.developers.sprintsync.R
-import com.developers.sprintsync.tracking.analytics.dataManager.formatter.DateFormatter
+import com.developers.sprintsync.global.util.formatter.DateFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
