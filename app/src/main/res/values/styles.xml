@@ -124,7 +124,7 @@
     </style>
 
     <style name="CounterViewStyle.Min">
-        <item name="units">@string/min</item>
+        <item name="units">@string/unit_min</item>
     </style>
 
     <style name="CounterViewStyle.Steps">

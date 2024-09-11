@@ -261,7 +261,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/km" />
+                    android:text="@string/unit_km" />
 
             </LinearLayout>
 
@@ -285,7 +285,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/kcal" />
+                    android:text="@string/unit_kcal" />
 
             </LinearLayout>
 
@@ -343,7 +343,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-6dp"
-                android:text="@string/km"
+                android:text="@string/unit_km"
                 app:layout_constraintEnd_toEndOf="@+id/tvLongestDistanceValue"
                 app:layout_constraintTop_toBottomOf="@id/tvLongestDistanceValue" />
 
@@ -382,7 +382,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-6dp"
-                android:text="@string/min_km"
+                android:text="@string/unit_min_per_km"
                 app:layout_constraintEnd_toEndOf="@id/tvBestPaceValue"
                 app:layout_constraintTop_toBottomOf="@id/tvBestPaceValue" />
 

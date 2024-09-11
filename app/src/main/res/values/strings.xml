@@ -1,5 +1,13 @@
-<resources>
+<resources> <!-- TODO: sort strings -->
     <string name="app_name">SprintSync</string>
+
+    <!-- Units -->
+    <string name="unit_km">km</string>
+    <string name="unit_kcal">Kcal</string>
+    <string name="unit_min_per_km">min/km</string>
+    <string name="unit_min">min</string>
+    <string name="unit_h_m">h:m</string>
+
     <string name="start_run_desc">Start run</string>
     <string name="home">Home</string>
     <string name="history">History</string>
@@ -7,21 +15,17 @@
     <string name="profile">Profile</string>
     <string name="steps">steps</string>
     <string name="week_goal">Week goal</string>
-    <string name="min">min</string>
 
     <string name="percent_formatted">%d%%</string>
     <string name="today">Today:&#32;</string>
     <string name="record_board">RECORD BOARD</string>
     <string name="workouts">Workouts</string>
-    <string name="km">km</string>
-    <string name="kcal">Kcal</string>
+
     <string name="runs">Runs</string>
     <string name="best_results">Best results</string>
     <string name="distance">Distance</string>
     <string name="best_pace">Best pace</string>
     <string name="pace">pace</string>
-    <string name="min_km">min/km</string>
-    <string name="h_m">h:m</string>
     <string name="move_back">Move back</string>
     <string name="start_time">00:00:00</string>
     <string name="start">start</string>
@@ -61,5 +65,8 @@
     <string name="daily_goals">Daily goals</string>
     <string name="save">Save</string>
     <string name="last_update">Last update:</string>
+    <string name="auto_recalculate">Auto recalculate</string>
+    <string name="adjust_to_my_parameters">Adjust to My Parameters</string>
+    <string name="apply">Apply</string>
 
 </resources>

@@ -31,11 +31,17 @@
             android:layout_height="wrap_content"
             android:text="@string/daily_goals" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/shape.strokeWidth"
+            android:layout_marginTop="@dimen/space.small"
+            android:layout_marginBottom="@dimen/space.regular"
+            android:background="?colorSecondary" />
+
         <LinearLayout
             android:id="@+id/cardDistance"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button.height.regular"
-            android:layout_marginTop="@dimen/space.regular"
             android:background="@drawable/bt_outlined_on_primary_variant"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -79,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/space.regular"
                 android:gravity="end"
-                android:text="km" />
+                android:text="@string/unit_km" />
 
         </LinearLayout>
 
@@ -131,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/space.regular"
                 android:gravity="end"
-                android:text="min" />
+                android:text="@string/unit_min" />
 
         </LinearLayout>
 
@@ -178,6 +184,50 @@
                 tools:text="800" />
 
         </LinearLayout>
+
+        <CheckBox
+            style="@style/SmallText.Bold.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/space.small"
+            android:text="@string/auto_recalculate" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btAdjustToParameters"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space.large"
+        android:background="@drawable/bt_transparent"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/btSave"
+        app:layout_constraintEnd_toEndOf="@id/btSave"
+        app:layout_constraintStart_toStartOf="@id/btSave">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/shape.strokeWidth"
+            android:background="?colorSecondary" />
+
+        <TextView
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space.regular"
+            android:layout_marginBottom="@dimen/space.regular"
+            android:text="@string/adjust_to_my_parameters"
+            app:layout_constraintEnd_toStartOf="@id/ivIconGoTo"
+            app:layout_constraintStart_toEndOf="@id/ivIcon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/shape.strokeWidth"
+            android:background="?colorSecondary" />
+
     </LinearLayout>
 
     <FrameLayout
@@ -194,12 +244,12 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/tvHome"
+            android:id="@+id/tvSave"
             style="@style/TitleText.Caps.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/save" />
+            android:text="@string/apply" />
 
     </FrameLayout>
 
