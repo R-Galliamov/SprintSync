@@ -133,5 +133,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- PopUp -->
+    <style name="SpinnerView.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:padding">@dimen/space.regular</item>
+    </style>
+
 
 </resources>

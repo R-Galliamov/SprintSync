@@ -1,6 +1,6 @@
 package com.developers.sprintsync.user.dataStorage.repository.dailyGoal
 
-import com.developers.sprintsync.user.model.DailyGoal
+import com.developers.sprintsync.user.model.goal.DailyGoal
 import kotlinx.coroutines.flow.Flow
 
 interface DailyGoalRepository {

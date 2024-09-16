@@ -1,6 +1,6 @@
 package com.developers.sprintsync.user.util.creater
 
-import com.developers.sprintsync.user.model.DailyGoal
+import com.developers.sprintsync.user.model.goal.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 
 object DailyGoalCreator {

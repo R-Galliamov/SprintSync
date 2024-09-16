@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.developers.sprintsync.user.dataStorage.db.dto.DailyGoalEntity
-import com.developers.sprintsync.user.model.DailyGoal
+import com.developers.sprintsync.user.model.goal.DailyGoal
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -1,7 +1,7 @@
 package com.developers.sprintsync.user.dataStorage.repository.dailyGoal
 
 import com.developers.sprintsync.global.util.test.TestTimestamps
-import com.developers.sprintsync.user.model.DailyGoal
+import com.developers.sprintsync.user.model.goal.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

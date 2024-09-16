@@ -2,7 +2,7 @@ package com.developers.sprintsync.user.util.formatter
 
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DistanceFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DurationFormatter
-import com.developers.sprintsync.user.model.DailyGoal
+import com.developers.sprintsync.user.model.goal.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.ui.FormattedDailyGoal
 import kotlin.math.roundToInt

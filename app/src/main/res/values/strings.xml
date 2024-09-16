@@ -68,5 +68,6 @@
     <string name="auto_recalculate">Auto recalculate</string>
     <string name="adjust_to_my_parameters">Adjust to My Parameters</string>
     <string name="apply">Apply</string>
+    <string name="general_goal">Wellness Aim</string>
 
 </resources>

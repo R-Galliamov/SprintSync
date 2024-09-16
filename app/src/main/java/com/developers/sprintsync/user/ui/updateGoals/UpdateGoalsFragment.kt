@@ -1,6 +1,7 @@
 package com.developers.sprintsync.user.ui.updateGoals
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,11 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUpdateGoalsBinding
 import com.developers.sprintsync.global.util.AndroidUtils
 import com.developers.sprintsync.user.model.chart.chartData.Metric
+import com.developers.sprintsync.user.model.goal.WellnessGoal
 import com.developers.sprintsync.user.model.ui.MetricInputView
+import com.developers.sprintsync.user.util.adapter.SpinnerAdapter
 import com.developers.sprintsync.user.util.converter.MetricInputConverter
+import com.developers.sprintsync.user.util.converter.WellnessGoalSpinnerConverter
 import com.developers.sprintsync.user.viewModel.UpdateGoalsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -50,8 +54,14 @@ class UpdateGoalsFragment : Fragment() {
         setDailyGoalsListener()
         setBackButton()
         setSaveButton()
+        initSpinner()
         configureKeyboardBehavior()
         setCardsOnClickListener()
+    }
+
+    private fun initSpinner() {
+        val items = WellnessGoal.entries.map { WellnessGoalSpinnerConverter.toSpinnerItem(it) }
+        binding.generalGoal.spinner.adapter = SpinnerAdapter(requireContext(), items)
     }
 
     private fun createMetricMetricViewMap(binding: FragmentUpdateGoalsBinding): Map<Metric, MetricInputView> {
@@ -59,9 +69,23 @@ class UpdateGoalsFragment : Fragment() {
         Metric.entries.forEach { metric ->
             val metricInputView =
                 when (metric) {
-                    Metric.DISTANCE -> MetricInputView(card = binding.cardDistance, editText = binding.etDistanceValue)
-                    Metric.DURATION -> MetricInputView(card = binding.cardDuration, editText = binding.etDurationValue)
-                    Metric.CALORIES -> MetricInputView(card = binding.cardCalories, editText = binding.etCaloriesValue)
+                    Metric.DISTANCE ->
+                        MetricInputView(
+                            card = binding.dailyGoals.cardDistance,
+                            editText = binding.dailyGoals.etDistanceValue,
+                        )
+
+                    Metric.DURATION ->
+                        MetricInputView(
+                            card = binding.dailyGoals.cardDuration,
+                            editText = binding.dailyGoals.etDurationValue,
+                        )
+
+                    Metric.CALORIES ->
+                        MetricInputView(
+                            card = binding.dailyGoals.cardCalories,
+                            editText = binding.dailyGoals.etCaloriesValue,
+                        )
                 }
             map[metric] = metricInputView
         }
@@ -99,7 +123,8 @@ class UpdateGoalsFragment : Fragment() {
     }
 
     private fun clearFocusOnRootClick() {
-        binding.root.setOnClickListener {
+        binding.container.setOnClickListener {
+            Log.d(TAG, "Clear focus")
             metricInputViews.values.forEach { it.editText.clearFocus() }
         }
     }
