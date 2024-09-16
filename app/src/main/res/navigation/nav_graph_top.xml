@@ -106,5 +106,13 @@
         android:id="@+id/updateGoalsFragment"
         android:name="com.developers.sprintsync.user.ui.updateGoals.UpdateGoalsFragment"
         android:label="fragment_update_goals"
-        tools:layout="@layout/fragment_update_goals" />
+        tools:layout="@layout/fragment_update_goals" >
+        <action
+            android:id="@+id/action_updateGoalsFragment_to_userPreferencesFragment"
+            app:destination="@id/userPreferencesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userPreferencesFragment"
+        android:name="com.developers.sprintsync.user.ui.userPreferences.UserPreferencesFragment"
+        android:label="UserPreferencesFragment" />
 </navigation>

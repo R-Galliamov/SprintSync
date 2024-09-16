@@ -74,9 +74,11 @@ ktlint {
     }
 }
 
+// TODO replace with libs
+
 dependencies {
-    implementation 'com.google.android.gms:play-services-maps:18.2.0'
-    implementation 'androidx.lifecycle:lifecycle-service:2.7.0'
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
+    implementation 'androidx.lifecycle:lifecycle-service:2.8.5'
     def splash_screen_version = "1.1.0-alpha02"
     def view_model_version = "2.7.0"
     def play_services_version = "21.1.0"
@@ -86,20 +88,21 @@ dependencies {
     def gson_version = "2.11.0"
     def gson_extras_version = "1.2.0"
     def coil_version = "2.6.0"
+    def preferences_version = "1.1.1"
 
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // UnitTests
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.mockito:mockito-inline:$mockito_version"
 
     // UI tests
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 
     // Architectural Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$view_model_version"
@@ -123,6 +126,9 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    // Preferences
+    implementation "androidx.datastore:datastore-preferences:$preferences_version"
+
     // Gson
     implementation "com.google.code.gson:gson:$gson_version"
     implementation "org.danilopianini:gson-extras:$gson_extras_version"
@@ -132,4 +138,5 @@ dependencies {
 
     // SplashScreen
     implementation "androidx.core:core-splashscreen:$splash_screen_version"
+
 }

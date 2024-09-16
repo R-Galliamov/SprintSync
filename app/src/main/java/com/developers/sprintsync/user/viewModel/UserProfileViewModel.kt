@@ -7,11 +7,11 @@ import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.G
 import com.developers.sprintsync.tracking.session.model.track.Track
 import com.developers.sprintsync.user.dataStorage.repository.dailyGoal.useCase.GetDailyGoalsFlowUseCase
 import com.developers.sprintsync.user.dataStorage.repository.dailyGoal.useCase.GetDailyGoalsUpdateTimestampUseCase
-import com.developers.sprintsync.user.model.goal.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.ChartDataSet
 import com.developers.sprintsync.user.model.chart.chartData.ChartDisplayData
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.chartData.WeekDay
+import com.developers.sprintsync.user.model.goal.DailyGoal
 import com.developers.sprintsync.user.model.statistics.GeneralStatistics
 import com.developers.sprintsync.user.model.statistics.WeeklyStatistics
 import com.developers.sprintsync.user.model.ui.ChartDataUpdateEvent

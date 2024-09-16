@@ -69,5 +69,6 @@
     <string name="adjust_to_my_parameters">Adjust to My Parameters</string>
     <string name="apply">Apply</string>
     <string name="general_goal">Wellness Aim</string>
+    <string name="spinner_adapter_init_error">Spinner adapter isn\'t initialized</string>
 
 </resources>

@@ -5,10 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.user.dataStorage.repository.dailyGoal.useCase.GetLastDailyGoalsUseCase
 import com.developers.sprintsync.user.dataStorage.repository.dailyGoal.useCase.SaveDailyGoalUseCase
+import com.developers.sprintsync.user.dataStorage.repository.userPreferences.useCase.UserWellnessGoalUseCase
 import com.developers.sprintsync.user.model.chart.chartData.Metric
+import com.developers.sprintsync.user.model.goal.WellnessGoal
 import com.developers.sprintsync.user.util.creater.DailyGoalCreator
 import com.developers.sprintsync.user.util.formatter.DailyGoalFormatter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,8 +22,11 @@ class UpdateGoalsViewModel
     constructor(
         getLastDailyGoalsUseCase: GetLastDailyGoalsUseCase,
         private val saveDailyGoalUseCase: SaveDailyGoalUseCase,
+        private val userWellnessGoalUseCase: UserWellnessGoalUseCase,
     ) : ViewModel() {
-        private var metricValuesMap: MutableMap<Metric, Float> = mutableMapOf()
+        private var metricValuesMap = mutableMapOf<Metric, Float>()
+
+        val wellnessGoal: Flow<WellnessGoal> = userWellnessGoalUseCase()
 
         val formattedDailyGoals =
             getLastDailyGoalsUseCase.invoke().map { goals ->
@@ -40,6 +46,12 @@ class UpdateGoalsViewModel
                         val dailyGoal = DailyGoalCreator.create(it.key, it.value)
                         saveDailyGoalUseCase(dailyGoal)
                     }
+            }
+        }
+
+        fun saveWellnessGoal(goal: WellnessGoal) {
+            viewModelScope.launch {
+                userWellnessGoalUseCase.saveWellnessGoal(goal)
             }
         }
 
