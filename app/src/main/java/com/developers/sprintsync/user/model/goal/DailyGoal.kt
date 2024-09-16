@@ -1,4 +1,4 @@
-package com.developers.sprintsync.user.model
+package com.developers.sprintsync.user.model.goal
 
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 

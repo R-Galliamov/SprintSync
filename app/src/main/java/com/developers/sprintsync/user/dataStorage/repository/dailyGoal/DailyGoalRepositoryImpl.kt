@@ -2,7 +2,7 @@ package com.developers.sprintsync.user.dataStorage.repository.dailyGoal
 
 import com.developers.sprintsync.user.dataStorage.db.dao.DailyGoalDao
 import com.developers.sprintsync.user.dataStorage.db.dto.DailyGoalEntity
-import com.developers.sprintsync.user.model.DailyGoal
+import com.developers.sprintsync.user.model.goal.DailyGoal
 import javax.inject.Inject
 import javax.inject.Singleton
 

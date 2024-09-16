@@ -23,6 +23,7 @@
     <dimen name="space.regular">20dp</dimen>
     <dimen name="space.big">32dp</dimen>
     <dimen name="space.large">40dp</dimen>
+    <dimen name="space.extra">60dp</dimen>
     <dimen name="space.special.fabPadding">80dp</dimen>
 
     <!-- Text -->

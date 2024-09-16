@@ -2,7 +2,7 @@ package com.developers.sprintsync.user.ui.userProfile.chart.data.preparation
 
 import com.developers.sprintsync.global.util.extension.isMultipleOf
 import com.developers.sprintsync.tracking.session.model.track.Track
-import com.developers.sprintsync.user.model.DailyGoal
+import com.developers.sprintsync.user.model.goal.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.DailyValues
 import java.util.Calendar
 

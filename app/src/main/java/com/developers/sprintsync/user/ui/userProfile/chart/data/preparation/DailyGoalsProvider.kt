@@ -1,6 +1,6 @@
 package com.developers.sprintsync.user.ui.userProfile.chart.data.preparation
 
-import com.developers.sprintsync.user.model.DailyGoal
+import com.developers.sprintsync.user.model.goal.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 import com.developers.sprintsync.user.model.chart.chartData.MetricsMap
 import com.developers.sprintsync.user.model.chart.chartData.util.time.TimestampBuilder

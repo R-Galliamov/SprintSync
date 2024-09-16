@@ -2,7 +2,7 @@ package com.developers.sprintsync.user.dataStorage.db.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.developers.sprintsync.user.model.DailyGoal
+import com.developers.sprintsync.user.model.goal.DailyGoal
 import com.developers.sprintsync.user.model.chart.chartData.Metric
 
 @Entity
