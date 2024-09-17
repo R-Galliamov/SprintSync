@@ -34,13 +34,10 @@
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button.height.small"
-            android:layout_marginStart="@dimen/space.regular"
             android:drawablePadding="@dimen/space.small"
             android:gravity="center"
-            android:paddingStart="@dimen/space.small"
-            android:paddingTop="@dimen/space.small"
+            android:paddingStart="@dimen/space.big"
             android:paddingEnd="@dimen/space.small"
-            android:paddingBottom="@dimen/space.small"
             android:text="@string/distance"
             app:drawableStartCompat="@drawable/ic_distance_24dp" />
 
@@ -65,7 +62,7 @@
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/space.regular"
+            android:layout_marginEnd="@dimen/space.big"
             android:gravity="end"
             android:text="@string/unit_km" />
 
@@ -86,13 +83,10 @@
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button.height.small"
-            android:layout_marginStart="@dimen/space.regular"
             android:drawablePadding="@dimen/space.small"
             android:gravity="center"
-            android:paddingStart="@dimen/space.small"
-            android:paddingTop="@dimen/space.small"
+            android:paddingStart="@dimen/space.big"
             android:paddingEnd="@dimen/space.small"
-            android:paddingBottom="@dimen/space.small"
             android:text="@string/duration"
             app:drawableStartCompat="@drawable/ic_duration_32dp" />
 
@@ -117,7 +111,7 @@
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/space.regular"
+            android:layout_marginEnd="@dimen/space.big"
             android:gravity="end"
             android:text="@string/unit_min" />
 
@@ -138,13 +132,10 @@
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button.height.small"
-            android:layout_marginStart="@dimen/space.regular"
             android:drawablePadding="@dimen/space.small"
             android:gravity="center"
-            android:paddingStart="@dimen/space.small"
-            android:paddingTop="@dimen/space.small"
+            android:paddingStart="@dimen/space.big"
             android:paddingEnd="@dimen/space.small"
-            android:paddingBottom="@dimen/space.small"
             android:text="@string/burned_kcal"
             app:drawableStartCompat="@drawable/ic_kcal_48dp" />
 
@@ -153,7 +144,7 @@
             style="@style/RegularText.Gray"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/space.regular"
+            android:layout_marginEnd="@dimen/space.big"
             android:layout_weight="1"
             android:focusable="true"
             android:focusableInTouchMode="true"

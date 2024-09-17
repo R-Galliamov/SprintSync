@@ -10,7 +10,7 @@
         style="@style/RegularText.Gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/space.large"
+        android:paddingStart="@dimen/space.big"
         android:paddingTop="@dimen/space.small"
         android:paddingEnd="@dimen/space.regular"
         android:paddingBottom="@dimen/space.small"
