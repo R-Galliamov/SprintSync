@@ -23,6 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space.small"
             android:layout_marginStart="@dimen/space.large"
             android:layout_marginEnd="@dimen/space.large"
             android:orientation="vertical">
@@ -38,7 +39,7 @@
                 layout="@layout/item_daily_goals"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space.regular" />
+                android:layout_marginTop="@dimen/space.big" />
 
             <FrameLayout
                 android:id="@+id/btAdjustToParameters"
@@ -57,7 +58,6 @@
                     android:text="@string/adjust_to_my_parameters" />
 
             </FrameLayout>
-
 
             <FrameLayout
                 android:id="@+id/btSave"

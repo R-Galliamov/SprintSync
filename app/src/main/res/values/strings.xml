@@ -6,7 +6,7 @@
     <string name="unit_kcal">Kcal</string>
     <string name="unit_min_per_km">min/km</string>
     <string name="unit_min">min</string>
-    <string name="unit_h_m">h:m</string>
+    <string name="unit_kg">kg</string>
 
     <string name="start_run_desc">Start run</string>
     <string name="home">Home</string>
@@ -70,5 +70,10 @@
     <string name="apply">Apply</string>
     <string name="general_goal">Wellness Aim</string>
     <string name="spinner_adapter_init_error">Spinner adapter isn\'t initialized</string>
+    <string name="personal">Personal</string>
+    <string name="birth_date">Birth date</string>
+    <string name="weight">Weight</string>
+    <string name="use_run_stats">Use my run stats to calculate goals</string>
+
 
 </resources>

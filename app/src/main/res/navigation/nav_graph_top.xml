@@ -113,6 +113,6 @@
     </fragment>
     <fragment
         android:id="@+id/userPreferencesFragment"
-        android:name="com.developers.sprintsync.user.ui.userPreferences.UserPreferencesFragment"
+        android:name="com.developers.sprintsync.user.ui.userPreferences.UserSettingsFragment"
         android:label="UserPreferencesFragment" />
 </navigation>

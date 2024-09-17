@@ -53,6 +53,7 @@
     <dimen name="button.height.regular">72dp</dimen>
     <dimen name="button.circle.size.big">60dp</dimen>
     <dimen name="button.circle.size.large">120dp</dimen>
+    <dimen name="button.height.big">90dp</dimen>"
 
     <!-- Shape -->
     <dimen name="shape.strokeWidth">2dp</dimen>

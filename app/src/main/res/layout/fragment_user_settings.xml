@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/space.large"
+    android:paddingEnd="@dimen/space.large">
+
+    <include
+        android:id="@+id/userParameters"
+        layout="@layout/item_user_parameters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
+        android:id="@+id/generalGoal"
+        layout="@layout/item_general_goal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space.big" />
+
+    <include
+        android:id="@+id/cardSwitch"
+        layout="@layout/item_switch_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space.small" />
+
+</LinearLayout>

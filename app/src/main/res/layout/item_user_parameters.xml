@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/RegularText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/personal" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shape.strokeWidth"
+        android:layout_marginTop="@dimen/space.small"
+        android:layout_marginBottom="@dimen/space.regular"
+        android:background="?colorSecondary" />
+
+    <!-- TODO create styles for card and buttons -->
+    <Spinner
+        android:id="@+id/spinnerGender"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button.height.regular"
+        android:background="@drawable/background_spinner"
+        android:itemTextAppearance="@style/RegularText.Gray"
+        android:popupBackground="@drawable/bt_outlined_on_primary_variant" />
+
+    <LinearLayout
+        android:id="@+id/cardBirthDate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button.height.regular"
+        android:layout_marginTop="@dimen/space.small"
+        android:background="@drawable/bt_outlined_on_primary_variant"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button.height.small"
+            android:gravity="center"
+            android:paddingStart="@dimen/space.big"
+            android:paddingEnd="@dimen/space.small"
+            android:text="@string/birth_date" />
+
+        <TextView
+            android:id="@+id/tvBirthDate"
+            style="@style/RegularText.Gray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/space.big"
+            android:layout_weight="1"
+            android:gravity="end"
+            tools:text="8 aug 1997" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cardWeight"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button.height.regular"
+        android:layout_marginTop="@dimen/space.small"
+        android:background="@drawable/bt_outlined_on_primary_variant"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button.height.small"
+            android:gravity="center"
+            android:paddingStart="@dimen/space.big"
+            android:paddingEnd="@dimen/space.small"
+            android:text="@string/weight" />
+
+        <EditText
+            android:id="@+id/etWeightValue"
+            style="@style/RegularText.Gray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="end"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textColorHint="@color/black"
+            tools:ignore="LabelFor"
+            tools:text="75" />
+
+        <TextView
+            android:id="@+id/tvWeightUnits"
+            style="@style/RegularText.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/space.big"
+            android:gravity="end"
+            android:text="@string/unit_kg" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.developers.sprintsync.R
-import com.developers.sprintsync.databinding.FragmentUserPreferencesBinding
+import com.developers.sprintsync.databinding.FragmentUserSettingsBinding
 import com.developers.sprintsync.user.dataStorage.repository.userPreferences.UserPreferencesRepositoryImpl
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UserPreferencesFragment : Fragment() {
-    private var _binding: FragmentUserPreferencesBinding? = null
+class UserSettingsFragment : Fragment() {
+    private var _binding: FragmentUserSettingsBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
     @Inject
@@ -24,7 +24,7 @@ class UserPreferencesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentUserPreferencesBinding.inflate(inflater, container, false)
+        _binding = FragmentUserSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
