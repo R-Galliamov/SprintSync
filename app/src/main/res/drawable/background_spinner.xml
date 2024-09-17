@@ -4,6 +4,6 @@
     <item android:drawable="@drawable/bt_outlined_on_primary_variant" />
     <item
         android:drawable="@drawable/ic_arrow_down_32dp"
-        android:end="@dimen/space.regular"
+        android:end="@dimen/space.big"
         android:gravity="end|center_vertical" />
 </layer-list>
