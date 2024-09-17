@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/statisticsFragment"
-        android:name="com.developers.sprintsync.user.ui.userProfile.StatisticsFragment"
+        android:name="com.developers.sprintsync.statistics.ui.statistics.StatisticsFragment"
         android:label="StatisticsFragment"
         tools:layout="@layout/fragment_statistics" />
 </navigation>

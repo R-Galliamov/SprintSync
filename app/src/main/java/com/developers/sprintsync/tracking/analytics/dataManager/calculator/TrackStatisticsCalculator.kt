@@ -1,7 +1,7 @@
 package com.developers.sprintsync.tracking.analytics.dataManager.calculator
 
+import com.developers.sprintsync.statistics.model.chart.chartData.util.time.TimeUtils
 import com.developers.sprintsync.tracking.session.model.track.Track
-import com.developers.sprintsync.user.model.chart.chartData.util.time.TimeUtils
 
 class TrackStatisticsCalculator(
     tracks: List<Track>,

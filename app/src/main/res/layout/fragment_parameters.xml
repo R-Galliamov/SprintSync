@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:paddingStart="@dimen/space.large"
     android:paddingEnd="@dimen/space.large"
-    tools:context="com.developers.sprintsync.user.ui.userSettings.ParametersFragment">
+    tools:context="com.developers.sprintsync.parameters.ui.ParametersFragment">
 
     <include
         android:id="@+id/userParameters"

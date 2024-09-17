@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.session.service.dataBuilder.calculator
 
-import com.developers.sprintsync.user.model.UserSettings
+import com.developers.sprintsync.parameters.model.UserSettings
 import javax.inject.Inject
 import kotlin.math.roundToInt
 

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/parametersFragment"
-        android:name="com.developers.sprintsync.user.ui.userSettings.ParametersFragment"
+        android:name="com.developers.sprintsync.parameters.ui.ParametersFragment"
         android:label="ParametersFragment"
         tools:layout="@layout/fragment_parameters" />
 </navigation>

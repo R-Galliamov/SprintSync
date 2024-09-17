@@ -1,9 +1,9 @@
 package com.developers.sprintsync.tracking.dataStorage.repository.track.useCase
 
 import android.util.Log
+import com.developers.sprintsync.statistics.model.chart.chartData.util.time.TimeUtils
+import com.developers.sprintsync.statistics.model.chart.chartData.util.time.TimestampBuilder
 import com.developers.sprintsync.tracking.session.model.track.Track
-import com.developers.sprintsync.user.model.chart.chartData.util.time.TimeUtils
-import com.developers.sprintsync.user.model.chart.chartData.util.time.TimestampBuilder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
