@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.developers.sprintsync.R
-import com.developers.sprintsync.databinding.FragmentUserProfileBinding
+import com.developers.sprintsync.databinding.FragmentStatisticsBinding
 import com.developers.sprintsync.global.util.extension.findTopNavController
 import com.developers.sprintsync.user.model.statistics.GeneralStatistics
 import com.developers.sprintsync.user.model.statistics.WeeklyStatistics
@@ -23,8 +23,8 @@ import com.developers.sprintsync.user.viewModel.UserProfileViewModel
 import com.github.mikephil.charting.charts.CombinedChart
 import kotlinx.coroutines.launch
 
-class UserProfileFragment : Fragment() {
-    private var _binding: FragmentUserProfileBinding? = null
+class StatisticsFragment : Fragment() {
+    private var _binding: FragmentStatisticsBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
     private val viewModel by activityViewModels<UserProfileViewModel>()
@@ -40,7 +40,7 @@ class UserProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentStatisticsBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -11,8 +11,8 @@
     <string name="start_run_desc">Start run</string>
     <string name="home">Home</string>
     <string name="history">History</string>
-    <string name="analysis">Analysis</string>
-    <string name="profile">Profile</string>
+    <string name="statistics">Statistics</string>
+    <string name="parameters">Parameters</string>
     <string name="steps">steps</string>
     <string name="week_goal">Week goal</string>
 

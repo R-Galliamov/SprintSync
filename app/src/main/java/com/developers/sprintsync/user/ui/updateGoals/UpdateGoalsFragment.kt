@@ -60,7 +60,6 @@ class UpdateGoalsFragment : Fragment() {
         setCardsOnClickListener()
         setDailyGoalsListener()
         setWellnessGoalListener()
-        // TODO: update when finish testing
         setAdjustButtonListener()
     }
 
@@ -202,7 +201,7 @@ class UpdateGoalsFragment : Fragment() {
 
     private fun setAdjustButtonListener() {
         binding.btAdjustToParameters.setOnClickListener {
-            findNavController().navigate(R.id.action_updateGoalsFragment_to_userPreferencesFragment)
+            // TODO: update
         }
     }
 

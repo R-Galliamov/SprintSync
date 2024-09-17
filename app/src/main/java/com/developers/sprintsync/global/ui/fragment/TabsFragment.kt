@@ -56,13 +56,13 @@ class TabsFragment : Fragment() {
                     true
                 }
 
-                R.id.analysis -> {
-                    navController.navigate(R.id.nav_graph_analysis)
+                R.id.statistics -> {
+                    navController.navigate(R.id.nav_graph_statistics)
                     true
                 }
 
-                R.id.profile -> {
-                    navController.navigate(R.id.nav_graph_profile)
+                R.id.parameters -> {
+                    navController.navigate(R.id.nav_graph_parameters)
                     true
                 }
                 else -> false

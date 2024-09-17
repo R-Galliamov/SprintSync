@@ -9,6 +9,13 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/statistics"
+        android:contentDescription="@string/statistics"
+        android:icon="@drawable/ic_analysis_24dp"
+        android:title="@string/statistics"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/history"
         android:contentDescription="@string/history"
         android:icon="@drawable/ic_plan_32dp"
@@ -16,16 +23,9 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/analysis"
-        android:contentDescription="@string/analysis"
-        android:icon="@drawable/ic_analysis_24dp"
-        android:title="@string/analysis"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/profile"
-        android:contentDescription="@string/profile"
+        android:id="@+id/parameters"
+        android:contentDescription="@string/pace"
         android:icon="@drawable/ic_profile_48dp"
-        android:title="@string/profile"
+        android:title="@string/parameters"
         app:showAsAction="ifRoom" />
 </menu>
