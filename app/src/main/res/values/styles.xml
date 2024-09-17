@@ -138,5 +138,10 @@
         <item name="android:padding">@dimen/space.regular</item>
     </style>
 
+    <!-- Switch -->
+    <style name="SwitchStyle">
+        <item name="trackTint">?colorSecondaryVariant</item>
+    </style>
+
 
 </resources>
