@@ -1,4 +1,4 @@
-package com.developers.sprintsync.statistics.util.adapter
+package com.developers.sprintsync.global.util.spinner.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.developers.sprintsync.databinding.ItemSpinnerBinding
-import com.developers.sprintsync.statistics.model.goal.WellnessGoal
-import com.developers.sprintsync.statistics.util.converter.WellnessGoalDisplayTextConverter
+import com.developers.sprintsync.global.util.spinner.data.SpinnerItem
 
 class SpinnerAdapter(
     context: Context,
-    private val items: List<WellnessGoal>,
-) : ArrayAdapter<WellnessGoal>(context, DEFAULT_RESOURCE, items) {
+    private val items: List<SpinnerItem>,
+) : ArrayAdapter<SpinnerItem>(context, DEFAULT_RESOURCE, items) {
     override fun getView(
         position: Int,
         convertView: View?,
@@ -31,7 +30,7 @@ class SpinnerAdapter(
     ): View {
         val binding = ItemSpinnerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val item = items[position]
-        binding.tvTitle.text = WellnessGoalDisplayTextConverter.toDisplayText(item)
+        binding.tvTitle.text = item.displayText
         return binding.tvTitle
     }
 
