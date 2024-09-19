@@ -14,10 +14,11 @@ import androidx.navigation.fragment.findNavController
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUpdateGoalsBinding
 import com.developers.sprintsync.global.util.AndroidUtils
+import com.developers.sprintsync.global.util.spinner.manager.SpinnerManager
+import com.developers.sprintsync.global.util.spinner.mapper.WellnessGoalToSpinnerMapper
 import com.developers.sprintsync.statistics.model.chart.chartData.Metric
 import com.developers.sprintsync.statistics.model.goal.WellnessGoal
 import com.developers.sprintsync.statistics.model.ui.MetricInputView
-import com.developers.sprintsync.statistics.util.adapter.SpinnerAdapter
 import com.developers.sprintsync.statistics.util.converter.MetricInputConverter
 import com.developers.sprintsync.statistics.viewModel.UpdateGoalsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,8 +34,8 @@ class UpdateGoalsFragment : Fragment() {
 
     private val viewModel by activityViewModels<UpdateGoalsViewModel>()
 
-    private var _spinnerAdapter: SpinnerAdapter? = null
-    private val spinnerAdapter get() = checkNotNull(_spinnerAdapter) { getString(R.string.spinner_adapter_init_error) }
+    private var _spinnerManager: SpinnerManager<WellnessGoal>? = null
+    private val spinnerManager get() = checkNotNull(_spinnerManager) { getString(R.string.spinner_manager_init_error) }
 
     @Inject
     lateinit var androidUtils: AndroidUtils
@@ -55,7 +56,7 @@ class UpdateGoalsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setBackButton()
         setSaveButton()
-        initSpinner()
+        initSpinnerManager()
         configureKeyboardBehavior()
         setCardsOnClickListener()
         setDailyGoalsListener()
@@ -63,21 +64,18 @@ class UpdateGoalsFragment : Fragment() {
         setAdjustButtonListener()
     }
 
-    private fun initSpinnerAdapter() {
-        _spinnerAdapter = SpinnerAdapter(requireContext(), WellnessGoal.entries)
-    }
-
-    private fun initSpinner() {
-        initSpinnerAdapter()
-        binding.generalGoal.spinner.adapter = spinnerAdapter
+    private fun initSpinnerManager() {
+        val spinner = binding.generalGoal.spinner
+        val items = WellnessGoal.entries
+        val mapper = WellnessGoalToSpinnerMapper()
+        _spinnerManager = SpinnerManager(requireContext(), spinner, items, mapper)
     }
 
     private fun setWellnessGoalListener() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.wellnessGoal.collect { goal ->
-                    val position = spinnerAdapter.getPosition(goal)
-                    binding.generalGoal.spinner.setSelection(position)
+                    spinnerManager.setSelectedItem(goal)
                 }
             }
         }
@@ -174,11 +172,8 @@ class UpdateGoalsFragment : Fragment() {
     }
 
     private fun saveWellnessGoal() {
-        val selectedPosition = binding.generalGoal.spinner.selectedItemPosition
-        val wellnessGoal = spinnerAdapter.getItem(selectedPosition)
-        if (wellnessGoal != null) {
-            viewModel.saveWellnessGoal(wellnessGoal)
-        }
+        val goal = spinnerManager.getSelectedItem()
+        viewModel.saveWellnessGoal(goal)
     }
 
     private fun createMetricValueMap(): Map<Metric, Float> {
@@ -208,6 +203,7 @@ class UpdateGoalsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _spinnerManager = null
     }
 
     companion object {

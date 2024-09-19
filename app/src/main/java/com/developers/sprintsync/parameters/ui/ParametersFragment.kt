@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentParametersBinding
+import com.developers.sprintsync.global.util.spinner.manager.SpinnerManager
+import com.developers.sprintsync.global.util.spinner.mapper.GenderToSpinnerMapper
 import com.developers.sprintsync.parameters.dataStorage.repository.UserPreferencesRepositoryImpl
+import com.developers.sprintsync.parameters.model.Gender
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -15,6 +18,9 @@ import javax.inject.Inject
 class ParametersFragment : Fragment() {
     private var _binding: FragmentParametersBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+
+    private var _genderSpinnerManager: SpinnerManager<Gender>? = null
+    private val genderSpinnerManager get() = checkNotNull(_genderSpinnerManager) { getString(R.string.spinner_manager_init_error) }
 
     @Inject
     lateinit var repo: UserPreferencesRepositoryImpl
@@ -33,10 +39,19 @@ class ParametersFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        initGenderSpinnerManager()
+    }
+
+    private fun initGenderSpinnerManager() {
+        val spinner = binding.userParameters.spinnerGender
+        val items = Gender.entries
+        val mapper = GenderToSpinnerMapper()
+        _genderSpinnerManager = SpinnerManager(requireContext(), spinner, items, mapper)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _genderSpinnerManager = null
     }
 }

@@ -74,6 +74,7 @@
     <string name="birth_date">Birth date</string>
     <string name="weight">Weight</string>
     <string name="use_run_stats">Use my run stats to calculate goals</string>
+    <string name="spinner_manager_init_error">Spinner Manager isn\'t initialized</string>
 
 
 </resources>
