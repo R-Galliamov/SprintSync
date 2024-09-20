@@ -7,7 +7,6 @@ import com.developers.sprintsync.global.util.spinner.converter.SpinnerItemConver
 import com.developers.sprintsync.global.util.spinner.mapper.ItemToSpinnerMapper
 
 class SpinnerManager<T>(
-    private val context: Context,
     private val spinner: Spinner,
     private val items: List<T>,
     itemToSpinnerMapper: ItemToSpinnerMapper<T>,
@@ -17,7 +16,7 @@ class SpinnerManager<T>(
 
     private fun createSpinnerAdapter(): SpinnerAdapter {
         val spinnerItems = spinnerItemConverter.toSpinnerItems(items)
-        return SpinnerAdapter(context, spinnerItems)
+        return SpinnerAdapter(spinner.context, spinnerItems)
     }
 
     private fun initAdapter(adapter: SpinnerAdapter) {

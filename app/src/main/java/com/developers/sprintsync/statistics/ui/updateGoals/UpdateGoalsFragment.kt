@@ -68,7 +68,7 @@ class UpdateGoalsFragment : Fragment() {
         val spinner = binding.generalGoal.spinner
         val items = WellnessGoal.entries
         val mapper = WellnessGoalToSpinnerMapper()
-        _spinnerManager = SpinnerManager(requireContext(), spinner, items, mapper)
+        _spinnerManager = SpinnerManager(spinner, items, mapper)
     }
 
     private fun setWellnessGoalListener() {

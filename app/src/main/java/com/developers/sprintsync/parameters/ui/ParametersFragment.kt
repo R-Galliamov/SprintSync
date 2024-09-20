@@ -11,6 +11,7 @@ import com.developers.sprintsync.global.util.spinner.manager.SpinnerManager
 import com.developers.sprintsync.global.util.spinner.mapper.GenderToSpinnerMapper
 import com.developers.sprintsync.parameters.dataStorage.repository.UserPreferencesRepositoryImpl
 import com.developers.sprintsync.parameters.model.Gender
+import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -40,13 +41,31 @@ class ParametersFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initGenderSpinnerManager()
+        setDatePicker()
     }
 
     private fun initGenderSpinnerManager() {
         val spinner = binding.userParameters.spinnerGender
         val items = Gender.entries
         val mapper = GenderToSpinnerMapper()
-        _genderSpinnerManager = SpinnerManager(requireContext(), spinner, items, mapper)
+        _genderSpinnerManager = SpinnerManager(spinner, items, mapper)
+    }
+
+    private fun setDatePicker() {
+        val datePicker =
+            MaterialDatePicker.Builder
+                .datePicker()
+                .setTitleText("Select date")
+                .setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
+                .build()
+                .also { picker ->
+                    picker.addOnPositiveButtonClickListener {
+                        // TODO
+                    }
+                }
+        binding.userParameters.cardBirthDate.setOnClickListener {
+            datePicker.show(parentFragmentManager, "Tag")
+        }
     }
 
     override fun onDestroyView() {
