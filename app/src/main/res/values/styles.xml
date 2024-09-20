@@ -143,5 +143,17 @@
         <item name="trackTint">?colorSecondaryVariant</item>
     </style>
 
+    <style name="ThemeOverlay.App.DatePicker" parent="@style/ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">?colorSecondary</item>
+        <item name="colorOnPrimary">?colorOnSecondary</item>
+    </style>
 
+    <!-- EditText -->
+    <style name="EditTextTheme" parent="RegularText.Gray">
+        <item name="android:backgroundTint">@drawable/colors_edittext_selector</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:importantForAutofill">no</item>
+        <item name="android:textColorHint">?colorOnPrimary</item>
+    </style>
 </resources>

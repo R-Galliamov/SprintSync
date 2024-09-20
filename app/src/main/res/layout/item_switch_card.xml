@@ -19,13 +19,14 @@
         android:paddingBottom="@dimen/space.small"
         android:text="@string/use_run_stats" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/btSwitch"
-        style="@style/SwitchStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space.big"
         android:layout_marginEnd="@dimen/space.big"
-        android:checked="false" />
+        android:checked="false"
+        app:thumbTint="@drawable/colors_switchthumb_selector"
+        app:trackTint="@drawable/colors_switchtint_selector" />
 
 </LinearLayout>

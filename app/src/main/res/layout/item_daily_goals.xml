@@ -43,19 +43,15 @@
 
         <EditText
             android:id="@+id/etDistanceValue"
-            style="@style/RegularText.Gray"
+            style="@style/EditTextTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:gravity="end"
-            android:importantForAutofill="no"
             android:inputType="numberDecimal"
             android:maxLength="4"
-            android:textColorHint="@color/black"
             tools:ignore="LabelFor"
-            tools:text="2.33333" />
+            tools:text="2.33" />
 
         <TextView
             android:id="@+id/tvDistanceUnits"
@@ -92,17 +88,13 @@
 
         <EditText
             android:id="@+id/etDurationValue"
-            style="@style/RegularText.Gray"
+            style="@style/EditTextTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:gravity="end"
-            android:importantForAutofill="no"
             android:inputType="number"
             android:maxLength="4"
-            android:textColorHint="@color/black"
             tools:ignore="LabelFor"
             tools:text="120" />
 
@@ -141,18 +133,14 @@
 
         <EditText
             android:id="@+id/etCaloriesValue"
-            style="@style/RegularText.Gray"
+            style="@style/EditTextTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/space.big"
             android:layout_weight="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:gravity="end"
-            android:importantForAutofill="no"
             android:inputType="number"
             android:maxLength="4"
-            android:textColorHint="@color/black"
             tools:ignore="LabelFor"
             tools:text="800" />
 
