@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:duplicateParentState="false"
     android:orientation="vertical"
     android:paddingStart="@dimen/space.large"
     android:paddingEnd="@dimen/space.large"
@@ -27,5 +28,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space.small" />
+
 
 </LinearLayout>

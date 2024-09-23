@@ -1,4 +1,4 @@
-package com.developers.sprintsync.statistics.util.converter
+package com.developers.sprintsync.parameters.dataStorage.converter
 
 import com.developers.sprintsync.statistics.model.goal.WellnessGoal
 

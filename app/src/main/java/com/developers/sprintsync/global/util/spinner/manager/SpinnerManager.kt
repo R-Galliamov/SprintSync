@@ -1,6 +1,5 @@
 package com.developers.sprintsync.global.util.spinner.manager
 
-import android.content.Context
 import android.widget.Spinner
 import com.developers.sprintsync.global.util.spinner.adapter.SpinnerAdapter
 import com.developers.sprintsync.global.util.spinner.converter.SpinnerItemConverter

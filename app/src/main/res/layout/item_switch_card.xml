@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bt_outlined_on_primary_variant"
     android:gravity="center_vertical"
+    android:clickable="true"
     android:orientation="horizontal">
 
     <TextView

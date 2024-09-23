@@ -85,8 +85,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
-            android:inputType="number"
-            android:maxLength="3"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:maxLength="5"
             tools:ignore="LabelFor"
             tools:text="75" />
 
