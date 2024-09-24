@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AndroidUtils
+class KeyboardUtils
     @Inject
     constructor(
         val context: Context,

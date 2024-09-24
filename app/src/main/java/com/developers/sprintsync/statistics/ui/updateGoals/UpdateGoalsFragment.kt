@@ -1,7 +1,6 @@
 package com.developers.sprintsync.statistics.ui.updateGoals
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +12,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentUpdateGoalsBinding
-import com.developers.sprintsync.global.util.AndroidUtils
-import com.developers.sprintsync.global.util.spinner.manager.SpinnerManager
-import com.developers.sprintsync.global.util.spinner.mapper.WellnessGoalToSpinnerMapper
+import com.developers.sprintsync.global.manager.view.input.InputCardManager
+import com.developers.sprintsync.global.manager.view.spinner.manager.SpinnerManager
+import com.developers.sprintsync.global.manager.view.spinner.mapper.WellnessGoalToSpinnerMapper
 import com.developers.sprintsync.statistics.model.chart.chartData.Metric
 import com.developers.sprintsync.statistics.model.goal.WellnessGoal
-import com.developers.sprintsync.statistics.model.ui.MetricInputView
+import com.developers.sprintsync.statistics.model.ui.InputCardView
 import com.developers.sprintsync.statistics.util.converter.MetricInputConverter
 import com.developers.sprintsync.statistics.viewModel.UpdateGoalsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +29,7 @@ class UpdateGoalsFragment : Fragment() {
     private var _binding: FragmentUpdateGoalsBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
-    private val metricInputViews: Map<Metric, MetricInputView> by lazy { createMetricMetricViewMap(binding) }
+    private val inputCardViews: Map<Metric, InputCardView> by lazy { createMetricInputViewMap(binding) }
 
     private val viewModel by activityViewModels<UpdateGoalsViewModel>()
 
@@ -38,7 +37,7 @@ class UpdateGoalsFragment : Fragment() {
     private val spinnerManager get() = checkNotNull(_spinnerManager) { getString(R.string.spinner_manager_init_error) }
 
     @Inject
-    lateinit var androidUtils: AndroidUtils
+    lateinit var inputCardManager: InputCardManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,11 +56,14 @@ class UpdateGoalsFragment : Fragment() {
         setBackButton()
         setSaveButton()
         initSpinnerManager()
-        configureKeyboardBehavior()
-        setCardsOnClickListener()
+        configureInputCards()
         setDailyGoalsListener()
         setWellnessGoalListener()
         setAdjustButtonListener()
+    }
+
+    private fun configureInputCards() {
+        inputCardManager.configureInputCards(binding.container, inputCardViews.values.toList())
     }
 
     private fun initSpinnerManager() {
@@ -81,30 +83,30 @@ class UpdateGoalsFragment : Fragment() {
         }
     }
 
-    private fun createMetricMetricViewMap(binding: FragmentUpdateGoalsBinding): Map<Metric, MetricInputView> {
-        val map = mutableMapOf<Metric, MetricInputView>()
+    private fun createMetricInputViewMap(binding: FragmentUpdateGoalsBinding): Map<Metric, InputCardView> {
+        val map = mutableMapOf<Metric, InputCardView>()
         Metric.entries.forEach { metric ->
-            val metricInputView =
+            val inputCardView =
                 when (metric) {
                     Metric.DISTANCE ->
-                        MetricInputView(
+                        InputCardView(
                             card = binding.dailyGoals.cardDistance,
                             editText = binding.dailyGoals.etDistanceValue,
                         )
 
                     Metric.DURATION ->
-                        MetricInputView(
+                        InputCardView(
                             card = binding.dailyGoals.cardDuration,
                             editText = binding.dailyGoals.etDurationValue,
                         )
 
                     Metric.CALORIES ->
-                        MetricInputView(
+                        InputCardView(
                             card = binding.dailyGoals.cardCalories,
                             editText = binding.dailyGoals.etCaloriesValue,
                         )
                 }
-            map[metric] = metricInputView
+            map[metric] = inputCardView
         }
         return map
     }
@@ -115,44 +117,8 @@ class UpdateGoalsFragment : Fragment() {
                 viewModel.formattedDailyGoals.collect { mapMetricGoal ->
                     mapMetricGoal.entries.forEach { entry ->
                         val goal = entry.value.value
-                        metricInputViews[entry.key]?.editText?.setText(goal)
+                        inputCardViews[entry.key]?.editText?.setText(goal)
                     }
-                }
-            }
-        }
-    }
-
-    private fun setCardsOnClickListener() {
-        metricInputViews.forEach { (metric, metricView) ->
-            metricView.card.setOnClickListener {
-                onCardClick(metric)
-            }
-        }
-    }
-
-    private fun onCardClick(metric: Metric) {
-        metricInputViews[metric]?.editText?.requestFocus()
-    }
-
-    private fun configureKeyboardBehavior() {
-        clearFocusOnRootClick()
-        setOnFocusListeners()
-    }
-
-    private fun clearFocusOnRootClick() {
-        binding.container.setOnClickListener {
-            Log.d(TAG, "Clear focus")
-            metricInputViews.values.forEach { it.editText.clearFocus() }
-        }
-    }
-
-    private fun setOnFocusListeners() {
-        metricInputViews.values.forEach { metricInputView ->
-            metricInputView.editText.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    androidUtils.showKeyboard(metricInputView.editText)
-                } else {
-                    androidUtils.hideKeyboard(requireView())
                 }
             }
         }
@@ -178,7 +144,7 @@ class UpdateGoalsFragment : Fragment() {
 
     private fun createMetricValueMap(): Map<Metric, Float> {
         val map = mutableMapOf<Metric, Float>()
-        metricInputViews.forEach { (metric, metricView) ->
+        inputCardViews.forEach { (metric, metricView) ->
             val uiValue = metricView.editText.text.toString()
             if (uiValue.isBlank()) return@forEach
             val value = MetricInputConverter.convertInputToMetricValue(metric, uiValue)

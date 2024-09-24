@@ -1,7 +1,7 @@
-package com.developers.sprintsync.global.util.spinner.converter
+package com.developers.sprintsync.global.manager.view.spinner.converter
 
-import com.developers.sprintsync.global.util.spinner.data.SpinnerItem
-import com.developers.sprintsync.global.util.spinner.mapper.ItemToSpinnerMapper
+import com.developers.sprintsync.global.manager.view.spinner.data.SpinnerItem
+import com.developers.sprintsync.global.manager.view.spinner.mapper.ItemToSpinnerMapper
 
 class SpinnerItemConverter<T>(
     itemToSpinnerMapper: ItemToSpinnerMapper<T>,

@@ -11,16 +11,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentParametersBinding
-import com.developers.sprintsync.global.util.AndroidUtils
+import com.developers.sprintsync.global.manager.view.input.InputCardManager
+import com.developers.sprintsync.global.manager.view.spinner.manager.SpinnerManager
+import com.developers.sprintsync.global.manager.view.spinner.mapper.GenderToSpinnerMapper
+import com.developers.sprintsync.global.manager.view.spinner.mapper.WellnessGoalToSpinnerMapper
 import com.developers.sprintsync.global.util.extension.setState
-import com.developers.sprintsync.global.util.spinner.manager.SpinnerManager
-import com.developers.sprintsync.global.util.spinner.mapper.GenderToSpinnerMapper
-import com.developers.sprintsync.global.util.spinner.mapper.WellnessGoalToSpinnerMapper
 import com.developers.sprintsync.parameters.model.Gender
 import com.developers.sprintsync.parameters.model.UserParameters
 import com.developers.sprintsync.parameters.util.creator.DatePickerCreator
 import com.developers.sprintsync.parameters.viewModel.ParametersViewModel
 import com.developers.sprintsync.statistics.model.goal.WellnessGoal
+import com.developers.sprintsync.statistics.model.ui.InputCardView
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,7 +44,7 @@ class ParametersFragment : Fragment() {
     private val viewModel: ParametersViewModel by viewModels()
 
     @Inject
-    lateinit var androidUtils: AndroidUtils
+    lateinit var inputCardManager: InputCardManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,12 +60,16 @@ class ParametersFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        configureKeyboardBehavior()
-        setCardsOnClickListener()
+        configureInputCards()
+        setCardSwitchListener()
         initGenderSpinnerManager()
         initWellnessGoalSpinnerManager()
         initParametersFlowListeners()
         setBirthDateCardListener()
+    }
+
+    private fun configureInputCards() {
+        inputCardManager.configureInputCards(binding.root, createTextInputViews())
     }
 
     private fun initGenderSpinnerManager() {
@@ -141,42 +146,16 @@ class ParametersFragment : Fragment() {
         return UserParameters(gender, birthDateTimestamp, weight, wellnessGoal, useStatsPermission)
     }
 
-    private fun setCardsOnClickListener() {
-        setCardWeightListener()
-        setCardSwitchListener()
-    }
-
-    private fun setCardWeightListener() {
-        binding.userParameters.cardWeight.setOnClickListener { view ->
-            view.requestFocus()
-        }
-    }
-
     private fun setCardSwitchListener() {
         binding.cardSwitch.root.setOnClickListener {
             binding.cardSwitch.btSwitch.isChecked = !binding.cardSwitch.btSwitch.isChecked
         }
     }
 
-    private fun configureKeyboardBehavior() {
-        clearFocusOnRootClick()
-        setOnFocusListeners()
-    }
-
-    private fun clearFocusOnRootClick() {
-        binding.root.setOnClickListener {
-            binding.userParameters.etWeightValue.clearFocus()
-        }
-    }
-
-    private fun setOnFocusListeners() {
-        binding.userParameters.etWeightValue.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                androidUtils.showKeyboard(view)
-            } else {
-                androidUtils.hideKeyboard(requireView())
-            }
-        }
+    private fun createTextInputViews(): List<InputCardView> {
+        val card = binding.userParameters.cardWeight
+        val editText = binding.userParameters.etWeightValue
+        return listOf(InputCardView(card, editText))
     }
 
     private fun clearResources() {

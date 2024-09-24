@@ -1,9 +1,9 @@
-package com.developers.sprintsync.global.util.spinner.manager
+package com.developers.sprintsync.global.manager.view.spinner.manager
 
 import android.widget.Spinner
-import com.developers.sprintsync.global.util.spinner.adapter.SpinnerAdapter
-import com.developers.sprintsync.global.util.spinner.converter.SpinnerItemConverter
-import com.developers.sprintsync.global.util.spinner.mapper.ItemToSpinnerMapper
+import com.developers.sprintsync.global.manager.view.spinner.adapter.SpinnerAdapter
+import com.developers.sprintsync.global.manager.view.spinner.converter.SpinnerItemConverter
+import com.developers.sprintsync.global.manager.view.spinner.mapper.ItemToSpinnerMapper
 
 class SpinnerManager<T>(
     private val spinner: Spinner,

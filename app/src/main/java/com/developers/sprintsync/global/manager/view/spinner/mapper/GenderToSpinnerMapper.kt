@@ -1,6 +1,6 @@
-package com.developers.sprintsync.global.util.spinner.mapper
+package com.developers.sprintsync.global.manager.view.spinner.mapper
 
-import com.developers.sprintsync.global.util.spinner.data.SpinnerItem
+import com.developers.sprintsync.global.manager.view.spinner.data.SpinnerItem
 import com.developers.sprintsync.parameters.model.Gender
 
 class GenderToSpinnerMapper : ItemToSpinnerMapper<Gender>() {
