@@ -2,7 +2,7 @@ package com.developers.sprintsync.global.dataStorage.di
 
 import com.developers.sprintsync.global.dataStorage.db.AppDb
 import com.developers.sprintsync.tracking.dataStorage.db.dao.TrackDao
-import com.developers.sprintsync.statistics.dataStorage.db.dao.DailyGoalDao
+import com.developers.sprintsync.statistics.data.db.dao.DailyGoalDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

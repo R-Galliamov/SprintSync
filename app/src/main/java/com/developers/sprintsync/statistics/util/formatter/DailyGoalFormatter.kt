@@ -1,8 +1,8 @@
 package com.developers.sprintsync.statistics.util.formatter
 
-import com.developers.sprintsync.statistics.model.chart.chartData.Metric
-import com.developers.sprintsync.statistics.model.goal.DailyGoal
-import com.developers.sprintsync.statistics.model.ui.FormattedDailyGoal
+import com.developers.sprintsync.statistics.domain.chart.data.Metric
+import com.developers.sprintsync.statistics.domain.goal.DailyGoal
+import com.developers.sprintsync.statistics.domain.ui.FormattedDailyGoal
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DistanceFormatter
 import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DurationFormatter
 import kotlin.math.roundToInt

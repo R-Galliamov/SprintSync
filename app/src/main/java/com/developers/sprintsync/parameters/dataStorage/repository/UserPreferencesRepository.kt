@@ -8,7 +8,7 @@ import com.developers.sprintsync.parameters.dataStorage.converter.GenderStorageC
 import com.developers.sprintsync.parameters.dataStorage.converter.WellnessGoalStorageConverter
 import com.developers.sprintsync.parameters.model.Gender
 import com.developers.sprintsync.parameters.model.UserParameters
-import com.developers.sprintsync.statistics.model.goal.WellnessGoal
+import com.developers.sprintsync.statistics.domain.goal.WellnessGoal
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

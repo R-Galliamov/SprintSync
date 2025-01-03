@@ -1,7 +1,7 @@
 package com.developers.sprintsync.statistics.util.creater
 
-import com.developers.sprintsync.statistics.model.chart.chartData.Metric
-import com.developers.sprintsync.statistics.model.goal.DailyGoal
+import com.developers.sprintsync.statistics.domain.chart.data.Metric
+import com.developers.sprintsync.statistics.domain.goal.DailyGoal
 
 object DailyGoalCreator {
     fun create(

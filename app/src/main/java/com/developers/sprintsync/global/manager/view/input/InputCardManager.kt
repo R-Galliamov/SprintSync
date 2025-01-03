@@ -3,7 +3,7 @@ package com.developers.sprintsync.global.manager.view.input
 import android.view.View
 import android.widget.EditText
 import com.developers.sprintsync.global.util.KeyboardUtils
-import com.developers.sprintsync.statistics.model.ui.InputCardView
+import com.developers.sprintsync.statistics.domain.ui.InputCardView
 import javax.inject.Inject
 
 class InputCardManager

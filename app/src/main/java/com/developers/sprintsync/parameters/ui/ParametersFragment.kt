@@ -20,8 +20,8 @@ import com.developers.sprintsync.parameters.model.Gender
 import com.developers.sprintsync.parameters.model.UserParameters
 import com.developers.sprintsync.parameters.util.creator.DatePickerCreator
 import com.developers.sprintsync.parameters.viewModel.ParametersViewModel
-import com.developers.sprintsync.statistics.model.goal.WellnessGoal
-import com.developers.sprintsync.statistics.model.ui.InputCardView
+import com.developers.sprintsync.statistics.domain.goal.WellnessGoal
+import com.developers.sprintsync.statistics.domain.ui.InputCardView
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

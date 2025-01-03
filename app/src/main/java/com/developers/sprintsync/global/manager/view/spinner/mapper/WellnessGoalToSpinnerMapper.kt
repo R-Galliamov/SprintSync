@@ -1,7 +1,7 @@
 package com.developers.sprintsync.global.manager.view.spinner.mapper
 
 import com.developers.sprintsync.global.manager.view.spinner.data.SpinnerItem
-import com.developers.sprintsync.statistics.model.goal.WellnessGoal
+import com.developers.sprintsync.statistics.domain.goal.WellnessGoal
 
 class WellnessGoalToSpinnerMapper : ItemToSpinnerMapper<WellnessGoal>() {
     override val itemToSpinnerMap: Map<WellnessGoal, SpinnerItem> = createMap()

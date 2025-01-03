@@ -1,7 +1,7 @@
 package com.developers.sprintsync.parameters.dataStorage.repository.useCase
 
 import com.developers.sprintsync.parameters.dataStorage.repository.UserPreferencesRepository
-import com.developers.sprintsync.statistics.model.goal.WellnessGoal
+import com.developers.sprintsync.statistics.domain.goal.WellnessGoal
 import javax.inject.Inject
 
 class WellnessGoalUseCase

@@ -1,8 +1,8 @@
 package com.developers.sprintsync.tracking.dataStorage.repository.track.useCase
 
 import android.util.Log
-import com.developers.sprintsync.statistics.model.chart.chartData.util.time.TimeUtils
-import com.developers.sprintsync.statistics.model.chart.chartData.util.time.TimestampBuilder
+import com.developers.sprintsync.statistics.domain.chart.utils.time.TimeUtils
+import com.developers.sprintsync.statistics.domain.chart.utils.time.TimestampBuilder
 import com.developers.sprintsync.tracking.session.model.track.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,7 +21,7 @@ class FilterTracksUseCase
             Log.d("FilterTracksUseCase", "Start filtering tracks called")
             return getTracksFlowUseCase.tracks.map { tracks ->
                 Log.d("FilterTracksUseCase", "Start filtering tracks")
-                val fromTimestamp = TimeUtils.shiftTimestampByDays(referenceTimestamp, fromDayIndex)
+                val fromTimestamp = TimeUtils.addDaysToTimestamp(referenceTimestamp, fromDayIndex)
                 val toTimestamp =
                     TimestampBuilder(referenceTimestamp)
                         .startOfDayTimestamp()

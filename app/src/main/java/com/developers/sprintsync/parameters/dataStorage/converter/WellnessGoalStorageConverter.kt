@@ -1,6 +1,6 @@
 package com.developers.sprintsync.parameters.dataStorage.converter
 
-import com.developers.sprintsync.statistics.model.goal.WellnessGoal
+import com.developers.sprintsync.statistics.domain.goal.WellnessGoal
 
 class WellnessGoalStorageConverter {
     companion object {

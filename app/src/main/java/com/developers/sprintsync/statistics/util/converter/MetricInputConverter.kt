@@ -1,6 +1,6 @@
 package com.developers.sprintsync.statistics.util.converter
 
-import com.developers.sprintsync.statistics.model.chart.chartData.Metric
+import com.developers.sprintsync.statistics.domain.chart.data.Metric
 import com.developers.sprintsync.tracking.analytics.dataManager.calculator.CaloriesConverter
 import com.developers.sprintsync.tracking.analytics.dataManager.calculator.DistanceCalculator
 import com.developers.sprintsync.tracking.analytics.dataManager.calculator.DurationCalculator
