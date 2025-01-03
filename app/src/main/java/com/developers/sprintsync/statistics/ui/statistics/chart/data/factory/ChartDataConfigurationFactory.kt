@@ -4,9 +4,10 @@ import android.content.Context
 import com.developers.sprintsync.R
 import com.developers.sprintsync.global.styleProvider.AppThemeProvider
 import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyleProvider
+import com.developers.sprintsync.statistics.model.chart.chartData.DailyValues
 import com.developers.sprintsync.statistics.model.chart.chartData.Metric
-import com.developers.sprintsync.statistics.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.statistics.model.chart.configuration.LineConfiguration
+import com.developers.sprintsync.statistics.model.chart.configuration.BarConfiguration
 import com.developers.sprintsync.statistics.ui.statistics.chart.configuration.valueFormatter.entries.CaloriesValueFormatter
 import com.developers.sprintsync.statistics.ui.statistics.chart.configuration.valueFormatter.entries.DistanceValueFormatter
 import com.developers.sprintsync.statistics.ui.statistics.chart.configuration.valueFormatter.entries.DurationValueFormatter
@@ -27,7 +28,7 @@ class ChartDataConfigurationFactory(
 
     fun createBarConfiguration(
         metric: Metric,
-        dailyValues: List<com.developers.sprintsync.statistics.model.chart.chartData.DailyValues>,
+        dailyValues: List<DailyValues>,
     ): BarConfiguration =
         BarConfiguration(
             barColor = colors.secondary,
@@ -56,7 +57,7 @@ class ChartDataConfigurationFactory(
         )
 
     private fun calculateMissingBarHeight(
-        dailyValues: List<com.developers.sprintsync.statistics.model.chart.chartData.DailyValues>,
+        dailyValues: List<DailyValues>,
     ): Float = calculator.calculateMinGoal(dailyValues) * MISSING_BAR_MULTIPLIER
 
     companion object {

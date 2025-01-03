@@ -3,6 +3,8 @@ package com.developers.sprintsync.statistics.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.developers.sprintsync.statistics.model.chart.chartData.ChartDataSet
+import com.developers.sprintsync.statistics.model.chart.chartData.ChartDisplayData
 import com.developers.sprintsync.statistics.dataStorage.repository.dailyGoal.useCase.GetDailyGoalsFlowUseCase
 import com.developers.sprintsync.statistics.dataStorage.repository.dailyGoal.useCase.GetDailyGoalsUpdateTimestampUseCase
 import com.developers.sprintsync.statistics.model.chart.chartData.Metric
@@ -69,7 +71,7 @@ class StatisticsViewModel
         val generalStatistics get() = _generalStatistics.asStateFlow()
 
         private val chartDataSet =
-            MutableStateFlow(com.developers.sprintsync.statistics.model.chart.chartData.ChartDataSet.EMPTY)
+            MutableStateFlow(ChartDataSet.EMPTY)
 
         init {
             initSelectedMetricListener()
@@ -82,8 +84,8 @@ class StatisticsViewModel
             _selectedMetric.update { metric }
         }
 
-        fun onDisplayedDataChanged(displayedData: com.developers.sprintsync.statistics.model.chart.chartData.ChartDisplayData) {
-            if (displayedData == com.developers.sprintsync.statistics.model.chart.chartData.ChartDisplayData.EMPTY) return
+        fun onDisplayedDataChanged(displayedData: ChartDisplayData) {
+            if (displayedData == ChartDisplayData.EMPTY) return
             val referenceTimestamp = chartDataSet.value.referenceTimestamp
 
             val minIndex = displayedData.data.keys.min()

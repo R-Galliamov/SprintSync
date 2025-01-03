@@ -11,7 +11,7 @@ class PaceCalculatorTest {
         val coveredMeters = 5_000
         val expectedPace = 5.0f
         val actual = 0.001f
-        val pace = PaceCalculator.getPaceInMinPerKm(durationMillis, coveredMeters)
+        val pace = PaceCalculator.getPace(durationMillis, coveredMeters)
         assertEquals(expectedPace, pace, actual)
     }
 }

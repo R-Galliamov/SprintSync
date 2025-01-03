@@ -20,7 +20,7 @@ class SegmentBuilder
         ): Segment {
             val duration = endData.timeMillis - startData.timeMillis
             val distance = startData.location.distanceBetweenInMeters(endData.location).roundToInt()
-            val pace = PaceCalculator.getPaceInMinPerKm(duration, distance)
+            val pace = PaceCalculator.getPace(duration, distance)
             val burnedKCalories = caloriesCalculator.getBurnedCalories(distance)
             return Segment.ActiveSegment(
                 id = id,

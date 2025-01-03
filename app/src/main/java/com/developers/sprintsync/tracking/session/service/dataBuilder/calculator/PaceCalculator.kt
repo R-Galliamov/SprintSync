@@ -5,7 +5,10 @@ import com.developers.sprintsync.tracking.analytics.dataManager.converter.TimeCo
 
 class PaceCalculator {
     companion object {
-        fun getPaceInMinPerKm(
+        /**
+         * Calculates pace in minutes per kilometer.
+         */
+        fun getPace(
             durationMillis: Long,
             coveredMeters: Int,
         ): Float {
