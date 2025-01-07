@@ -4,12 +4,12 @@ import android.util.Log
 import android.view.View
 import com.developers.sprintsync.statistics.domain.chart.data.DisplayData
 import com.developers.sprintsync.statistics.domain.chart.data.DailyValues
-import com.developers.sprintsync.statistics.domain.chart.data.Metric
+import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.statistics.domain.chart.navigator.NavigatorState
 import com.developers.sprintsync.statistics.domain.chart.navigator.RangePosition
 import com.developers.sprintsync.statistics.domain.chart.config.ChartConfigurationType
 import com.developers.sprintsync.statistics.domain.chart.config.ChartConfigurator
-import com.developers.sprintsync.statistics.domain.chart.utils.ValuesCalculator
+import com.developers.sprintsync.statistics.domain.chart.data.calculator.ValuesCalculator
 import com.developers.sprintsync.statistics.domain.chart.factory.DataConfigFactory
 import com.developers.sprintsync.statistics.domain.chart.factory.WeeklyConfigFactory
 import com.developers.sprintsync.statistics.domain.chart.data.transformer.CombinedDataPreparer

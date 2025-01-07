@@ -5,24 +5,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.statistics.domain.chart.data.ChartDataSet
 import com.developers.sprintsync.statistics.domain.chart.data.DisplayData
-import com.developers.sprintsync.statistics.data.repository.dailyGoal.useCase.GetDailyGoalsFlowUseCase
-import com.developers.sprintsync.statistics.data.repository.dailyGoal.useCase.GetDailyGoalsUpdateTimestampUseCase
-import com.developers.sprintsync.statistics.domain.chart.data.Metric
+import com.developers.sprintsync.core.components.goal.domain.use_case.GetDailyGoalsFlowUseCase
+import com.developers.sprintsync.core.components.goal.domain.use_case.GetDailyGoalsUpdateTimestampUseCase
+import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.statistics.domain.chart.data.WeekDay
-import com.developers.sprintsync.statistics.domain.goal.DailyGoal
-import com.developers.sprintsync.statistics.domain.statistics.GeneralStatistics
-import com.developers.sprintsync.statistics.domain.statistics.WeeklyStatistics
-import com.developers.sprintsync.statistics.domain.ui.ChartDataUpdateEvent
-import com.developers.sprintsync.statistics.domain.ui.FormattedDateRange
+import com.developers.sprintsync.core.components.goal.data.model.DailyGoal
+import com.developers.sprintsync.statistics.presentation.model.GeneralStatistics
+import com.developers.sprintsync.statistics.presentation.model.WeeklyStatistics
+import com.developers.sprintsync.statistics.presentation.event.ChartDataUpdateEvent
+import com.developers.sprintsync.statistics.presentation.model.FormattedDateRange
 import com.developers.sprintsync.statistics.domain.chart.config.ChartConfigurationType
 import com.developers.sprintsync.statistics.domain.chart.data.processing.WeeklyChartDataPreparer
-import com.developers.sprintsync.statistics.presentation.statistics.util.formatter.DateRangeFormatter
-import com.developers.sprintsync.statistics.presentation.statistics.util.formatter.GeneralStatisticsFormatter
-import com.developers.sprintsync.statistics.presentation.statistics.util.formatter.UpdateDateFormatter
-import com.developers.sprintsync.statistics.presentation.statistics.util.formatter.WeeklyStatisticsFormatter
-import com.developers.sprintsync.statistics.util.filter.TimeWindowTrackFilter
-import com.developers.sprintsync.tracking.dataStorage.repository.track.useCase.GetTracksFlowUseCase
-import com.developers.sprintsync.tracking.session.model.track.Track
+import com.developers.sprintsync.statistics.presentation.util.formatter.DateRangeFormatter
+import com.developers.sprintsync.statistics.presentation.util.formatter.GeneralStatisticsFormatter
+import com.developers.sprintsync.statistics.presentation.util.formatter.UpdateDateFormatter
+import com.developers.sprintsync.statistics.presentation.util.formatter.WeeklyStatisticsFormatter
+import com.developers.sprintsync.statistics.domain.filter.TimeWindowTrackFilter
+import com.developers.sprintsync.core.components.track.domain.use_case.GetTracksFlowUseCase
+import com.developers.sprintsync.core.components.track.data.model.Track
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -66,6 +66,8 @@ class StatisticsViewModel
         private var _weeklyStatistics: MutableStateFlow<WeeklyStatistics> = MutableStateFlow(WeeklyStatistics.EMPTY)
         val weeklyStatistics get() = _weeklyStatistics.asStateFlow()
 
+
+        // TODO replace with USE CASE
         private val generalStatisticsFormatter = GeneralStatisticsFormatter()
         private var _generalStatistics: MutableStateFlow<GeneralStatistics> = MutableStateFlow(GeneralStatistics.EMPTY)
         val generalStatistics get() = _generalStatistics.asStateFlow()

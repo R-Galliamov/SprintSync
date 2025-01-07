@@ -2,16 +2,16 @@ package com.developers.sprintsync.statistics.domain.chart.factory
 
 import android.content.Context
 import com.developers.sprintsync.R
-import com.developers.sprintsync.global.styleProvider.AppThemeProvider
-import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyleProvider
+import com.developers.sprintsync.core.util.style_provider.AppThemeProvider
+import com.developers.sprintsync.core.util.style_provider.textStyle.ResourceTextStyleProvider
 import com.developers.sprintsync.statistics.domain.chart.data.DailyValues
-import com.developers.sprintsync.statistics.domain.chart.data.Metric
+import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.statistics.domain.chart.config.LineConfiguration
 import com.developers.sprintsync.statistics.domain.chart.config.BarConfiguration
 import com.developers.sprintsync.statistics.domain.chart.formatters.entries.CaloriesValueFormatter
 import com.developers.sprintsync.statistics.domain.chart.formatters.entries.DistanceValueFormatter
 import com.developers.sprintsync.statistics.domain.chart.formatters.entries.DurationValueFormatter
-import com.developers.sprintsync.statistics.domain.chart.utils.ValuesCalculator
+import com.developers.sprintsync.statistics.domain.chart.data.calculator.ValuesCalculator
 import com.github.mikephil.charting.data.LineDataSet
 
 /**

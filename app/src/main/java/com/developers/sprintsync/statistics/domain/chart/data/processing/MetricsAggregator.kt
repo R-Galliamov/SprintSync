@@ -1,9 +1,9 @@
 package com.developers.sprintsync.statistics.domain.chart.data.processing
 
-import com.developers.sprintsync.statistics.domain.chart.data.Metric
+import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.statistics.domain.chart.data.TimestampMetricsMap
-import com.developers.sprintsync.statistics.domain.chart.utils.time.TimeUtils
-import com.developers.sprintsync.tracking.session.model.track.Track
+import com.developers.sprintsync.core.components.time.utils.TimeUtils
+import com.developers.sprintsync.core.components.track.data.model.Track
 
 class MetricsAggregator {
     fun calculateMetricsForEachTrackingDay(tracks: List<Track>): TimestampMetricsMap {

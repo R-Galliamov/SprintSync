@@ -2,8 +2,8 @@ package com.developers.sprintsync.statistics.domain.chart.data.processing
 
 import com.developers.sprintsync.statistics.domain.chart.data.ChartDataSet
 import com.developers.sprintsync.statistics.domain.chart.data.WeekDay
-import com.developers.sprintsync.statistics.domain.goal.DailyGoal
-import com.developers.sprintsync.tracking.session.model.track.Track
+import com.developers.sprintsync.core.components.goal.data.model.DailyGoal
+import com.developers.sprintsync.core.components.track.data.model.Track
 import javax.inject.Inject
 
 class WeeklyChartDataPreparer

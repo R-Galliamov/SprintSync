@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tracking.analytics.ui.trackList.TrackListFragment">
+    tools:context=".run_history.presentation.fragment.RunHistoryFragment">
 
     <LinearLayout
         android:id="@+id/emptyLogsStateView"

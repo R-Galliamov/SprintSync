@@ -1,11 +1,11 @@
 package com.developers.sprintsync.statistics.domain.chart.formatters.axis
 
 import android.util.Log
-import com.developers.sprintsync.global.util.extension.approximatelyEquals
-import com.developers.sprintsync.statistics.domain.chart.data.Metric
-import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.CaloriesFormatter
-import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DistanceFormatter
-import com.developers.sprintsync.tracking.analytics.dataManager.formatter.indicator.DurationFormatter
+import com.developers.sprintsync.core.util.extension.approximatelyEquals
+import com.developers.sprintsync.core.components.goal.data.model.Metric
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.CaloriesFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
 import kotlin.math.abs
 
 class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {

@@ -1,8 +1,8 @@
 package com.developers.sprintsync.statistics.domain.chart.axis
 
-import com.developers.sprintsync.global.styleProvider.textStyle.ResourceTextStyleProvider
+import com.developers.sprintsync.core.util.style_provider.textStyle.ResourceTextStyleProvider
 import com.developers.sprintsync.statistics.domain.chart.formatters.axis.SelectiveYAxisValueFormatter
-import com.developers.sprintsync.statistics.domain.chart.data.Metric
+import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis

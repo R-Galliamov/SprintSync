@@ -1,6 +1,6 @@
 package com.developers.sprintsync.statistics.domain.chart.axis
 
-import com.developers.sprintsync.statistics.util.Animator
+import com.developers.sprintsync.core.util.animator.Animator
 import com.github.mikephil.charting.charts.CombinedChart
 
 class YAxisScaler(

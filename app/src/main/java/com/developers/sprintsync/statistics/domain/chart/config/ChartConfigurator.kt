@@ -1,8 +1,8 @@
 package com.developers.sprintsync.statistics.domain.chart.config
 
 import com.developers.sprintsync.R
-import com.developers.sprintsync.global.styleProvider.AppThemeProvider
-import com.developers.sprintsync.statistics.domain.chart.data.Metric
+import com.developers.sprintsync.core.util.style_provider.AppThemeProvider
+import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.statistics.domain.chart.axis.YAxisScaler
 import com.developers.sprintsync.statistics.domain.chart.interaction.InteractionConfigurator
 import com.developers.sprintsync.statistics.domain.chart.axis.AxisConfigurator

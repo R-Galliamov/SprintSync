@@ -1,13 +1,13 @@
 package com.developers.sprintsync.statistics.domain.chart.data.processing
 
 import android.util.Log
-import com.developers.sprintsync.global.util.extension.setOrAdd
+import com.developers.sprintsync.core.util.extension.setOrAdd
 import com.developers.sprintsync.statistics.domain.chart.data.ChartDataSet
 import com.developers.sprintsync.statistics.domain.chart.data.DailyValues
-import com.developers.sprintsync.statistics.domain.chart.data.Metric
+import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.statistics.domain.chart.data.MetricsMap
 import com.developers.sprintsync.statistics.domain.chart.data.TimestampMetricsMap
-import com.developers.sprintsync.statistics.domain.chart.utils.time.TimeUtils
+import com.developers.sprintsync.core.components.time.utils.TimeUtils
 
 class ChartDataProcessor(
     private val preparationHelper: ChartDataPreparationHelper,
