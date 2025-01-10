@@ -1,12 +1,12 @@
 package com.developers.sprintsync.tracking_session.generator.track
 
 import com.developers.sprintsync.core.tracking_service.data.processing.track.TrackStatCalculator
-import org.junit.Assert.assertEquals
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.junit.jupiter.MockitoExtension
 
-@RunWith(MockitoJUnitRunner::class)
+@ExtendWith(MockitoExtension::class)
 class TrackStatCalculatorTest {
     private val calculator = TrackStatCalculator()
 

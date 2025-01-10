@@ -20,7 +20,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "de.mannodermaus.junit5.AndroidJUnit5Builder"
 
         detekt {
             toolVersion = "$detekt_version"
@@ -60,6 +60,12 @@ android {
     kapt {
         correctErrorTypes true
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 ktlint {
@@ -79,6 +85,9 @@ ktlint {
 dependencies {
     implementation 'com.google.android.gms:play-services-maps:19.0.0'
     implementation 'androidx.lifecycle:lifecycle-service:2.8.7'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+
+
     def splash_screen_version = "1.1.0-alpha02"
     def view_model_version = "2.7.0"
     def play_services_version = '21.3.0'
@@ -96,10 +105,25 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
 
     // UnitTests
-    testImplementation 'junit:junit:4.13.2'
+    // testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     testImplementation "org.mockito:mockito-core:5.15.2"
     testImplementation "org.mockito:mockito-inline:$mockito_version"
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.6.0'
+
+    // JUnit 5
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-console:1.9.3")
+
+    // Vintage engine to run JUnit 4 tests (if needed)
+    testImplementation "org.junit.vintage:junit-vintage-engine:5.10.0"
+
+    // Android JUnit 5 runner
+    androidTestImplementation "de.mannodermaus.junit5:android-test-runner:1.3.0"
+
+
+
 
     // UI tests
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'

@@ -1,13 +1,10 @@
 package com.developers.sprintsync.tracking_session.mapper.indicator
 
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceFormatter
-import org.junit.Assert.assertEquals
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import java.util.Locale
 
-@RunWith(JUnit4::class)
 class DistanceFormatterTest {
     @Test
     fun metersToPresentableDistance_returnsCorrectlyFormattedDistanceInKilometers() {

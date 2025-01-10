@@ -1,17 +1,17 @@
 package com.developers.sprintsync.core.tracking_service.data.processing.segment
 
-import com.developers.sprintsync.core.tracking_service.data.model.location.GeoTimePoint
 import com.developers.sprintsync.core.components.track.data.model.Segment
+import com.developers.sprintsync.core.tracking_service.data.model.location.GeoTimePoint
 import com.developers.sprintsync.core.tracking_service.data.model.location.distanceBetweenInMeters
-import com.developers.sprintsync.core.tracking_service.data.processing.util.calculator.CaloriesCalculator
 import com.developers.sprintsync.core.tracking_service.data.processing.util.calculator.PaceCalculator
+import com.developers.sprintsync.core.tracking_service.data.processing.util.calculator.calories.CaloriesCalculatorHelper
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 class SegmentBuilder
     @Inject
     constructor(
-        private val caloriesCalculator: CaloriesCalculator,
+        private val caloriesCalculator: CaloriesCalculatorHelper,
     ) {
         fun buildActiveTrackSegment(
             id: Long,
@@ -21,7 +21,9 @@ class SegmentBuilder
             val duration = endData.timeMillis - startData.timeMillis
             val distance = startData.location.distanceBetweenInMeters(endData.location).roundToInt()
             val pace = PaceCalculator.getPace(duration, distance)
-            val burnedKCalories = caloriesCalculator.getBurnedCalories(distance)
+
+            // TODO: Provide speed and duration
+            val burnedKCalories = caloriesCalculator.calculateBurnedCalories(100f, 0.1f)
             return Segment.ActiveSegment(
                 id = id,
                 startLocation = startData.location,
