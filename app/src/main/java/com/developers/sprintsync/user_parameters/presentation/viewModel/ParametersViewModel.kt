@@ -2,7 +2,8 @@ package com.developers.sprintsync.user_parameters.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.developers.sprintsync.user_parameters.components.use_case.PersonalParametersUseCase
+import com.developers.sprintsync.user_parameters.components.use_case.GetUserParametersUseCase
+import com.developers.sprintsync.user_parameters.components.use_case.SaveUserParametersUseCase
 import com.developers.sprintsync.user_parameters.model.UserParameters
 import com.developers.sprintsync.user_parameters.presentation.util.formatter.ParametersFormatter
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,12 +15,15 @@ import javax.inject.Inject
 class ParametersViewModel
     @Inject
     constructor(
-        private val personalParameters: PersonalParametersUseCase,
+        getParameters: GetUserParametersUseCase,
+        private val saveUserParameters: SaveUserParametersUseCase,
     ) : ViewModel() {
-        val parametersFlow = personalParameters.parametersFlow.map { ParametersFormatter.format(it) }
+        val parametersFlow = getParameters.parametersFlow.map { ParametersFormatter.format(it) }
+
+        // getParameters().map { ParametersFormatter.format(it) }
 
         fun saveParameters(parameters: UserParameters) {
-            viewModelScope.launch { personalParameters.saveParameters(parameters) }
+            viewModelScope.launch { saveUserParameters(parameters) }
         }
 
         companion object {
