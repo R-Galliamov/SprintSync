@@ -1,15 +1,16 @@
 package com.developers.sprintsync.core.tracking_service.orchestrator
 
 import android.util.Log
-import com.developers.sprintsync.core.util.extension.withLatestConcat
+import com.developers.sprintsync.core.components.track.data.model.Track
+import com.developers.sprintsync.core.tracking_service.activity_monitoring.ActivityMonitor
+import com.developers.sprintsync.core.tracking_service.data.model.location.LocationModel
 import com.developers.sprintsync.core.tracking_service.data.model.session.TrackStatus
 import com.developers.sprintsync.core.tracking_service.data.model.session.TrackingSession
-import com.developers.sprintsync.core.tracking_service.data.model.location.LocationModel
-import com.developers.sprintsync.core.components.track.data.model.Track
-import com.developers.sprintsync.core.tracking_service.data.processing.track.TrackBuilder
-import com.developers.sprintsync.core.tracking_service.activity_monitoring.ActivityMonitor
+import com.developers.sprintsync.core.tracking_service.data.processing.segment.SegmentType
+import com.developers.sprintsync.core.tracking_service.data.processing.track.TrackGenerator
 import com.developers.sprintsync.core.tracking_service.provider.location.LocationProvider
 import com.developers.sprintsync.core.tracking_service.provider.time.TimeProvider
+import com.developers.sprintsync.core.util.extension.withLatestConcat
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,18 +19,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class TrackSessionOrchestrator
+@Singleton
+class TrackingOrchestrator
     @Inject
     constructor(
         private val locationProvider: LocationProvider,
         private val timeProvider: TimeProvider,
-        private val trackBuilder: TrackBuilder,
+        private val trackGenerator: TrackGenerator,
         private val activityMonitor: ActivityMonitor,
     ) {
-        private val _trackSessionOrchestratorState: MutableStateFlow<TrackSessionOrchestratorState> =
-            MutableStateFlow(TrackSessionOrchestratorState.Initialised)
-        val state = _trackSessionOrchestratorState.asStateFlow()
+        private val _sessionState: MutableStateFlow<TrackingState> =
+            MutableStateFlow(TrackingState.Initialised)
+        val state = _sessionState.asStateFlow()
 
         val userActivityState = activityMonitor.userActivityState
 
@@ -39,16 +42,13 @@ class TrackSessionOrchestrator
         private val timeFlow =
             timeProvider.timeInMillisFlow()
 
-        private val locationFlow = locationProvider.listenToLocation()
-        private val trackFlow =
-            locationFlow.withLatestConcat(timeFlow) { location, timeMillis ->
-                if (activityMonitor.userHasStopped()) {
-                    trackBuilder.addInactiveDataPoint(timeMillis)
-                }
-                trackBuilder.addActiveDataPoint(location, timeMillis)
-                val track = trackBuilder.buildTrack()
-                track
+        private val locationFlow =
+            locationProvider.listenToLocation().withLatestConcat(timeFlow) { location, timeMillis ->
+                updateTrackData(activityMonitor.userHasStopped(), location, timeMillis)
+                location
             }
+
+        private val trackFlow = trackGenerator.trackFlow
 
         private var locationScope: CoroutineScope? = null
         private var trackingScope: CoroutineScope? = null
@@ -57,14 +57,14 @@ class TrackSessionOrchestrator
         private val dispatcher = Dispatchers.IO
 
         init {
-            initTrackerStateListener()
+            observeStateChanges()
         }
 
         fun startUpdatingLocation() {
             initLocationScope()
             locationScope?.launch(CoroutineName("location")) {
                 locationFlow.collect { location ->
-                    Log.d("MyStack", "new location")
+                    Log.d("My Stack", "Tracker: new location")
                     updateSession(location)
                 }
             }
@@ -76,15 +76,15 @@ class TrackSessionOrchestrator
         }
 
         fun start() {
-            _trackSessionOrchestratorState.value = TrackSessionOrchestratorState.Tracking
+            _sessionState.value = TrackingState.Tracking
         }
 
         fun pause() {
-            _trackSessionOrchestratorState.value = TrackSessionOrchestratorState.Paused
+            _sessionState.value = TrackingState.Paused
         }
 
         fun finish() {
-            _trackSessionOrchestratorState.value = TrackSessionOrchestratorState.Finished
+            _sessionState.value = TrackingState.Finished
         }
 
         fun reset() {
@@ -93,6 +93,17 @@ class TrackSessionOrchestrator
             resetSessionStatus()
             resetState()
             timeProvider.reset()
+        }
+
+        private fun updateTrackData(
+            userHasStopped: Boolean,
+            location: LocationModel,
+            timeMillis: Long,
+        ) {
+            if (userHasStopped) {
+                trackGenerator.addDataPoint(SegmentType.INACTIVE, location, timeMillis)
+            }
+            trackGenerator.addDataPoint(SegmentType.ACTIVE, location, timeMillis)
         }
 
         private fun isTrackValid(): Boolean = getTrack().segments.isNotEmpty()
@@ -114,6 +125,7 @@ class TrackSessionOrchestrator
             timeProvider.updateStopwatchState(true)
             timeScope?.launch(CoroutineName("time")) {
                 timeFlow.collect { time ->
+                    Log.d("My stack", "Tracker: new time: $time")
                     updateSession(time)
                 }
             }
@@ -126,6 +138,7 @@ class TrackSessionOrchestrator
                     activityMonitor.startMonitoringInactivity()
                     activityMonitor.updateState(track.segments)
                     updateSession(track)
+                    Log.d("My stack", "Tracker: new track: $track")
                 }
             }
         }
@@ -159,26 +172,17 @@ class TrackSessionOrchestrator
 
         private fun getTrack(): Track = data.value.track
 
-        private fun addInactiveSegmentToTrack() {
-            val endPauseTime = data.value.durationMillis
-            trackBuilder.addInactiveDataPoint(endPauseTime)
-            val track = trackBuilder.buildTrack()
-            updateSession(track)
-        }
-
         private suspend fun finaliseTrack() {
-            if (activityMonitor.userHasStopped()) {
-                addInactiveSegmentToTrack()
-            } else {
-                finalizeActiveTrack()
-            }
-        }
-
-        private suspend fun finalizeActiveTrack() {
+            val segmentType =
+                if (activityMonitor.userHasStopped()) {
+                    SegmentType.INACTIVE
+                } else {
+                    SegmentType.ACTIVE
+                }
             val location = locationProvider.getLocation()
             val time = data.value.durationMillis
-            trackBuilder.addActiveDataPoint(location, time)
-            val track = trackBuilder.buildTrack()
+            trackGenerator.addDataPoint(segmentType, location, time)
+            val track = trackGenerator.track
             updateSession(track)
             Log.d("MyStack", "track finalised")
         }
@@ -186,8 +190,8 @@ class TrackSessionOrchestrator
         private fun areUpdatingCoroutinesInactive(): Boolean = (locationScope == null && trackingScope == null && timeScope == null)
 
         private fun resetTrackData() {
-            trackBuilder.reset()
-            val track = trackBuilder.buildTrack()
+            trackGenerator.reset()
+            val track = trackGenerator.track
             updateSession(track)
         }
 
@@ -200,7 +204,7 @@ class TrackSessionOrchestrator
         }
 
         private fun resetState() {
-            _trackSessionOrchestratorState.value = TrackSessionOrchestratorState.Initialised
+            _sessionState.value = TrackingState.Initialised
         }
 
         private fun completeSession(isTrackValid: Boolean) {
@@ -211,28 +215,28 @@ class TrackSessionOrchestrator
             }
         }
 
-        private fun initTrackerStateListener() {
+        private fun observeStateChanges() {
             CoroutineScope(dispatcher).launch {
                 state.collect { state ->
                     when (state) {
-                        TrackSessionOrchestratorState.Initialised -> {
+                        TrackingState.Initialised -> {
                             // NO - OP
                         }
 
-                        TrackSessionOrchestratorState.Tracking -> {
+                        TrackingState.Tracking -> {
                             startUpdatingTime()
                             startUpdatingTrack()
                         }
 
-                        TrackSessionOrchestratorState.Paused -> {
+                        TrackingState.Paused -> {
                             finaliseTrack()
                             stopUpdatingTime()
                             stopUpdatingTrack()
-                            trackBuilder.clearLastDataPoint()
+                            trackGenerator.clearLastDataPoint()
                             activityMonitor.stopMonitoringInactivity()
                         }
 
-                        TrackSessionOrchestratorState.Finished -> {
+                        TrackingState.Finished -> {
                             Log.d("My Stack", "finishing : ${getTrack()}")
                             if (!areUpdatingCoroutinesInactive()) {
                                 stopUpdatingLocation()

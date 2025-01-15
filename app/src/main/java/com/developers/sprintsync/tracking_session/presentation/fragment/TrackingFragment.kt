@@ -17,7 +17,7 @@ import com.developers.sprintsync.core.components.track.presentation.indicator_fo
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
 import com.developers.sprintsync.map.components.presentation.MapManager
 import com.developers.sprintsync.core.tracking_service.data.model.session.TrackStatus
-import com.developers.sprintsync.core.tracking_service.orchestrator.TrackSessionOrchestratorState
+import com.developers.sprintsync.core.tracking_service.orchestrator.TrackingState
 import com.developers.sprintsync.core.components.track.data.model.Segment
 import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.tracking_service.data.model.location.toLatLng
@@ -75,7 +75,7 @@ class TrackingFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStart")
-        sessionViewModel.startUpdatingLocation()
+        sessionViewModel.startUpdatingLocation() // TODO it duplicates coroutines
         binding.mapView.onStart()
     }
 
@@ -94,7 +94,6 @@ class TrackingFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop")
-        sessionViewModel.stopUpdatingLocation()
         binding.mapView.onStop()
     }
 
@@ -211,28 +210,28 @@ class TrackingFragment : Fragment() {
             else -> 0f
         }
 
-    private fun updateTrackingControllerPanel(state: TrackSessionOrchestratorState) {
+    private fun updateTrackingControllerPanel(state: TrackingState) {
         Log.d(TAG, "updateTrackingControllerPanel: $state")
         when (state) {
-            TrackSessionOrchestratorState.Initialised -> {
+            TrackingState.Initialised -> {
                 initTrackingControllerButton()
                 setPauseCardVisibility(false)
                 setFinishButtonVisibility(false)
             }
 
-            TrackSessionOrchestratorState.Tracking -> {
+            TrackingState.Tracking -> {
                 updateTrackingControllerButton(true)
                 setPauseCardVisibility(false)
                 setFinishButtonVisibility(true)
             }
 
-            TrackSessionOrchestratorState.Paused -> {
+            TrackingState.Paused -> {
                 updateTrackingControllerButton(false)
                 setPauseCardVisibility(true)
                 setFinishButtonVisibility(true)
             }
 
-            TrackSessionOrchestratorState.Finished -> {
+            TrackingState.Finished -> {
                 // NO - OP
             }
         }

@@ -2,53 +2,81 @@ package com.developers.sprintsync.core.tracking_service.data.processing.segment
 
 import com.developers.sprintsync.core.components.track.data.model.Segment
 import com.developers.sprintsync.core.tracking_service.data.model.location.GeoTimePoint
-import com.developers.sprintsync.core.tracking_service.data.model.location.distanceBetweenInMeters
-import com.developers.sprintsync.core.tracking_service.data.processing.util.calculator.PaceCalculator
-import com.developers.sprintsync.core.tracking_service.data.processing.util.calculator.calories.CaloriesCalculatorHelper
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
-class SegmentBuilder
-    @Inject
-    constructor(
-        private val caloriesCalculator: CaloriesCalculatorHelper,
-    ) {
-        fun buildActiveTrackSegment(
-            id: Long,
-            startData: GeoTimePoint,
-            endData: GeoTimePoint,
-        ): Segment {
-            val duration = endData.timeMillis - startData.timeMillis
-            val distance = startData.location.distanceBetweenInMeters(endData.location).roundToInt()
-            val pace = PaceCalculator.getPace(duration, distance)
+sealed interface SegmentBuilder {
+    fun build(
+        id: Long,
+        startData: GeoTimePoint,
+        endData: GeoTimePoint,
+    ): Result<Segment>
 
-            // TODO: Provide speed and duration
-            val burnedKCalories = caloriesCalculator.calculateBurnedCalories(100f, 0.1f)
-            return Segment.ActiveSegment(
-                id = id,
-                startLocation = startData.location,
-                startTime = startData.timeMillis,
-                endLocation = endData.location,
-                endTime = endData.timeMillis,
-                durationMillis = duration,
-                distanceMeters = distance,
-                pace = pace,
-                calories = burnedKCalories,
-            )
+    data class ActiveSegmentBuilder
+        @Inject
+        constructor(
+            private val calculator: SegmentCalculator,
+        ) : SegmentBuilder {
+            override fun build(
+                id: Long,
+                startData: GeoTimePoint,
+                endData: GeoTimePoint,
+            ): Result<Segment> {
+                val durationMillis = calculator.calculateDurationInMillis(startData.timeMillis, endData.timeMillis)
+                val distanceMeters = calculator.calculateDistanceInMeters(startData.location, endData.location)
+
+                val dataIsValid =
+                    SegmentDataValidator.ActiveSegmentDataValidator(distanceMeters, durationMillis).dataIsValid
+
+                return if (dataIsValid) {
+                    val pace = calculator.calculatePaceInMinPerKm(durationMillis, distanceMeters)
+                    val burnedCalories = calculator.calculateBurnedCalories(100f, 100f) // TODO provide data
+
+                    val segment =
+                        Segment.ActiveSegment(
+                            id = id,
+                            startLocation = startData.location,
+                            startTime = startData.timeMillis,
+                            endLocation = endData.location,
+                            endTime = endData.timeMillis,
+                            durationMillis = durationMillis,
+                            distanceMeters = distanceMeters.toInt(), // TODO replace with float
+                            pace = pace,
+                            calories = burnedCalories,
+                        )
+
+                    Result.success(segment)
+                } else {
+                    Result.failure(Error())
+                }
+            }
         }
 
-        fun buildInactiveSegment(
-            id: Long,
-            startData: GeoTimePoint,
-            endTimeMillis: Long,
-        ): Segment {
-            val duration = endTimeMillis - startData.timeMillis
-            return Segment.InactiveSegment(
-                id = id,
-                location = startData.location,
-                startTime = startData.timeMillis,
-                endTime = endTimeMillis,
-                durationMillis = duration,
-            )
+    data class InactiveSegmentBuilder
+        @Inject
+        constructor(
+            private val calculator: SegmentCalculator,
+        ) : SegmentBuilder {
+            override fun build(
+                id: Long,
+                startData: GeoTimePoint,
+                endData: GeoTimePoint,
+            ): Result<Segment> {
+                val durationMillis = calculator.calculateDurationInMillis(startData.timeMillis, endData.timeMillis)
+                val isDataValid = SegmentDataValidator.InactiveSegmentDataValidator(durationMillis).dataIsValid
+
+                return if (isDataValid) {
+                    val segment =
+                        Segment.InactiveSegment(
+                            id = id,
+                            location = startData.location,
+                            startTime = startData.timeMillis,
+                            endTime = endData.timeMillis,
+                            durationMillis = durationMillis,
+                        )
+                    Result.success(segment)
+                } else {
+                    Result.failure(Error())
+                }
+            }
         }
-    }
+}

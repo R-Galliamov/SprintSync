@@ -3,12 +3,12 @@ package com.developers.sprintsync.tracking_session.presentation.view_model
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.developers.sprintsync.map.components.useCase.GetMinimalMapStyleUseCase
-import com.developers.sprintsync.map.components.useCase.GetUnlabeledMapStyleUseCase
+import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.components.track.domain.use_case.SaveTrackUseCase
 import com.developers.sprintsync.core.tracking_service.data.model.session.TrackStatus
-import com.developers.sprintsync.core.components.track.data.model.Track
-import com.developers.sprintsync.core.tracking_service.manager.TrackingSessionManager
+import com.developers.sprintsync.core.tracking_service.orchestrator.TrackingOrchestrator
+import com.developers.sprintsync.map.components.useCase.GetMinimalMapStyleUseCase
+import com.developers.sprintsync.map.components.useCase.GetUnlabeledMapStyleUseCase
 import com.google.android.gms.maps.model.MapStyleOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -22,14 +22,14 @@ class TrackingSessionViewModel
     constructor(
         getMinimalMapStyleUseCase: GetMinimalMapStyleUseCase,
         getUnlabeledMapStyleUseCase: GetUnlabeledMapStyleUseCase,
-        private val sessionManager: TrackingSessionManager,
+        private val sessionManager: TrackingOrchestrator,
         private val saveTrackUseCase: SaveTrackUseCase,
     ) : ViewModel() {
         val minimalMapStyle: MapStyleOptions = getMinimalMapStyleUseCase.invoke()
 
         val unlabeledMapStyle: MapStyleOptions = getUnlabeledMapStyleUseCase.invoke()
 
-        val trackerState = sessionManager.trackSessionOrchestratorState.asLiveData()
+        val trackerState = sessionManager.state.asLiveData()
 
         val currentLocation =
             sessionManager.data

@@ -1,16 +1,18 @@
 package com.developers.sprintsync.core.tracking_service.data.processing.util.calculator
 
-import com.developers.sprintsync.core.components.track.domain.metrics_converter.DistanceConverter
 import com.developers.sprintsync.core.components.time.utils.TimeConverter
+import com.developers.sprintsync.core.components.track.domain.metrics_converter.DistanceConverter
+import javax.inject.Inject
 
-class PaceCalculator {
-    companion object {
+class PaceCalculator
+    @Inject
+    constructor() {
         /**
          * Calculates pace in minutes per kilometer.
          */
-        fun getPace(
+        fun getPaceInMinPerKm(
             durationMillis: Long,
-            coveredMeters: Int,
+            coveredMeters: Float,
         ): Float {
             require(durationMillis >= 0) { "durationMillis must be non-negative" }
             require(coveredMeters > 0) { "coveredMeters must be positive" }
@@ -19,4 +21,3 @@ class PaceCalculator {
             return (minutes / kilometers)
         }
     }
-}

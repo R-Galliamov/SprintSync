@@ -2,6 +2,7 @@ package com.developers.sprintsync.core.components.track.data.model
 
 import com.developers.sprintsync.core.tracking_service.data.model.location.LocationModel
 
+// TODO move id to superclass
 sealed class Segment {
     data class ActiveSegment(
         val id: Long,

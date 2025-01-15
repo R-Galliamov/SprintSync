@@ -8,12 +8,13 @@ import android.util.Log
 import com.developers.sprintsync.core.tracking_service.TrackingServiceController.Action.FINISH_SERVICE
 import com.developers.sprintsync.core.tracking_service.TrackingServiceController.Action.PAUSE_SERVICE
 import com.developers.sprintsync.core.tracking_service.TrackingServiceController.Action.START_SERVICE
-import com.developers.sprintsync.core.tracking_service.manager.TrackingSessionManager
 import com.developers.sprintsync.core.tracking_service.notification.TrackingServiceNotifier
+import com.developers.sprintsync.core.tracking_service.orchestrator.TrackingOrchestrator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,7 +25,7 @@ class TrackingService : Service() {
     lateinit var notifier: TrackingServiceNotifier
 
     @Inject
-    lateinit var sessionManager: TrackingSessionManager
+    lateinit var sessionManager: TrackingOrchestrator
 
     private var coroutineScope: CoroutineScope? = null
 
@@ -39,19 +40,19 @@ class TrackingService : Service() {
                 startForegroundService()
                 initCoroutineScope()
                 startForegroundUpdates()
-                sessionManager.startTracking()
+                sessionManager.start()
             }
 
             PAUSE_SERVICE -> {
                 Log.i("My stack", "Service is paused")
                 stopForegroundCoroutine()
-                sessionManager.pauseTracking()
+                sessionManager.pause()
             }
 
             FINISH_SERVICE -> {
                 Log.i("My stack", "Service is stopped")
                 stopForegroundCoroutine()
-                sessionManager.finishTracking()
+                sessionManager.finish()
                 stopSelf()
             }
         }
@@ -59,7 +60,7 @@ class TrackingService : Service() {
     }
 
     private fun initCoroutineScope() {
-        coroutineScope = CoroutineScope(Dispatchers.IO)
+        coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     }
 
     private fun startForegroundUpdates() {

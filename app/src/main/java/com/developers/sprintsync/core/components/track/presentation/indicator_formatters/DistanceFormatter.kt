@@ -4,6 +4,7 @@ import com.developers.sprintsync.core.util.extension.roundedDownNearestTen
 import com.developers.sprintsync.core.components.track.domain.metrics_converter.DistanceConverter
 import java.util.Locale
 
+// TODO refactor
 class DistanceFormatter {
     companion object {
         // TODO based on setting mapper can decide what function to use to convert values
@@ -12,7 +13,7 @@ class DistanceFormatter {
             distanceInMeters: Int,
             includeUnit: Boolean = false,
         ): String {
-            val roundedMeters = distanceInMeters.roundedDownNearestTen()
+            val roundedMeters = distanceInMeters.roundedDownNearestTen().toFloat()
             val kilometers = DistanceConverter.metersToKilometers(roundedMeters)
             val locale = Locale.getDefault()
             val formattedKilometers = String.format(locale, "%.2f", kilometers)
