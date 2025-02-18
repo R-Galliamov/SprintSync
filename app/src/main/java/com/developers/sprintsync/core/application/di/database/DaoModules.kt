@@ -3,6 +3,7 @@ package com.developers.sprintsync.core.application.di.database
 import com.developers.sprintsync.core.database.AppDb
 import com.developers.sprintsync.core.components.track.data.database.dao.TrackDao
 import com.developers.sprintsync.core.components.goal.data.database.dao.DailyGoalDao
+import com.developers.sprintsync.core.components.track_snapshot.data.database.dao.TrackSnapshotDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,4 +17,7 @@ object DaoModules {
 
     @Provides
     fun provideDailyGoalDao(db: AppDb): DailyGoalDao = db.dailyGoalDao()
+
+    @Provides
+    fun provideTrackSnapshotDao(db: AppDb) : TrackSnapshotDao = db.trackSnapshotDao()
 }

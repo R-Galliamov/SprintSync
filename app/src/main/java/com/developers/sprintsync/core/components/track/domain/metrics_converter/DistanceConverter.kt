@@ -1,11 +1,18 @@
 package com.developers.sprintsync.core.components.track.domain.metrics_converter
 
-// Replace with class
-object DistanceConverter {
-    fun metersToKilometers(distanceInMeters: Float): Float = distanceInMeters / (METERS_IN_KILOMETERS)
+abstract class DistanceConverter {
+    abstract fun convert(value: Float): Float
 
-    // TODO replace with float
-    fun kilometersToMeters(distanceInKilometers: Float): Int = (distanceInKilometers * METERS_IN_KILOMETERS).toInt()
+    companion object {
+        @JvmStatic
+        protected val METERS_IN_KILOMETERS = 1000f
+    }
+}
 
-    private const val METERS_IN_KILOMETERS = 1000f
+object MetersToKilometersConverter : DistanceConverter() {
+    override fun convert(value: Float): Float = value / (METERS_IN_KILOMETERS)
+}
+
+object KilometersToMetersConverter : DistanceConverter() {
+    override fun convert(value: Float): Float = (value * METERS_IN_KILOMETERS)
 }

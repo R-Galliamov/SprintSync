@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/btFinish"
+        android:layout_width="@dimen/button.circle.size.big"
+        android:layout_height="@dimen/button.circle.size.big"
+        android:layout_marginBottom="@dimen/space.regular"
+        android:background="@drawable/bt_circle_fourthly"
+        android:clickable="true"
+        android:visibility="visible"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/btTrackingController"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_stop_18dp" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/btTrackingController"
+        android:layout_width="@dimen/button.circle.size.large"
+        android:layout_height="@dimen/button.circle.size.large"
+        android:background="@drawable/bt_circle_secondary"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context="com.developers.sprintsync.tracking_session.presentation.view.TrackingActivityButton">
+
+        <TextView
+            android:id="@+id/tvTrackingController"
+            style="@style/TabloidText.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/lag1"
+            android:text="@string/start" />
+
+        <ImageView
+            android:id="@+id/imTrackingController"
+            android:layout_width="@dimen/iconSize.big"
+            android:layout_height="@dimen/iconSize.big"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"
+             />
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

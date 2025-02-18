@@ -39,7 +39,7 @@ class ParametersFragment : Fragment() {
     private val wellnessGoalToSpinnerMapper get() = checkNotNull(_goalSpinnerManager) { getString(R.string.spinner_manager_init_error) }
 
     private var _datePicker: MaterialDatePicker<Long>? = null
-    private val datePicker get() = checkNotNull(_datePicker) { getString(R.string.date_picker_init_error) }
+    private val datePicker get() = checkNotNull(_datePicker) { getString(R.string.date_picker_init_error) } // TODO get rid of such kind of checks
 
     private val viewModel: ParametersViewModel by viewModels()
 

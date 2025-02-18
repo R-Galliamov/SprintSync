@@ -8,7 +8,7 @@ import com.developers.sprintsync.core.navigation.NavigationManager
 import com.developers.sprintsync.core.util.extension.getRootNavController
 import dagger.hilt.android.AndroidEntryPoint
 
-const val TAG = "My log"
+const val TAG = "My stack"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

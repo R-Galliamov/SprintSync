@@ -77,6 +77,7 @@
     <string name="spinner_manager_init_error">Spinner Manager isn\'t initialized</string>
     <string name="date_picker_init_error">Date picker isn\'t initialized</string>
     <string name="select_date">Select date</string>
+    <string name="map_init_error">Map is null</string>
 
 
 </resources>

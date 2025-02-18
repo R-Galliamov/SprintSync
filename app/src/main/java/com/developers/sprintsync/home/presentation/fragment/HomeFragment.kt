@@ -41,7 +41,6 @@ class HomeFragment : Fragment() {
         setStatisticsObservers()
     }
 
-    // TODO add formatted statistics
     private fun setStatisticsObservers() {
         viewModel.statistics.observe(viewLifecycleOwner) { stat ->
             updateTotals(stat)

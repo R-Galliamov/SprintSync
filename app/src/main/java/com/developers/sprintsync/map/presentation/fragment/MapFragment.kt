@@ -8,22 +8,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
-import com.developers.sprintsync.databinding.FragmentMapBinding
-import com.developers.sprintsync.core.util.extension.findTopNavController
-import com.developers.sprintsync.map.components.presentation.MapManager
 import com.developers.sprintsync.core.components.track.data.model.Segments
 import com.developers.sprintsync.core.components.track.data.model.Track
+import com.developers.sprintsync.core.util.extension.findTopNavController
+import com.developers.sprintsync.core.util.extension.setMapStyle
+import com.developers.sprintsync.databinding.FragmentMapBinding
+import com.developers.sprintsync.map.data.model.MapStyle
 import com.developers.sprintsync.map.presentation.view_model.MapViewModel
+import com.google.android.gms.maps.GoogleMap
 
 class MapFragment : Fragment() {
     private var _binding: FragmentMapBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
-    private val mapManager by lazy { MapManager(requireContext()) }
-
     private val args: MapFragmentArgs by navArgs()
 
     private val viewModel by activityViewModels<MapViewModel>()
+
+    private var _map: GoogleMap? = null
+    private val map get() = checkNotNull(_map) { getString(R.string.map_init_error) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +44,7 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         updateProgressBarVisibility(true)
         initMap(savedInstanceState) {
-            mapManager.setMapStyle(viewModel.detailedMapStyle)
+            map.setMapStyle(requireContext(), MapStyle.DETAILED)
             setDataObserver()
         }
         setBackButton()
@@ -52,8 +55,8 @@ class MapFragment : Fragment() {
         onMapReady: () -> Unit,
     ) {
         binding.mapView.onCreate(savedInstanceState)
-        binding.mapView.getMapAsync {
-            mapManager.initialize(it)
+        binding.mapView.getMapAsync { map ->
+            _map = map
             onMapReady()
         }
     }
@@ -63,12 +66,19 @@ class MapFragment : Fragment() {
             track ?: return@observe
             getNonEmptySegments(track)?.let { segments ->
                 updateProgressBarVisibility(false)
+                /*
                 mapManager.addPolylines(segments)
-                mapManager.adjustCameraToSegments(
-                    segments,
-                    binding.mapView.width,
-                    binding.mapView.height,
+                map.adjustCamera(
+                    MapCalculations.calculateBounds(
+                        segments.flatten(),
+                        MapCalculations.calculateTrackPadding(
+                            binding.mapView.width,
+                            binding.mapView.height,
+                        ),
+                    ),
                 )
+
+                 */
             }
         }
     }

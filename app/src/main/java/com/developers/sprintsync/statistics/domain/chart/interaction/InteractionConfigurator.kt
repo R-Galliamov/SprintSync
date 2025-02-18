@@ -12,7 +12,6 @@ class InteractionConfigurator(
     private val chart: CombinedChart,
 ) {
     /**
-     * TODO create a configuration
      *
      * Configures the interaction settings for the chart, including enabling touch and disabling
      * dragging, scaling, and pinch zoom. Optionally sets a custom gesture listener.

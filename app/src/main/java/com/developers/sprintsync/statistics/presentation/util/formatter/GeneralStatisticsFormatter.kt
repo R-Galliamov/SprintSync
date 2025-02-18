@@ -1,12 +1,13 @@
 package com.developers.sprintsync.statistics.presentation.util.formatter
 
-import com.developers.sprintsync.statistics.presentation.model.GeneralStatistics
-import com.developers.sprintsync.statistics.components.TracksStatsCalculator
+import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.CaloriesFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
-import com.developers.sprintsync.core.components.track.data.model.Track
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
+import com.developers.sprintsync.statistics.components.TracksStatsCalculator
+import com.developers.sprintsync.statistics.presentation.model.GeneralStatistics
 
 class GeneralStatisticsFormatter {
     fun formatStatistics(tracks: List<Track>): GeneralStatistics {
@@ -26,7 +27,7 @@ class GeneralStatisticsFormatter {
             totalWorkouts = totalWorkouts.toString(),
             maxWorkoutStreak = maxWorkoutStreak.toString(),
             totalWorkoutDays = totalWorkoutDays.toString(),
-            totalDistance = DistanceFormatter.metersToPresentableKilometers(totalDistance, true),
+            totalDistance = DistanceUiFormatter.format(totalDistance, DistanceUiPattern.WITH_UNIT),
             totalDuration = DurationFormatter.formatToHhMmSs(totalDuration),
             avgPace = PaceFormatter.formatPaceWithTwoDecimals(avgPace),
             bestPace = PaceFormatter.formatPaceWithTwoDecimals(bestPace),

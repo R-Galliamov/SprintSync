@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TrackDao {
     @Insert
-    suspend fun insertTrack(track: TrackEntity)
+    suspend fun insertTrack(track: TrackEntity) : Long
 
     @Query("DELETE FROM TrackEntity WHERE id = :id")
     suspend fun deleteTrackById(id: Int)

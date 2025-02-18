@@ -1,10 +1,11 @@
 package com.developers.sprintsync.update_goals.presentation.util.formatter
 
-import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.core.components.goal.data.model.DailyGoal
-import com.developers.sprintsync.statistics.presentation.model.FormattedDailyGoal
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceFormatter
+import com.developers.sprintsync.core.components.goal.data.model.Metric
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
+import com.developers.sprintsync.statistics.presentation.model.FormattedDailyGoal
 import kotlin.math.roundToInt
 
 class DailyGoalFormatter {
@@ -12,11 +13,10 @@ class DailyGoalFormatter {
         fun format(dailyGoal: DailyGoal): FormattedDailyGoal {
             val value =
                 when (dailyGoal.metricType) {
-                    Metric.DISTANCE ->
-                        DistanceFormatter.metersToPresentableKilometers(
-                            dailyGoal.value.roundToInt(),
-                            false,
-                        )
+                    Metric.DISTANCE -> {
+                        val distance = dailyGoal.value.roundToInt()
+                        DistanceUiFormatter.format(distance, DistanceUiPattern.PLAIN)
+                    }
 
                     Metric.DURATION -> DurationFormatter.formatToMm(dailyGoal.value.toLong(), false)
                     Metric.CALORIES -> dailyGoal.value.toInt().toString()

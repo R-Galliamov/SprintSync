@@ -1,11 +1,12 @@
 package com.developers.sprintsync.statistics.domain.chart.formatters.axis
 
 import android.util.Log
-import com.developers.sprintsync.core.util.extension.approximatelyEquals
 import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.CaloriesFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
+import com.developers.sprintsync.core.util.extension.approximatelyEquals
 import kotlin.math.abs
 
 class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {
@@ -39,7 +40,12 @@ class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {
             when (metric) {
                 Metric.DURATION -> DurationFormatter.formatToMm(selectedValue.toLong(), true)
 
-                Metric.DISTANCE -> DistanceFormatter.metersToPresentableKilometers(selectedValue.toInt(), true)
+                Metric.DISTANCE ->
+                    DistanceUiFormatter.format(
+                        selectedValue.toInt(),
+                        DistanceUiPattern.WITH_UNIT,
+                    )
+
                 Metric.CALORIES -> CaloriesFormatter.formatCalories(selectedValue.toInt(), true)
             }
         } else {

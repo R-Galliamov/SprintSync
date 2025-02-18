@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.developers.sprintsync.databinding.ItemTrackCardBinding
-import com.developers.sprintsync.core.util.formatter.DateFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.CaloriesFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
 import com.developers.sprintsync.core.components.track.data.model.Track
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.CaloriesFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
+import com.developers.sprintsync.core.util.formatter.DateFormatter
+import com.developers.sprintsync.databinding.ItemTrackCardBinding
 
 class TrackListAdapter(
     private val onInteractionListener: OnInteractionListener,
@@ -46,10 +47,8 @@ class TrackListAdapter(
                 tvDistanceValue.text = formatDistance(track.distanceMeters)
                 tvDurationValue.text = formatDuration(track.durationMillis)
                 tvCaloriesValue.text = formatCalories(track.calories)
-                ivMapPreview.setImageBitmap(track.mapPreview)
-                track.mapPreview?.let {
-                    loadBitmapIntoImageView(ivMapPreview, it)
-                }
+
+                // TODO set bitmap for ivMapPreview
 
                 itemView.setOnClickListener {
                     onInteractionListener.onItemSelected(track.id)
@@ -69,7 +68,8 @@ class TrackListAdapter(
 
     private fun formatDate(timestamp: Long): String = DateFormatter.formatDate(timestamp, DateFormatter.Pattern.DAY_MONTH_YEAR_WEEK_DAY)
 
-    private fun formatDistance(distanceMeters: Int): String = DistanceFormatter.metersToPresentableKilometers(distanceMeters, true)
+    private fun formatDistance(distanceMeters: Int): String =
+        DistanceUiFormatter.format(distanceMeters, DistanceUiPattern.WITH_UNIT)
 
     private fun formatDuration(durationMillis: Long): String = DurationFormatter.formatToHhMmSs(durationMillis)
 

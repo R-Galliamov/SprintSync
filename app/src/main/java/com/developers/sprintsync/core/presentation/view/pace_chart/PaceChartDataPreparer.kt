@@ -15,14 +15,14 @@ class PaceChartDataPreparer {
 
         segments.forEach { segment ->
             when (segment) {
-                is Segment.ActiveSegment -> {
+                is Segment.Active -> {
                     maxPace = maxOf(maxPace, segment.pace)
                     minPace = minOf(minPace, segment.pace)
 
                     currentEntriesList.add(getEntry(segment))
                 }
 
-                is Segment.InactiveSegment -> {
+                is Segment.Stationary -> {
                     if (currentEntriesList.isNotEmpty()) {
                         data.add(currentEntriesList.toList())
                         currentEntriesList = mutableListOf()
@@ -38,10 +38,10 @@ class PaceChartDataPreparer {
         return PaceChartData(data, maxPace, minPace)
     }
 
-    private fun getEntry(segment: Segment.ActiveSegment): Entry {
+    private fun getEntry(segment: Segment.Active): Entry {
         val timePoint = getTimePoint(segment)
         return Entry(timePoint, segment.pace)
     }
 
-    private fun getTimePoint(segment: Segment.ActiveSegment): Float = ((segment.startTime + segment.endTime) / 2f)
+    private fun getTimePoint(segment: Segment.Active): Float = ((segment.startTime + segment.endTime) / 2f)
 }

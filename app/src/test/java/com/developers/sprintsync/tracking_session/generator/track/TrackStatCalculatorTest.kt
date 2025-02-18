@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking_session.generator.track
 
-import com.developers.sprintsync.core.tracking_service.data.processing.track.TrackStatCalculator
+import com.developers.sprintsync.tracking.data.processing.track.TrackStatCalculator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

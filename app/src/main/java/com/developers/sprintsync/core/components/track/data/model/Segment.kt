@@ -1,26 +1,30 @@
 package com.developers.sprintsync.core.components.track.data.model
 
-import com.developers.sprintsync.core.tracking_service.data.model.location.LocationModel
+import com.developers.sprintsync.tracking.data.model.LocationModel
 
-// TODO move id to superclass
 sealed class Segment {
-    data class ActiveSegment(
-        val id: Long,
+    abstract val id: Long
+    abstract val startTime: Long
+    abstract val endTime: Long
+    abstract val durationMillis: Long
+
+    data class Active(
+        override val id: Long,
         val startLocation: LocationModel,
-        val startTime: Long,
+        override val startTime: Long,
         val endLocation: LocationModel,
-        val endTime: Long,
-        val durationMillis: Long,
+        override val endTime: Long,
+        override val durationMillis: Long,
         val distanceMeters: Int,
         val pace: Float,
         val calories: Int,
     ) : Segment()
 
-    data class InactiveSegment(
-        val id: Long,
+    data class Stationary(
+        override val id: Long,
         val location: LocationModel,
-        val startTime: Long,
-        val endTime: Long,
-        val durationMillis: Long,
+        override val startTime: Long,
+        override val endTime: Long,
+        override val durationMillis: Long,
     ) : Segment()
 }

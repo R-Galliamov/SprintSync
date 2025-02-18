@@ -11,10 +11,9 @@ data class Track(
     val bestPace: Float,
     val calories: Int,
     val segments: Segments,
-    val mapPreview: Bitmap?,
 ) {
     companion object {
-        val EMPTY_TRACK_DATA =
+        val INITIAL =
             Track(
                 id = 0,
                 timestamp = 0L,
@@ -24,7 +23,6 @@ data class Track(
                 bestPace = 0f,
                 calories = 0,
                 segments = emptyList(),
-                mapPreview = null,
             )
     }
 }

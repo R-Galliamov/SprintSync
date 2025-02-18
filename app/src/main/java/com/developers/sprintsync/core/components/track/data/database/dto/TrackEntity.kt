@@ -1,6 +1,5 @@
 package com.developers.sprintsync.core.components.track.data.database.dto
 
-import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.developers.sprintsync.core.components.track.data.model.Segments
@@ -17,7 +16,6 @@ data class TrackEntity(
     val bestPace: Float,
     val calories: Int,
     val segments: Segments,
-    val mapPreview: Bitmap?,
 ) {
     fun toDto() =
         Track(
@@ -29,7 +27,6 @@ data class TrackEntity(
             bestPace = bestPace,
             calories = calories,
             segments = segments,
-            mapPreview = mapPreview,
         )
 
     companion object {
@@ -43,7 +40,6 @@ data class TrackEntity(
                 bestPace = dto.bestPace,
                 calories = dto.calories,
                 segments = dto.segments,
-                mapPreview = dto.mapPreview,
             )
     }
 }

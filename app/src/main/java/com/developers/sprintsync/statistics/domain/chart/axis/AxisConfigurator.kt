@@ -52,7 +52,6 @@ class AxisConfigurator(
         }
     }
 
-    // TODO delete this method
     fun styleYAxisRightLineColor(color: Int) {
         yAxisRight.apply {
             axisLineColor = color

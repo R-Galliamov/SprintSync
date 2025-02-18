@@ -13,10 +13,10 @@ class SegmentsTypeConverter {
         RuntimeTypeAdapterFactory
             .of(Segment::class.java, TYPE_FIELD)
             .registerSubtype(
-                Segment.ActiveSegment::class.java,
+                Segment.Active::class.java,
                 SegmentType.ACTIVE.lowercaseName,
             ).registerSubtype(
-                Segment.InactiveSegment::class.java,
+                Segment.Stationary::class.java,
                 SegmentType.INACTIVE.lowercaseName,
             )
 
@@ -47,8 +47,8 @@ class SegmentsTypeConverter {
         val jsonObject = gson.toJsonTree(segment).asJsonObject
         val type =
             when (segment) {
-                is Segment.ActiveSegment -> SegmentType.ACTIVE.lowercaseName
-                is Segment.InactiveSegment -> SegmentType.INACTIVE.lowercaseName
+                is Segment.Active -> SegmentType.ACTIVE.lowercaseName
+                is Segment.Stationary -> SegmentType.INACTIVE.lowercaseName
             }
         jsonObject.addProperty(TYPE_FIELD, type)
         return gson.toJson(jsonObject)
