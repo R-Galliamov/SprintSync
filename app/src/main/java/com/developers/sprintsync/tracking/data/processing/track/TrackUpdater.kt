@@ -57,9 +57,9 @@ class TrackUpdater
         }
 
         private fun getUpdatedDistance(
-            previousDistanceMeters: Int,
-            newDistanceMeters: Int,
-        ): Int {
+            previousDistanceMeters: Float,
+            newDistanceMeters: Float,
+        ): Float {
             require(newDistanceMeters >= 0) { "New distance must be non-negative" }
             return calculator.calculateDistance(previousDistanceMeters, newDistanceMeters)
         }
@@ -99,7 +99,7 @@ class TrackUpdater
         private fun getUpdatedTrack(
             track: Track,
             durationMillis: Long,
-            distanceMeters: Int,
+            distanceMeters: Float,
             avgPace: Float,
             maxPace: Float,
             calories: Int,

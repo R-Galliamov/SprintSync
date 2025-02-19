@@ -68,7 +68,7 @@ class TrackListAdapter(
 
     private fun formatDate(timestamp: Long): String = DateFormatter.formatDate(timestamp, DateFormatter.Pattern.DAY_MONTH_YEAR_WEEK_DAY)
 
-    private fun formatDistance(distanceMeters: Int): String =
+    private fun formatDistance(distanceMeters: Float): String =
         DistanceUiFormatter.format(distanceMeters, DistanceUiPattern.WITH_UNIT)
 
     private fun formatDuration(durationMillis: Long): String = DurationFormatter.formatToHhMmSs(durationMillis)

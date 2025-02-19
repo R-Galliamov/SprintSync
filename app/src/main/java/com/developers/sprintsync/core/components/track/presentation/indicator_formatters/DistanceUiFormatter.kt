@@ -6,7 +6,7 @@ import java.util.Locale
 
 object DistanceUiFormatter {
     fun format(
-        distanceInMeters: Int,
+        distanceInMeters: Float,
         uiDistanceUiPattern: DistanceUiPattern,
     ): String {
         val locale = Locale.getDefault()

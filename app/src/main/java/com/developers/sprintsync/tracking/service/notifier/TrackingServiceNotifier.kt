@@ -53,14 +53,14 @@ class TrackingServiceNotifier
             notificationManager.notify(NOTIFICATION_ID, notification.build())
         }
 
-        fun updateDistance(distanceInMeters: Int) {
+        fun updateDistance(distanceInMeters: Float) {
             notificationLayout.setTextViewText(R.id.tvDistanceValue, distanceInMeters.toString())
             notification.setCustomContentView(notificationLayout)
             notificationManager.notify(NOTIFICATION_ID, notification.build())
         }
 
         private fun initStartingValues() {
-            updateDistance(0)
+            updateDistance(0f)
             updateDuration(0)
         }
 

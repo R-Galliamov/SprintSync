@@ -3,10 +3,9 @@ package com.developers.sprintsync.update_goals.presentation.util.formatter
 import com.developers.sprintsync.core.components.goal.data.model.DailyGoal
 import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
 import com.developers.sprintsync.statistics.presentation.model.FormattedDailyGoal
-import kotlin.math.roundToInt
 
 class DailyGoalFormatter {
     companion object {
@@ -14,7 +13,7 @@ class DailyGoalFormatter {
             val value =
                 when (dailyGoal.metricType) {
                     Metric.DISTANCE -> {
-                        val distance = dailyGoal.value.roundToInt()
+                        val distance = dailyGoal.value
                         DistanceUiFormatter.format(distance, DistanceUiPattern.PLAIN)
                     }
 

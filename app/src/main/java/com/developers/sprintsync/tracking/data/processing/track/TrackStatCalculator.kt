@@ -11,9 +11,9 @@ class TrackStatCalculator
         ): Long = previousDuration + newDuration
 
         fun calculateDistance(
-            previousDistanceMeters: Int,
-            newDistanceMeters: Int,
-        ): Int = previousDistanceMeters + newDistanceMeters
+            previousDistanceMeters: Float,
+            newDistanceMeters: Float,
+        ): Float = previousDistanceMeters + newDistanceMeters
 
         fun calculateAvgPace(
             previousAvgPace: Float,

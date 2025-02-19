@@ -17,6 +17,7 @@ import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
 import com.developers.sprintsync.track_details.presentation.view_model.TrackDetailsViewModel
 import com.github.mikephil.charting.charts.LineChart
+import java.util.Locale
 
 class TrackDetailsFragment : Fragment() {
     private var _binding: FragmentTrackDetailsBinding? = null
@@ -70,7 +71,7 @@ class TrackDetailsFragment : Fragment() {
             tvDurationValue.text = DurationFormatter.formatToHhMmSs(track.durationMillis)
             tvAvgPaceValue.text = PaceFormatter.formatPaceWithTwoDecimals(track.avgPace)
             tvBestPaceValue.text = PaceFormatter.formatPaceWithTwoDecimals(track.bestPace)
-            tvCaloriesValue.text = track.calories.toString()
+            tvCaloriesValue.text = String.format(Locale.getDefault(), track.calories.toString())// TODO add formatter
         }
     }
 

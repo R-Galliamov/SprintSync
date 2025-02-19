@@ -5,5 +5,5 @@ import com.developers.sprintsync.core.components.track.presentation.indicator_fo
 import com.github.mikephil.charting.formatter.ValueFormatter
 
 class DistanceValueFormatter : ValueFormatter() {
-    override fun getFormattedValue(value: Float): String = DistanceUiFormatter.format(value.toInt(), DistanceUiPattern.PLAIN)
+    override fun getFormattedValue(value: Float): String = DistanceUiFormatter.format(value, DistanceUiPattern.PLAIN)
 }

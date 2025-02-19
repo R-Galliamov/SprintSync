@@ -15,7 +15,7 @@ sealed class Segment {
         val endLocation: LocationModel,
         override val endTime: Long,
         override val durationMillis: Long,
-        val distanceMeters: Int,
+        val distanceMeters: Float,
         val pace: Float,
         val calories: Int,
     ) : Segment()

@@ -37,7 +37,7 @@ sealed interface SegmentBuilder {
                         endLocation = endData.location,
                         endTime = endData.timestampMillis,
                         durationMillis = durationMillis,
-                        distanceMeters = distanceMeters.toInt(), // TODO replace with float
+                        distanceMeters = distanceMeters,
                         pace = pace,
                         calories = burnedCalories,
                     )

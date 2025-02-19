@@ -7,4 +7,4 @@ class DistanceFlowManager
     @Inject
     constructor(
         provider: GetCurrentTrackDistanceMetersUseCase,
-    ) : FlowManager<Int>(provider())
+    ) : FlowManager<Float>(provider())

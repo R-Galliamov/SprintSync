@@ -9,7 +9,7 @@ class TracksStatsCalculator(
     val numberOfWorkouts = tracks.size
     val workoutDays = calculateWorkoutDays(tracks)
     val maxWorkoutStreak = calculateWorkoutStreak(tracks)
-    val totalDistanceMeters = tracks.sumOf { it.distanceMeters }
+    val totalDistanceMeters = tracks.sumOf { it.distanceMeters.toDouble() }.toFloat()
     val totalDurationMillis = tracks.sumOf { it.durationMillis }
     val longestDistanceMeters = tracks.maxOf { it.distanceMeters }
     val longestDurationMillis = tracks.maxOf { it.durationMillis }
@@ -17,7 +17,8 @@ class TracksStatsCalculator(
     val bestPace = tracks.minOf { it.avgPace }
     val totalCaloriesBurned = tracks.sumOf { it.calories }
 
-    private fun calculateWorkoutDays(tracks: List<Track>): Int = tracks.map { TimeUtils.getStartOfDayTimestamp(it.timestamp) }.distinct().size
+    private fun calculateWorkoutDays(tracks: List<Track>): Int =
+        tracks.map { TimeUtils.getStartOfDayTimestamp(it.timestamp) }.distinct().size
 
     private fun calculateWorkoutStreak(tracks: List<Track>): Int {
         val workoutDaysTimestamps = tracks.map { TimeUtils.getStartOfDayTimestamp(it.timestamp) }.distinct().sorted()

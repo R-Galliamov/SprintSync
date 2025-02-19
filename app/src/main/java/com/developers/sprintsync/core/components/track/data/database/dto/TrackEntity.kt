@@ -11,12 +11,13 @@ data class TrackEntity(
     val id: Int = 0,
     val timestamp: Long,
     val durationMillis: Long,
-    val distanceMeters: Int,
+    val distanceMeters: Float,
     val avgPace: Float,
     val bestPace: Float,
     val calories: Int,
     val segments: Segments,
 ) {
+    /*
     fun toDto() =
         Track(
             id = id,
@@ -28,6 +29,7 @@ data class TrackEntity(
             calories = calories,
             segments = segments,
         )
+     */
 
     companion object {
         fun fromDto(dto: Track) =
@@ -44,6 +46,8 @@ data class TrackEntity(
     }
 }
 
+/*
 fun List<TrackEntity>.toDto() = map(TrackEntity::toDto)
 
 fun List<Track>.toEntity() = map(TrackEntity.Companion::fromDto)
+ */
