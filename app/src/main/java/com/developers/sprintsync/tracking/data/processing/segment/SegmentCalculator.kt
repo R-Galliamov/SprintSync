@@ -15,20 +15,31 @@ class SegmentCalculator
         fun calculateDurationInMillis(
             startTimeMillis: Long,
             endTimeMillis: Long,
-        ) = endTimeMillis - startTimeMillis
+        ): Long {
+            require(startTimeMillis >= 0) { "Start time must be non-negative" }
+            require(endTimeMillis >= startTimeMillis) { "End time must be greater than or equal to start time" }
+            return endTimeMillis - startTimeMillis
+        }
 
         fun calculateDistanceInMeters(
             firstLocation: LocationModel,
             secondLocation: LocationModel,
-        ) = firstLocation.distanceBetweenInMeters(secondLocation)
+        ): Float {
+            require(firstLocation != secondLocation) { "Start and end location cannot be the same" }
+            return firstLocation.distanceBetweenInMeters(secondLocation)
+        }
 
         fun calculatePaceInMinPerKm(
             durationMillis: Long,
             distanceMeters: Float,
-        ): Float = paceCalculator.getPaceInMinPerKm(durationMillis, distanceMeters)
+        ): Float {
+            return paceCalculator.getPaceInMinPerKm(durationMillis, distanceMeters)
+        }
 
         fun calculateBurnedCalories(
-            speedInMeters: Float,
+            speedInMetersPerMinute: Float,
             durationInHours: Float,
-        ) = caloriesCalculator.calculateBurnedCalories(speedInMeters, durationInHours)
+        ): Int {
+            return caloriesCalculator.calculateBurnedCalories(speedInMetersPerMinute, durationInHours)
+        }
     }

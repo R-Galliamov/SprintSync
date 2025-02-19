@@ -14,6 +14,8 @@ class CaloriesCalculator
             durationInHours: Float,
             weightInKilos: Float,
         ): Int {
+            require( speedInMetersPerMinute >= 0) { "Speed must be non-negative" }
+            require(durationInHours > 0) { "Duration must be greater than zero" }
             val met = mETCalculator.calculateMET(speedInMetersPerMinute)
             return calculateBurnedCaloriesFromMet(met, durationInHours, weightInKilos)
         }

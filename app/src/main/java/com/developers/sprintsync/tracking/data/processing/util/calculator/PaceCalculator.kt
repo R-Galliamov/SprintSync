@@ -14,7 +14,7 @@ class PaceCalculator
             durationMillis: Long,
             coveredMeters: Float,
         ): Float {
-            require(durationMillis >= 0) { "durationMillis must be non-negative" } // TODO cause app crashing
+            require(durationMillis >= 0) { "durationMillis must be non-negative" }
             require(coveredMeters > 0) { "coveredMeters must be positive" }
             val minutes = TimeConverter.millisToMinutes(durationMillis)
             val kilometers = MetersToKilometersConverter.convert(coveredMeters)

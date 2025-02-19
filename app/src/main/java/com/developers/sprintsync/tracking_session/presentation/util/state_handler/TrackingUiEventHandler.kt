@@ -5,7 +5,6 @@ import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.components.track.domain.use_case.ValidateTrackUseCase
 import com.developers.sprintsync.core.util.extension.toLatLngBounds
 import com.developers.sprintsync.core.util.validation.ValidationException
-import com.developers.sprintsync.core.util.validation.ValidationResult
 import com.developers.sprintsync.tracking.component.model.TrackState
 import com.developers.sprintsync.tracking.component.model.TrackingStatus
 import com.developers.sprintsync.tracking.component.use_case.ResetCurrentTrackingStateUseCase
@@ -26,7 +25,7 @@ import javax.inject.Inject
 class TrackingUiEventHandler
     @Inject
     constructor(
-        private val validateTrackUseCase: ValidateTrackUseCase,
+        private val validateTrackOrThrowUseCase: ValidateTrackUseCase,
         private val polylineProcessor: PolylineProcessor,
         private val trackCompletionHandler: TrackCompletionHandler,
         private val resetCurrentTrackingStateUseCase: ResetCurrentTrackingStateUseCase,
@@ -45,9 +44,7 @@ class TrackingUiEventHandler
             try {
                 withContext(NonCancellable) {
                     // TODO replace with worker
-                    val validationResult = validateTrackUseCase(track)
-
-                    if (validationResult is ValidationResult.Invalid) throw validationResult.exception
+                    validateTrackOrThrowUseCase(track)
 
                     val bounds = PolylineFormatter.format(track.segments).flatten().toLatLngBounds()
                     _uiEventFlow.update { UIEvent.RequestSnapshot(bounds) }
@@ -57,11 +54,12 @@ class TrackingUiEventHandler
 
                 _uiEventFlow.update { UIEvent.NavigateToSummary }
                 resetCurrentTrackingStateUseCase()
-            } catch (e: ValidationException) {
-                Log.e("TrackValidation", e.message.toString(), e)
-                _uiEventFlow.update { UIEvent.ErrorAndClose }
             } catch (e: Exception) {
-                Log.e("TrackingStateHandler", "Unexpected error while handling track completion", e)
+                if (e is ValidationException) {
+                    Log.e("TrackValidation", e.message.toString(), e)
+                } else {
+                    Log.e("TrackingStateHandler", "Unexpected error while handling track completion", e)
+                }
                 _uiEventFlow.update { UIEvent.ErrorAndClose }
             }
         }

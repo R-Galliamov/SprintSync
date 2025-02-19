@@ -2,7 +2,6 @@ package com.developers.sprintsync.core.components.track.domain.util.validator
 
 import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.util.validation.ValidationException
-import com.developers.sprintsync.core.util.validation.ValidationResult
 import com.developers.sprintsync.core.util.validation.Validator
 
 object TrackValidator : Validator<Track> {
@@ -12,7 +11,7 @@ object TrackValidator : Validator<Track> {
     private const val MIN_PACE = 0f
     private const val MIN_CALORIES = 0
 
-    override fun validate(data: Track): ValidationResult {
+    override fun validateOrThrow(data: Track): Track {
         val errors = mutableListOf<TrackValidationError>()
 
         if (data.timestamp < MIN_TIMESTAMP) errors.add(TrackValidationError.InvalidTimestamp)
@@ -24,15 +23,9 @@ object TrackValidator : Validator<Track> {
         if (data.segments.isEmpty()) {
             errors.add(TrackValidationError.NoSegments)
         }
-        return if (errors.isEmpty()) {
-            ValidationResult.Valid
-        } else {
-            ValidationResult.Invalid(
-                ValidationException(
-                    data,
-                    errors,
-                ),
-            )
-        }
+
+        if (errors.isNotEmpty()) throw ValidationException(data, errors)
+
+        return data
     }
 }
