@@ -61,11 +61,11 @@ class TrackFlowGenerator
             val updatedTrack: Track =
                 when (segment) {
                     is Segment.Active -> {
-                        trackUpdater.getTrackUpdatedWithSegment(track, segment)
+                        trackUpdater.updateTrackWithSegment(track, segment)
                     }
 
                     is Segment.Stationary -> {
-                        trackUpdater.getTrackUpdatedWithSegment(track, segment)
+                        trackUpdater.updateTrackWithSegment(track, segment)
                     }
                 }
             updateTrackFlow(updatedTrack)
