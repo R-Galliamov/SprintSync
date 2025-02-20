@@ -21,8 +21,6 @@ class TrackingTimeProvider
     ) {
         fun timeInMillisFlow(): Flow<Long> = stopwatch.timeMillisState
 
-        fun getCurrentDuration() = stopwatch.timeMillisState.value
-
         fun start() = stopwatch.start()
 
         fun pause() = stopwatch.pause()

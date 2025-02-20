@@ -1,5 +1,6 @@
 package com.developers.sprintsync.tracking.service.implementation
 
+import android.app.Notification
 import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LifecycleService
@@ -12,7 +13,8 @@ import com.developers.sprintsync.tracking.service.controller.ServiceCommand.FINI
 import com.developers.sprintsync.tracking.service.controller.ServiceCommand.PAUSE_SERVICE
 import com.developers.sprintsync.tracking.service.controller.ServiceCommand.START_SERVICE
 import com.developers.sprintsync.tracking.service.manager.TrackingStateManager
-import com.developers.sprintsync.tracking.service.notifier.TrackingServiceNotifier
+import com.developers.sprintsync.tracking.service.notification.TrackingNotificationConfig
+import com.developers.sprintsync.tracking.service.notification.TrackingNotificationManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +23,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class TrackingService : LifecycleService() {
     @Inject
-    lateinit var notifier: TrackingServiceNotifier
+    lateinit var notificationManager: TrackingNotificationManager
+
+    @Inject
+    lateinit var notificationConfig: TrackingNotificationConfig
+
+    @Inject
+    lateinit var notification: Notification
 
     @Inject
     lateinit var trackingStateManager: TrackingStateManager
@@ -54,14 +62,10 @@ class TrackingService : LifecycleService() {
         trackingStateManager.updateTrackingStatus(TrackingStatus.ACTIVE)
 
         lifecycleScope.launch(Dispatchers.IO) {
-            locationDurationFlow.start(this) { data ->
-                trackingStateManager.updateLocationDuration(data)
-            }
-            durationFlow.start(this) { notifier.updateDuration(it) }
-            distanceFlow.start(this) { notifier.updateDistance(it) }
+            locationDurationFlow.start(this) { trackingStateManager.updateLocationDuration(it) }
+            durationFlow.start(this) { notificationManager.updateDuration(it) }
+            distanceFlow.start(this) { notificationManager.updateDistance(it) }
         }
-
-
     }
 
     private fun pauseTracking() {
@@ -78,18 +82,12 @@ class TrackingService : LifecycleService() {
         trackingStateManager.updateTrackingStatus(TrackingStatus.COMPLETED)
         distanceFlow.stop()
         durationFlow.clean()
-        notifier
+        notificationManager
         stopSelf()
     }
 
     private fun startForegroundNotification() {
-        val id = TrackingServiceNotifier.NOTIFICATION_ID
-        val notification = notifier.notification.build()
+        val id = notificationConfig.notificationId
         startForeground(id, notification)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("My stack", "Service onDestroy")
     }
 }
