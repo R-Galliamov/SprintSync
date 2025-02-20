@@ -1,28 +1,25 @@
 package com.developers.sprintsync.tracking.service.implementation
 
-import android.app.Service
 import android.content.Intent
-import android.os.Binder
-import android.os.IBinder
 import android.util.Log
+import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
 import com.developers.sprintsync.tracking.component.model.TrackingStatus
-import com.developers.sprintsync.tracking.service.controller.ServiceCommand.FINISH_SERVICE
-import com.developers.sprintsync.tracking.service.controller.ServiceCommand.PAUSE_SERVICE
-import com.developers.sprintsync.tracking.service.controller.ServiceCommand.START_SERVICE
-import com.developers.sprintsync.tracking.service.notifier.TrackingServiceNotifier
 import com.developers.sprintsync.tracking.data.flow.DistanceFlowManager
 import com.developers.sprintsync.tracking.data.flow.DurationFlowManager
 import com.developers.sprintsync.tracking.data.flow.LocationDurationFlowManager
+import com.developers.sprintsync.tracking.service.controller.ServiceCommand.FINISH_SERVICE
+import com.developers.sprintsync.tracking.service.controller.ServiceCommand.PAUSE_SERVICE
+import com.developers.sprintsync.tracking.service.controller.ServiceCommand.START_SERVICE
 import com.developers.sprintsync.tracking.service.manager.TrackingStateManager
+import com.developers.sprintsync.tracking.service.notifier.TrackingServiceNotifier
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TrackingService : Service() { // TODO try LifecycleService()
+class TrackingService : LifecycleService() {
     @Inject
     lateinit var notifier: TrackingServiceNotifier
 
@@ -37,8 +34,6 @@ class TrackingService : Service() { // TODO try LifecycleService()
 
     @Inject
     lateinit var locationDurationFlow: LocationDurationFlowManager
-
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onStartCommand(
         intent: Intent?,
@@ -58,18 +53,22 @@ class TrackingService : Service() { // TODO try LifecycleService()
         startForegroundNotification()
         trackingStateManager.updateTrackingStatus(TrackingStatus.ACTIVE)
 
-        locationDurationFlow.start(scope) { data ->
-            trackingStateManager.updateLocationDuration(data)
+        lifecycleScope.launch(Dispatchers.IO) {
+            locationDurationFlow.start(this) { data ->
+                trackingStateManager.updateLocationDuration(data)
+            }
+            durationFlow.start(this) { notifier.updateDuration(it) }
+            distanceFlow.start(this) { notifier.updateDistance(it) }
         }
 
-        durationFlow.start(scope) { notifier.updateDuration(it) }
-        distanceFlow.start(scope) { notifier.updateDistance(it) }
+
     }
 
     private fun pauseTracking() {
         Log.i("My stack", "Service is paused")
         trackingStateManager.updateTrackingStatus(TrackingStatus.PAUSED)
         locationDurationFlow.stop()
+        distanceFlow.stop()
         durationFlow.stop()
     }
 
@@ -77,24 +76,20 @@ class TrackingService : Service() { // TODO try LifecycleService()
         Log.i("My stack", "Service is stopped")
         locationDurationFlow.stop()
         trackingStateManager.updateTrackingStatus(TrackingStatus.COMPLETED)
+        distanceFlow.stop()
         durationFlow.clean()
+        notifier
         stopSelf()
     }
 
     private fun startForegroundNotification() {
         val id = TrackingServiceNotifier.NOTIFICATION_ID
-        val foregroundServiceType = notifier.notification.build()
-        startForeground(
-            id,
-            foregroundServiceType,
-        )
+        val notification = notifier.notification.build()
+        startForeground(id, notification)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        scope.cancel()
         Log.d("My stack", "Service onDestroy")
     }
-
-    override fun onBind(p0: Intent?): IBinder = Binder()
 }
