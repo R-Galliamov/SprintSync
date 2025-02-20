@@ -53,7 +53,6 @@ class TrackingUiEventHandler
                 }
 
                 _uiEventFlow.update { UIEvent.NavigateToSummary }
-                resetCurrentTrackingStateUseCase()
             } catch (e: Exception) {
                 if (e is ValidationException) {
                     Log.e("TrackValidation", e.message.toString(), e)
@@ -61,6 +60,8 @@ class TrackingUiEventHandler
                     Log.e("TrackingStateHandler", "Unexpected error while handling track completion", e)
                 }
                 _uiEventFlow.update { UIEvent.ErrorAndClose }
+            } finally {
+                resetCurrentTrackingStateUseCase()
             }
         }
 
