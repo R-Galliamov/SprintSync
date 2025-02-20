@@ -1,9 +1,9 @@
 package com.developers.sprintsync.tracking.data.provider.time.stopwatch
 
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 interface Stopwatch {
-    val timeMillisState: MutableStateFlow<Long>
+    val timeMillisState: StateFlow<Long>
 
     fun start()
 

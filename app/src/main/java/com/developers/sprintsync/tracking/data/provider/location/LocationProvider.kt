@@ -5,6 +5,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocationProvider {
     fun locationFlow(): Flow<LocationModel>
-
-    fun hasLocationPermission(): Boolean // TODO it's not provider's responsibility
 }

@@ -49,7 +49,7 @@ class LocationProviderImpl
                     .build()
 
             return callbackFlow {
-                if (!hasLocationPermission()) throw NoPermissionsException
+                if (LocationPermissionManager.hasPermission(context).not()) throw NoPermissionsException
                 val locationCallback =
                     object : LocationCallback() {
                         override fun onLocationResult(result: LocationResult) {
@@ -65,6 +65,4 @@ class LocationProviderImpl
                 }
             }
         }
-
-        override fun hasLocationPermission(): Boolean = LocationPermissionManager.hasPermission(context)
     }
