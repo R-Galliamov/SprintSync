@@ -6,16 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
 import com.developers.sprintsync.core.components.track_snapshot.presentation.util.TrackSnapshotCropper
-import com.developers.sprintsync.tracking.data.model.toLatLng
 import com.developers.sprintsync.tracking.component.use_case.GetCurrentTrackingStateUseCase
 import com.developers.sprintsync.tracking.component.use_case.GetLocationFlowUseCase
+import com.developers.sprintsync.tracking.data.model.toLatLng
 import com.developers.sprintsync.tracking.data.provider.time.GetDurationFlowUseCase
-import com.developers.sprintsync.tracking_session.presentation.util.state_handler.SnapshotStateHandler
-import com.developers.sprintsync.tracking_session.presentation.util.state_handler.TrackingUiEventHandler
-import com.developers.sprintsync.tracking_session.presentation.util.state_handler.TrackingUiStateHandler
-import com.google.android.gms.maps.model.LatLng
+import com.developers.sprintsync.tracking_session.presentation.util.state_handler.event.TrackingUiEventHandler
+import com.developers.sprintsync.tracking_session.presentation.util.state_handler.map.MapStateHandler
+import com.developers.sprintsync.tracking_session.presentation.util.state_handler.snapshot.SnapshotStateHandler
+import com.developers.sprintsync.tracking_session.presentation.util.state_handler.ui.TrackingUiStateHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -26,26 +25,24 @@ class TrackingViewModel
     @Inject
     constructor(
         getDurationFlowUseCase: GetDurationFlowUseCase,
-        getLocationFlowUseCase: GetLocationFlowUseCase,
+        private val getLocationFlowUseCase: GetLocationFlowUseCase,
         private val trackingState: GetCurrentTrackingStateUseCase,
-        private val eventHandler: TrackingUiEventHandler,
-        private val stateHandler: TrackingUiStateHandler,
+        private val uiEventHandler: TrackingUiEventHandler,
+        private val uiStateHandler: TrackingUiStateHandler,
+        private val mapStateHandler: MapStateHandler,
         private val snapshotStateHandler: SnapshotStateHandler,
         private val snapshotCropper: TrackSnapshotCropper,
     ) : ViewModel() {
-        val uiEventFlow = eventHandler.uiEventFlow
-        val uiStateFlow = stateHandler.uiStateFlow
+        val uiEventFlow = uiEventHandler.uiEventFlow
+        val uiStateFlow = uiStateHandler.uiStateFlow
+        val mapStateFlow = mapStateHandler.mapStateFlow
 
         init {
             observeTrackData()
+            observeLocationFlow()
         }
 
         val duration = getDurationFlowUseCase().map { DurationFormatter.formatToHhMmSs(it) }
-
-        val userLocation: Flow<LatLng> =
-            getLocationFlowUseCase()
-                .map { it.toLatLng() }
-                .distinctUntilChanged()
 
         fun onSnapshotReady(snapshot: Bitmap?) {
             if (snapshot != null) {
@@ -56,11 +53,22 @@ class TrackingViewModel
             }
         }
 
+        private fun observeLocationFlow() {
+            viewModelScope.launch {
+                getLocationFlowUseCase()
+                    .map { it.toLatLng() }
+                    .distinctUntilChanged()
+                    .collect { location ->
+                        mapStateHandler.emitLocation(location)
+                    }
+            }
+        }
+
         private fun observeTrackData() {
             viewModelScope.launch {
                 trackingState().collect { state ->
-                    stateHandler.handleState(state.status)
-                    eventHandler.handleState(state)
+                    uiStateHandler.handleState(state.status)
+                    uiEventHandler.handleState(state)
                 }
             }
         }

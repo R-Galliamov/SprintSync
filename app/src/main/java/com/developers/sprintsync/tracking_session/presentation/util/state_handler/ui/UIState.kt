@@ -1,6 +1,7 @@
-package com.developers.sprintsync.tracking_session.presentation.model
+package com.developers.sprintsync.tracking_session.presentation.util.state_handler.ui
 
 sealed class UIState {
+
     data object Initialized : UIState()
 
     data object Active : UIState()

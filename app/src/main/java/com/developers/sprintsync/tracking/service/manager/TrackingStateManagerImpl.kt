@@ -49,8 +49,8 @@ class TrackingStateManagerImpl
         }
 
         override fun resetState() {
-            trackFlowGenerator.resetTrackingData()
             trackingStatusFlow.update { TrackingStatus.INITIALIZED }
+            trackFlowGenerator.resetTrackingData()
         }
 
         companion object {

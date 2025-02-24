@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking_session.presentation.util.state_handler
+package com.developers.sprintsync.tracking_session.presentation.util.state_handler.event
 
 import android.util.Log
 import com.developers.sprintsync.core.components.track.data.model.Track
@@ -8,8 +8,7 @@ import com.developers.sprintsync.core.util.validation.ValidationException
 import com.developers.sprintsync.tracking.component.model.TrackState
 import com.developers.sprintsync.tracking.component.model.TrackingStatus
 import com.developers.sprintsync.tracking.component.use_case.ResetCurrentTrackingStateUseCase
-import com.developers.sprintsync.tracking_session.presentation.model.UIEvent
-import com.developers.sprintsync.tracking_session.presentation.util.formatter.UiMetricsFormatter
+import com.developers.sprintsync.tracking_session.presentation.util.metrics_formatter.UiMetricsFormatter
 import com.developers.sprintsync.tracking_session.presentation.util.polyline.PolylineFormatter
 import com.developers.sprintsync.tracking_session.presentation.util.polyline.PolylineProcessor
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -42,22 +41,19 @@ class TrackingUiEventHandler
 
         private suspend fun handleCompleteState(track: Track) {
             try {
-                withContext(NonCancellable) {
-                    // TODO replace with worker
-                    validateTrackOrThrowUseCase(track)
-
-                    val bounds = PolylineFormatter.format(track.segments).flatten().toLatLngBounds()
-                    _uiEventFlow.update { UIEvent.RequestSnapshot(bounds) }
-
-                    trackCompletionHandler.saveTrackWithSnapshot(track)
-                }
-
-                _uiEventFlow.update { UIEvent.NavigateToSummary }
+                val trackId: Int =
+                    withContext(NonCancellable) {
+                        validateTrackOrThrowUseCase(track)
+                        val bounds = PolylineFormatter.format(track.segments).flatten().toLatLngBounds()
+                        _uiEventFlow.update { UIEvent.RequestSnapshot(bounds) }
+                        trackCompletionHandler.saveTrackWithSnapshot(track)
+                    }
+                _uiEventFlow.update { UIEvent.NavigateToSummary(trackId) }
             } catch (e: Exception) {
                 if (e is ValidationException) {
-                    Log.e("TrackValidation", e.message.toString(), e)
+                    Log.e(TAG, e.message.toString(), e)
                 } else {
-                    Log.e("TrackingStateHandler", "Unexpected error while handling track completion", e)
+                    Log.e(TAG, "Unexpected error while handling track completion", e)
                 }
                 _uiEventFlow.update { UIEvent.ErrorAndClose }
             } finally {
@@ -69,5 +65,9 @@ class TrackingUiEventHandler
             val metrics = UiMetricsFormatter.format(track)
             val polylines = polylineProcessor.generateNewPolylines(track.segments)
             _uiEventFlow.update { UIEvent.UpdateTrackingUi(metrics, polylines) }
+        }
+
+        companion object {
+            private const val TAG = "My stack: TrackingUiEventHandler"
         }
     }

@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking_session.presentation.model
+package com.developers.sprintsync.tracking_session.presentation.util.metrics_formatter
 
 data class UiMetrics(
     val distance: String,
