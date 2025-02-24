@@ -1,7 +1,6 @@
-package com.developers.sprintsync.tracking_session.presentation.util.state_handler
+package com.developers.sprintsync.tracking_session.presentation.util.state_handler.ui
 
 import com.developers.sprintsync.tracking.component.model.TrackingStatus
-import com.developers.sprintsync.tracking_session.presentation.model.UIState
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

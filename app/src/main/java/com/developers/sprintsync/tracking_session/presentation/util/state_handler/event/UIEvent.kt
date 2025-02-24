@@ -1,5 +1,6 @@
-package com.developers.sprintsync.tracking_session.presentation.model
+package com.developers.sprintsync.tracking_session.presentation.util.state_handler.event
 
+import com.developers.sprintsync.tracking_session.presentation.util.metrics_formatter.UiMetrics
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
 
@@ -13,7 +14,9 @@ sealed class UIEvent {
         val bounds: LatLngBounds,
     ) : UIEvent()
 
-    data object NavigateToSummary : UIEvent()
+    data class NavigateToSummary(
+        val trackId: Int,
+    ) : UIEvent()
 
     data object ErrorAndClose : UIEvent()
 }

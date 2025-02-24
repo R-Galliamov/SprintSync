@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking_session.presentation.util.state_handler
+package com.developers.sprintsync.tracking_session.presentation.util.state_handler.snapshot
 
 import android.graphics.Bitmap
 import dagger.hilt.android.scopes.ViewModelScoped

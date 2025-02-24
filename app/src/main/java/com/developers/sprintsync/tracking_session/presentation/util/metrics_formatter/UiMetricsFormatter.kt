@@ -1,4 +1,4 @@
-package com.developers.sprintsync.tracking_session.presentation.util.formatter
+package com.developers.sprintsync.tracking_session.presentation.util.metrics_formatter
 
 import com.developers.sprintsync.core.components.track.data.model.Segment
 import com.developers.sprintsync.core.components.track.data.model.Track
@@ -6,7 +6,6 @@ import com.developers.sprintsync.core.components.track.presentation.indicator_fo
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
-import com.developers.sprintsync.tracking_session.presentation.model.UiMetrics
 
 object UiMetricsFormatter {
     fun format(track: Track): UiMetrics {

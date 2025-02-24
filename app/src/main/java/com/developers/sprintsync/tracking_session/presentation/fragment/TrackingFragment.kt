@@ -1,6 +1,5 @@
 package com.developers.sprintsync.tracking_session.presentation.fragment
 
-import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,15 +16,16 @@ import com.developers.sprintsync.core.util.extension.setMapStyle
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
 import com.developers.sprintsync.map.data.model.MapStyle
 import com.developers.sprintsync.tracking.service.controller.TrackingServiceController
-import com.developers.sprintsync.tracking_session.presentation.model.UIEvent
-import com.developers.sprintsync.tracking_session.presentation.model.UIState
-import com.developers.sprintsync.tracking_session.presentation.model.UiMetrics
+import com.developers.sprintsync.tracking_session.presentation.util.state_handler.event.UIEvent
+import com.developers.sprintsync.tracking_session.presentation.util.state_handler.ui.UIState
+import com.developers.sprintsync.tracking_session.presentation.util.metrics_formatter.UiMetrics
 import com.developers.sprintsync.tracking_session.presentation.util.map.MapCameraManager
 import com.developers.sprintsync.tracking_session.presentation.util.map.MapSnapshotCreator
 import com.developers.sprintsync.tracking_session.presentation.util.map.MapSnapshotPreparer
 import com.developers.sprintsync.tracking_session.presentation.util.map.MarkerManager
 import com.developers.sprintsync.tracking_session.presentation.view.TrackingPanelController
 import com.developers.sprintsync.tracking_session.presentation.view.TrackingPanelState
+import com.developers.sprintsync.tracking_session.presentation.util.state_handler.map.MapUiState
 import com.developers.sprintsync.tracking_session.presentation.view_model.TrackingViewModel
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLngBounds
@@ -64,10 +64,11 @@ class TrackingFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
+        binding.loadingOverlay.bindToLifecycle(lifecycle)
+        binding.mapLoadingOverlay.bindToLifecycle(lifecycle)
         binding.mapView.onCreate(savedInstanceState)
         initializeTrackingPanel()
         initializeMap()
-        initLoadingViews()
         observeUIStaticState()
         observeTrackingDuration()
         setBackButtonListener()
@@ -89,7 +90,7 @@ class TrackingFragment : Fragment() {
             map.setMapStyle(requireContext(), MapStyle.MINIMAL, TAG)
             _map = map
             observeUIEvents()
-            observeUserLocation()
+            observeMapState()
         }
     }
 
@@ -110,7 +111,7 @@ class TrackingFragment : Fragment() {
                 }
 
                 UIState.Completing -> {
-                    // TODO Show Loading?
+                    binding.loadingOverlay.show()
                 }
             }
         }
@@ -131,9 +132,9 @@ class TrackingFragment : Fragment() {
                     }
                 }
 
-                UIEvent.NavigateToSummary -> navigateToSessionSummary()
+                is UIEvent.NavigateToSummary -> navigateToSessionSummary(event.trackId)
                 UIEvent.ErrorAndClose -> {
-                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show() // TODO handle error event
                     popBackStack()
                 }
             }
@@ -152,23 +153,22 @@ class TrackingFragment : Fragment() {
         )
     }
 
-    private fun initLoadingViews() {
-        updateGeneralLoadingVisibility(false)
-        updateMapLoadingVisibility(true)
-    }
-
     private fun observeTrackingDuration() =
         collectFlow(sessionViewModel.duration) { duration ->
             updateDuration(duration)
         }
 
-    private fun observeUserLocation() {
-        collectFlow(sessionViewModel.userLocation) { location ->
-            if (mapLoadingIsVisible()) {
-                updateMapLoadingVisibility(false)
+    private fun observeMapState() {
+        val loadingView = binding.mapLoadingOverlay
+        collectFlow(sessionViewModel.mapStateFlow) { state ->
+            when (state) {
+                MapUiState.Loading -> loadingView.show()
+                is MapUiState.Active -> {
+                    if (binding.mapLoadingOverlay.isVisible) loadingView.hide()
+                    mapMarker.setMarker(map, state.location)
+                    mapCamera.moveCamera(state.location)
+                }
             }
-            mapMarker.setMarker(map, location)
-            mapCamera.moveCamera(location)
         }
     }
 
@@ -190,38 +190,6 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    private fun updateMapLoadingVisibility(isVisible: Boolean) {
-        val loadingBar = (binding.mapLoadingBar.drawable as? AnimatedVectorDrawable)
-        when (isVisible) {
-            true -> {
-                loadingBar?.start()
-                binding.mapLoadingView.visibility = View.VISIBLE
-            }
-
-            false -> {
-                loadingBar?.stop()
-                binding.mapLoadingView.visibility = View.GONE
-            }
-        }
-    }
-
-    private fun mapLoadingIsVisible(): Boolean = binding.mapLoadingView.visibility == View.VISIBLE
-
-    private fun updateGeneralLoadingVisibility(isVisible: Boolean) {
-        val loadingBar = (binding.generalLoadingBar.drawable as? AnimatedVectorDrawable)
-        when (isVisible) {
-            true -> {
-                loadingBar?.start()
-                binding.generalLoadingView.visibility = View.VISIBLE
-            }
-
-            false -> {
-                loadingBar?.stop()
-                binding.generalLoadingView.visibility = View.GONE
-            }
-        }
-    }
-
     private fun updatePauseCardVisibility(state: UIState) {
         binding.pauseCard.visibility =
             when (state) {
@@ -230,8 +198,9 @@ class TrackingFragment : Fragment() {
             }
     }
 
-    private fun navigateToSessionSummary() {
-        findTopNavController().navigate(R.id.action_trackingFragment_to_sessionSummaryFragment)
+    private fun navigateToSessionSummary(trackId: Int) {
+        val action = TrackingFragmentDirections.actionTrackingFragmentToSessionSummaryFragment(trackId)
+        findTopNavController().navigate(action)
     }
 
     private fun popBackStack() = findTopNavController().popBackStack()
