@@ -35,7 +35,14 @@ class TrackCalculator
             newSegment: Segment,
         ): Float =
             when (newSegment) {
-                is Segment.Active -> minOf(track.bestPace, newSegment.pace)
+                is Segment.Active -> {
+                    if (track.segments.filterIsInstance<Segment.Active>().isEmpty()) {
+                        newSegment.pace
+                    } else {
+                        minOf(track.bestPace, newSegment.pace)
+                    }
+                }
+
                 is Segment.Stationary -> track.bestPace
             }
 
