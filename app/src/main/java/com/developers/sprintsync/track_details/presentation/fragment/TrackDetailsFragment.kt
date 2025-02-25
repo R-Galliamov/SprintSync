@@ -57,7 +57,7 @@ class TrackDetailsFragment : Fragment() {
     private fun setDataObserver(trackId: Int) {
         viewModel.getTrackById(trackId).observe(viewLifecycleOwner) { track ->
             track?.let {
-                paceChartManager.setData(track.segments)
+                // paceChartManager.setData(track.segments)
                 updateStatisticsValues(track)
                 setGoToMapButtonListener(track.id)
             }

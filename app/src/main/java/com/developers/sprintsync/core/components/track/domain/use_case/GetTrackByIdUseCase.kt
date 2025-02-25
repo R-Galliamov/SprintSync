@@ -8,5 +8,5 @@ class GetTrackByIdUseCase
     constructor(
         private val repository: TrackDataSource,
     ) {
-        operator fun invoke(trackId: Int) = repository.getTrackById(trackId)
+        suspend operator fun invoke(trackId: Int) = repository.getTrackById(trackId)
     }

@@ -24,8 +24,7 @@
         </action>
         <action
             android:id="@+id/action_tabsFragment_to_updateGoalsFragment"
-            app:destination="@id/updateGoalsFragment"
-           />
+            app:destination="@id/updateGoalsFragment" />
     </fragment>
 
     <fragment
@@ -40,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/trackingFragment"
-        android:name="com.developers.sprintsync.tracking_session.presentation.fragment.TrackingFragment"
+        android:name="com.developers.sprintsync.tracking_session.presentation.tracking.TrackingFragment"
         android:label="fragment_tracking"
         tools:layout="@layout/fragment_tracking">
         <action
@@ -50,7 +49,11 @@
             android:id="@+id/action_trackingFragment_to_sessionSummaryFragment"
             app:destination="@id/sessionSummaryFragment"
             app:popUpTo="@id/trackingFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true">
+            <argument
+                android:name="trackId"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/locationRequestFragment"
@@ -65,9 +68,12 @@
     </fragment>
     <fragment
         android:id="@+id/sessionSummaryFragment"
-        android:name="com.developers.sprintsync.tracking_session.presentation.fragment.SessionSummaryFragment"
+        android:name="com.developers.sprintsync.tracking_session.presentation.session_summary.SessionSummaryFragment"
         android:label="fragment_session_summary"
         tools:layout="@layout/fragment_session_summary">
+        <argument
+            android:name="trackId"
+            app:argType="integer" />
         <action
             android:id="@+id/action_sessionSummaryFragment_to_mapFragment"
             app:destination="@id/mapFragment">

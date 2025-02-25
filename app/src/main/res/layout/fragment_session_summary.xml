@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tracking_session.presentation.fragment.SessionSummaryFragment">
+    tools:context=".tracking_session.presentation.session_summary.SessionSummaryFragment">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -230,5 +230,10 @@
             android:text="@string/home" />
 
     </FrameLayout>
+
+    <com.developers.sprintsync.core.presentation.view.LoadingOverlay
+        android:id="@+id/loading_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

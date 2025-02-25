@@ -25,7 +25,7 @@ class TrackDetailsViewModel
                 withContext(Dispatchers.IO) {
                     val track = getTrackByIdUseCase.invoke(id)
                     emit(track)
-                }
+                } // TODO update with flow and UiTrack
             }
 
         fun deleteTrackById(id: Int) {

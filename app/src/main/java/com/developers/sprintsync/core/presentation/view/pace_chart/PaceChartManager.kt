@@ -5,7 +5,7 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.core.util.style_provider.AppThemeProvider
 import com.developers.sprintsync.core.presentation.view.pace_chart.formatter.PaceChartDurationFormatter
 import com.developers.sprintsync.core.presentation.view.pace_chart.formatter.PaceChartPaceFormatter
-import com.developers.sprintsync.core.components.track.data.model.Segments
+import com.developers.sprintsync.core.presentation.view.pace_chart.model.PaceChartData
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -20,17 +20,14 @@ class PaceChartManager(
 
     private val colors = AppThemeProvider(context).Color()
 
-    private val preparer = PaceChartDataPreparer()
-
     fun initialize(chart: LineChart) {
         this@PaceChartManager._chart = chart
         setChartStyle()
     }
 
-    fun setData(segments: Segments) {
-        val paceChartData = preparer.getChartData(segments)
-        val lineDataSets = paceChartData.data.map { getLineDataSet(it) }
-        setYAxisLimits(paceChartData.maxPace, paceChartData.minPace)
+    fun setData(chartData: PaceChartData) {
+        val lineDataSets = chartData.data.map { getLineDataSet(it) }
+        setYAxisLimits(chartData.maxPace, chartData.minPace)
         chart.data = LineData(lineDataSets)
         refreshChart()
     }
