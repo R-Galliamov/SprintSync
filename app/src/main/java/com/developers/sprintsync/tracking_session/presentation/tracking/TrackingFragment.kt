@@ -16,16 +16,16 @@ import com.developers.sprintsync.core.util.extension.setMapStyle
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
 import com.developers.sprintsync.map.data.model.MapStyle
 import com.developers.sprintsync.tracking.service.controller.TrackingServiceController
-import com.developers.sprintsync.tracking_session.presentation.tracking.util.state_handler.event.UIEvent
-import com.developers.sprintsync.tracking_session.presentation.tracking.util.state_handler.ui.UIState
-import com.developers.sprintsync.tracking_session.presentation.tracking.util.metrics_formatter.UiMetrics
 import com.developers.sprintsync.tracking_session.presentation.tracking.util.map.MapCameraManager
 import com.developers.sprintsync.tracking_session.presentation.tracking.util.map.MapSnapshotCreator
 import com.developers.sprintsync.tracking_session.presentation.tracking.util.map.MapSnapshotPreparer
 import com.developers.sprintsync.tracking_session.presentation.tracking.util.map.MarkerManager
+import com.developers.sprintsync.tracking_session.presentation.tracking.util.metrics_formatter.UiMetrics
+import com.developers.sprintsync.tracking_session.presentation.tracking.util.state_handler.event.UIEvent
+import com.developers.sprintsync.tracking_session.presentation.tracking.util.state_handler.map.MapUiState
+import com.developers.sprintsync.tracking_session.presentation.tracking.util.state_handler.ui.UIState
 import com.developers.sprintsync.tracking_session.presentation.tracking.util.tracking_panel.TrackingPanelController
 import com.developers.sprintsync.tracking_session.presentation.tracking.util.tracking_panel.TrackingPanelState
-import com.developers.sprintsync.tracking_session.presentation.tracking.util.state_handler.map.MapUiState
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLngBounds
 import dagger.hilt.android.AndroidEntryPoint
@@ -121,7 +121,7 @@ class TrackingFragment : Fragment() {
             when (event) {
                 is UIEvent.UpdateTrackingUi -> {
                     updateTrackMetrics(event.metrics)
-                    map.addPolyline(event.polylines)
+                    event.polylines.forEach { map.addPolyline(it) }
                 }
 
                 is UIEvent.RequestSnapshot -> {

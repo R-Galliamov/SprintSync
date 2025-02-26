@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.PolylineOptions
 sealed class UIEvent {
     data class UpdateTrackingUi(
         val metrics: UiMetrics,
-        val polylines: PolylineOptions,
+        val polylines: List<PolylineOptions>,
     ) : UIEvent()
 
     data class RequestSnapshot(

@@ -1,18 +1,18 @@
 package com.developers.sprintsync.tracking_session.presentation.tracking.util.polyline
 
 import com.developers.sprintsync.core.components.track.data.model.Segments
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
 import javax.inject.Inject
 
 class PolylineProcessor
     @Inject
     constructor(
-        private val polylineTracker: PolylineTracker,
         private val polylineOptionsCreator: PolylineOptionsCreator,
+        private val polylineFormatter: PolylineFormatter,
     ) {
-        fun generateNewPolylines(segments: Segments): PolylineOptions {
-            val polylines: List<List<LatLng>> = polylineTracker.getNewPolylines(segments)
-            return polylineOptionsCreator.createPolylineOptions(polylines)
+        fun generateNewPolylines(segments: Segments): List<PolylineOptions> {
+            val polylines = polylineFormatter.format(segments)
+            val polylineOptions = polylineOptionsCreator.create(polylines)
+            return polylineOptions
         }
     }

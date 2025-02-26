@@ -11,6 +11,7 @@ import com.developers.sprintsync.tracking.component.use_case.ResetCurrentTrackin
 import com.developers.sprintsync.tracking_session.presentation.tracking.util.metrics_formatter.UiMetricsFormatter
 import com.developers.sprintsync.tracking_session.presentation.tracking.util.polyline.PolylineFormatter
 import com.developers.sprintsync.tracking_session.presentation.tracking.util.polyline.PolylineProcessor
+import com.developers.sprintsync.tracking_session.presentation.tracking.util.segments.SegmentsTracker
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,9 @@ class TrackingUiEventHandler
     @Inject
     constructor(
         private val validateTrackOrThrowUseCase: ValidateTrackUseCase,
+        private val segmentsTracker: SegmentsTracker,
         private val polylineProcessor: PolylineProcessor,
+        private val polylineFormatter: PolylineFormatter,
         private val trackCompletionHandler: TrackCompletionHandler,
         private val resetCurrentTrackingStateUseCase: ResetCurrentTrackingStateUseCase,
     ) {
@@ -44,7 +47,7 @@ class TrackingUiEventHandler
                 val trackId: Int =
                     withContext(NonCancellable) {
                         validateTrackOrThrowUseCase(track)
-                        val bounds = PolylineFormatter.format(track.segments).flatten().toLatLngBounds()
+                        val bounds = polylineFormatter.format(track.segments).flatten().toLatLngBounds()
                         _uiEventFlow.update { UIEvent.RequestSnapshot(bounds) }
                         trackCompletionHandler.saveTrackWithSnapshot(track)
                     }
@@ -63,7 +66,8 @@ class TrackingUiEventHandler
 
         private fun emitUiTrackData(track: Track) {
             val metrics = UiMetricsFormatter.format(track)
-            val polylines = polylineProcessor.generateNewPolylines(track.segments)
+            val segments = segmentsTracker.getNewSegmentsAndAdd(track.segments)
+            val polylines = polylineProcessor.generateNewPolylines(segments)
             _uiEventFlow.update { UIEvent.UpdateTrackingUi(metrics, polylines) }
         }
 

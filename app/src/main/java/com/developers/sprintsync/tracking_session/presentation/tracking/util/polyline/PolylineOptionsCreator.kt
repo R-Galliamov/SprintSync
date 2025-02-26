@@ -5,16 +5,16 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
 import javax.inject.Inject
 
-class PolylineOptionsCreator @Inject constructor(){
-    companion object {
-        private val polylineColor = Color.GREEN // TODO replace color
-    }
-
-    fun createPolylineOptions(polylines: List<List<LatLng>>): PolylineOptions {
-        val polylineOptions = PolylineOptions().color(polylineColor).width(7.5f) // TODO update constants
-        polylines.onEach { polyline ->
-            polylineOptions.addAll(polyline) // TODO check if it saves gaps in paused state
+class PolylineOptionsCreator
+    @Inject
+    constructor() {
+        companion object {
+            private const val POLYLINE_COLOR = Color.RED // TODO fix color providing
+            private const val POLYLINE_WIDTH = 7.5f
         }
-        return polylineOptions
+
+        fun create(polylines: List<List<LatLng>>): List<PolylineOptions> =
+            polylines.map { segment ->
+                PolylineOptions().color(POLYLINE_COLOR).width(POLYLINE_WIDTH).addAll(segment)
+            }
     }
-}
