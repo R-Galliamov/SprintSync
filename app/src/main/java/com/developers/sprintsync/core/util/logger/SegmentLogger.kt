@@ -5,10 +5,8 @@ import com.developers.sprintsync.core.components.track.data.model.Segment
 import com.developers.sprintsync.core.components.track.data.model.Segments
 
 object SegmentLogger {
-    private var callCounter = 0
 
     fun log(segments: Segments) {
-        val callId = callCounter++
         val timestamp = System.currentTimeMillis()
 
         val segmentDetails =
@@ -18,7 +16,7 @@ object SegmentLogger {
                     is Segment.Stationary -> "ID:${it.id} [(${it.location.latitude.value},${it.location.longitude.value})]"
                 }
             }
-        Log.d(TAG, "[$timestamp] Call #$callId - Segments: $segmentDetails")
+        Log.d(TAG, "Segments: $segmentDetails")
     }
 
     private const val TAG = "My stack: SegmentLogger"

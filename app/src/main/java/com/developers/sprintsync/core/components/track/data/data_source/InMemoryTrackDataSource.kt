@@ -1,6 +1,7 @@
 package com.developers.sprintsync.core.components.track.data.data_source
 
 import androidx.collection.LruCache
+import com.developers.sprintsync.core.components.track.data.data_source.preparer.TrackPreparer
 import com.developers.sprintsync.core.components.track.data.database.dao.TrackDao
 import com.developers.sprintsync.core.components.track.data.database.dto.TrackEntity
 import com.developers.sprintsync.core.components.track.data.model.Track
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 class InMemoryTrackDataSource
     @Inject
     constructor(
+        private val trackPreparer: TrackPreparer,
         private val trackDao: TrackDao,
     ) : TrackDataSource {
         private val cache = LruCache<Int, Track>(CACHE_SIZE)
@@ -23,9 +25,10 @@ class InMemoryTrackDataSource
         override val tracks = trackDao.getAllTracks()
 
         override suspend fun saveTrack(track: Track): Int {
-            val entity = TrackEntity.fromDto(track)
+            val preparedTrack = trackPreparer.prepareForSave(track)
+            val entity = TrackEntity.fromDto(preparedTrack)
             val trackId = trackDao.insertTrack(entity).toInt()
-            mutex.withLock { cache.put(trackId, track) }
+            mutex.withLock { cache.put(trackId, preparedTrack) }
             lastTrackId = trackId
             return trackId
         }

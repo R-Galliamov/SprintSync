@@ -4,6 +4,7 @@ import android.util.Log
 import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.components.track.domain.use_case.ValidateTrackUseCase
 import com.developers.sprintsync.core.util.extension.toLatLngBounds
+import com.developers.sprintsync.core.util.logger.TrackLogger
 import com.developers.sprintsync.core.util.validation.ValidationException
 import com.developers.sprintsync.tracking.component.model.TrackState
 import com.developers.sprintsync.tracking.component.model.TrackingStatus
@@ -43,6 +44,7 @@ class TrackingUiEventHandler
         }
 
         private suspend fun handleCompleteState(track: Track) {
+            TrackLogger.log(track)
             try {
                 val trackId: Int =
                     withContext(NonCancellable) {

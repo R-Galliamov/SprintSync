@@ -27,6 +27,6 @@ class MapCameraManager {
     }
 
     companion object {
-        const val DEFAULT_ZOOM = 15f
+        const val DEFAULT_ZOOM = 20f
     }
 }
