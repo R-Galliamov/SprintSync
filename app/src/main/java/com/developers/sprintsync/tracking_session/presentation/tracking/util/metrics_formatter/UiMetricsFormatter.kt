@@ -4,8 +4,8 @@ import com.developers.sprintsync.core.components.track.data.model.Segment
 import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.CaloriesFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
 
 object UiMetricsFormatter {
     fun format(track: Track): UiMetrics {
@@ -23,7 +23,7 @@ object UiMetricsFormatter {
         val pace =
             when (val segment = track.segments.lastOrNull()) {
                 is Segment.Active -> PaceFormatter.formatPaceWithTwoDecimals(segment.pace)
-                else-> INVALID_PACE
+                else -> INVALID_PACE
             }
         return pace
     }

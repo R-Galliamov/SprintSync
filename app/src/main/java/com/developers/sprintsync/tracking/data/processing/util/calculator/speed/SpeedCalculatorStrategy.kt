@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.data.processing.util.calculator.speed
 
-import com.developers.sprintsync.core.components.time.utils.TimeConverter
+import com.developers.sprintsync.core.util.time.TimeConverter
 
 sealed interface SpeedCalculatorStrategy {
     fun calculate(
@@ -13,7 +13,9 @@ sealed interface SpeedCalculatorStrategy {
             durationMillis: Long,
             distanceMeters: Float,
         ): Float {
-            val minutes = TimeConverter.millisToMinutes(durationMillis)
+            require(durationMillis > 0) { "durationMillis must be positive" }
+            require(distanceMeters >= 0) { "distanceMeters must be non-negative" }
+            val minutes = TimeConverter.convertFromMillis(durationMillis, TimeConverter.TimeUnit.MINUTES)
             return distanceMeters / minutes
         }
     }

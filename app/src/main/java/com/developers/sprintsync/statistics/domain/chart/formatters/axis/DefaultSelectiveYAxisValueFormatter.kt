@@ -40,7 +40,7 @@ class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {
             when (metric) {
                 Metric.DURATION -> DurationFormatter.formatToMm(selectedValue.toLong(), true)
                 Metric.DISTANCE -> DistanceUiFormatter.format(selectedValue, DistanceUiPattern.WITH_UNIT)
-                Metric.CALORIES -> CaloriesFormatter.formatCalories(selectedValue.toInt(), true)
+                Metric.CALORIES -> CaloriesFormatter.formatCalories(selectedValue, true)
             }
         } else {
             EMPTY

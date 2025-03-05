@@ -1,8 +1,8 @@
-package com.developers.sprintsync.core.components.time.utils
+package com.developers.sprintsync.core.util.timestamp
 
 import java.util.Calendar
 
-object TimeUtils {
+object TimestampUtils {
     private const val START_OF_DAY = 0
 
     fun getStartOfDayTimestamp(timestamp: Long): Long {

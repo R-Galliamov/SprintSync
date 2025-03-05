@@ -58,17 +58,8 @@ class TrackFlowGenerator
         }
 
         private fun addSegmentToTrack(segment: Segment) {
-            val updatedTrack: Track =
-                when (segment) {
-                    is Segment.Active -> {
-                        trackUpdater.updateTrackWithSegment(track, segment)
-                    }
-
-                    is Segment.Stationary -> {
-                        trackUpdater.updateTrackWithSegment(track, segment)
-                    }
-                }
-            updateTrackFlow(updatedTrack)
+            val track = trackUpdater.updateTrackWithSegment(track, segment)
+            updateTrackFlow(track)
         }
 
         private fun isTrackInitialized(): Boolean = track != Track.INITIAL

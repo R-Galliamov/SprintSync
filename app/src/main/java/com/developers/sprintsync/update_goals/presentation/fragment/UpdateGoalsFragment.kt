@@ -11,15 +11,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.developers.sprintsync.R
-import com.developers.sprintsync.databinding.FragmentUpdateGoalsBinding
-import com.developers.sprintsync.core.presentation.view.InputCardHandler
-import com.developers.sprintsync.core.presentation.view.spinner.manager.SpinnerManager
-import com.developers.sprintsync.user_parameters.presentation.util.mapper.WellnessGoalToSpinnerMapper
 import com.developers.sprintsync.core.components.goal.data.model.Metric
-import com.developers.sprintsync.statistics.domain.goal.WellnessGoal
+import com.developers.sprintsync.core.presentation.view.InputCardHandler
 import com.developers.sprintsync.core.presentation.view.InputCardView
+import com.developers.sprintsync.core.presentation.view.spinner.manager.SpinnerManager
+import com.developers.sprintsync.databinding.FragmentUpdateGoalsBinding
+import com.developers.sprintsync.statistics.domain.goal.WellnessGoal
 import com.developers.sprintsync.update_goals.presentation.util.MetricInputConverter
 import com.developers.sprintsync.update_goals.presentation.viewModel.UpdateGoalsViewModel
+import com.developers.sprintsync.user_parameters.presentation.util.mapper.WellnessGoalToSpinnerMapper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,6 +38,9 @@ class UpdateGoalsFragment : Fragment() {
 
     @Inject
     lateinit var inputCardHandler: InputCardHandler
+
+    @Inject
+    lateinit var metricInputConverter: MetricInputConverter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -147,7 +150,7 @@ class UpdateGoalsFragment : Fragment() {
         inputCardViews.forEach { (metric, metricView) ->
             val uiValue = metricView.editText.text.toString()
             if (uiValue.isBlank()) return@forEach
-            val value = MetricInputConverter.convertInputToMetricValue(metric, uiValue)
+            val value = metricInputConverter.convertInputToMetricValue(metric, uiValue)
             if (value.toInt() == 0) return@forEach
             map[metric] = value
         }

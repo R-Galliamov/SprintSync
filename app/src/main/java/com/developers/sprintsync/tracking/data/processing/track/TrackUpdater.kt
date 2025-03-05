@@ -1,5 +1,6 @@
 package com.developers.sprintsync.tracking.data.processing.track
 
+import android.util.Log
 import com.developers.sprintsync.core.components.track.data.model.Segment
 import com.developers.sprintsync.core.components.track.data.model.Track
 import javax.inject.Inject

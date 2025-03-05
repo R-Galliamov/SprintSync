@@ -36,7 +36,7 @@ class SegmentService
                             stateManager.updateState(data)
                         },
                         onFailure = { e ->
-                            Log.e(TAG, "Error to generate segment: ${e.message}")
+                            Log.e(TAG, "Error to generate segment", e)
                             handleValidationErrors(e, data)
                         },
                     )

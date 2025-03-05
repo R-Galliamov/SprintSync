@@ -16,6 +16,7 @@ import com.developers.sprintsync.core.components.track.presentation.indicator_fo
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
 import com.developers.sprintsync.core.util.formatter.DateFormatter
 import com.developers.sprintsync.databinding.ItemTrackCardBinding
+import kotlin.math.roundToInt
 
 class TrackListAdapter(
     private val onInteractionListener: OnInteractionListener,
@@ -73,7 +74,7 @@ class TrackListAdapter(
 
     private fun formatDuration(durationMillis: Long): String = DurationFormatter.formatToHhMmSs(durationMillis)
 
-    private fun formatCalories(calories: Int): String = CaloriesFormatter.formatCalories(calories, true)
+    private fun formatCalories(calories: Float): String = CaloriesFormatter.formatCalories(calories, true)
 
     private fun loadBitmapIntoImageView(
         imageView: ImageView,

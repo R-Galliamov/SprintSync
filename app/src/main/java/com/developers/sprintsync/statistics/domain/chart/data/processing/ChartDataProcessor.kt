@@ -7,7 +7,7 @@ import com.developers.sprintsync.statistics.domain.chart.data.DailyValues
 import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.statistics.domain.chart.data.MetricsMap
 import com.developers.sprintsync.statistics.domain.chart.data.TimestampMetricsMap
-import com.developers.sprintsync.core.components.time.utils.TimeUtils
+import com.developers.sprintsync.core.util.timestamp.TimestampUtils
 
 class ChartDataProcessor(
     private val preparationHelper: ChartDataPreparationHelper,
@@ -18,7 +18,7 @@ class ChartDataProcessor(
         dailyValuesList: List<DailyValues>,
     ): ChartDataSet {
         val minKey = timestampMetrics.keys.min()
-        val firstTimestamp = TimeUtils.addDaysToTimestamp(minKey, -dailyValuesList.size)
+        val firstTimestamp = TimestampUtils.addDaysToTimestamp(minKey, -dailyValuesList.size)
 
         val earliestDayTimestamp = timestampMetrics.keys.min()
         val latestDayTimestamp = timestampMetrics.keys.max()
@@ -58,7 +58,7 @@ class ChartDataProcessor(
                     indexedValues.add(DailyValues.Missing(goal))
                 }
             }
-            currentDayTimestamp = TimeUtils.addDaysToTimestamp(currentDayTimestamp, 1)
+            currentDayTimestamp = TimestampUtils.addDaysToTimestamp(currentDayTimestamp, 1)
             dayIndex++
         }
 

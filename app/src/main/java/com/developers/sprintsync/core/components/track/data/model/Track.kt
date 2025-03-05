@@ -7,7 +7,7 @@ data class Track(
     val distanceMeters: Float,
     val avgPace: Float,
     val bestPace: Float,
-    val calories: Int,
+    val calories: Float,
     val segments: Segments,
 ) {
     companion object {
@@ -19,7 +19,7 @@ data class Track(
                 distanceMeters = 0f,
                 avgPace = 0f,
                 bestPace = 0f,
-                calories = 0,
+                calories = 0f,
                 segments = emptyList(),
             )
     }

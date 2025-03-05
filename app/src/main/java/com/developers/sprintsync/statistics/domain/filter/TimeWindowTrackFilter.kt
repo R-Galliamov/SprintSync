@@ -1,7 +1,7 @@
 package com.developers.sprintsync.statistics.domain.filter
 
-import com.developers.sprintsync.core.components.time.utils.TimeUtils
-import com.developers.sprintsync.core.components.time.utils.TimestampBuilder
+import com.developers.sprintsync.core.util.timestamp.TimestampUtils
+import com.developers.sprintsync.core.util.timestamp.TimestampBuilder
 import com.developers.sprintsync.core.components.track.data.model.Track
 import javax.inject.Inject
 
@@ -24,7 +24,7 @@ class TimeWindowTrackFilter
         private fun calculateFromTimestamp(
             referenceTimestamp: Long,
             fromDayIndex: Int,
-        ): Long = TimeUtils.addDaysToTimestamp(referenceTimestamp, fromDayIndex)
+        ): Long = TimestampUtils.addDaysToTimestamp(referenceTimestamp, fromDayIndex)
 
         private fun calculateToTimestamp(
             referenceTimestamp: Long,

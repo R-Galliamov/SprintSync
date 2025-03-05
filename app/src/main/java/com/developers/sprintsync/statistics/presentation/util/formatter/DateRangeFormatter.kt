@@ -1,7 +1,7 @@
 package com.developers.sprintsync.statistics.presentation.util.formatter
 
 import com.developers.sprintsync.core.util.formatter.DateFormatter
-import com.developers.sprintsync.core.components.time.utils.TimeUtils
+import com.developers.sprintsync.core.util.timestamp.TimestampUtils
 import com.developers.sprintsync.statistics.domain.chart.navigator.RangePosition
 import com.developers.sprintsync.statistics.presentation.model.FormattedDateRange
 
@@ -56,7 +56,7 @@ class DateRangeFormatter {
     private fun shiftTimestampByDays(
         referenceTimestamp: Long,
         dayIndex: Int,
-    ): Long = TimeUtils.addDaysToTimestamp(referenceTimestamp, dayIndex)
+    ): Long = TimestampUtils.addDaysToTimestamp(referenceTimestamp, dayIndex)
 
     companion object {
         private const val RANGE_SEPARATOR = "-"

@@ -12,7 +12,7 @@ class CaloriesCalculatorHelper
         fun calculateBurnedCalories(
             speedInMetersPerMinute: Float,
             durationInHours: Float,
-        ): Int {
+        ): Float {
             val weight = userParameters.userWeightKg
             return caloriesCalculator.calculateBurnedCalories(speedInMetersPerMinute, durationInHours, weight)
         }

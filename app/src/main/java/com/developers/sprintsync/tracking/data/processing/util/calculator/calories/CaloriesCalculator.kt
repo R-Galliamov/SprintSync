@@ -2,7 +2,6 @@ package com.developers.sprintsync.tracking.data.processing.util.calculator.calor
 
 import com.developers.sprintsync.tracking.data.processing.util.calculator.calories.met.METCalculator
 import jakarta.inject.Inject
-import kotlin.math.roundToInt
 
 class CaloriesCalculator
     @Inject
@@ -13,8 +12,8 @@ class CaloriesCalculator
             speedInMetersPerMinute: Float,
             durationInHours: Float,
             weightInKilos: Float,
-        ): Int {
-            require( speedInMetersPerMinute >= 0) { "Speed must be non-negative" }
+        ): Float {
+            require(speedInMetersPerMinute >= 0) { "Speed must be non-negative" }
             require(durationInHours > 0) { "Duration must be greater than zero" }
             val met = mETCalculator.calculateMET(speedInMetersPerMinute)
             return calculateBurnedCaloriesFromMet(met, durationInHours, weightInKilos)
@@ -24,5 +23,5 @@ class CaloriesCalculator
             met: Float,
             durationInHours: Float,
             weightInKilos: Float,
-        ): Int = (met * durationInHours * weightInKilos).roundToInt()
+        ): Float = (met * durationInHours * weightInKilos)
     }

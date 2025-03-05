@@ -17,7 +17,7 @@ sealed class Segment {
         override val durationMillis: Long,
         val distanceMeters: Float,
         val pace: Float,
-        val calories: Int,
+        val calories: Float,
     ) : Segment()
 
     data class Stationary(

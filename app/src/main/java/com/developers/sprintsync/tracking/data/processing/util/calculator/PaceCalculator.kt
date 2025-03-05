@@ -1,7 +1,7 @@
 package com.developers.sprintsync.tracking.data.processing.util.calculator
 
-import com.developers.sprintsync.core.components.time.utils.TimeConverter
 import com.developers.sprintsync.core.components.track.domain.metrics_converter.MetersToKilometersConverter
+import com.developers.sprintsync.core.util.time.TimeConverter
 import javax.inject.Inject
 
 class PaceCalculator
@@ -16,7 +16,7 @@ class PaceCalculator
         ): Float {
             require(durationMillis >= 0) { "durationMillis must be non-negative" }
             require(coveredMeters > 0) { "coveredMeters must be positive" }
-            val minutes = TimeConverter.millisToMinutes(durationMillis)
+            val minutes = TimeConverter.convertFromMillis(durationMillis, TimeConverter.TimeUnit.MINUTES)
             val kilometers = MetersToKilometersConverter.convert(coveredMeters)
             return (minutes / kilometers)
         }

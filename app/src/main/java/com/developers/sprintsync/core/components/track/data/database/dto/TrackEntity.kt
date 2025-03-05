@@ -14,7 +14,7 @@ data class TrackEntity(
     val distanceMeters: Float,
     val avgPace: Float,
     val bestPace: Float,
-    val calories: Int,
+    val calories: Float,
     val segments: Segments,
 ) {
     /*

@@ -2,7 +2,7 @@ package com.developers.sprintsync.statistics.domain.chart.data.processing
 
 import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.statistics.domain.chart.data.MetricsMap
-import com.developers.sprintsync.core.components.time.utils.TimestampBuilder
+import com.developers.sprintsync.core.util.timestamp.TimestampBuilder
 import com.developers.sprintsync.core.components.goal.data.model.DailyGoal
 
 class DailyGoalProvider(

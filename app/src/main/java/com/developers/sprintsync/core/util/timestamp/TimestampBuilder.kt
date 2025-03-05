@@ -1,15 +1,15 @@
-package com.developers.sprintsync.core.components.time.utils
+package com.developers.sprintsync.core.util.timestamp
 
 class TimestampBuilder(
     private var timestamp: Long,
 ) {
     fun startOfDayTimestamp(): TimestampBuilder {
-        timestamp = TimeUtils.getStartOfDayTimestamp(timestamp)
+        timestamp = TimestampUtils.getStartOfDayTimestamp(timestamp)
         return this
     }
 
     fun shiftTimestampByDays(shiftDays: Int): TimestampBuilder {
-        timestamp = TimeUtils.addDaysToTimestamp(timestamp, shiftDays)
+        timestamp = TimestampUtils.addDaysToTimestamp(timestamp, shiftDays)
         return this
     }
 

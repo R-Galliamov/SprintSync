@@ -1,9 +1,12 @@
 package com.developers.sprintsync.tracking.data.processing.segment
 
+import com.developers.sprintsync.core.util.time.TimeConverter
 import com.developers.sprintsync.tracking.data.model.LocationModel
 import com.developers.sprintsync.tracking.data.model.distanceBetweenInMeters
 import com.developers.sprintsync.tracking.data.processing.util.calculator.PaceCalculator
 import com.developers.sprintsync.tracking.data.processing.util.calculator.calories.CaloriesCalculatorHelper
+import com.developers.sprintsync.tracking.data.processing.util.calculator.speed.SpeedCalculator
+import com.developers.sprintsync.tracking.data.processing.util.calculator.speed.SpeedUnit
 import javax.inject.Inject
 
 class SegmentCalculator
@@ -11,6 +14,7 @@ class SegmentCalculator
     constructor(
         private val caloriesCalculator: CaloriesCalculatorHelper,
         private val paceCalculator: PaceCalculator,
+        private val speedCalculator: SpeedCalculator,
     ) {
         fun calculateDurationInMillis(
             startTimeMillis: Long,
@@ -32,14 +36,15 @@ class SegmentCalculator
         fun calculatePaceInMinPerKm(
             durationMillis: Long,
             distanceMeters: Float,
-        ): Float {
-            return paceCalculator.getPaceInMinPerKm(durationMillis, distanceMeters)
-        }
+        ): Float = paceCalculator.getPaceInMinPerKm(durationMillis, distanceMeters)
 
         fun calculateBurnedCalories(
-            speedInMetersPerMinute: Float,
-            durationInHours: Float,
-        ): Int {
-            return caloriesCalculator.calculateBurnedCalories(speedInMetersPerMinute, durationInHours)
+            distanceMeters: Float,
+            durationMillis: Long,
+        ): Float {
+            val speedInMetersPerMinute =
+                speedCalculator.calculateSpeed(durationMillis, distanceMeters, SpeedUnit.METERS_PER_MINUTES)
+            val durationHours = TimeConverter.convertFromMillis(durationMillis, TimeConverter.TimeUnit.HOURS)
+            return caloriesCalculator.calculateBurnedCalories(speedInMetersPerMinute, durationHours)
         }
     }

@@ -4,5 +4,5 @@ import com.developers.sprintsync.core.components.track.presentation.indicator_fo
 import com.github.mikephil.charting.formatter.ValueFormatter
 
 class CaloriesValueFormatter : ValueFormatter() {
-    override fun getFormattedValue(value: Float): String = CaloriesFormatter.formatCalories(value.toInt())
+    override fun getFormattedValue(value: Float): String = CaloriesFormatter.formatCalories(value)
 }

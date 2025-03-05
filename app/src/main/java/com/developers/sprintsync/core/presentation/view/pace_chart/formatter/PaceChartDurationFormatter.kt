@@ -1,8 +1,8 @@
 package com.developers.sprintsync.core.presentation.view.pace_chart.formatter
 
+import com.developers.sprintsync.core.util.time.TimeConverter
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.ValueFormatter
-import java.util.concurrent.TimeUnit
 import kotlin.math.roundToLong
 
 class PaceChartDurationFormatter : ValueFormatter() {
@@ -11,12 +11,12 @@ class PaceChartDurationFormatter : ValueFormatter() {
         axis: AxisBase?,
     ): String {
         val roundedValue = value.roundToLong()
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(roundedValue).toInt()
+        val seconds = TimeConverter.convertFromMillis(roundedValue, TimeConverter.TimeUnit.SECONDS).toInt()
 
         return if (seconds < SECONDS_BARRIER) {
             getFormattedSeconds(seconds)
         } else {
-            val minutes = TimeUnit.MILLISECONDS.toMinutes(roundedValue).toInt()
+            val minutes = TimeConverter.convertFromMillis(roundedValue, TimeConverter.TimeUnit.MINUTES).toInt()
             getFormattedMinutes(minutes)
         }
     }

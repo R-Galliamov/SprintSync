@@ -27,10 +27,10 @@ class StationarySegmentMergerTest {
     @Test
     fun singleActiveSegmentPreservesSegmentWithIdZero() {
         val input = listOf(
-            Segment.Active(99, locA, 0, locB, 1000, 1000, 100f, 10f, 50)
+            Segment.Active(99, locA, 0, locB, 1000, 1000, 100f, 10f, 50f)
         )
         val expected = listOf(
-            Segment.Active(0, locA, 0, locB, 1000, 1000, 100f, 10f, 50)
+            Segment.Active(0, locA, 0, locB, 1000, 1000, 100f, 10f, 50f)
         )
         val result = merger.mergeStationarySegments(input)
         assertEquals(expected, result)
@@ -64,11 +64,11 @@ class StationarySegmentMergerTest {
     @Test
     fun activeFollowedByStationaryPreservesBothWithIncrementalIds() {
         val input = listOf(
-            Segment.Active(1, locA, 0, locB, 1000, 1000, 100f, 10f, 50),
+            Segment.Active(1, locA, 0, locB, 1000, 1000, 100f, 10f, 50f),
             Segment.Stationary(2, locB, 1000, 2000, 1000)
         )
         val expected = listOf(
-            Segment.Active(0, locA, 0, locB, 1000, 1000, 100f, 10f, 50),
+            Segment.Active(0, locA, 0, locB, 1000, 1000, 100f, 10f, 50f),
             Segment.Stationary(1, locB, 1000, 2000, 1000)
         )
         val result = merger.mergeStationarySegments(input)
@@ -78,15 +78,15 @@ class StationarySegmentMergerTest {
     @Test
     fun mixedSegmentsWithConsecutiveStationaryMergesCorrectlyWithIds() {
         val input = listOf(
-            Segment.Active(1, locA, 0, locB, 1000, 1000, 100f, 10f, 50),
+            Segment.Active(1, locA, 0, locB, 1000, 1000, 100f, 10f, 50f),
             Segment.Stationary(2, locB, 1000, 2000, 1000),
             Segment.Stationary(3, locB, 2000, 3000, 1000),
-            Segment.Active(4, locB, 3000, locC, 4000, 1000, 100f, 10f, 50)
+            Segment.Active(4, locB, 3000, locC, 4000, 1000, 100f, 10f, 50f)
         )
         val expected = listOf(
-            Segment.Active(0, locA, 0, locB, 1000, 1000, 100f, 10f, 50),
+            Segment.Active(0, locA, 0, locB, 1000, 1000, 100f, 10f, 50f),
             Segment.Stationary(1, locB, 1000, 5000, 2000), // Merged: 1000+1000, 2000+3000
-            Segment.Active(2, locB, 3000, locC, 4000, 1000, 100f, 10f, 50)
+            Segment.Active(2, locB, 3000, locC, 4000, 1000, 100f, 10f, 50f)
         )
         val result = merger.mergeStationarySegments(input)
         assertEquals(expected, result)
@@ -109,10 +109,10 @@ class StationarySegmentMergerTest {
     @Test
     fun multipleSegmentsEnsuresIncrementalIdsInOrder() {
         val input = listOf(
-            Segment.Active(1, locA, 0, locB, 1000, 1000, 100f, 10f, 50),
+            Segment.Active(1, locA, 0, locB, 1000, 1000, 100f, 10f, 50f),
             Segment.Stationary(2, locB, 1000, 2000, 1000),
             Segment.Stationary(3, locB, 2000, 3000, 1000),
-            Segment.Active(4, locB, 3000, locC, 4000, 1000, 100f, 10f, 50)
+            Segment.Active(4, locB, 3000, locC, 4000, 1000, 100f, 10f, 50f)
         )
         val result = merger.mergeStationarySegments(input)
         assertEquals(3, result.size) // Expect 3 segments after merging

@@ -49,7 +49,7 @@ class TrackCalculator
         fun calculateCalories(
             track: Track,
             newSegment: Segment,
-        ): Int =
+        ): Float =
             when (newSegment) {
                 is Segment.Active -> track.calories + newSegment.calories
                 is Segment.Stationary -> track.calories

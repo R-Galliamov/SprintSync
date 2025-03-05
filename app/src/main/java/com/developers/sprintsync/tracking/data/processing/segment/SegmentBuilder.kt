@@ -27,7 +27,7 @@ sealed interface SegmentBuilder {
                         calculator.calculateDurationInMillis(startData.timestampMillis, endData.timestampMillis)
                     val distanceMeters = calculator.calculateDistanceInMeters(startData.location, endData.location)
                     val pace = calculator.calculatePaceInMinPerKm(durationMillis, distanceMeters)
-                    val burnedCalories = calculator.calculateBurnedCalories(100f, 100f) // TODO provide data
+                    val burnedCalories = calculator.calculateBurnedCalories(distanceMeters, durationMillis)
 
                     val segment =
                         Segment.Active(
