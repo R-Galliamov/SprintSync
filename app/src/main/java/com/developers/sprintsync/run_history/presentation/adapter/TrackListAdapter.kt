@@ -12,15 +12,15 @@ import coil.request.ImageRequest
 import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.CaloriesFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
 import com.developers.sprintsync.core.util.formatter.DateFormatter
 import com.developers.sprintsync.databinding.ItemTrackCardBinding
-import kotlin.math.roundToInt
 
+// TODO Replace track with formatted track
 class TrackListAdapter(
     private val onInteractionListener: OnInteractionListener,
 ) : ListAdapter<Track, TrackListAdapter.TrackListViewHolder>(TrackDiffCallback()) {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -69,10 +69,9 @@ class TrackListAdapter(
 
     private fun formatDate(timestamp: Long): String = DateFormatter.formatDate(timestamp, DateFormatter.Pattern.DAY_MONTH_YEAR_WEEK_DAY)
 
-    private fun formatDistance(distanceMeters: Float): String =
-        DistanceUiFormatter.format(distanceMeters, DistanceUiPattern.WITH_UNIT)
+    private fun formatDistance(distanceMeters: Float): String = DistanceUiFormatter.format(distanceMeters, DistanceUiPattern.WITH_UNIT)
 
-    private fun formatDuration(durationMillis: Long): String = DurationFormatter.formatToHhMmSs(durationMillis)
+    private fun formatDuration(durationMillis: Long): String = "" // TODO get rid of converters
 
     private fun formatCalories(calories: Float): String = CaloriesFormatter.formatCalories(calories, true)
 

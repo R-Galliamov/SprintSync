@@ -4,7 +4,8 @@ import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiPattern
 import com.developers.sprintsync.core.components.track_snapshot.presentation.util.TrackSnapshotCropper
 import com.developers.sprintsync.tracking.component.use_case.GetCurrentTrackingStateUseCase
 import com.developers.sprintsync.tracking.component.use_case.GetLocationFlowUseCase
@@ -42,7 +43,7 @@ class TrackingViewModel
             observeLocationFlow()
         }
 
-        val duration = getDurationFlowUseCase().map { DurationFormatter.formatToHhMmSs(it) }
+        val duration = getDurationFlowUseCase().map { DurationUiFormatter.format(it, DurationUiPattern.HH_MM_SS) }
 
         fun onSnapshotReady(snapshot: Bitmap?) {
             if (snapshot != null) {

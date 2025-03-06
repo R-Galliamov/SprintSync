@@ -5,11 +5,13 @@ import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.CaloriesFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiPattern
 import com.developers.sprintsync.core.util.extension.approximatelyEquals
 import kotlin.math.abs
 
 class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {
+
     private var selectedValue: Float = Float.MIN_VALUE
     private var valuePosition: Float = Float.MIN_VALUE
 
@@ -38,7 +40,7 @@ class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {
             )
         ) {
             when (metric) {
-                Metric.DURATION -> DurationFormatter.formatToMm(selectedValue.toLong(), true)
+                Metric.DURATION -> DurationUiFormatter.format(selectedValue.toLong(), DurationUiPattern.MM_UNIT)
                 Metric.DISTANCE -> DistanceUiFormatter.format(selectedValue, DistanceUiPattern.WITH_UNIT)
                 Metric.CALORIES -> CaloriesFormatter.formatCalories(selectedValue, true)
             }
