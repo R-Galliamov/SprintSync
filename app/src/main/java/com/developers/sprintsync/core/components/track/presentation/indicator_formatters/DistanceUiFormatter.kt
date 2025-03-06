@@ -15,3 +15,10 @@ object DistanceUiFormatter {
         return String.format(locale, uiDistanceUiPattern.pattern, kilometers)
     }
 }
+
+enum class DistanceUiPattern(
+    val pattern: String,
+) {
+    PLAIN("%.2f"),
+    WITH_UNIT("%.2f km"),
+}

@@ -1,6 +1,6 @@
 package com.developers.sprintsync.home.statistics.presentation.model
 
-import com.developers.sprintsync.core.components.track.presentation.model.FormattedDurationParts
+import com.developers.sprintsync.core.util.time.TimeParts
 
 data class TracksStatsCompactFormatted(
     val runs: String,
@@ -8,5 +8,5 @@ data class TracksStatsCompactFormatted(
     val totalKiloCalories: String,
     val longestDistance: String,
     val bestPace: String,
-    val maxDuration: FormattedDurationParts,
+    val maxDuration: TimeParts,
 )

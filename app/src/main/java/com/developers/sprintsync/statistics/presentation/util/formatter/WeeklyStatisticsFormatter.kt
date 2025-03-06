@@ -3,9 +3,10 @@ package com.developers.sprintsync.statistics.presentation.util.formatter
 import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.CaloriesFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiPattern
 import com.developers.sprintsync.statistics.components.TracksStatsCalculator
 import com.developers.sprintsync.statistics.presentation.model.WeeklyStatistics
 
@@ -28,9 +29,9 @@ class WeeklyStatisticsFormatter {
             workouts = workouts.toString(),
             workoutDays = workoutDaysFormatted,
             totalDistance = DistanceUiFormatter.format(totalDistance, DistanceUiPattern.WITH_UNIT),
-            totalDuration = DurationFormatter.formatToHhMmSs(totalDuration),
+            totalDuration = DurationUiFormatter.format(totalDuration, DurationUiPattern.HH_MM_SS),
             bestDistance = DistanceUiFormatter.format(bestDistance, DistanceUiPattern.WITH_UNIT),
-            bestDuration = DurationFormatter.formatToHhMmSs(bestDuration),
+            bestDuration = DurationUiFormatter.format(bestDuration, DurationUiPattern.HH_MM_SS),
             avgPace = PaceFormatter.formatPaceWithTwoDecimals(avgPace),
             bestPace = PaceFormatter.formatPaceWithTwoDecimals(bestPace),
             totalCalories = CaloriesFormatter.formatCalories(totalCalories, false),

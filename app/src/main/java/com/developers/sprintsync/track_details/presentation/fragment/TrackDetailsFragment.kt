@@ -9,12 +9,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.databinding.FragmentTrackDetailsBinding
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationFormatter
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
 import com.developers.sprintsync.core.presentation.view.pace_chart.PaceChartManager
 import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiPattern
 import com.developers.sprintsync.track_details.presentation.view_model.TrackDetailsViewModel
 import com.github.mikephil.charting.charts.LineChart
 import java.util.Locale
@@ -64,11 +65,13 @@ class TrackDetailsFragment : Fragment() {
         }
     }
 
+
+    // TODO move to view model
     private fun updateStatisticsValues(track: Track) {
         binding.apply {
             tvDistanceValue.text =
                 DistanceUiFormatter.format(track.distanceMeters, DistanceUiPattern.WITH_UNIT)
-            tvDurationValue.text = DurationFormatter.formatToHhMmSs(track.durationMillis)
+            tvDurationValue.text = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
             tvAvgPaceValue.text = PaceFormatter.formatPaceWithTwoDecimals(track.avgPace)
             tvBestPaceValue.text = PaceFormatter.formatPaceWithTwoDecimals(track.bestPace)
             tvCaloriesValue.text = String.format(Locale.getDefault(), track.calories.toString())// TODO add formatter
