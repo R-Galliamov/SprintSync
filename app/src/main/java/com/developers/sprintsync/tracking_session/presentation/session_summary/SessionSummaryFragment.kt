@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.developers.sprintsync.R
 import com.developers.sprintsync.core.components.track.presentation.model.UiTrack
 import com.developers.sprintsync.core.presentation.view.pace_chart.PaceChartManager
 import com.developers.sprintsync.core.util.extension.collectFlow
@@ -46,8 +47,8 @@ class SessionSummaryFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        binding.loadingOverlay.bindToLifecycle(lifecycle)
         initChartManager(binding.chart)
+        setloadingOverlay()
         setDataObserver()
         setHomeButtonListener()
         setDeleteTrackButtonListener(args.trackId)
@@ -61,7 +62,7 @@ class SessionSummaryFragment : Fragment() {
     private fun setDataObserver() {
         collectFlow(viewModel.state) { state ->
             when (state) {
-                SessionSummaryState.Loading -> {
+                is SessionSummaryState.Loading -> {
                     binding.loadingOverlay.show()
                 }
 
@@ -114,6 +115,12 @@ class SessionSummaryFragment : Fragment() {
             findNavController().navigateUp()
         }
     }
+
+    private fun setloadingOverlay() =
+        binding.loadingOverlay.apply {
+            bindToLifecycle(lifecycle)
+            setLoadingMessage(context.getString(R.string.completing_track_message))
+        }
 
     override fun onDestroy() {
         super.onDestroy()

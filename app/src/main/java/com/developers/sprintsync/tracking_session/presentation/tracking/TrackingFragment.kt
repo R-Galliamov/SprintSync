@@ -63,8 +63,8 @@ class TrackingFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
-        binding.loadingOverlay.bindToLifecycle(lifecycle)
-        binding.mapLoadingOverlay.bindToLifecycle(lifecycle)
+        setCompletingLoadingOverlay()
+        setMapLoadingOverlay()
         binding.mapView.onCreate(savedInstanceState)
         initializeTrackingPanel()
         initializeMap()
@@ -110,7 +110,7 @@ class TrackingFragment : Fragment() {
                 }
 
                 UIState.Completing -> {
-                    binding.loadingOverlay.show()
+                    binding.completingLoadingOverlay.show()
                 }
             }
         }
@@ -196,6 +196,18 @@ class TrackingFragment : Fragment() {
                 else -> View.GONE
             }
     }
+
+    private fun setCompletingLoadingOverlay() =
+        binding.completingLoadingOverlay.apply {
+            bindToLifecycle(lifecycle)
+            setLoadingMessage(context.getString(R.string.completing_track_message))
+        }
+
+    private fun setMapLoadingOverlay() =
+        binding.mapLoadingOverlay.apply {
+            bindToLifecycle(lifecycle)
+            setLoadingMessage(getString(R.string.tracking_map_loading_message))
+        }
 
     private fun navigateToSessionSummary(trackId: Int) {
         val action = TrackingFragmentDirections.actionTrackingFragmentToSessionSummaryFragment(trackId)

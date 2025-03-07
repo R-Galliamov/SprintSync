@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loading_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary">
 
-    <ImageView
-        android:id="@+id/loading_animation"
-        android:layout_width="@dimen/progressBar.size"
-        android:layout_height="@dimen/progressBar.size"
-        android:layout_gravity="center"
-        android:contentDescription="@string/loading_description"
-        android:src="@drawable/anim_loading_vector" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/loading_animation"
+            android:layout_width="@dimen/loadingOverlay.progressBarSize"
+            android:layout_height="@dimen/loadingOverlay.progressBarSize"
+            android:contentDescription="@string/loading_description"
+            android:src="@drawable/anim_loading_vector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/loading_message"
+            style="@style/SmallText.Gray"
+            android:layout_width="@dimen/loadingOverlay.loadingMessageWidth"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loading_animation"
+            tools:text="We are loading data for you..." />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

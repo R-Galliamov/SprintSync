@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -16,12 +17,11 @@ class LoadingOverlay(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : FrameLayout(context, attrs, defStyleAttr) {
-    // TODO add loading text
-
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     private val binding = ViewLoadingOverlayBinding.inflate(LayoutInflater.from(context), this, true)
     private val animation: AnimatedVectorDrawable? = binding.loadingAnimation.drawable as? AnimatedVectorDrawable
+    private val messageTextView: TextView = binding.loadingMessage
 
     val isVisible get() = visibility == View.VISIBLE
 
@@ -37,6 +37,10 @@ class LoadingOverlay(
     fun hide() {
         visibility = View.GONE
         animation?.stop()
+    }
+
+    fun setLoadingMessage(message: String) {
+        messageTextView.text = message
     }
 
     fun bindToLifecycle(lifecycle: Lifecycle) {

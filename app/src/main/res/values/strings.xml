@@ -78,6 +78,8 @@
     <string name="date_picker_init_error">Date picker isn\'t initialized</string>
     <string name="select_date">Select date</string>
     <string name="map_init_error">Map is null</string>
+    <string name="tracking_map_loading_message">Getting the map ready for your track...</string>
+    <string name="completing_track_message">Finishing up, just a sec...</string>
 
 
 </resources>

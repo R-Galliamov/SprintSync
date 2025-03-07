@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Text -->
-    <!-- Accent text -->
+    <!-- Accent text --> <!-- TODO move Text to another layer -->
     <style name="TabloidText" parent="Theme.SprintSync">
         <item name="android:textColor">?colorOnPrimary</item>
         <item name="android:textSize">@dimen/textSize.accent</item>

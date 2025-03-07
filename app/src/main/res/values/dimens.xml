@@ -60,7 +60,8 @@
     <dimen name="shape.cornerRadius">32dp</dimen>
 
     <!-- Specials -->
-    <dimen name="progressBar.size">120dp</dimen>
+    <dimen name="loadingOverlay.progressBarSize">120dp</dimen>
+    <dimen name="loadingOverlay.loadingMessageWidth">160dp</dimen>
     <dimen name="chart.height">240dp</dimen>
 
 
