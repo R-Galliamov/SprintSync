@@ -10,8 +10,8 @@ import com.developers.sprintsync.core.components.track_snapshot.data.model.Track
     foreignKeys = [
         ForeignKey(
             entity = TrackEntity::class,
-            parentColumns = ["id"], // TODO replace with const
-            childColumns = ["trackId"], // TODO replace with const
+            parentColumns = [TrackSnapshotColumnKeys.SNAPSHOT_ID],
+            childColumns = [TrackSnapshotColumnKeys.TRACK_ID],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
         ),

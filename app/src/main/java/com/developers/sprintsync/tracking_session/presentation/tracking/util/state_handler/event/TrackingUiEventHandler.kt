@@ -69,7 +69,7 @@ class TrackingUiEventHandler
         private fun emitUiTrackData(track: Track) {
             val metrics = UiMetricsFormatter.format(track)
             val segments = segmentsTracker.getNewSegmentsAndAdd(track.segments)
-            val polylines = polylineProcessor.generateNewPolylines(segments)
+            val polylines = polylineProcessor.generatePolylines(segments)
             _uiEventFlow.update { UIEvent.UpdateTrackingUi(metrics, polylines) }
         }
 

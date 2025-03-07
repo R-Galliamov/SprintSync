@@ -7,8 +7,8 @@ import com.developers.sprintsync.core.components.track.data.database.dto.TrackEn
 data class TrackWithSnapshot(
     @Embedded val track: TrackEntity,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "trackId",
+        parentColumn = TrackSnapshotColumnKeys.SNAPSHOT_ID,
+        entityColumn = TrackSnapshotColumnKeys.TRACK_ID,
     )
     val snapshot: TrackSnapshotEntity,
 )

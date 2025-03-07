@@ -9,5 +9,5 @@ data class UiTrack(
     val avgPace: String,
     val bestPace: String,
     val calories: String,
-    val polylines: PolylineOptions?,
+    val polylines: List<PolylineOptions>,
 )
