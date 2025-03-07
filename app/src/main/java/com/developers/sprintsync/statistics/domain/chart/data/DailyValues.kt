@@ -16,3 +16,4 @@ sealed class DailyValues(
         override val goal: Float,
     ) : DailyValues(goal)
 }
+

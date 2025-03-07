@@ -1,13 +1,13 @@
 package com.developers.sprintsync.core.components.goal.domain.use_case
 
-import com.developers.sprintsync.core.components.goal.data.repository.DailyGoalRepository
+import com.developers.sprintsync.core.components.goal.data.data_source.DailyGoalDataSource
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetLastDailyGoalsUseCase
     @Inject
     constructor(
-        private val repository: DailyGoalRepository,
+        private val repository: DailyGoalDataSource,
     ) {
         operator fun invoke() =
             repository.dailyGoals.map { list ->

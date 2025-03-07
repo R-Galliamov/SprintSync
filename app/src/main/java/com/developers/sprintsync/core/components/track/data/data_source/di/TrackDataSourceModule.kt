@@ -1,6 +1,6 @@
 package com.developers.sprintsync.core.components.track.data.data_source.di
 
-import com.developers.sprintsync.core.components.track.data.data_source.InMemoryTrackDataSource
+import com.developers.sprintsync.core.components.track.data.data_source.TestTrackDataSource
 import com.developers.sprintsync.core.components.track.data.data_source.TrackDataSource
 import dagger.Binds
 import dagger.Module
@@ -10,8 +10,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class TrackRepositoryModule {
+abstract class TrackDataSourceModule {
     @Binds
     @Singleton
-    abstract fun bindTrackRepository(impl: InMemoryTrackDataSource): TrackDataSource
+    abstract fun bindTrackDataSource(impl: TestTrackDataSource): TrackDataSource
 }

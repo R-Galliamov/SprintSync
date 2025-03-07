@@ -1,4 +1,4 @@
-package com.developers.sprintsync.core.components.goal.data.repository
+package com.developers.sprintsync.core.components.goal.data.data_source
 
 import com.developers.sprintsync.core.components.goal.data.database.dao.DailyGoalDao
 import com.developers.sprintsync.core.components.goal.data.database.dto.DailyGoalEntity
@@ -7,11 +7,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DefaultDailyGoalRepository
+class InMemoryDailyGoalDataSource
     @Inject
     constructor(
         private val dao: DailyGoalDao,
-    ) : DailyGoalRepository {
+    ) : DailyGoalDataSource {
         override val dailyGoals = dao.getAllDailyGoals()
 
         override suspend fun saveDailyGoal(dailyGoal: DailyGoal) {

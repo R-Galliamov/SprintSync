@@ -3,34 +3,36 @@ package com.developers.sprintsync.statistics.presentation.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.developers.sprintsync.statistics.domain.chart.data.ChartDataSet
-import com.developers.sprintsync.statistics.domain.chart.data.DisplayData
+import com.developers.sprintsync.core.components.goal.data.model.DailyGoal
+import com.developers.sprintsync.core.components.goal.data.model.Metric
 import com.developers.sprintsync.core.components.goal.domain.use_case.GetDailyGoalsFlowUseCase
 import com.developers.sprintsync.core.components.goal.domain.use_case.GetDailyGoalsUpdateTimestampUseCase
-import com.developers.sprintsync.core.components.goal.data.model.Metric
+import com.developers.sprintsync.core.components.track.data.model.Track
+import com.developers.sprintsync.core.components.track.domain.use_case.GetTracksFlowUseCase
+import com.developers.sprintsync.statistics.domain.chart.config.ChartConfigurationType
+import com.developers.sprintsync.statistics.domain.chart.data.ChartDataSet
+import com.developers.sprintsync.statistics.domain.chart.data.DisplayData
 import com.developers.sprintsync.statistics.domain.chart.data.WeekDay
-import com.developers.sprintsync.core.components.goal.data.model.DailyGoal
-import com.developers.sprintsync.statistics.presentation.model.GeneralStatistics
-import com.developers.sprintsync.statistics.presentation.model.WeeklyStatistics
+import com.developers.sprintsync.statistics.domain.chart.data.processing.WeeklyChartDataPreparer
+import com.developers.sprintsync.statistics.domain.filter.TimeWindowTrackFilter
 import com.developers.sprintsync.statistics.presentation.event.ChartDataUpdateEvent
 import com.developers.sprintsync.statistics.presentation.model.FormattedDateRange
-import com.developers.sprintsync.statistics.domain.chart.config.ChartConfigurationType
-import com.developers.sprintsync.statistics.domain.chart.data.processing.WeeklyChartDataPreparer
+import com.developers.sprintsync.statistics.presentation.model.GeneralStatistics
+import com.developers.sprintsync.statistics.presentation.model.WeeklyStatistics
 import com.developers.sprintsync.statistics.presentation.util.formatter.DateRangeFormatter
 import com.developers.sprintsync.statistics.presentation.util.formatter.GeneralStatisticsFormatter
 import com.developers.sprintsync.statistics.presentation.util.formatter.UpdateDateFormatter
 import com.developers.sprintsync.statistics.presentation.util.formatter.WeeklyStatisticsFormatter
-import com.developers.sprintsync.statistics.domain.filter.TimeWindowTrackFilter
-import com.developers.sprintsync.core.components.track.domain.use_case.GetTracksFlowUseCase
-import com.developers.sprintsync.core.components.track.data.model.Track
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// TODO create class to handle chart data
 @HiltViewModel
 class StatisticsViewModel
     @Inject
@@ -43,7 +45,7 @@ class StatisticsViewModel
         private val dateFormatter: UpdateDateFormatter,
     ) : ViewModel() {
         private val _chartDataUpdateEvent = MutableStateFlow<ChartDataUpdateEvent?>(null)
-        val chartDataUpdateEvent get() = _chartDataUpdateEvent
+        val chartDataUpdateEvent get() = _chartDataUpdateEvent.asStateFlow().filterNotNull()
 
         val dailyGoalsUpdateDate =
             getDailyGoalsUpdateTimestampUseCase().map { dateFormatter.formatTimestamp(it) }
@@ -66,8 +68,6 @@ class StatisticsViewModel
         private var _weeklyStatistics: MutableStateFlow<WeeklyStatistics> = MutableStateFlow(WeeklyStatistics.EMPTY)
         val weeklyStatistics get() = _weeklyStatistics.asStateFlow()
 
-
-        // TODO replace with USE CASE
         private val generalStatisticsFormatter = GeneralStatisticsFormatter()
         private var _generalStatistics: MutableStateFlow<GeneralStatistics> = MutableStateFlow(GeneralStatistics.EMPTY)
         val generalStatistics get() = _generalStatistics.asStateFlow()
@@ -144,7 +144,6 @@ class StatisticsViewModel
         private fun initChartDataSetListener() {
             viewModelScope.launch {
                 chartDataSet.collect { chartDataSet ->
-                    Log.d(TAG, "ChartDataSet updated: $chartDataSet")
                     if (chartDataSet.data.isEmpty()) return@collect
                     val indexedValues = chartDataSet.data[selectedMetric.value]
                     if (indexedValues.isNullOrEmpty()) return@collect

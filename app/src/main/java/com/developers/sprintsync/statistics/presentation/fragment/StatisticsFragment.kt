@@ -97,7 +97,6 @@ class StatisticsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.chartDataUpdateEvent.collect { event ->
-                    if (event == null) return@collect
                     chartManager.displayData(
                         event.metric,
                         event.dailyValues,
