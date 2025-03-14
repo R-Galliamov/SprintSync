@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiPattern
-import com.developers.sprintsync.core.components.track_snapshot.presentation.util.TrackSnapshotCropper
+import com.developers.sprintsync.core.components.track_preview.presentation.util.TrackPreviewCropper
 import com.developers.sprintsync.tracking.component.use_case.GetCurrentTrackingStateUseCase
 import com.developers.sprintsync.tracking.component.use_case.GetLocationFlowUseCase
 import com.developers.sprintsync.tracking.data.model.toLatLng
@@ -32,7 +32,7 @@ class TrackingViewModel
         private val uiStateHandler: TrackingUiStateHandler,
         private val mapStateHandler: MapStateHandler,
         private val snapshotStateHandler: SnapshotStateHandler,
-        private val snapshotCropper: TrackSnapshotCropper,
+        private val snapshotCropper: TrackPreviewCropper,
     ) : ViewModel() {
         val uiEventFlow = uiEventHandler.uiEventFlow
         val uiStateFlow = uiStateHandler.uiStateFlow
@@ -47,7 +47,7 @@ class TrackingViewModel
 
         fun onSnapshotReady(snapshot: Bitmap?) {
             if (snapshot != null) {
-                val croppedSnapshot = snapshotCropper.getCroppedSnapshot(snapshot)
+                val croppedSnapshot = snapshotCropper.getCroppedBitmap(snapshot)
                 snapshotStateHandler.emitSnapshot(croppedSnapshot)
             } else {
                 Log.e(TAG, "Snapshot is null")

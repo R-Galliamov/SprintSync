@@ -1,6 +1,5 @@
 package com.developers.sprintsync.run_history.presentation.adapter
 
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,18 +8,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.developers.sprintsync.core.components.track.data.model.Track
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.CaloriesFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
-import com.developers.sprintsync.core.util.formatter.DateFormatter
 import com.developers.sprintsync.databinding.ItemTrackCardBinding
+import com.developers.sprintsync.run_history.presentation.ui_model.UiTrackPreviewWrapper
+import java.io.File
 
-// TODO Replace track with formatted track
 class TrackListAdapter(
     private val onInteractionListener: OnInteractionListener,
-) : ListAdapter<Track, TrackListAdapter.TrackListViewHolder>(TrackDiffCallback()) {
-
+) : ListAdapter<UiTrackPreviewWrapper, TrackListAdapter.TrackListViewHolder>(TrackDiffCallback()) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -41,15 +35,17 @@ class TrackListAdapter(
     inner class TrackListViewHolder(
         private val binding: ItemTrackCardBinding,
     ) : ViewHolder(binding.root) {
-        fun bind(track: Track) {
+        fun bind(track: UiTrackPreviewWrapper) {
             binding.apply {
-                // TODO: provide with FormattedTrack data class
-                tvDate.text = formatDate(track.timestamp)
-                tvDistanceValue.text = formatDistance(track.distanceMeters)
-                tvDurationValue.text = formatDuration(track.durationMillis)
-                tvCaloriesValue.text = formatCalories(track.calories)
-
-                // TODO set bitmap for ivMapPreview
+                tvDate.text = track.date
+                tvDistanceValue.text = track.distance
+                tvDurationValue.text = track.duration
+                tvCaloriesValue.text = track.calories
+                if (track.previewPath != null) {
+                    bindImage(ivMapPreview, track.previewPath)
+                } else {
+                    // TODO set default image
+                }
 
                 itemView.setOnClickListener {
                     onInteractionListener.onItemSelected(track.id)
@@ -67,38 +63,30 @@ class TrackListAdapter(
         holder.unbind()
     }
 
-    private fun formatDate(timestamp: Long): String = DateFormatter.formatDate(timestamp, DateFormatter.Pattern.DAY_MONTH_YEAR_WEEK_DAY)
-
-    private fun formatDistance(distanceMeters: Float): String = DistanceUiFormatter.format(distanceMeters, DistanceUiPattern.WITH_UNIT)
-
-    private fun formatDuration(durationMillis: Long): String = "" // TODO get rid of converters
-
-    private fun formatCalories(calories: Float): String = CaloriesFormatter.formatCalories(calories, true)
-
-    private fun loadBitmapIntoImageView(
+    private fun bindImage(
         imageView: ImageView,
-        bitmap: Bitmap,
+        filePath: String,
     ) {
         val context = imageView.context
         val imageLoader = ImageLoader(context)
         val request =
             ImageRequest
                 .Builder(context)
-                .data(bitmap)
+                .data(File(filePath))
                 .target(imageView)
                 .build()
         imageLoader.enqueue(request)
     }
 
-    private class TrackDiffCallback : DiffUtil.ItemCallback<Track>() {
+    private class TrackDiffCallback : DiffUtil.ItemCallback<UiTrackPreviewWrapper>() {
         override fun areItemsTheSame(
-            oldItem: Track,
-            newItem: Track,
+            oldItem: UiTrackPreviewWrapper,
+            newItem: UiTrackPreviewWrapper,
         ): Boolean = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-            oldItem: Track,
-            newItem: Track,
+            oldItem: UiTrackPreviewWrapper,
+            newItem: UiTrackPreviewWrapper,
         ): Boolean = oldItem == newItem
     }
 

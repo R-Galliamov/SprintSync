@@ -2,8 +2,8 @@ package com.developers.sprintsync.tracking_session.presentation.tracking.util.st
 
 import com.developers.sprintsync.core.components.track.data.model.Track
 import com.developers.sprintsync.core.components.track.domain.use_case.SaveTrackUseCase
-import com.developers.sprintsync.core.components.track_snapshot.data.model.TrackSnapshot
-import com.developers.sprintsync.core.components.track_snapshot.domain.use_case.SaveSnapshotUseCase
+import com.developers.sprintsync.core.components.track_preview.data.model.TrackPreviewBitmap
+import com.developers.sprintsync.core.components.track_preview.domain.use_case.SaveTrackPreviewUseCase
 import com.developers.sprintsync.tracking_session.presentation.tracking.util.state_handler.snapshot.SnapshotStateHandler
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeoutOrNull
@@ -13,7 +13,7 @@ class TrackCompletionHandler
     @Inject
     constructor(
         private val saveTrackUseCase: SaveTrackUseCase,
-        private val saveSnapshotUseCase: SaveSnapshotUseCase,
+        private val saveTrackPreviewUseCase: SaveTrackPreviewUseCase,
         private val snapshotStateHandler: SnapshotStateHandler,
     ) {
         suspend fun saveTrackWithSnapshot(track: Track): Int {
@@ -21,13 +21,13 @@ class TrackCompletionHandler
             val timestamp = System.currentTimeMillis()
             val snapshotBitmap = withTimeoutOrNull(SNAPSHOT_REQUEST_TIMEOUT_MS) { snapshotStateHandler.snapshot.first() }
             snapshotBitmap?.let { bitmap ->
-                val trackSnapshot =
-                    TrackSnapshot(
+                val trackPreviewBitmap =
+                    TrackPreviewBitmap(
                         trackId = trackId,
                         timestamp = timestamp,
                         bitmap = bitmap,
                     )
-                saveSnapshotUseCase(trackSnapshot)
+                saveTrackPreviewUseCase(trackPreviewBitmap)
             }
             return trackId
         }

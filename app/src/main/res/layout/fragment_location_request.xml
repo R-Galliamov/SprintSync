@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/emptyLogsStateView"
+        android:id="@+id/empty_tracks_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

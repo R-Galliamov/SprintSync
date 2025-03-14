@@ -80,6 +80,7 @@
     <string name="map_init_error">Map is null</string>
     <string name="tracking_map_loading_message">Getting the map ready for your track...</string>
     <string name="completing_track_message">Finishing up, just a sec...</string>
+    <string name="error_message_data_loading_failed">Oops! Something went wrong loading data. Please try again or refresh later.</string>
 
 
 </resources>

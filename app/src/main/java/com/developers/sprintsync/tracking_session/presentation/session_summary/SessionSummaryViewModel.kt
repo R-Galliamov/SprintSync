@@ -8,7 +8,6 @@ import com.developers.sprintsync.core.components.track.domain.use_case.GetTrackB
 import com.developers.sprintsync.core.components.track.presentation.util.UiTrackFormatter
 import com.developers.sprintsync.core.presentation.view.pace_chart.SegmentsToPaceChartMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

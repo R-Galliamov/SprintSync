@@ -7,8 +7,8 @@
 
     <fragment
         android:id="@+id/trackListFragment"
-        android:name="com.developers.sprintsync.run_history.presentation.fragment.RunHistoryFragment"
+        android:name="com.developers.sprintsync.run_history.presentation.fragment.TrackHistoryFragment"
         android:label="fragment_track_list"
-        tools:layout="@layout/fragment_track_list" />
+        tools:layout="@layout/fragment_track_history" />
 
 </navigation>

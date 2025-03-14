@@ -9,15 +9,15 @@ import com.developers.sprintsync.core.components.track.data.database.dao.TrackDa
 import com.developers.sprintsync.core.components.track.data.database.dto.TrackEntity
 import com.developers.sprintsync.core.components.track.data.database.util.converter.BitmapConverter
 import com.developers.sprintsync.core.components.track.data.database.util.converter.SegmentsTypeConverter
-import com.developers.sprintsync.core.components.track_snapshot.data.database.dao.TrackSnapshotDao
-import com.developers.sprintsync.core.components.track_snapshot.data.database.dto.TrackSnapshotEntity
+import com.developers.sprintsync.core.components.track_preview.data.database.dao.TrackPreviewDao
+import com.developers.sprintsync.core.components.track_preview.data.database.dto.TrackPreviewPathEntity
 
-@Database(entities = [TrackEntity::class, DailyGoalEntity::class, TrackSnapshotEntity::class], version = 1)
+@Database(entities = [TrackEntity::class, DailyGoalEntity::class, TrackPreviewPathEntity::class], version = 1)
 @TypeConverters(SegmentsTypeConverter::class, BitmapConverter::class)
 abstract class AppDb : RoomDatabase() {
     abstract fun trackDao(): TrackDao
 
     abstract fun dailyGoalDao(): DailyGoalDao
 
-    abstract fun trackSnapshotDao(): TrackSnapshotDao
+    abstract fun trackPreviewDao(): TrackPreviewDao
 }

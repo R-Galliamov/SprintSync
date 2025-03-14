@@ -17,7 +17,6 @@ data class TrackEntity(
     val calories: Float,
     val segments: Segments,
 ) {
-    /*
     fun toDto() =
         Track(
             id = id,
@@ -29,7 +28,6 @@ data class TrackEntity(
             calories = calories,
             segments = segments,
         )
-     */
 
     companion object {
         fun fromDto(dto: Track) =
