@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.ImageLoader
 import coil.request.ImageRequest
+import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.ItemTrackCardBinding
 import com.developers.sprintsync.run_history.presentation.ui_model.UiTrackPreviewWrapper
 import java.io.File
@@ -41,12 +42,7 @@ class TrackListAdapter(
                 tvDistanceValue.text = track.distance
                 tvDurationValue.text = track.duration
                 tvCaloriesValue.text = track.calories
-                if (track.previewPath != null) {
-                    bindImage(ivMapPreview, track.previewPath)
-                } else {
-                    // TODO set default image
-                }
-
+                bindImage(ivMapPreview, track.previewPath)
                 itemView.setOnClickListener {
                     onInteractionListener.onItemSelected(track.id)
                 }
@@ -65,17 +61,23 @@ class TrackListAdapter(
 
     private fun bindImage(
         imageView: ImageView,
-        filePath: String,
+        filePath: String?,
     ) {
         val context = imageView.context
-        val imageLoader = ImageLoader(context)
-        val request =
-            ImageRequest
-                .Builder(context)
-                .data(File(filePath))
-                .target(imageView)
-                .build()
-        imageLoader.enqueue(request)
+        val imageError = R.drawable.im_map_placeholder
+        if (filePath == null) {
+            imageView.setImageResource(imageError)
+        } else {
+            val imageLoader = ImageLoader(context)
+            val request =
+                ImageRequest
+                    .Builder(context)
+                    .error(imageError)
+                    .data(File(filePath))
+                    .target(imageView)
+                    .build()
+            imageLoader.enqueue(request)
+        }
     }
 
     private class TrackDiffCallback : DiffUtil.ItemCallback<UiTrackPreviewWrapper>() {
