@@ -48,7 +48,7 @@ class SessionSummaryFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initChartManager(binding.chart)
-        setloadingOverlay()
+        setLoadingOverlay()
         setDataObserver()
         setHomeButtonListener()
         setDeleteTrackButtonListener(args.trackId)
@@ -116,7 +116,7 @@ class SessionSummaryFragment : Fragment() {
         }
     }
 
-    private fun setloadingOverlay() =
+    private fun setLoadingOverlay() =
         binding.loadingOverlay.apply {
             bindToLifecycle(lifecycle)
             setLoadingMessage(context.getString(R.string.completing_track_message))

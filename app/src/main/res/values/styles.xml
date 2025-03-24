@@ -156,4 +156,18 @@
         <item name="android:importantForAutofill">no</item>
         <item name="android:textColorHint">?colorOnPrimary</item>
     </style>
+
+    <!-- AlertDialog -->
+    <style name="ConfirmationMaterialDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/CustomPositiveButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/CustomNegativeButton</item>
+    </style>
+
+    <style name="CustomPositiveButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">?colorSecondary</item>
+    </style>
+
+    <style name="CustomNegativeButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">?colorFourthly</item>
+    </style>
 </resources>

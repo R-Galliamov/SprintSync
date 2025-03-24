@@ -78,9 +78,11 @@
     <string name="date_picker_init_error">Date picker isn\'t initialized</string>
     <string name="select_date">Select date</string>
     <string name="map_init_error">Map is null</string>
-    <string name="tracking_map_loading_message">Getting the map ready for your track...</string>
-    <string name="completing_track_message">Finishing up, just a sec...</string>
+    <string name="tracking_map_loading_message">Getting the map ready for your track…</string>
+    <string name="completing_track_message">Finishing up, just a sec…</string>
     <string name="error_message_data_loading_failed">Oops! Something went wrong loading data. Please try again or refresh later.</string>
+    <string name="dialog_delete_track_title">Confirm delete</string>
+    <string name="dialog_delete_track_message">Are you sure you want to delete this track?</string>
 
 
 </resources>

@@ -8,14 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.developers.sprintsync.databinding.FragmentTrackDetailsBinding
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
-import com.developers.sprintsync.core.presentation.view.pace_chart.PaceChartManager
 import com.developers.sprintsync.core.components.track.data.model.Track
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiFormatter
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiPattern
+import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
+import com.developers.sprintsync.core.presentation.view.ConfirmationDialogFragment
+import com.developers.sprintsync.core.presentation.view.pace_chart.PaceChartManager
+import com.developers.sprintsync.databinding.FragmentTrackDetailsBinding
 import com.developers.sprintsync.track_details.presentation.view_model.TrackDetailsViewModel
 import com.github.mikephil.charting.charts.LineChart
 import java.util.Locale
@@ -29,6 +30,8 @@ class TrackDetailsFragment : Fragment() {
     private val viewModel by activityViewModels<TrackDetailsViewModel>()
 
     private val paceChartManager by lazy { PaceChartManager(requireContext()) }
+
+    private val deleteTrackDialog by lazy { createDeleteTrackDialog(args.trackId) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +50,7 @@ class TrackDetailsFragment : Fragment() {
         initChartManager(binding.chart)
         setDataObserver(args.trackId)
         setBackButtonListener()
-        setDeleteTrackButtonListener(args.trackId)
+        setDeleteTrackButtonListener()
     }
 
     private fun initChartManager(chart: LineChart) {
@@ -65,7 +68,6 @@ class TrackDetailsFragment : Fragment() {
         }
     }
 
-
     // TODO move to view model
     private fun updateStatisticsValues(track: Track) {
         binding.apply {
@@ -74,7 +76,7 @@ class TrackDetailsFragment : Fragment() {
             tvDurationValue.text = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
             tvAvgPaceValue.text = PaceFormatter.formatPaceWithTwoDecimals(track.avgPace)
             tvBestPaceValue.text = PaceFormatter.formatPaceWithTwoDecimals(track.bestPace)
-            tvCaloriesValue.text = String.format(Locale.getDefault(), track.calories.toString())// TODO add formatter
+            tvCaloriesValue.text = String.format(Locale.getDefault(), track.calories.toString()) // TODO add formatter
         }
     }
 
@@ -95,13 +97,27 @@ class TrackDetailsFragment : Fragment() {
         }
     }
 
-    // TODO add dialog to confirm delete
-    private fun setDeleteTrackButtonListener(trackId: Int) {
+    private fun setDeleteTrackButtonListener() {
         binding.btDelete.setOnClickListener {
-            viewModel.deleteTrackById(trackId)
-            findNavController().popBackStack()
+            deleteTrackDialog.show(childFragmentManager, "DeleteTrackDialog")
         }
     }
+
+    private fun createDeleteTrackDialog(trackId: Int) =
+        ConfirmationDialogFragment().also {
+            it.setListener(
+                object : ConfirmationDialogFragment.DialogListener {
+                    override fun onConfirmed() {
+                        viewModel.deleteTrackById(trackId)
+                        findNavController().popBackStack()
+                    }
+
+                    override fun onCancelled() {
+                        // NO-OP
+                    }
+                },
+            )
+        }
 
     override fun onDestroy() {
         super.onDestroy()
