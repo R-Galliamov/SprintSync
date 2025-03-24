@@ -10,9 +10,9 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.core.presentation.fragment.TabsFragmentDirections
 import com.developers.sprintsync.core.util.extension.collectFlow
 import com.developers.sprintsync.core.util.extension.findTopNavController
+import com.developers.sprintsync.core.util.extension.setVisibility
 import com.developers.sprintsync.databinding.FragmentTrackHistoryBinding
 import com.developers.sprintsync.run_history.presentation.adapter.TrackListAdapter
-import com.developers.sprintsync.run_history.presentation.ui_model.UiTrackPreviewWrapper
 import com.developers.sprintsync.run_history.presentation.view_model.TrackHistoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,14 +23,14 @@ class TrackHistoryFragment : Fragment() {
 
     private val viewModel by viewModels<TrackHistoryViewModel>()
 
-    private val onInteractionListener =
+    private val onRvInteractionListener =
         object : TrackListAdapter.OnInteractionListener {
             override fun onItemSelected(trackId: Int) {
                 navigateToTrackDetails(trackId)
             }
         }
 
-    private val adapter by lazy { TrackListAdapter(onInteractionListener) }
+    private val rvAdapter by lazy { TrackListAdapter(onRvInteractionListener) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,46 +52,16 @@ class TrackHistoryFragment : Fragment() {
     }
 
     private fun observeTracksFlow() {
-        collectFlow(viewModel.state) { state ->
-            setLoadingOverlayVisibility(state)
-            setEmptyTracksStateVisibility(state)
-            setErrorState(state)
+        collectFlow(viewModel.state) { state -> handleUiState(state) }
+    }
 
-            if (state is TrackHistoryViewModel.DataState.Success) {
-                handleSuccessState(state.tracks)
-            }
+    private fun handleUiState(state: TrackHistoryViewModel.UiState) {
+        rvAdapter.submitList(state.tracks)
+        binding.apply {
+            loadingOverlay.setVisibility(state.showLoadingOverlay)
+            emptyTracksState.root.setVisibility(state.showEmptyTracksPlaceHolder)
+            tvErrorMessage.setVisibility(state.showError)
         }
-    }
-
-    private fun handleSuccessState(tracks: List<UiTrackPreviewWrapper>) {
-        if (adapter.currentList != tracks) {
-            adapter.submitList(tracks)
-        }
-    }
-
-    private fun setErrorState(state: TrackHistoryViewModel.DataState) {
-        binding.tvErrorMessage.text = getString(R.string.error_message_data_loading_failed)
-        binding.tvErrorMessage.visibility =
-            when (state) {
-                is TrackHistoryViewModel.DataState.Error -> View.VISIBLE
-                else -> View.GONE
-            }
-    }
-
-    private fun setLoadingOverlayVisibility(state: TrackHistoryViewModel.DataState) {
-        binding.loadingOverlay.visibility =
-            when (state) {
-                TrackHistoryViewModel.DataState.Loading -> View.VISIBLE
-                else -> View.GONE
-            }
-    }
-
-    private fun setEmptyTracksStateVisibility(state: TrackHistoryViewModel.DataState) {
-        binding.emptyTracksState.root.visibility =
-            when (state) {
-                TrackHistoryViewModel.DataState.Empty -> View.VISIBLE
-                else -> View.GONE
-            }
     }
 
     private fun setLoadingOverlay() {
@@ -101,7 +71,8 @@ class TrackHistoryFragment : Fragment() {
     }
 
     private fun setRecyclerViewAdapter() {
-        binding.rvTracksList.adapter = adapter
+        binding.rvTracksList.adapter = rvAdapter
+        binding.rvTracksList.itemAnimator = null
     }
 
     private fun navigateToTrackDetails(trackId: Int) {
