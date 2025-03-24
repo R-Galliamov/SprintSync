@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
 import com.developers.sprintsync.core.components.track.presentation.model.UiTrack
+import com.developers.sprintsync.core.presentation.view.ConfirmationDialogFragment
+import com.developers.sprintsync.core.presentation.view.ConfirmationDialogTag.DELETE
 import com.developers.sprintsync.core.presentation.view.pace_chart.PaceChartManager
 import com.developers.sprintsync.core.util.extension.collectFlow
 import com.developers.sprintsync.databinding.FragmentSessionSummaryBinding
@@ -27,6 +29,8 @@ class SessionSummaryFragment : Fragment() {
     private val viewModel by viewModels<SessionSummaryViewModel>()
 
     private val paceChartManager by lazy { PaceChartManager(requireContext()) }
+
+    private val deleteConfirmationDialog by lazy { createDeleteTrackDialog(args.trackId) }
 
     override fun onStart() {
         super.onStart()
@@ -51,7 +55,7 @@ class SessionSummaryFragment : Fragment() {
         setLoadingOverlay()
         setDataObserver()
         setHomeButtonListener()
-        setDeleteTrackButtonListener(args.trackId)
+        setDeleteTrackButtonListener()
         setGoToMapButtonListener(args.trackId)
     }
 
@@ -108,11 +112,9 @@ class SessionSummaryFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    // TODO add dialog to confirm delete
-    private fun setDeleteTrackButtonListener(trackId: Int) {
+    private fun setDeleteTrackButtonListener() {
         binding.btDelete.setOnClickListener {
-            viewModel.deleteTrackById(trackId)
-            findNavController().navigateUp()
+            deleteConfirmationDialog.show(childFragmentManager, DELETE)
         }
     }
 
@@ -120,6 +122,22 @@ class SessionSummaryFragment : Fragment() {
         binding.loadingOverlay.apply {
             bindToLifecycle(lifecycle)
             setLoadingMessage(context.getString(R.string.completing_track_message))
+        }
+
+    private fun createDeleteTrackDialog(trackId: Int) =
+        ConfirmationDialogFragment().also {
+            it.setListener(
+                object : ConfirmationDialogFragment.DialogListener {
+                    override fun onConfirmed() {
+                        viewModel.deleteTrackById(trackId)
+                        findNavController().navigateUp()
+                    }
+
+                    override fun onCancelled() {
+                        // NO-OP
+                    }
+                },
+            )
         }
 
     override fun onDestroy() {

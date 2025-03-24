@@ -6,6 +6,10 @@ import androidx.fragment.app.DialogFragment
 import com.developers.sprintsync.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+object ConfirmationDialogTag {
+    const val DELETE = "DeleteDialog"
+}
+
 class ConfirmationDialogFragment : DialogFragment() {
     interface DialogListener {
         fun onConfirmed()

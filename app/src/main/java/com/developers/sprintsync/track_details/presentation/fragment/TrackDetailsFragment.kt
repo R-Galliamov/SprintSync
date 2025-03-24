@@ -15,6 +15,7 @@ import com.developers.sprintsync.core.components.track.presentation.indicator_fo
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiPattern
 import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
 import com.developers.sprintsync.core.presentation.view.ConfirmationDialogFragment
+import com.developers.sprintsync.core.presentation.view.ConfirmationDialogTag.DELETE
 import com.developers.sprintsync.core.presentation.view.pace_chart.PaceChartManager
 import com.developers.sprintsync.databinding.FragmentTrackDetailsBinding
 import com.developers.sprintsync.track_details.presentation.view_model.TrackDetailsViewModel
@@ -99,7 +100,7 @@ class TrackDetailsFragment : Fragment() {
 
     private fun setDeleteTrackButtonListener() {
         binding.btDelete.setOnClickListener {
-            deleteTrackDialog.show(childFragmentManager, "DeleteTrackDialog")
+            deleteTrackDialog.show(childFragmentManager, DELETE)
         }
     }
 
