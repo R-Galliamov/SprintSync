@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.PolylineOptions
 
 data class UiTrack(
     val id: Int,
-    val distance: String,
+    val distanceUnit: String,
     val duration: String,
     val avgPace: String,
     val bestPace: String,

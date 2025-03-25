@@ -4,35 +4,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.developers.sprintsync.core.components.track.data.model.Track
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DistanceUiPattern
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiPattern
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.PaceFormatter
+import com.developers.sprintsync.R
+import com.developers.sprintsync.core.components.track.presentation.model.UiTrack
 import com.developers.sprintsync.core.presentation.view.ConfirmationDialogFragment
 import com.developers.sprintsync.core.presentation.view.ConfirmationDialogTag.DELETE
 import com.developers.sprintsync.core.presentation.view.pace_chart.PaceChartManager
+import com.developers.sprintsync.core.util.extension.collectFlow
 import com.developers.sprintsync.databinding.FragmentTrackDetailsBinding
 import com.developers.sprintsync.track_details.presentation.view_model.TrackDetailsViewModel
 import com.github.mikephil.charting.charts.LineChart
-import java.util.Locale
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TrackDetailsFragment : Fragment() {
     private var _binding: FragmentTrackDetailsBinding? = null
     private val binding get() = checkNotNull(_binding)
 
     private val args: TrackDetailsFragmentArgs by navArgs()
 
-    private val viewModel by activityViewModels<TrackDetailsViewModel>()
+    private val viewModel by viewModels<TrackDetailsViewModel>()
 
     private val paceChartManager by lazy { PaceChartManager(requireContext()) }
 
     private val deleteTrackDialog by lazy { createDeleteTrackDialog(args.trackId) }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.fetchTrackData(args.trackId)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +53,9 @@ class TrackDetailsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initChartManager(binding.chart)
-        setDataObserver(args.trackId)
+        setLoadingOverlay()
+        observeTrackData()
+        setGoToMapButtonListener(args.trackId)
         setBackButtonListener()
         setDeleteTrackButtonListener()
     }
@@ -58,26 +64,40 @@ class TrackDetailsFragment : Fragment() {
         paceChartManager.initialize(chart)
     }
 
-    // TODO include null case
-    private fun setDataObserver(trackId: Int) {
-        viewModel.getTrackById(trackId).observe(viewLifecycleOwner) { track ->
-            track?.let {
-                // paceChartManager.setData(track.segments)
-                updateStatisticsValues(track)
-                setGoToMapButtonListener(track.id)
+    private fun observeTrackData() {
+        collectFlow(viewModel.state) { state ->
+            when (state) {
+                TrackDetailsViewModel.DataState.Loading -> {
+                    binding.loadingOverlay.show()
+                }
+
+                is TrackDetailsViewModel.DataState.Success -> {
+                    val track = state.track
+                    paceChartManager.setData(state.paceChartData)
+                    updateStatisticsValues(track)
+                    binding.loadingOverlay.hide()
+                }
+
+                is TrackDetailsViewModel.DataState.Error -> {
+                    Toast
+                        .makeText(
+                            requireContext(),
+                            getString(R.string.unexpected_error_message),
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    findNavController().navigateUp()
+                }
             }
         }
     }
 
-    // TODO move to view model
-    private fun updateStatisticsValues(track: Track) {
+    private fun updateStatisticsValues(track: UiTrack) {
         binding.apply {
-            tvDistanceValue.text =
-                DistanceUiFormatter.format(track.distanceMeters, DistanceUiPattern.WITH_UNIT)
-            tvDurationValue.text = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
-            tvAvgPaceValue.text = PaceFormatter.formatPaceWithTwoDecimals(track.avgPace)
-            tvBestPaceValue.text = PaceFormatter.formatPaceWithTwoDecimals(track.bestPace)
-            tvCaloriesValue.text = String.format(Locale.getDefault(), track.calories.toString()) // TODO add formatter
+            tvDistanceValue.text = track.distanceUnit
+            tvDurationValue.text = track.duration
+            tvAvgPaceValue.text = track.avgPace
+            tvBestPaceValue.text = track.bestPace
+            tvCaloriesValue.text = track.calories
         }
     }
 
@@ -97,6 +117,12 @@ class TrackDetailsFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
+
+    private fun setLoadingOverlay() =
+        binding.loadingOverlay.apply {
+            bindToLifecycle(lifecycle)
+            setLoadingMessage(context.getString(R.string.loading_data_message))
+        }
 
     private fun setDeleteTrackButtonListener() {
         binding.btDelete.setOnClickListener {

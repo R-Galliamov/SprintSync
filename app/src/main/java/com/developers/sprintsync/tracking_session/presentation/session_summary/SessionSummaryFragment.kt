@@ -66,18 +66,23 @@ class SessionSummaryFragment : Fragment() {
     private fun setDataObserver() {
         collectFlow(viewModel.state) { state ->
             when (state) {
-                is SessionSummaryState.Loading -> {
+                is SessionSummaryViewModel.DataState.Loading -> {
                     binding.loadingOverlay.show()
                 }
 
-                is SessionSummaryState.Success -> {
+                is SessionSummaryViewModel.DataState.Success -> {
                     binding.loadingOverlay.hide()
                     updateStatisticsValues(state.track)
                     paceChartManager.setData(state.paceChartData)
                 }
 
-                is SessionSummaryState.Error -> {
-                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                is SessionSummaryViewModel.DataState.Error -> {
+                    Toast
+                        .makeText(
+                            requireContext(),
+                            getString(R.string.unexpected_error_message),
+                            Toast.LENGTH_SHORT,
+                        ).show()
                     findNavController().navigateUp()
                 }
             }
@@ -86,7 +91,7 @@ class SessionSummaryFragment : Fragment() {
 
     private fun updateStatisticsValues(track: UiTrack) {
         binding.apply {
-            tvDistanceValue.text = track.distance
+            tvDistanceValue.text = track.distanceUnit
             tvDurationValue.text = track.duration
             tvAvgPaceValue.text = track.avgPace
             tvBestPaceValue.text = track.bestPace

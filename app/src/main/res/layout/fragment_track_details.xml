@@ -199,6 +199,11 @@
 
     </ScrollView>
 
+    <com.developers.sprintsync.core.presentation.view.LoadingOverlay
+        android:id="@+id/loading_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <FrameLayout
         android:id="@+id/btBack"
         style="@style/TransparentButton"
@@ -217,5 +222,6 @@
             android:src="@drawable/ic_arrow_left_white_32dp"
             app:layout_constraintStart_toStartOf="parent" />
     </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

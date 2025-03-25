@@ -25,7 +25,7 @@ class UiTrackFormatter
             val polylines = polylineProcessor.generatePolylines(track.segments)
             return UiTrack(
                 id = track.id,
-                distance = distance,
+                distanceUnit = distance,
                 duration = duration,
                 avgPace = avgPace,
                 bestPace = bestPace,

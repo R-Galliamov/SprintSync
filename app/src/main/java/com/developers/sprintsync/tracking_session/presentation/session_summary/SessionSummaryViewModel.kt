@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.core.components.track.domain.use_case.DeleteTrackByIdUseCase
 import com.developers.sprintsync.core.components.track.domain.use_case.GetTrackByIdUseCase
+import com.developers.sprintsync.core.components.track.presentation.model.UiTrack
 import com.developers.sprintsync.core.components.track.presentation.util.UiTrackFormatter
 import com.developers.sprintsync.core.presentation.view.pace_chart.SegmentsToPaceChartMapper
+import com.developers.sprintsync.core.presentation.view.pace_chart.model.PaceChartData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,20 +25,21 @@ class SessionSummaryViewModel
         private val segmentsToPaceChartMapper: SegmentsToPaceChartMapper,
         private val uiTrackFormatter: UiTrackFormatter,
     ) : ViewModel() {
-        private val _state: MutableStateFlow<SessionSummaryState> = MutableStateFlow(SessionSummaryState.Loading)
+        private val _state: MutableStateFlow<DataState> = MutableStateFlow(DataState.Loading)
         val state get() = _state.asStateFlow()
 
         fun fetchSessionData(trackId: Int) {
-            if (state.value !is SessionSummaryState.Loading) return
+            if (state.value !is DataState.Loading) return
+            _state.update { DataState.Loading }
             viewModelScope.launch {
                 try {
                     val track = getTrackByIdUseCase(trackId)
                     val uiTrack = uiTrackFormatter.format(track)
                     val chartData = segmentsToPaceChartMapper.map(track.segments)
-                    _state.update { SessionSummaryState.Success(uiTrack, chartData) }
+                    _state.update { DataState.Success(uiTrack, chartData) }
                 } catch (e: Exception) {
                     Log.e(TAG, e.message.toString())
-                    _state.update { SessionSummaryState.Error }
+                    _state.update { DataState.Error }
                 }
             }
         }
@@ -49,6 +52,17 @@ class SessionSummaryViewModel
                     Log.e(TAG, e.message.toString())
                 }
             }
+        }
+
+        sealed class DataState {
+            data object Loading : DataState()
+
+            data class Success(
+                val track: UiTrack,
+                val paceChartData: PaceChartData,
+            ) : DataState()
+
+            data object Error : DataState()
         }
 
         companion object {
