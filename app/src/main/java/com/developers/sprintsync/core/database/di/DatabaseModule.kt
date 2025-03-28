@@ -1,4 +1,4 @@
-package com.developers.sprintsync.core.application.di.database
+package com.developers.sprintsync.core.database.di
 
 import android.content.Context
 import androidx.room.Room

@@ -13,8 +13,8 @@ interface TrackPreviewDao {
     @Insert
     suspend fun insertPreview(entity: TrackPreviewPathEntity)
 
-    @Query("DELETE FROM TrackPreviewPathEntity WHERE trackId = :trackId")
-    suspend fun deletePreviewByTrackId(trackId: Int)
+    @Query("SELECT * FROM TrackPreviewPathEntity ORDER BY id DESC")
+    suspend fun getAllTrackPreviewPaths() : List<TrackPreviewPathEntity>
 
     @Transaction
     @Query("SELECT * FROM TrackEntity WHERE id = :trackId")

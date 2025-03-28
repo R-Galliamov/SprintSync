@@ -26,6 +26,15 @@ class TrackPreviewRepositoryImpl
             dao.insertPreview(entity)
         }
 
+        override suspend fun cleanOrphanFiles() {
+            val validFilePaths =
+                dao
+                    .getAllTrackPreviewPaths()
+                    .mapNotNull { it.filePath }
+                    .toSet()
+            trackPreviewDataSource.cleanOrphanFiles(validFilePaths)
+        }
+
         companion object {
             private const val TAG = "My stack: TrackPreviewRepository"
         }

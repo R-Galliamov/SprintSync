@@ -8,4 +8,6 @@ interface TrackPreviewRepository {
     val trackPreviewWrappersFlow: Flow<List<TrackPreviewWrapper>>
 
     suspend fun savePreview(bitmap: TrackPreviewBitmap)
+
+    suspend fun cleanOrphanFiles()
 }
