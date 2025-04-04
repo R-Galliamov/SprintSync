@@ -7,8 +7,8 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.developers.sprintsync.R
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiFormatter
-import com.developers.sprintsync.core.components.track.presentation.indicator_formatters.DurationUiPattern
+import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
+import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
 import dagger.hilt.android.scopes.ServiceScoped
 import javax.inject.Inject
 

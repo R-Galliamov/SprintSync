@@ -1,9 +1,9 @@
 package com.developers.sprintsync.core.database.di
 
 import com.developers.sprintsync.core.database.AppDb
-import com.developers.sprintsync.core.components.track.data.database.dao.TrackDao
-import com.developers.sprintsync.core.components.goal.data.database.dao.DailyGoalDao
-import com.developers.sprintsync.core.components.track_preview.data.database.dao.TrackPreviewDao
+import com.developers.sprintsync.data.track.database.dao.TrackDao
+import com.developers.sprintsync.data.goal.database.dao.DailyGoalDao
+import com.developers.sprintsync.data.track_preview.database.dao.TrackPreviewDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

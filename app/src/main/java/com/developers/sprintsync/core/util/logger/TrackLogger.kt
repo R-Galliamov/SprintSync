@@ -1,7 +1,7 @@
 package com.developers.sprintsync.core.util.logger
 
 import android.util.Log
-import com.developers.sprintsync.core.components.track.data.model.Track
+import com.developers.sprintsync.domain.track.model.Track
 
 object TrackLogger {
     fun log(track: Track) {

@@ -9,9 +9,9 @@ import com.developers.sprintsync.tracking.component.model.TrackingStatus
 import com.developers.sprintsync.tracking.data.flow.DistanceFlowManager
 import com.developers.sprintsync.tracking.data.flow.DurationFlowManager
 import com.developers.sprintsync.tracking.data.flow.LocationDurationFlowManager
-import com.developers.sprintsync.tracking.service.controller.ServiceCommand.FINISH_SERVICE
-import com.developers.sprintsync.tracking.service.controller.ServiceCommand.PAUSE_SERVICE
-import com.developers.sprintsync.tracking.service.controller.ServiceCommand.START_SERVICE
+import com.developers.sprintsync.tracking.service.implementation.ServiceCommand.FINISH_SERVICE
+import com.developers.sprintsync.tracking.service.implementation.ServiceCommand.PAUSE_SERVICE
+import com.developers.sprintsync.tracking.service.implementation.ServiceCommand.START_SERVICE
 import com.developers.sprintsync.tracking.service.manager.TrackingStateManager
 import com.developers.sprintsync.tracking.service.notification.TrackingNotificationConfig
 import com.developers.sprintsync.tracking.service.notification.TrackingNotificationManager
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TrackingService : LifecycleService() {
+class TrackingService : LifecycleService() { // TODO Create interface and move to domain
     @Inject
     lateinit var notificationManager: TrackingNotificationManager
 
@@ -90,4 +90,10 @@ class TrackingService : LifecycleService() {
         val id = notificationConfig.notificationId
         startForeground(id, notification)
     }
+}
+
+object ServiceCommand {
+    const val START_SERVICE = "START_SERVICE"
+    const val PAUSE_SERVICE = "PAUSE_SERVICE"
+    const val FINISH_SERVICE = "FINISH_SERVICE"
 }

@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.data.processing.util.calculator
 
-import com.developers.sprintsync.core.components.track.domain.metrics_converter.MetersToKilometersConverter
+import com.developers.sprintsync.core.util.MetersToKilometersConverter
 import com.developers.sprintsync.core.util.time.TimeConverter
 import javax.inject.Inject
 

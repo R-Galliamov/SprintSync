@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".update_goals.presentation.fragment.UpdateGoalsFragment">
+    tools:context=".presentation.goals_settings.GoalsSettingsFragment">
 
     <LinearLayout
         android:id="@+id/container"

@@ -1,7 +1,7 @@
 package com.developers.sprintsync.core.application
 
 import android.app.Application
-import com.developers.sprintsync.core.components.track_preview.data.repository.TrackPreviewRepository
+import com.developers.sprintsync.data.track_preview.repository.TrackPreviewRepository
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

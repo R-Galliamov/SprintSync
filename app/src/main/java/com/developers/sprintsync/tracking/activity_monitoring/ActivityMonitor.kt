@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.activity_monitoring
 
-import com.developers.sprintsync.core.components.track.data.model.Segment
+import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.tracking.activity_monitoring.pace_analyzer.PaceAnalysisResult
 import com.developers.sprintsync.tracking.activity_monitoring.pace_analyzer.PaceAnalyzer
 import kotlinx.coroutines.flow.MutableStateFlow

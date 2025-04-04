@@ -1,7 +1,7 @@
 package com.developers.sprintsync.tracking_session.presentation.tracking.util.state_handler.event
 
-import com.developers.sprintsync.core.components.track.data.data_source.preparer.StationarySegmentMerger
-import com.developers.sprintsync.core.components.track.data.model.Segment
+import com.developers.sprintsync.data.track.data_source.preparer.StationarySegmentMerger
+import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.tracking.data.model.Latitude
 import com.developers.sprintsync.tracking.data.model.LocationModel
 import com.developers.sprintsync.tracking.data.model.Longitude

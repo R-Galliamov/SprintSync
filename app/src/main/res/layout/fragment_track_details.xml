@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".track_details.presentation.fragment.TrackDetailsFragment">
+    tools:context=".presentation.workouts_history.workout_details.WorkoutDetailsFragment">
 
     <ScrollView
         android:id="@+id/scrollView"

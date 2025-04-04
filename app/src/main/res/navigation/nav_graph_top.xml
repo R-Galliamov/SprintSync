@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/onboardingFragment"
-        android:name="com.developers.sprintsync.onboarding.presentation.OnboardingFragment"
+        android:name="com.developers.sprintsync.presentation.onboarding.OnboardingFragment"
         android:label="onboardingFragment">
         <action
             android:id="@+id/action_onboardingFragment_to_tabsFragment"
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/trackingFragment"
-        android:name="com.developers.sprintsync.tracking_session.presentation.tracking.TrackingFragment"
+        android:name="com.developers.sprintsync.presentation.workout_session.active.WorkoutSessionFragment"
         android:label="fragment_tracking"
         tools:layout="@layout/fragment_tracking">
         <action
@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/locationRequestFragment"
-        android:name="com.developers.sprintsync.permission.presentation.LocationRequestFragment"
+        android:name="com.developers.sprintsync.core.permission.LocationRequestFragment"
         android:label="fragment_location_request"
         tools:layout="@layout/fragment_location_request">
         <action
@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/sessionSummaryFragment"
-        android:name="com.developers.sprintsync.tracking_session.presentation.session_summary.SessionSummaryFragment"
+        android:name="com.developers.sprintsync.presentation.workout_session.summary.WorkoutSummaryFragment"
         android:label="fragment_session_summary"
         tools:layout="@layout/fragment_session_summary">
         <argument
@@ -84,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.developers.sprintsync.map.presentation.fragment.MapFragment"
+        android:name="com.developers.sprintsync.presentation.map_screen.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map">
         <argument
@@ -93,7 +93,7 @@
     </fragment>
     <fragment
         android:id="@+id/trackDetailsFragment"
-        android:name="com.developers.sprintsync.track_details.presentation.fragment.TrackDetailsFragment"
+        android:name="com.developers.sprintsync.presentation.workouts_history.workout_details.WorkoutDetailsFragment"
         android:label="fragment_track_details"
         tools:layout="@layout/fragment_track_details">
         <action
@@ -110,7 +110,7 @@
     </fragment>
     <fragment
         android:id="@+id/updateGoalsFragment"
-        android:name="com.developers.sprintsync.update_goals.presentation.fragment.UpdateGoalsFragment"
+        android:name="com.developers.sprintsync.presentation.goals_settings.GoalsSettingsFragment"
         android:label="fragment_update_goals"
         tools:layout="@layout/fragment_update_goals" />
 </navigation>

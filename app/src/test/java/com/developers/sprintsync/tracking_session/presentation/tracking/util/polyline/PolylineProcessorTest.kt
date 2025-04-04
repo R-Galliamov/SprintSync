@@ -1,8 +1,11 @@
 package com.developers.sprintsync.tracking_session.presentation.tracking.util.polyline
 
 import android.graphics.Color
-import com.developers.sprintsync.core.components.track.data.model.Segment
-import com.developers.sprintsync.core.components.track.data.model.Segments
+import com.developers.sprintsync.domain.track.model.Segment
+import com.developers.sprintsync.domain.track.model.Segments
+import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineFormatter
+import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineOptionsCreator
+import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineProcessor
 import com.developers.sprintsync.tracking.data.model.Latitude
 import com.developers.sprintsync.tracking.data.model.LocationModel
 import com.developers.sprintsync.tracking.data.model.Longitude

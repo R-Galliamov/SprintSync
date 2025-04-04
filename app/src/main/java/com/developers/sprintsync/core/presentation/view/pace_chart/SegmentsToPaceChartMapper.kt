@@ -1,8 +1,8 @@
 package com.developers.sprintsync.core.presentation.view.pace_chart
 
 import com.developers.sprintsync.core.presentation.view.pace_chart.model.PaceChartData
-import com.developers.sprintsync.core.components.track.data.model.Segment
-import com.developers.sprintsync.core.components.track.data.model.Segments
+import com.developers.sprintsync.domain.track.model.Segment
+import com.developers.sprintsync.domain.track.model.Segments
 import com.github.mikephil.charting.data.Entry
 import javax.inject.Inject
 

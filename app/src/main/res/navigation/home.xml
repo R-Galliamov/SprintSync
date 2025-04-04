@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.developers.sprintsync.home.presentation.fragment.HomeFragment"
+        android:name="com.developers.sprintsync.presentation.home_screen.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 </navigation>

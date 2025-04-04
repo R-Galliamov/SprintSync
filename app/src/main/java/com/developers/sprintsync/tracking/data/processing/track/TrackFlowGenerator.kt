@@ -1,7 +1,7 @@
 package com.developers.sprintsync.tracking.data.processing.track
 
-import com.developers.sprintsync.core.components.track.data.model.Segment
-import com.developers.sprintsync.core.components.track.data.model.Track
+import com.developers.sprintsync.domain.track.model.Segment
+import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.tracking.data.model.TimedLocation
 import com.developers.sprintsync.tracking.data.processing.segment.SegmentService
 import kotlinx.coroutines.CoroutineScope

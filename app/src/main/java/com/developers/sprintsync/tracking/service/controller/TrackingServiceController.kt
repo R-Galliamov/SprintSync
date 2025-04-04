@@ -2,6 +2,7 @@ package com.developers.sprintsync.tracking.service.controller
 
 import android.content.Context
 import android.content.Intent
+import com.developers.sprintsync.tracking.service.implementation.ServiceCommand
 import com.developers.sprintsync.tracking.service.implementation.TrackingService
 
 class TrackingServiceController(
@@ -25,5 +26,4 @@ class TrackingServiceController(
             context.startService(intent)
         }
     }
-
 }

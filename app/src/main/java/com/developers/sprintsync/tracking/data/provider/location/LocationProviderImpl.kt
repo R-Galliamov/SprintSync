@@ -3,7 +3,7 @@ package com.developers.sprintsync.tracking.data.provider.location
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
-import com.developers.sprintsync.permission.domain.LocationPermissionManager
+import com.developers.sprintsync.core.permission.LocationPermissionManager
 import com.developers.sprintsync.core.util.error.NoPermissionsException
 import com.developers.sprintsync.tracking.data.model.LocationModel
 import com.developers.sprintsync.tracking.data.model.toDataModel

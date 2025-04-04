@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.activity_monitoring.pace_analyzer
 
-import com.developers.sprintsync.core.components.track.data.model.Segment
+import com.developers.sprintsync.domain.track.model.Segment
 
 class PaceAnalyzer {
     companion object {

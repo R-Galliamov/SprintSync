@@ -1,8 +1,8 @@
 package com.developers.sprintsync.tracking.data.processing.segment
 
-import com.developers.sprintsync.core.components.track.data.model.Segment
+import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.tracking.data.model.TimedLocation
-import com.developers.sprintsync.tracking.data.processing.util.validator.SegmentValidator
+import com.developers.sprintsync.domain.track.validation.segment.SegmentValidator
 import javax.inject.Inject
 
 sealed interface SegmentBuilder {

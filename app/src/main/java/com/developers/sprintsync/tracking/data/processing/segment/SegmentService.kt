@@ -1,10 +1,10 @@
 package com.developers.sprintsync.tracking.data.processing.segment
 
 import android.util.Log
-import com.developers.sprintsync.core.components.track.data.model.Segment
-import com.developers.sprintsync.core.util.validation.ValidationException
+import com.developers.sprintsync.domain.track.model.Segment
+import com.developers.sprintsync.domain.track.validation.ValidationException
 import com.developers.sprintsync.tracking.data.model.TimedLocation
-import com.developers.sprintsync.tracking.data.processing.util.validator.SegmentValidationError
+import com.developers.sprintsync.domain.track.validation.segment.SegmentValidationError
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull

@@ -1,6 +1,6 @@
 package com.developers.sprintsync.tracking.component.model
 
-import com.developers.sprintsync.core.components.track.data.model.Track
+import com.developers.sprintsync.domain.track.model.Track
 
 data class TrackState(
     val track: Track,
