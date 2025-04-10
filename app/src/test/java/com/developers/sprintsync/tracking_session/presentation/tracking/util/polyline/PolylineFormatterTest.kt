@@ -3,9 +3,9 @@ package com.developers.sprintsync.tracking_session.presentation.tracking.util.po
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Segments
 import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineFormatter
-import com.developers.sprintsync.tracking.data.model.Latitude
-import com.developers.sprintsync.tracking.data.model.LocationModel
-import com.developers.sprintsync.tracking.data.model.Longitude
+import com.developers.sprintsync.domain.tracking_service.model.Latitude
+import com.developers.sprintsync.domain.tracking_service.model.LocationModel
+import com.developers.sprintsync.domain.tracking_service.model.Longitude
 import com.google.android.gms.maps.model.LatLng
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach

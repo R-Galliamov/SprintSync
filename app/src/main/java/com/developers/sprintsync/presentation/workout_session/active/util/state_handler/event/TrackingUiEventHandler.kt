@@ -6,9 +6,9 @@ import com.developers.sprintsync.domain.track.use_case.ValidateTrackUseCase
 import com.developers.sprintsync.core.util.extension.toLatLngBounds
 import com.developers.sprintsync.core.util.logger.TrackLogger
 import com.developers.sprintsync.domain.track.validation.ValidationException
-import com.developers.sprintsync.tracking.component.model.TrackState
-import com.developers.sprintsync.tracking.component.model.TrackingStatus
-import com.developers.sprintsync.tracking.component.use_case.ResetCurrentTrackingStateUseCase
+import com.developers.sprintsync.domain.tracking_service.model.TrackingData
+import com.developers.sprintsync.domain.tracking_service.model.TrackingStatus
+import com.developers.sprintsync.domain.tracking_service.use_case.ResetCurrentTrackingStateUseCase
 import com.developers.sprintsync.presentation.workout_session.active.util.metrics_formatter.UiMetricsFormatter
 import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineFormatter
 import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineProcessor
@@ -36,7 +36,7 @@ class TrackingUiEventHandler
         private val _uiEventFlow = MutableStateFlow<UIEvent?>(null)
         val uiEventFlow get() = _uiEventFlow.asStateFlow().filterNotNull()
 
-        suspend fun handleState(state: TrackState) {
+        suspend fun handleState(state: TrackingData) {
             when (state.status) {
                 TrackingStatus.COMPLETED -> handleCompleteState(state.track)
                 else -> emitUiTrackData(state.track)

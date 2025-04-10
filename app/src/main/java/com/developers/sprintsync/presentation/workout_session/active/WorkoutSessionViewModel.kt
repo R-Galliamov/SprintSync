@@ -7,10 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
 import com.developers.sprintsync.domain.track_preview.cropper.TrackPreviewCropper
-import com.developers.sprintsync.tracking.component.use_case.GetCurrentTrackingStateUseCase
-import com.developers.sprintsync.tracking.component.use_case.GetLocationFlowUseCase
-import com.developers.sprintsync.tracking.data.model.toLatLng
-import com.developers.sprintsync.tracking.data.provider.time.GetDurationFlowUseCase
+import com.developers.sprintsync.domain.tracking_service.model.toLatLng
+import com.developers.sprintsync.domain.tracking_service.use_case.GetSessionDataUseCase
+import com.developers.sprintsync.domain.tracking_service.use_case.GetTrackingDataUseCase
 import com.developers.sprintsync.presentation.workout_session.active.util.state_handler.event.TrackingUiEventHandler
 import com.developers.sprintsync.presentation.workout_session.active.util.state_handler.map.MapStateHandler
 import com.developers.sprintsync.presentation.workout_session.active.util.state_handler.snapshot.SnapshotStateHandler
@@ -18,6 +17,7 @@ import com.developers.sprintsync.presentation.workout_session.active.util.state_
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,9 +25,8 @@ import javax.inject.Inject
 class WorkoutSessionViewModel
     @Inject
     constructor(
-        getDurationFlowUseCase: GetDurationFlowUseCase,
-        private val getLocationFlowUseCase: GetLocationFlowUseCase,
-        private val trackingState: GetCurrentTrackingStateUseCase,
+        private val trackingServiceDataFlow: GetTrackingDataUseCase,
+        private val trackingSessionDataFlow: GetSessionDataUseCase,
         private val uiEventHandler: TrackingUiEventHandler,
         private val uiStateHandler: TrackingUiStateHandler,
         private val mapStateHandler: MapStateHandler,
@@ -43,7 +42,10 @@ class WorkoutSessionViewModel
             observeLocationFlow()
         }
 
-        val duration = getDurationFlowUseCase().map { DurationUiFormatter.format(it, DurationUiPattern.HH_MM_SS) }
+        val duration =
+            trackingSessionDataFlow
+                .invoke()
+                .map { DurationUiFormatter.format(it.durationMillis, DurationUiPattern.HH_MM_SS) }
 
         fun onSnapshotReady(snapshot: Bitmap?) {
             if (snapshot != null) {
@@ -56,8 +58,8 @@ class WorkoutSessionViewModel
 
         private fun observeLocationFlow() {
             viewModelScope.launch {
-                getLocationFlowUseCase()
-                    .map { it.toLatLng() }
+                trackingSessionDataFlow()
+                    .mapNotNull { it.userLocation.toLatLng() }
                     .distinctUntilChanged()
                     .collect { location ->
                         mapStateHandler.emitLocation(location)
@@ -67,7 +69,7 @@ class WorkoutSessionViewModel
 
         private fun observeTrackData() {
             viewModelScope.launch {
-                trackingState().collect { state ->
+                trackingServiceDataFlow().collect { state ->
                     uiStateHandler.handleState(state.status)
                     uiEventHandler.handleState(state)
                 }

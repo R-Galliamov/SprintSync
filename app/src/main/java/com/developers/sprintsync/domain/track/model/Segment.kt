@@ -1,6 +1,6 @@
 package com.developers.sprintsync.domain.track.model
 
-import com.developers.sprintsync.tracking.data.model.LocationModel
+import com.developers.sprintsync.domain.tracking_service.model.LocationModel
 
 sealed class Segment {
     abstract val id: Long

@@ -1,0 +1,31 @@
+package com.developers.sprintsync.domain.tracking_service.internal.data_processing.track
+
+import com.developers.sprintsync.domain.track.model.Segment
+import com.developers.sprintsync.domain.track.model.Track
+import javax.inject.Inject
+
+class TrackUpdater
+    @Inject
+    constructor(
+        private val calculator: TrackCalculator,
+    ) {
+        fun updateTrackWithSegment(
+            track: Track,
+            segment: Segment,
+        ): Track {
+            val duration = calculator.calculateDuration(track, segment)
+            val distance = calculator.calculateDistance(track, segment)
+            val avgPace = calculator.calculateAvgPace(track, segment)
+            val bestPace = calculator.calculateBestPace(track, segment)
+            val calories = calculator.calculateCalories(track, segment)
+            val segments = track.segments + segment
+            return track.copy(
+                durationMillis = duration,
+                distanceMeters = distance,
+                avgPace = avgPace,
+                bestPace = bestPace,
+                calories = calories,
+                segments = segments,
+            )
+        }
+    }

@@ -2,9 +2,9 @@ package com.developers.sprintsync.data.track.data_source
 
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Track
-import com.developers.sprintsync.tracking.data.model.Latitude
-import com.developers.sprintsync.tracking.data.model.LocationModel
-import com.developers.sprintsync.tracking.data.model.Longitude
+import com.developers.sprintsync.domain.tracking_service.model.Latitude
+import com.developers.sprintsync.domain.tracking_service.model.LocationModel
+import com.developers.sprintsync.domain.tracking_service.model.Longitude
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import java.util.Calendar

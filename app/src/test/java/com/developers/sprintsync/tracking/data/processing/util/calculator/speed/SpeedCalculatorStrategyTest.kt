@@ -1,5 +1,6 @@
 package com.developers.sprintsync.tracking.data.processing.util.calculator.speed
 
+import com.developers.sprintsync.domain.tracking_service.internal.data_processing.calculator.speed.SpeedCalculatorStrategy
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test

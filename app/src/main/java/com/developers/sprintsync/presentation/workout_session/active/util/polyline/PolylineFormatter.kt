@@ -2,8 +2,8 @@ package com.developers.sprintsync.presentation.workout_session.active.util.polyl
 
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Segments
-import com.developers.sprintsync.tracking.data.model.LocationModel
-import com.developers.sprintsync.tracking.data.model.toLatLng
+import com.developers.sprintsync.domain.tracking_service.model.LocationModel
+import com.developers.sprintsync.domain.tracking_service.model.toLatLng
 import com.google.android.gms.maps.model.LatLng
 import javax.inject.Inject
 
