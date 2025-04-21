@@ -1,11 +1,11 @@
 package com.developers.sprintsync.presentation.workouts_statistics.data
 
-import com.developers.sprintsync.core.util.track_formatter.CaloriesFormatter
+import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiPattern
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
-import com.developers.sprintsync.core.util.track_formatter.PaceFormatter
+import com.developers.sprintsync.core.util.track_formatter.PaceUiFormatter
 import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.presentation.components.TracksStatsCalculator
 
@@ -59,9 +59,9 @@ data class WeeklyStatistics(
                 totalDuration = DurationUiFormatter.format(totalDuration, DurationUiPattern.HH_MM_SS),
                 bestDistance = DistanceUiFormatter.format(bestDistance, DistanceUiPattern.WITH_UNIT),
                 bestDuration = DurationUiFormatter.format(bestDuration, DurationUiPattern.HH_MM_SS),
-                avgPace = PaceFormatter.formatPaceWithTwoDecimals(avgPace),
-                bestPace = PaceFormatter.formatPaceWithTwoDecimals(bestPace),
-                totalCalories = CaloriesFormatter.formatCalories(totalCalories, false),
+                avgPace = PaceUiFormatter.format(avgPace, PaceUiFormatter.Pattern.TWO_DECIMALS),
+                bestPace = PaceUiFormatter.format(bestPace, PaceUiFormatter.Pattern.TWO_DECIMALS),
+                totalCalories = CaloriesUiFormatter.format(totalCalories, CaloriesUiFormatter.Pattern.PLAIN),
             )
         }
 

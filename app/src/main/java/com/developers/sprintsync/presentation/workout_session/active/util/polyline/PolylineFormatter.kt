@@ -1,9 +1,8 @@
 package com.developers.sprintsync.presentation.workout_session.active.util.polyline
 
+import com.developers.sprintsync.domain.track.model.LocationModel
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.model.Segments
-import com.developers.sprintsync.domain.tracking_service.model.LocationModel
-import com.developers.sprintsync.domain.tracking_service.model.toLatLng
+import com.developers.sprintsync.domain.track.model.toLatLng
 import com.google.android.gms.maps.model.LatLng
 import javax.inject.Inject
 
@@ -25,7 +24,7 @@ class PolylineFormatter @Inject constructor() {
      * @param segments The list of segments to format.
      * @return A list of polylines, where each polyline is a list of LatLng coordinates.
      */
-    fun format(segments: Segments): List<List<LatLng>> {
+    fun format(segments: List<Segment>): List<List<LatLng>> {
         // List to store all completed polylines
         val polylines = mutableListOf<List<LatLng>>()
         // Current polyline being built

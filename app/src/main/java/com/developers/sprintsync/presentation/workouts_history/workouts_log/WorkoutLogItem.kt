@@ -1,7 +1,7 @@
 package com.developers.sprintsync.presentation.workouts_history.workouts_log
 
 import com.developers.sprintsync.core.util.formatter.DateFormatter
-import com.developers.sprintsync.core.util.track_formatter.CaloriesFormatter
+import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiPattern
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
@@ -28,7 +28,7 @@ data class WorkoutLogItem(
             val date = DateFormatter.formatDate(track.timestamp, DateFormatter.Pattern.DAY_MONTH_YEAR_WEEK_DAY)
             val distance = DistanceUiFormatter.format(track.distanceMeters, DistanceUiPattern.WITH_UNIT)
             val duration = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
-            val calories = CaloriesFormatter.formatCalories(track.calories)
+            val calories = CaloriesUiFormatter.format(track.calories, CaloriesUiFormatter.Pattern.PLAIN)
             return WorkoutLogItem(
                 id = track.id,
                 date = date,

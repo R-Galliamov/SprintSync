@@ -85,6 +85,4 @@
     <string name="dialog_delete_track_message">Are you sure you want to delete this track?</string>
     <string name="unexpected_error_message">Oops! Something went wrong. Please try again.</string>
     <string name="loading_data_message">Just a moment, loading your data...</string>
-
-
 </resources>

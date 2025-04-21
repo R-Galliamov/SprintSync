@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
-import com.developers.sprintsync.domain.track.model.Segments
-import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.core.util.extension.findTopNavController
 import com.developers.sprintsync.core.util.extension.setMapStyle
 import com.developers.sprintsync.databinding.FragmentMapBinding
+import com.developers.sprintsync.domain.track.model.Segment
+import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.presentation.components.MapStyle
 import com.google.android.gms.maps.GoogleMap
 
@@ -88,7 +88,7 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun getNonEmptySegments(track: Track): Segments? = track.segments.takeIf { it.isNotEmpty() }
+    private fun getNonEmptySegments(track: Track): List<Segment>? = track.segments.takeIf { it.isNotEmpty() }
 
     private fun updateProgressBarVisibility(isVisible: Boolean) {
         when (isVisible) {

@@ -1,7 +1,7 @@
 package com.developers.sprintsync.presentation.workout_session.active.util.state_handler.event
 
 import com.developers.sprintsync.domain.track.model.Track
-import com.developers.sprintsync.domain.track.use_case.SaveTrackUseCase
+import com.developers.sprintsync.domain.track.use_case.storage.SaveTrackUseCase
 import com.developers.sprintsync.domain.track_preview.model.TrackPreviewBitmap
 import com.developers.sprintsync.domain.track_preview.use_case.SaveTrackPreviewUseCase
 import com.developers.sprintsync.presentation.workout_session.active.util.state_handler.snapshot.SnapshotStateHandler

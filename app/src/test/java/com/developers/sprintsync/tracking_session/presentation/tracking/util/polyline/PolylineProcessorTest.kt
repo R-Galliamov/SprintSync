@@ -1,14 +1,13 @@
 package com.developers.sprintsync.tracking_session.presentation.tracking.util.polyline
 
 import android.graphics.Color
+import com.developers.sprintsync.domain.track.model.Latitude
+import com.developers.sprintsync.domain.track.model.LocationModel
+import com.developers.sprintsync.domain.track.model.Longitude
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.model.Segments
 import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineFormatter
 import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineOptionsCreator
 import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineProcessor
-import com.developers.sprintsync.domain.tracking_service.model.Latitude
-import com.developers.sprintsync.domain.tracking_service.model.LocationModel
-import com.developers.sprintsync.domain.tracking_service.model.Longitude
 import com.google.android.gms.maps.model.LatLng
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -33,7 +32,7 @@ class PolylineProcessorTest {
      */
     @Test
     fun generatePolylinesWithEmptySegmentsReturnsEmptyList() {
-        val segments: Segments = emptyList()
+        val segments: List<Segment> = emptyList()
         val result = processor.generatePolylines(segments)
         assertEquals(0, result.size)
     }
@@ -43,7 +42,7 @@ class PolylineProcessorTest {
      */
     @Test
     fun generatePolylinesWithSingleActiveSegmentCreatesOnePolylineOption() {
-        val segments: Segments =
+        val segments: List<Segment> =
             listOf(
                 Segment.Active(
                     1L,
@@ -69,7 +68,7 @@ class PolylineProcessorTest {
      */
     @Test
     fun generatePolylinesWithContinuousActiveSegmentsCreatesOnePolylineOption() {
-        val segments: Segments =
+        val segments: List<Segment> =
             listOf(
                 Segment.Active(
                     1L,
@@ -109,7 +108,7 @@ class PolylineProcessorTest {
      */
     @Test
     fun generatePolylinesWithBreakCreatesMultiplePolylineOptions() {
-        val segments: Segments =
+        val segments: List<Segment> =
             listOf(
                 Segment.Active(
                     1L,
@@ -149,7 +148,7 @@ class PolylineProcessorTest {
      */
     @Test
     fun generatePolylinesWithStationarySegmentCreatesMultiplePolylineOptions() {
-        val segments: Segments =
+        val segments: List<Segment> =
             listOf(
                 Segment.Active(
                     1L,

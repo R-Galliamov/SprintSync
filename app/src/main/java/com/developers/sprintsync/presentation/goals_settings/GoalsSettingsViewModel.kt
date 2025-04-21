@@ -6,9 +6,11 @@ import com.developers.sprintsync.domain.goal.model.Metric
 import com.developers.sprintsync.domain.goal.use_case.GetLastDailyGoalsUseCase
 import com.developers.sprintsync.domain.goal.use_case.SaveDailyGoalUseCase
 import com.developers.sprintsync.domain.user_parameters.model.WellnessGoal
-import com.developers.sprintsync.domain.user_parameters.use_case.WellnessGoalUseCase
+import com.developers.sprintsync.domain.user_parameters.use_case.UpdateUserParametersUseCase
+import com.developers.sprintsync.domain.user_parameters.use_case.UserParametersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,12 +20,13 @@ class GoalsSettingsViewModel
     @Inject
     constructor(
         getLastDailyGoalsUseCase: GetLastDailyGoalsUseCase,
+        private val userParametersUseCase: UserParametersUseCase,
+        private val updateUserParametersUseCase: UpdateUserParametersUseCase,
         private val saveDailyGoalUseCase: SaveDailyGoalUseCase,
-        private val wellnessGoalUseCase: WellnessGoalUseCase,
     ) : ViewModel() {
         private var metricValuesMap = mutableMapOf<Metric, Float>()
 
-        val wellnessGoal: Flow<WellnessGoal> = wellnessGoalUseCase()
+        val wellnessGoal: Flow<WellnessGoal> = userParametersUseCase().map { it.wellnessGoal }
 
         val dailyGoals =
             getLastDailyGoalsUseCase.invoke().map { goals ->
@@ -51,7 +54,8 @@ class GoalsSettingsViewModel
 
         fun saveWellnessGoal(goal: WellnessGoal) {
             viewModelScope.launch {
-                wellnessGoalUseCase.saveWellnessGoal(goal)
+                val parameters = userParametersUseCase().first()
+                updateUserParametersUseCase(parameters.copy(wellnessGoal = goal))
             }
         }
 

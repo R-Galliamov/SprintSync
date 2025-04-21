@@ -1,8 +1,8 @@
 package com.developers.sprintsync.core.tracking.data.processing.util.calculator.calories.met
 
-import com.developers.sprintsync.domain.tracking_service.internal.data_processing.calculator.calories.met.METCalculator
-import com.developers.sprintsync.domain.tracking_service.internal.data_processing.calculator.calories.met.VO2Calculator
-import com.developers.sprintsync.domain.tracking_service.internal.data_processing.calculator.calories.met.VO2CalculatorFactory
+import com.developers.sprintsync.domain.track.inner_processing.calculator.calories.met.METCalculator
+import com.developers.sprintsync.domain.track.inner_processing.calculator.calories.met.VO2Calculator
+import com.developers.sprintsync.domain.track.inner_processing.calculator.calories.met.VO2CalculatorFactory
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments

@@ -3,8 +3,8 @@ package com.developers.sprintsync.core.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.developers.sprintsync.data.goal.database.dao.DailyGoalDao
-import com.developers.sprintsync.data.goal.database.dto.DailyGoalEntity
+import com.developers.sprintsync.data.goal.source.database.dao.DailyGoalDao
+import com.developers.sprintsync.data.goal.source.database.dto.DailyGoalEntity
 import com.developers.sprintsync.data.track.database.dao.TrackDao
 import com.developers.sprintsync.data.track.database.dto.TrackEntity
 import com.developers.sprintsync.data.track.database.util.converter.SegmentsTypeConverter

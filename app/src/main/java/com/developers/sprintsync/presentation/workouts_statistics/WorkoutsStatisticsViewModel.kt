@@ -8,7 +8,7 @@ import com.developers.sprintsync.domain.goal.model.Metric
 import com.developers.sprintsync.domain.goal.use_case.GetDailyGoalsFlowUseCase
 import com.developers.sprintsync.domain.goal.use_case.GetDailyGoalsUpdateTimestampUseCase
 import com.developers.sprintsync.domain.track.model.Track
-import com.developers.sprintsync.domain.track.use_case.GetTracksFlowUseCase
+import com.developers.sprintsync.domain.track.use_case.storage.GetTracksFlowUseCase
 import com.developers.sprintsync.presentation.workouts_statistics.chart.config.ChartConfigurationType
 import com.developers.sprintsync.presentation.workouts_statistics.chart.data.ChartDataSet
 import com.developers.sprintsync.presentation.workouts_statistics.chart.data.DisplayData

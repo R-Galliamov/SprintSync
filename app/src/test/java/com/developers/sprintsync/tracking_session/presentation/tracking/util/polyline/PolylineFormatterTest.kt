@@ -1,11 +1,10 @@
 package com.developers.sprintsync.tracking_session.presentation.tracking.util.polyline
 
+import com.developers.sprintsync.domain.track.model.Latitude
+import com.developers.sprintsync.domain.track.model.LocationModel
+import com.developers.sprintsync.domain.track.model.Longitude
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.model.Segments
 import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineFormatter
-import com.developers.sprintsync.domain.tracking_service.model.Latitude
-import com.developers.sprintsync.domain.tracking_service.model.LocationModel
-import com.developers.sprintsync.domain.tracking_service.model.Longitude
 import com.google.android.gms.maps.model.LatLng
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -21,14 +20,14 @@ class PolylineFormatterTest {
 
     @Test
     fun formatEmptySegmentsReturnsEmptyList() {
-        val segments: Segments = emptyList()
+        val segments: List<Segment> = emptyList()
         val result = formatter.format(segments)
         assertEquals(0, result.size)
     }
 
     @Test
     fun formatSingleActiveSegmentCreatesOnePolyline() {
-        val segments: Segments =
+        val segments: List<Segment> =
             listOf(
                 Segment.Active(
                     1L,
@@ -51,7 +50,7 @@ class PolylineFormatterTest {
 
     @Test
     fun formatMultipleContinuousActiveSegmentsCreatesOnePolyline() {
-        val segments: Segments =
+        val segments: List<Segment> =
             listOf(
                 Segment.Active(
                     1L,
@@ -86,7 +85,7 @@ class PolylineFormatterTest {
 
     @Test
     fun formatActiveSegmentsWithBreakCreatesMultiplePolylines() {
-        val segments: Segments =
+        val segments: List<Segment> =
             listOf(
                 Segment.Active(
                     1L,
@@ -123,7 +122,7 @@ class PolylineFormatterTest {
 
     @Test
     fun formatWithStationarySegmentCreatesNewPolyline() {
-        val segments: Segments =
+        val segments: List<Segment> =
             listOf(
                 Segment.Active(
                     1L,
@@ -167,7 +166,7 @@ class PolylineFormatterTest {
 
     @Test
     fun formatWithOnlyStationarySegmentsReturnsEmptyList() {
-        val segments: Segments =
+        val segments: List<Segment> =
             listOf(
                 Segment.Stationary(
                     1L,

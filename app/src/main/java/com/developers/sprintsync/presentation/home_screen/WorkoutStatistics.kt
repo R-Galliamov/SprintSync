@@ -1,10 +1,10 @@
 package com.developers.sprintsync.presentation.home_screen
 
 import com.developers.sprintsync.core.util.time.TimeParts
-import com.developers.sprintsync.core.util.track_formatter.CaloriesFormatter
+import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiPattern
-import com.developers.sprintsync.core.util.track_formatter.PaceFormatter
+import com.developers.sprintsync.core.util.track_formatter.PaceUiFormatter
 import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.presentation.components.TracksStatsCalculator
 
@@ -66,9 +66,9 @@ data class WorkoutStatistics(
                 WorkoutStatistics(
                     runs = stat.totalRuns.toString(),
                     totalDistance = DistanceUiFormatter.format(stat.totalDistance, DistanceUiPattern.PLAIN),
-                    totalKiloCalories = CaloriesFormatter.formatCalories(stat.totalCalories),
+                    totalKiloCalories = CaloriesUiFormatter.format(stat.totalCalories, CaloriesUiFormatter.Pattern.PLAIN),
                     longestDistance = DistanceUiFormatter.format(stat.longestDistance, DistanceUiPattern.PLAIN),
-                    bestPace = PaceFormatter.formatPaceWithTwoDecimals(stat.bestPace),
+                    bestPace = PaceUiFormatter.format(stat.bestPace, PaceUiFormatter.Pattern.TWO_DECIMALS),
                     maxDuration = TimeParts.create(stat.maxDuration),
                 )
         }

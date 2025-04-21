@@ -2,11 +2,10 @@ package com.developers.sprintsync.core.util.logger
 
 import android.util.Log
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.model.Segments
 
 object SegmentLogger {
 
-    fun log(segments: Segments) {
+    fun log(segments: List<Segment>) {
         val timestamp = System.currentTimeMillis()
 
         val segmentDetails =

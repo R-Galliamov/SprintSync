@@ -1,12 +1,13 @@
 package com.developers.sprintsync.domain.goal.use_case
 
-import com.developers.sprintsync.data.goal.data_source.DailyGoalDataSource
+import com.developers.sprintsync.data.goal.repository.DailyGoalRepository
+import com.developers.sprintsync.data.goal.source.DailyGoalDataSource
 import javax.inject.Inject
 
 class GetDailyGoalsFlowUseCase
     @Inject
     constructor(
-        repository: DailyGoalDataSource, // TODO create repository and fix all use cases
+        repository: DailyGoalRepository
     ) {
         val dailyGoals = repository.dailyGoals
     }

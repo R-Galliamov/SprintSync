@@ -2,7 +2,6 @@ package com.developers.sprintsync.data.track.database.util.converter
 
 import androidx.room.TypeConverter
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.model.Segments
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory
@@ -26,7 +25,7 @@ class SegmentsTypeConverter {
             .create()
 
     @TypeConverter
-    fun fromSegmentList(segments: Segments): String {
+    fun fromSegmentList(segments: List<Segment>): String {
         val jsonArray = JSONArray()
         for (segment in segments) {
             val segmentString = segmentToJson(segment)
@@ -36,7 +35,7 @@ class SegmentsTypeConverter {
     }
 
     @TypeConverter
-    fun toSegmentList(segmentsString: String): Segments {
+    fun toSegmentList(segmentsString: String): List<Segment> {
         val jsonArray = JSONArray(segmentsString)
         return (0 until jsonArray.length())
             .map { jsonArray.getString(it) }

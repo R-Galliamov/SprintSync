@@ -1,11 +1,11 @@
 package com.developers.sprintsync.presentation.components
 
-import com.developers.sprintsync.core.util.track_formatter.CaloriesFormatter
+import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiPattern
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
-import com.developers.sprintsync.core.util.track_formatter.PaceFormatter
+import com.developers.sprintsync.core.util.track_formatter.PaceUiFormatter
 import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineProcessor
 import com.google.android.gms.maps.model.PolylineOptions
@@ -29,9 +29,9 @@ class TrackDisplayModelCreator
         fun create(track: Track): TrackDisplayModel {
             val distance = DistanceUiFormatter.format(track.distanceMeters, DistanceUiPattern.WITH_UNIT)
             val duration = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
-            val avgPace = PaceFormatter.formatPaceWithTwoDecimals(track.avgPace)
-            val bestPace = PaceFormatter.formatPaceWithTwoDecimals(track.bestPace)
-            val calories = CaloriesFormatter.formatCalories(track.calories)
+            val avgPace = PaceUiFormatter.format(track.avgPace, PaceUiFormatter.Pattern.TWO_DECIMALS)
+            val bestPace = PaceUiFormatter.format(track.bestPace, PaceUiFormatter.Pattern.TWO_DECIMALS)
+            val calories = CaloriesUiFormatter.format(track.calories, CaloriesUiFormatter.Pattern.PLAIN)
             val polylines = polylineProcessor.generatePolylines(track.segments)
             return TrackDisplayModel(
                 id = track.id,

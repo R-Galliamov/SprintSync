@@ -1,7 +1,5 @@
 package com.developers.sprintsync.domain.track.model
 
-import com.developers.sprintsync.domain.tracking_service.model.LocationModel
-
 sealed class Segment {
     abstract val id: Long
     abstract val startTime: Long
@@ -28,5 +26,3 @@ sealed class Segment {
         override val durationMillis: Long,
     ) : Segment()
 }
-
-typealias Segments = List<Segment> // TODO remove

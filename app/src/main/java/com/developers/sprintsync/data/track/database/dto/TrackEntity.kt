@@ -2,7 +2,7 @@ package com.developers.sprintsync.data.track.database.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.developers.sprintsync.domain.track.model.Segments
+import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Track
 
 @Entity
@@ -15,7 +15,7 @@ data class TrackEntity(
     val avgPace: Float,
     val bestPace: Float,
     val calories: Float,
-    val segments: Segments,
+    val segments: List<Segment>,
 ) {
     fun toDto() =
         Track(

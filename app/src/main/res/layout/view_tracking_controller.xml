@@ -12,7 +12,7 @@
         android:layout_marginBottom="@dimen/space.regular"
         android:background="@drawable/bt_circle_fourthly"
         android:clickable="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/btTrackingController"
         app:layout_constraintStart_toStartOf="parent">
@@ -52,8 +52,7 @@
             android:layout_width="@dimen/iconSize.big"
             android:layout_height="@dimen/iconSize.big"
             android:layout_gravity="center"
-            android:importantForAccessibility="no"
-             />
+            android:importantForAccessibility="no" />
 
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

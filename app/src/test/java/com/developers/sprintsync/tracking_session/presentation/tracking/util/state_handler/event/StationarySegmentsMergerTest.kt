@@ -1,10 +1,10 @@
 package com.developers.sprintsync.tracking_session.presentation.tracking.util.state_handler.event
 
-import com.developers.sprintsync.data.track.data_source.preparer.StationarySegmentMerger
+import com.developers.sprintsync.domain.track.use_case.storage.StationarySegmentMerger
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.tracking_service.model.Latitude
-import com.developers.sprintsync.domain.tracking_service.model.LocationModel
-import com.developers.sprintsync.domain.tracking_service.model.Longitude
+import com.developers.sprintsync.domain.track.model.Latitude
+import com.developers.sprintsync.domain.track.model.LocationModel
+import com.developers.sprintsync.domain.track.model.Longitude
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

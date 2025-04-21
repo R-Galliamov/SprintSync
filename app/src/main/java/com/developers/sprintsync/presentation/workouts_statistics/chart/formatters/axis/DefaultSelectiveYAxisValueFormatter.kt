@@ -1,17 +1,16 @@
 package com.developers.sprintsync.presentation.workouts_statistics.chart.formatters.axis
 
 import android.util.Log
-import com.developers.sprintsync.domain.goal.model.Metric
-import com.developers.sprintsync.core.util.track_formatter.CaloriesFormatter
+import com.developers.sprintsync.core.util.extension.approximatelyEquals
+import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiPattern
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
-import com.developers.sprintsync.core.util.extension.approximatelyEquals
+import com.developers.sprintsync.domain.goal.model.Metric
 import kotlin.math.abs
 
 class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {
-
     private var selectedValue: Float = Float.MIN_VALUE
     private var valuePosition: Float = Float.MIN_VALUE
 
@@ -42,7 +41,7 @@ class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {
             when (metric) {
                 Metric.DURATION -> DurationUiFormatter.format(selectedValue.toLong(), DurationUiPattern.MM_UNIT)
                 Metric.DISTANCE -> DistanceUiFormatter.format(selectedValue, DistanceUiPattern.WITH_UNIT)
-                Metric.CALORIES -> CaloriesFormatter.formatCalories(selectedValue, true)
+                Metric.CALORIES -> CaloriesUiFormatter.format(selectedValue, CaloriesUiFormatter.Pattern.WITH_UNIT)
             }
         } else {
             EMPTY

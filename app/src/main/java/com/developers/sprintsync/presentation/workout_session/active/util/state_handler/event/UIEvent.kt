@@ -18,5 +18,5 @@ sealed class UIEvent {
         val trackId: Int,
     ) : UIEvent()
 
-    data object ErrorAndClose : UIEvent()
+    data class ErrorAndClose(val message: String) : UIEvent()
 }

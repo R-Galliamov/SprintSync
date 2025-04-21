@@ -1,6 +1,6 @@
 package com.developers.sprintsync.presentation.workout_session.active.util.polyline
 
-import com.developers.sprintsync.domain.track.model.Segments
+import com.developers.sprintsync.domain.track.model.Segment
 import com.google.android.gms.maps.model.PolylineOptions
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ class PolylineProcessor
          * @param segments The list of segments to process.
          * @return A list of PolylineOptions.
          */
-        fun generatePolylines(segments: Segments): List<PolylineOptions> {
+        fun generatePolylines(segments: List<Segment>): List<PolylineOptions> {
             val polylines = polylineFormatter.format(segments)
             return polylineOptionsCreator.create(polylines)
         }

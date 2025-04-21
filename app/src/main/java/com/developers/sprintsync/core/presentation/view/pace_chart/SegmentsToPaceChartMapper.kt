@@ -2,13 +2,12 @@ package com.developers.sprintsync.core.presentation.view.pace_chart
 
 import com.developers.sprintsync.core.presentation.view.pace_chart.model.PaceChartData
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.model.Segments
 import com.github.mikephil.charting.data.Entry
 import javax.inject.Inject
 
 class SegmentsToPaceChartMapper @Inject constructor(){
     // TODO write approximating option
-    fun map(segments: Segments): PaceChartData {
+    fun map(segments: List<Segment>): PaceChartData {
         val data = mutableListOf<List<Entry>>()
         var currentEntriesList = mutableListOf<Entry>()
         var maxPace = Float.MIN_VALUE

@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.core.presentation.view.pace_chart.SegmentsToPaceChartMapper
 import com.developers.sprintsync.core.presentation.view.pace_chart.model.PaceChartData
-import com.developers.sprintsync.domain.track.use_case.DeleteTrackByIdUseCase
-import com.developers.sprintsync.domain.track.use_case.GetTrackByIdUseCase
+import com.developers.sprintsync.domain.track.use_case.storage.DeleteTrackByIdUseCase
+import com.developers.sprintsync.domain.track.use_case.storage.GetTrackByIdUseCase
 import com.developers.sprintsync.presentation.components.TrackDisplayModel
 import com.developers.sprintsync.presentation.components.TrackDisplayModelCreator
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,7 +1,6 @@
 package com.developers.sprintsync.presentation.workout_session.active.util.segments
 
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.model.Segments
 import javax.inject.Inject
 
 class SegmentsTracker
@@ -9,7 +8,7 @@ class SegmentsTracker
     constructor() {
         private val processedSegments = mutableListOf<Segment>()
 
-        fun getNewSegmentsAndAdd(segments: Segments): Segments {
+        fun getNewSegmentsAndAdd(segments: List<Segment>): List<Segment> {
             val newSegments =
                 segments.filter { segment ->
                     !processedSegments.contains(segment)

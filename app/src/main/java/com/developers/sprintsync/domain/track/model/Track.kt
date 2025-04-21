@@ -8,7 +8,7 @@ data class Track(
     val avgPace: Float,
     val bestPace: Float,
     val calories: Float,
-    val segments: Segments,
+    val segments: List<Segment>,
 ) {
     companion object {
         val INITIAL =

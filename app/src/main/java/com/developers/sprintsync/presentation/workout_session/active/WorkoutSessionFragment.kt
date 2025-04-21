@@ -15,12 +15,12 @@ import com.developers.sprintsync.core.util.extension.getBitmapDescriptor
 import com.developers.sprintsync.core.util.extension.setMapStyle
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
 import com.developers.sprintsync.presentation.components.MapStyle
-import com.developers.sprintsync.tracking.service.controller.TrackingServiceController
 import com.developers.sprintsync.presentation.workout_session.active.util.map.MapCameraManager
 import com.developers.sprintsync.presentation.workout_session.active.util.map.MapSnapshotCreator
 import com.developers.sprintsync.presentation.workout_session.active.util.map.MapSnapshotPreparer
 import com.developers.sprintsync.presentation.workout_session.active.util.map.MarkerManager
 import com.developers.sprintsync.presentation.workout_session.active.util.metrics_formatter.UiMetrics
+import com.developers.sprintsync.presentation.workout_session.active.util.service.TrackingServiceController
 import com.developers.sprintsync.presentation.workout_session.active.util.state_handler.event.UIEvent
 import com.developers.sprintsync.presentation.workout_session.active.util.state_handler.map.MapUiState
 import com.developers.sprintsync.presentation.workout_session.active.util.state_handler.ui.UIState
@@ -43,7 +43,7 @@ class WorkoutSessionFragment : Fragment() {
     private val mapCamera = MapCameraManager()
     private val mapMarker: MarkerManager by lazy { MarkerManager(requireContext().getBitmapDescriptor(R.drawable.ic_user_location)) }
 
-    private val service by lazy { TrackingServiceController(requireContext()) }
+    private val serviceController by lazy { TrackingServiceController(requireContext()) }
 
     private var _trackingPanel: TrackingPanelController? = null
     private val trackingPanel get() = checkNotNull(_trackingPanel) { "Tracking panel isn't initialized" }
@@ -73,13 +73,23 @@ class WorkoutSessionFragment : Fragment() {
         setBackButtonListener()
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart")
+        serviceController.bind(requireActivity()) { connectionResult ->
+            viewModel.bindTo(connectionResult)
+        }
+        serviceController.launchLocationUpdates()
+        binding.mapView.onStart()
+    }
+
     private fun initializeTrackingPanel() {
         _trackingPanel =
             TrackingPanelController(
                 binding.btTrackingController,
-                onStart = { service.startService() },
-                onPause = { service.pauseService() },
-                onFinish = { service.finish() },
+                onStart = { serviceController.startService() },
+                onPause = { serviceController.pauseService() },
+                onFinish = { serviceController.finishService() },
             )
     }
 
@@ -132,8 +142,10 @@ class WorkoutSessionFragment : Fragment() {
                 }
 
                 is UIEvent.NavigateToSummary -> navigateToSessionSummary(event.trackId)
-                UIEvent.ErrorAndClose -> {
-                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show() // TODO handle error event
+                is UIEvent.ErrorAndClose -> {
+                    Toast
+                        .makeText(requireContext(), event.message, Toast.LENGTH_LONG)
+                        .show() // TODO handle error event
                     popBackStack()
                 }
             }
@@ -153,7 +165,7 @@ class WorkoutSessionFragment : Fragment() {
     }
 
     private fun observeTrackingDuration() =
-        collectFlow(viewModel.duration) { duration ->
+        collectFlow(viewModel.durationFlow) { duration ->
             updateDuration(duration)
         }
 
@@ -220,12 +232,6 @@ class WorkoutSessionFragment : Fragment() {
         private const val TAG = "My Stack: TrackingFragment"
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart")
-        binding.mapView.onStart()
-    }
-
     override fun onPause() {
         super.onPause()
         Log.d(TAG, "onPause")
@@ -241,6 +247,7 @@ class WorkoutSessionFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop")
+        serviceController.unbind(requireActivity())
         binding.mapView.onStop()
     }
 
