@@ -1,4 +1,4 @@
-package com.developers.sprintsync.domain.track_preview.cropper
+package com.developers.sprintsync.data.track_preview.cropper
 
 import android.content.Context
 import com.developers.sprintsync.R

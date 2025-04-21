@@ -1,4 +1,4 @@
-package com.developers.sprintsync.data.track_preview.data_source.util.name_generator
+package com.developers.sprintsync.data.track_preview.source.file.name_generator
 
 import javax.inject.Inject
 

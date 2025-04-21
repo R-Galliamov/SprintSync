@@ -1,4 +1,4 @@
-package com.developers.sprintsync.data.track_preview.database.dto
+package com.developers.sprintsync.data.track_preview.source.database.dto
 
 object TrackPreviewColumnKeys {
     const val PREVIEW_ID = "id"

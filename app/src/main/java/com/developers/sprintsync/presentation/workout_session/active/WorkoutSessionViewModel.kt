@@ -6,10 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
+import com.developers.sprintsync.data.track_preview.cropper.BitmapCropper
+import com.developers.sprintsync.data.track_preview.cropper.TrackPreviewDimensions
 import com.developers.sprintsync.domain.track.model.SessionData
 import com.developers.sprintsync.domain.track.model.TrackingData
 import com.developers.sprintsync.domain.track.model.toLatLng
-import com.developers.sprintsync.domain.track_preview.cropper.TrackPreviewCropper
 import com.developers.sprintsync.presentation.workout_session.active.util.service.ServiceConnectionResult
 import com.developers.sprintsync.presentation.workout_session.active.util.state_handler.event.TrackingUiEventHandler
 import com.developers.sprintsync.presentation.workout_session.active.util.state_handler.map.MapStateHandler
@@ -31,7 +32,8 @@ class WorkoutSessionViewModel // TODO add initial state for ui when loading
         private val uiStateHandler: TrackingUiStateHandler,
         private val mapStateHandler: MapStateHandler,
         private val snapshotStateHandler: SnapshotStateHandler,
-        private val snapshotCropper: TrackPreviewCropper,
+        private val snapshotCropper: BitmapCropper,
+        private val dimensions: TrackPreviewDimensions,
     ) : ViewModel() {
         val uiEventFlow = uiEventHandler.uiEventFlow
         val uiStateFlow = uiStateHandler.uiStateFlow
@@ -54,7 +56,7 @@ class WorkoutSessionViewModel // TODO add initial state for ui when loading
 
         fun onSnapshotReady(snapshot: Bitmap?) {
             if (snapshot != null) {
-                val croppedSnapshot = snapshotCropper.getCroppedBitmap(snapshot)
+                val croppedSnapshot = snapshotCropper.cropToTargetDimensions(snapshot, dimensions.width, dimensions.height)
                 snapshotStateHandler.emitSnapshot(croppedSnapshot)
             } else {
                 Log.e(TAG, "Snapshot is null")

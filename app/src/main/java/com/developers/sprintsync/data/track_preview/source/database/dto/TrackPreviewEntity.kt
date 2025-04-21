@@ -1,10 +1,10 @@
-package com.developers.sprintsync.data.track_preview.database.dto
+package com.developers.sprintsync.data.track_preview.source.database.dto
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.developers.sprintsync.data.track.database.dto.TrackEntity
-import com.developers.sprintsync.domain.track_preview.model.TrackPreviewPath
+import com.developers.sprintsync.data.track_preview.model.TrackPreview
 
 @Entity(
     foreignKeys = [
@@ -17,31 +17,28 @@ import com.developers.sprintsync.domain.track_preview.model.TrackPreviewPath
         ),
     ],
 )
-data class TrackPreviewPathEntity(
+data class TrackPreviewEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val trackId: Int,
-    val timestamp: Long,
     val filePath: String?,
 ) {
-    fun toDto(): TrackPreviewPath {
+    fun toDto(): TrackPreview {
         require(this.filePath != null) { "filePath must not be null" }
         val id = this.id
         val trackId = this.trackId
-        val timestamp = this.timestamp
         val filePath = this.filePath
-        return TrackPreviewPath(id, trackId, timestamp, filePath)
+        return TrackPreview(id = id, trackId = trackId, bitmapPath = filePath)
     }
 
     companion object {
-        fun fromDto(dto: TrackPreviewPath) =
-            TrackPreviewPathEntity(
+        fun fromDto(dto: TrackPreview) =
+            TrackPreviewEntity(
                 id = dto.id,
                 trackId = dto.trackId,
-                timestamp = dto.timestamp,
-                filePath = dto.filePath,
+                filePath = dto.bitmapPath,
             )
     }
 }
 
-fun List<TrackPreviewPathEntity>.toDto() = map(TrackPreviewPathEntity::toDto)
+fun List<TrackPreviewEntity>.toDto() = map(TrackPreviewEntity::toDto)

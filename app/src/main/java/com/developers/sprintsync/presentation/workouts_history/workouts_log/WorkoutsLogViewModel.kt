@@ -3,8 +3,8 @@ package com.developers.sprintsync.presentation.workouts_history.workouts_log
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.developers.sprintsync.domain.track_preview.model.TrackPreviewWrapper
-import com.developers.sprintsync.domain.track_preview.use_case.GetTrackPreviewWrapperUseCase
+import com.developers.sprintsync.data.track_preview.model.TrackWithPreview
+import com.developers.sprintsync.data.track_preview.repository.TrackPreviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class WorkoutsLogViewModel
     @Inject
     constructor(
-        private val getTrackPreviewWrapperUseCase: GetTrackPreviewWrapperUseCase,
+        private val repository: TrackPreviewRepository,
     ) : ViewModel() {
         private val _state = MutableStateFlow(UiState.LOADING)
         val state =
@@ -32,7 +32,7 @@ class WorkoutsLogViewModel
 
         private fun fetchTracks() {
             viewModelScope.launch {
-                Presenter.present(getTrackPreviewWrapperUseCase(), _state)
+                Presenter.present(repository.tracksWithPreviewsFlow, _state)
             }
         }
 
@@ -54,7 +54,7 @@ class WorkoutsLogViewModel
 
         private object Presenter {
             suspend fun present(
-                dataFlow: Flow<List<TrackPreviewWrapper>>,
+                dataFlow: Flow<List<TrackWithPreview>>,
                 uiStateFlow: MutableStateFlow<UiState>,
             ) {
                 uiStateFlow.update { UiState.LOADING }

@@ -6,7 +6,7 @@ import com.developers.sprintsync.core.util.track_formatter.DistanceUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DistanceUiPattern
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
-import com.developers.sprintsync.domain.track_preview.model.TrackPreviewWrapper
+import com.developers.sprintsync.data.track_preview.model.TrackWithPreview
 
 data class WorkoutLogItem(
     val id: Int,
@@ -17,13 +17,13 @@ data class WorkoutLogItem(
     val previewPath: String?,
 ) {
     companion object {
-        fun create(data: TrackPreviewWrapper) = Formatter.format(data)
+        fun create(data: TrackWithPreview) = Formatter.format(data)
 
-        fun create(data: List<TrackPreviewWrapper>) = Formatter.format(data)
+        fun create(data: List<TrackWithPreview>) = Formatter.format(data)
     }
 
     private object Formatter {
-        fun format(tws: TrackPreviewWrapper): WorkoutLogItem {
+        fun format(tws: TrackWithPreview): WorkoutLogItem {
             val track = tws.track
             val date = DateFormatter.formatDate(track.timestamp, DateFormatter.Pattern.DAY_MONTH_YEAR_WEEK_DAY)
             val distance = DistanceUiFormatter.format(track.distanceMeters, DistanceUiPattern.WITH_UNIT)
@@ -35,10 +35,10 @@ data class WorkoutLogItem(
                 distance = distance,
                 duration = duration,
                 calories = calories,
-                previewPath = tws.preview?.filePath,
+                previewPath = tws.preview?.bitmapPath,
             )
         }
 
-        fun format(list: List<TrackPreviewWrapper>): List<WorkoutLogItem> = list.map { format(it) }
+        fun format(list: List<TrackWithPreview>): List<WorkoutLogItem> = list.map { format(it) }
     }
 }
