@@ -74,27 +74,47 @@ class TrackingService : LifecycleService() {
     }
 
     private fun launchLocationUpdates() {
-        trackingController.startLocationUpdates()
+        try {
+            trackingController.startLocationUpdates()
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to launch location updates", e)
+        }
     }
 
     private fun startTracking() {
-        Log.i("My stack", "Service is started")
-        startForegroundNotification()
+        Log.i(TAG, "Service is started")
+        try {
+            startForegroundNotification()
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            trackingController.startTracking()
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    trackingController.startTracking()
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to start tracking in coroutine", e)
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to start foreground notification", e)
         }
     }
 
     private fun pauseTracking() {
-        Log.i("My stack", "Service is paused")
-        trackingController.pauseTracking()
+        Log.i(TAG, "Service is paused")
+        try {
+            trackingController.pauseTracking()
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to pause tracking", e)
+        }
     }
 
     private fun stopTracking() {
-        Log.i("My stack", "Service is stopped")
-        trackingController.stopTracking()
-        stopSelf()
+        Log.i(TAG, "Service is stopped")
+        try {
+            trackingController.stopTracking()
+            stopSelf()
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to stop tracking", e)
+        }
     }
 
     private fun startForegroundNotification() {
@@ -109,5 +129,9 @@ class TrackingService : LifecycleService() {
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
         return binder
+    }
+
+    private companion object {
+        const val TAG = "TrackingService"
     }
 }

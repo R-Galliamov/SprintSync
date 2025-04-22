@@ -3,8 +3,8 @@ package com.developers.sprintsync.data.track.service.provider
 import android.content.Context
 import android.os.Looper
 import android.util.Log
-import com.developers.sprintsync.core.permission.LocationPermissionManager
-import com.developers.sprintsync.core.util.error.NoPermissionsException
+import com.developers.sprintsync.core.util.permission.LocationPermissionManager
+import com.developers.sprintsync.core.util.permission.MissingLocationPermissionException
 import com.developers.sprintsync.domain.track.model.LocationModel
 import com.developers.sprintsync.domain.track.model.toDataModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -60,7 +60,7 @@ class LocationProviderImpl
 
         override fun start() {
             if (_isRunning) return
-            if (LocationPermissionManager.hasPermission(context).not()) throw NoPermissionsException
+            if (LocationPermissionManager.hasPermission(context).not()) throw MissingLocationPermissionException
 
             locationCallback =
                 object : LocationCallback() {

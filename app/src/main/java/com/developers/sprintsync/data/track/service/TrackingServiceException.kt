@@ -10,9 +10,4 @@ sealed class TrackingServiceException(
     data class ServiceDisconnected(
         override val message: String = "Tracking service disconnected unexpectedly",
     ) : TrackingServiceException(message)
-
-    data class LocationUpdatesFailed( // TODO check for location updates in service
-        override val message: String = "Failed to retrieve location updates",
-    ) : TrackingServiceException(message)
-
 }
