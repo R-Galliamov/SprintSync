@@ -53,6 +53,5 @@ class TrackingErrorMessageProvider
             when (e) {
                 is TrackingServiceException.BindingFailed -> context.getString(R.string.err_svc_binding)
                 is TrackingServiceException.ServiceDisconnected -> context.getString(R.string.err_svc_disconnected)
-                is TrackingServiceException.LocationUpdatesFailed -> context.getString(R.string.err_svc_location)
             }
     }

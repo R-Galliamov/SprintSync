@@ -1,4 +1,4 @@
-package com.developers.sprintsync.core.permission
+package com.developers.sprintsync.core.util.permission
 
 import android.content.Context
 import android.content.pm.PackageManager
