@@ -39,8 +39,8 @@ class LoadingOverlay(
         animation?.stop()
     }
 
-    fun setLoadingMessage(message: String) {
-        messageTextView.text = message
+    fun setLoadingMessage(message: String? = null) {
+        messageTextView.text = message.orEmpty()
     }
 
     fun bindToLifecycle(lifecycle: Lifecycle) {

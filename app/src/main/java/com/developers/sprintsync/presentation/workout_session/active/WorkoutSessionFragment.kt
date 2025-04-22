@@ -63,7 +63,8 @@ class WorkoutSessionFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
-        setCompletingLoadingOverlay()
+        bindGeneralLoadingOverlay()
+        showInitialLoading()
         setMapLoadingOverlay()
         binding.mapView.onCreate(savedInstanceState)
         initializeTrackingPanel()
@@ -108,6 +109,7 @@ class WorkoutSessionFragment : Fragment() {
             updatePauseCardVisibility(state)
             when (state) {
                 UIState.Initialized -> {
+                    binding.generalLoadingOverlay.hide()
                     trackingPanel.updateState(TrackingPanelState.Initialized)
                 }
 
@@ -120,7 +122,7 @@ class WorkoutSessionFragment : Fragment() {
                 }
 
                 UIState.Completing -> {
-                    binding.completingLoadingOverlay.show()
+                    showCompletingLoading()
                 }
             }
         }
@@ -209,11 +211,21 @@ class WorkoutSessionFragment : Fragment() {
             }
     }
 
-    private fun setCompletingLoadingOverlay() =
-        binding.completingLoadingOverlay.apply {
-            bindToLifecycle(lifecycle)
-            setLoadingMessage(context.getString(R.string.completing_track_message))
+    private fun bindGeneralLoadingOverlay() = binding.generalLoadingOverlay.bindToLifecycle(lifecycle)
+
+    private fun showInitialLoading() {
+        binding.generalLoadingOverlay.apply {
+            setLoadingMessage()
+            show()
         }
+    }
+
+    private fun showCompletingLoading() {
+        binding.generalLoadingOverlay.apply {
+            setLoadingMessage(context.getString(R.string.completing_track_message))
+            show()
+        }
+    }
 
     private fun setMapLoadingOverlay() =
         binding.mapLoadingOverlay.apply {

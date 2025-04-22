@@ -25,15 +25,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WorkoutSessionViewModel // TODO add initial state for ui when loading
+class WorkoutSessionViewModel
     @Inject
     constructor(
         private val uiEventHandler: TrackingUiEventHandler,
         private val uiStateHandler: TrackingUiStateHandler,
         private val mapStateHandler: MapStateHandler,
         private val snapshotStateHandler: SnapshotStateHandler,
-        private val snapshotCropper: BitmapCropper,
-        private val dimensions: TrackPreviewDimensions,
+        private val trackPreviewDimensions: TrackPreviewDimensions,
     ) : ViewModel() {
         val uiEventFlow = uiEventHandler.uiEventFlow
         val uiStateFlow = uiStateHandler.uiStateFlow
@@ -56,7 +55,12 @@ class WorkoutSessionViewModel // TODO add initial state for ui when loading
 
         fun onSnapshotReady(snapshot: Bitmap?) {
             if (snapshot != null) {
-                val croppedSnapshot = snapshotCropper.cropToTargetDimensions(snapshot, dimensions.width, dimensions.height)
+                val croppedSnapshot =
+                    BitmapCropper.cropToTargetDimensions(
+                        snapshot,
+                        trackPreviewDimensions.width,
+                        trackPreviewDimensions.height,
+                    )
                 snapshotStateHandler.emitSnapshot(croppedSnapshot)
             } else {
                 Log.e(TAG, "Snapshot is null")
