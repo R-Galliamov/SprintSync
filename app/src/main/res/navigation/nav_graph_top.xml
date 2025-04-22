@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/locationRequestFragment"
-        android:name="com.developers.sprintsync.core.permission.LocationRequestFragment"
+        android:name="com.developers.sprintsync.core.util.permission.LocationRequestFragment"
         android:label="fragment_location_request"
         tools:layout="@layout/fragment_location_request">
         <action

@@ -9,7 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentTabsBinding
-import com.developers.sprintsync.core.permission.LocationPermissionManager
+import com.developers.sprintsync.core.util.permission.LocationPermissionManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
