@@ -1,4 +1,4 @@
-package com.developers.sprintsync.core.util.logger
+package com.developers.sprintsync.core.util.log.logger
 
 import android.util.Log
 import com.developers.sprintsync.domain.track.model.Segment

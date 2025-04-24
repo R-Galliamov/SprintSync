@@ -1,6 +1,6 @@
 package com.developers.sprintsync.presentation.workout_session.active.util.state_handler.ui
 
-sealed class UIState {
+sealed class UIState { // TODO move to UiStateHandler
 
     data object Initialized : UIState()
 
