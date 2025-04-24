@@ -64,13 +64,16 @@ class WorkoutSessionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
         bindGeneralLoadingOverlay()
-        showInitialLoading()
         setMapLoadingOverlay()
+
         binding.mapView.onCreate(savedInstanceState)
         initializeTrackingPanel()
         initializeMap()
+
         observeUIStaticState()
         observeTrackingDuration()
+        observeTrackingMetrics()
+
         setBackButtonListener()
     }
 
@@ -108,8 +111,12 @@ class WorkoutSessionFragment : Fragment() {
         collectFlow(viewModel.uiStateFlow) { state ->
             updatePauseCardVisibility(state)
             when (state) {
+                UIState.Loading -> {
+                    showInitialLoading()
+                }
+
                 UIState.Initialized -> {
-                    binding.generalLoadingOverlay.hide()
+                    hideInitialLoading()
                     trackingPanel.updateState(TrackingPanelState.Initialized)
                 }
 
@@ -131,11 +138,6 @@ class WorkoutSessionFragment : Fragment() {
     private fun observeUIEvents() {
         collectFlow(viewModel.uiEventFlow) { event ->
             when (event) {
-                is UIEvent.UpdateTrackingUi -> {
-                    updateTrackMetrics(event.metrics)
-                    event.polylines.forEach { map.addPolyline(it) }
-                }
-
                 is UIEvent.RequestSnapshot -> {
                     prepareMapForSnapshot(event.bounds)
                     MapSnapshotCreator.createSnapshot(map) { bitmap ->
@@ -154,33 +156,30 @@ class WorkoutSessionFragment : Fragment() {
         }
     }
 
-    private fun prepareMapForSnapshot(bounds: LatLngBounds) {
-        // val padding = MapCalculations.calculateTrackPadding(binding.mapView.width, binding.mapView.height)
-        MapSnapshotPreparer.prepareMap(
-            context = requireContext(),
-            map = map,
-            bounds = bounds,
-            padding = 100, // TODO test different paddings
-            marker = mapMarker.marker,
-            mapStyle = MapStyle.UNLABELED,
-        )
-    }
-
-    private fun observeTrackingDuration() =
+    private fun observeTrackingDuration() {
         collectFlow(viewModel.durationFlow) { duration ->
             updateDuration(duration)
         }
+    }
+
+
+    private fun observeTrackingMetrics() {
+        collectFlow(viewModel.metricsFlow) { metrics ->
+            updateTrackingMetrics(metrics)
+        }
+    }
 
     private fun observeMapState() {
         val loadingView = binding.mapLoadingOverlay
         collectFlow(viewModel.mapStateFlow) { state ->
             when (state) {
                 MapUiState.Loading -> loadingView.show()
-                is MapUiState.Active -> {
+                is MapUiState.LocationUpdated -> {
                     if (binding.mapLoadingOverlay.isVisible) loadingView.hide()
                     mapMarker.setMarker(map, state.location)
                     mapCamera.moveCamera(state.location)
                 }
+                is MapUiState.PolylinesUpdated -> state.polylines.forEach { map.addPolyline(it) }
             }
         }
     }
@@ -189,10 +188,10 @@ class WorkoutSessionFragment : Fragment() {
         binding.tvDuration.text = duration
     }
 
-    private fun updateTrackMetrics(track: UiMetrics) {
+    private fun updateTrackingMetrics(track: UiMetrics) {
         binding.apply {
             tvDistanceValue.text = track.distance
-            tvCaloriesValue.text = track.caloriesBurned
+            tvCaloriesValue.text = track.calories
             tvPaceValue.text = track.pace
         }
     }
@@ -220,6 +219,10 @@ class WorkoutSessionFragment : Fragment() {
         }
     }
 
+    private fun hideInitialLoading() {
+        binding.generalLoadingOverlay.hide()
+    }
+
     private fun showCompletingLoading() {
         binding.generalLoadingOverlay.apply {
             setLoadingMessage(context.getString(R.string.completing_track_message))
@@ -232,6 +235,18 @@ class WorkoutSessionFragment : Fragment() {
             bindToLifecycle(lifecycle)
             setLoadingMessage(getString(R.string.tracking_map_loading_message))
         }
+
+    private fun prepareMapForSnapshot(bounds: LatLngBounds) {
+        // val padding = MapCalculations.calculateTrackPadding(binding.mapView.width, binding.mapView.height)
+        MapSnapshotPreparer.prepareMap(
+            context = requireContext(),
+            map = map,
+            bounds = bounds,
+            padding = 100, // TODO test different paddings
+            marker = mapMarker.marker,
+            mapStyle = MapStyle.UNLABELED,
+        )
+    }
 
     private fun navigateToSessionSummary(trackId: Int) {
         val action = WorkoutSessionFragmentDirections.actionTrackingFragmentToSessionSummaryFragment(trackId)

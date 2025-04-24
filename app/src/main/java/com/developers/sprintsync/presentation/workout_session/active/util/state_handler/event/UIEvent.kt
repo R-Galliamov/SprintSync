@@ -1,14 +1,8 @@
 package com.developers.sprintsync.presentation.workout_session.active.util.state_handler.event
 
-import com.developers.sprintsync.presentation.workout_session.active.util.metrics_formatter.UiMetrics
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.PolylineOptions
 
 sealed class UIEvent { // TODO move to handler
-    data class UpdateTrackingUi( // TODO this must be a part of state
-        val metrics: UiMetrics,
-        val polylines: List<PolylineOptions>,
-    ) : UIEvent()
 
     data class RequestSnapshot(
         val bounds: LatLngBounds,

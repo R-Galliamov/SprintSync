@@ -16,9 +16,12 @@ import com.developers.sprintsync.data.track.service.notification.TrackingNotific
 import com.developers.sprintsync.data.track.service.processing.session.SessionManager
 import com.developers.sprintsync.data.track.service.processing.session.TrackingController
 import com.developers.sprintsync.data.track.service.processing.session.TrackingDataManager
+import com.developers.sprintsync.domain.track.model.SessionData
+import com.developers.sprintsync.domain.track.model.TrackingData
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,14 +34,14 @@ object ServiceCommand {
 
 @ServiceScoped
 class TrackingServiceDataHolder
-    @Inject
-    constructor(
-        trackingDataManager: TrackingDataManager,
-        sessionManager: SessionManager,
-    ) {
-        val trackingDataFlow = trackingDataManager.trackingDataFlow
-        val sessionDataFlow = sessionManager.sessionDataFlow
-    }
+@Inject
+constructor(
+    trackingDataManager: TrackingDataManager,
+    sessionManager: SessionManager,
+) {
+    val trackingDataFlow: Flow<TrackingData> = trackingDataManager.trackingDataFlow
+    val sessionDataFlow: Flow<SessionData> = sessionManager.sessionDataFlow
+}
 
 @AndroidEntryPoint
 class TrackingService : LifecycleService() {
