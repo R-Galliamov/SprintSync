@@ -2,7 +2,7 @@ package com.developers.sprintsync.core.util.extension
 
 import android.content.Context
 import android.util.Log
-import com.developers.sprintsync.presentation.components.MapStyle
+import com.developers.sprintsync.data.map.GoogleMapStyle
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
@@ -39,7 +39,7 @@ fun GoogleMap.updateCameraPosition(
 
 fun GoogleMap.setMapStyle(
     context: Context,
-    mapStyle: MapStyle,
+    mapStyle: GoogleMapStyle,
     tag: String = "Google Map"
 ) {
     try {

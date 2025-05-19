@@ -1,9 +1,9 @@
-package com.developers.sprintsync.presentation.components
+package com.developers.sprintsync.data.map
 
 import androidx.annotation.RawRes
 import com.developers.sprintsync.R
 
-enum class MapStyle(
+enum class GoogleMapStyle(
     @RawRes val styleResId: Int,
 ) {
     UNLABELED(R.raw.map_style_unlabeled),

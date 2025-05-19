@@ -10,10 +10,10 @@ import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
 import com.developers.sprintsync.core.util.extension.findTopNavController
 import com.developers.sprintsync.core.util.extension.setMapStyle
+import com.developers.sprintsync.data.map.GoogleMapStyle
 import com.developers.sprintsync.databinding.FragmentMapBinding
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Track
-import com.developers.sprintsync.presentation.components.MapStyle
 import com.google.android.gms.maps.GoogleMap
 
 class MapFragment : Fragment() {
@@ -43,7 +43,7 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         updateProgressBarVisibility(true)
         initMap(savedInstanceState) {
-            map.setMapStyle(requireContext(), MapStyle.DETAILED)
+            map.setMapStyle(requireContext(), GoogleMapStyle.DETAILED)
             setDataObserver()
         }
         setBackButton()

@@ -13,8 +13,9 @@ import com.developers.sprintsync.core.util.extension.collectFlow
 import com.developers.sprintsync.core.util.extension.findTopNavController
 import com.developers.sprintsync.core.util.extension.getBitmapDescriptor
 import com.developers.sprintsync.core.util.extension.setMapStyle
+import com.developers.sprintsync.data.map.GoogleMapStyle
+import com.developers.sprintsync.data.map.TrackPreviewStyle
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
-import com.developers.sprintsync.presentation.components.MapStyle
 import com.developers.sprintsync.presentation.workout_session.active.util.map.MapCameraManager
 import com.developers.sprintsync.presentation.workout_session.active.util.map.MapSnapshotCreator
 import com.developers.sprintsync.presentation.workout_session.active.util.map.MapSnapshotPreparer
@@ -62,13 +63,18 @@ class WorkoutSessionFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+
         Log.d(TAG, "onViewCreated")
         bindGeneralLoadingOverlay()
         setMapLoadingOverlay()
 
-        binding.mapView.onCreate(savedInstanceState)
         initializeTrackingPanel()
-        initializeMap()
+
+        binding.mapView.onCreate(savedInstanceState)
+        initializeMap {
+            observeUIEvents()
+            observeMapState()
+        }
 
         observeUIStaticState()
         observeTrackingDuration()
@@ -97,13 +103,15 @@ class WorkoutSessionFragment : Fragment() {
             )
     }
 
-    private fun initializeMap() {
+    private fun initializeMap(
+        onMapReady: () -> Unit
+    ) {
         binding.mapView.getMapAsync { map ->
             mapCamera.attachMap(map)
-            map.setMapStyle(requireContext(), MapStyle.MINIMAL, TAG)
+            map.setMapStyle(requireContext(), GoogleMapStyle.MINIMAL, TAG)
             _map = map
-            observeUIEvents()
-            observeMapState()
+            Log.d(TAG, _map.toString())
+            onMapReady()
         }
     }
 
@@ -139,7 +147,7 @@ class WorkoutSessionFragment : Fragment() {
         collectFlow(viewModel.uiEventFlow) { event ->
             when (event) {
                 is UIEvent.RequestSnapshot -> {
-                    prepareMapForSnapshot(event.bounds)
+                    prepareMapForSnapshot(event.bounds, event.style)
                     MapSnapshotCreator.createSnapshot(map) { bitmap ->
                         viewModel.onSnapshotReady(bitmap)
                     }
@@ -179,6 +187,7 @@ class WorkoutSessionFragment : Fragment() {
                     mapMarker.setMarker(map, state.location)
                     mapCamera.moveCamera(state.location)
                 }
+
                 is MapUiState.PolylinesUpdated -> state.polylines.forEach { map.addPolyline(it) }
             }
         }
@@ -236,15 +245,15 @@ class WorkoutSessionFragment : Fragment() {
             setLoadingMessage(getString(R.string.tracking_map_loading_message))
         }
 
-    private fun prepareMapForSnapshot(bounds: LatLngBounds) {
+    private fun prepareMapForSnapshot(bounds: LatLngBounds, style: TrackPreviewStyle) {
         // val padding = MapCalculations.calculateTrackPadding(binding.mapView.width, binding.mapView.height)
         MapSnapshotPreparer.prepareMap(
             context = requireContext(),
             map = map,
             bounds = bounds,
-            padding = 100, // TODO test different paddings
+            padding = style.padding,
             marker = mapMarker.marker,
-            mapStyle = MapStyle.UNLABELED,
+            mapStyle = style.mapStyle,
         )
     }
 

@@ -38,6 +38,7 @@ android {
             properties.load(file.newDataInputStream())
         }
         manifestPlaceholders.mapsApiKey = properties.getProperty("MAPS_API_KEY", "")
+
     }
 
     buildTypes {
