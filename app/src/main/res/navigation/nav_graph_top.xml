@@ -41,7 +41,7 @@
         android:id="@+id/trackingFragment"
         android:name="com.developers.sprintsync.presentation.workout_session.active.WorkoutSessionFragment"
         android:label="fragment_tracking"
-        tools:layout="@layout/fragment_tracking">
+        tools:layout="@layout/fragment_workout_session">
         <action
             android:id="@+id/action_tracking_to_locationRequestFragment"
             app:destination="@id/locationRequestFragment" />

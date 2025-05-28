@@ -41,6 +41,9 @@ constructor(
     // Starts location updates
     fun launchLocationUpdates() = locationProvider.start()
 
+    // Stops location updates
+    fun stopLocationUpdates() = locationProvider.stop()
+
     // Begins tracking session data
     fun start(onNewTimedLocation: (timedLocation: TimedLocation) -> Unit) {
         if (isRunning) {
@@ -87,20 +90,21 @@ constructor(
     }
 
     // Starts a coroutine job to collect and process location and duration data
-    private fun startTimedLocationCollectionJob(onNewTimedLocation: (timedLocation: TimedLocation) -> Unit): Job = scope.launch {
-        try {
-            locationProvider.locationFlow
-                .withLatestConcat(durationProvider.durationMillisFlow) { location, duration ->
-                    TimedLocation(location, duration)
-                }.collect { timedLocation ->
-                    if (isRunning) {
-                        log.i("New timed location: $timedLocation")
-                        onNewTimedLocation(timedLocation)
+    private fun startTimedLocationCollectionJob(onNewTimedLocation: (timedLocation: TimedLocation) -> Unit): Job =
+        scope.launch {
+            try {
+                locationProvider.locationFlow
+                    .withLatestConcat(durationProvider.durationMillisFlow) { location, duration ->
+                        TimedLocation(location, duration)
+                    }.collect { timedLocation ->
+                        if (isRunning) {
+                            log.i("New timed location: $timedLocation")
+                            onNewTimedLocation(timedLocation)
+                        }
                     }
-                }
-        } catch (e: Exception) {
-            log.e("Error in TimedLocationProvider: ${e.message}", e)
-            throw e
+            } catch (e: Exception) {
+                log.e("Error in TimedLocationProvider: ${e.message}", e)
+                throw e
+            }
         }
-    }
 }

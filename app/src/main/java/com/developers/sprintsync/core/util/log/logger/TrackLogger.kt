@@ -1,9 +1,10 @@
 package com.developers.sprintsync.core.util.log.logger
 
-import android.util.Log
+import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.domain.track.model.Track
+import javax.inject.Inject
 
-object TrackLogger {
+class TrackLogger @Inject constructor(private val log: AppLogger) {
     fun log(track: Track) {
 
         val trackDetails =
@@ -17,10 +18,8 @@ object TrackLogger {
                 append("Calories: ${track.calories}")
             }
 
-        Log.d(TAG, "Track - $trackDetails")
+        log.d("Track - $trackDetails")
 
         SegmentLogger.log(track.segments)
     }
-
-    private const val TAG = "My stack: TrackLogger"
 }

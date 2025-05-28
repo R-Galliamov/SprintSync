@@ -96,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space.big"
-        android:text="time"
+        tools:text="00:00:00"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -118,7 +118,7 @@
         android:layout_marginBottom="@dimen/space.big"
         android:baselineAligned="true"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/btTrackingController"
+        app:layout_constraintBottom_toTopOf="@id/tracking_controller"
         app:layout_constraintEnd_toEndOf="@id/ivCardBottom"
         app:layout_constraintStart_toStartOf="@id/ivCardBottom">
 
@@ -195,15 +195,14 @@
 
     </LinearLayout>
 
-    <include
-        android:id="@+id/btTrackingController"
-        layout="@layout/view_tracking_controller"
+    <com.developers.sprintsync.presentation.workout_session.active.util.view.TrackingController
+        android:id="@+id/tracking_controller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space.big"
         android:layout_marginEnd="@dimen/space.big"
         android:layout_marginBottom="@dimen/space.regular"
-        app:layout_constraintBottom_toBottomOf="@id/ivCardBottom" />
+        app:layout_constraintBottom_toBottomOf="@id/ivCardBottom"/>
 
     <FrameLayout
         android:id="@+id/btLock"
@@ -213,7 +212,7 @@
         android:layout_marginBottom="@dimen/space.regular"
         android:background="@drawable/bt_circle_outlined_black"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@id/btTrackingController"
+        app:layout_constraintBottom_toBottomOf="@id/tracking_controller"
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView

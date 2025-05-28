@@ -97,7 +97,6 @@ constructor(
             sessionDataFlow.collect { data ->
                 data.userLocation?.toLatLng()?.let { latLng ->
                     mapStateHandler.emitLocation(latLng)
-                    log.d("Emitted location: $latLng")
                 }
                 data.durationMillis.let { uiStateHandler.handleDuration(it) }
             }

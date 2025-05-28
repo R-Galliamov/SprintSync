@@ -13,9 +13,6 @@ import javax.inject.Inject
 
 /**
  * Application class for initializing app-wide components
- * TODO cover goal-feature with logs and comments
- * TODO add error handler for ui
- * TODO if Service not started - stop location update
  */
 @HiltAndroidApp
 class App : Application() {

@@ -58,9 +58,9 @@ fun Fragment.showError(log: AppLogger, message: String? = null ) {
  * @param log The [AppLogger] for logging the error.
  * @param message Optional error message; defaults to a generic unexpected error string.
  */
-fun Fragment.showErrorAndBack(log: AppLogger, message: String? = null) {
+fun Fragment.showErrorAndBack(log: AppLogger, message: String? = null, ) {
     if (this.isAdded && this.view != null) {
-        showError(log)
+        showError(log, message)
         navigateBack(log)
     }
 }
@@ -69,7 +69,7 @@ fun Fragment.showErrorAndBack(log: AppLogger, message: String? = null) {
 fun Fragment.navigateBack(log: AppLogger) {
     try {
         if (this.isAdded) {
-            this.findNavController().navigateUp()
+            this.findNavController().popBackStack()
             log.i("Navigated back")
         }
     } catch (e: Exception) {

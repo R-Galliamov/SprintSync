@@ -18,6 +18,9 @@ constructor(
     // Initiates location updates
     fun startLocationUpdates() = sessionManager.launchLocationUpdates()
 
+    // Stops location updates
+    fun stopLocationUpdates() = sessionManager.stopLocationUpdates()
+
     // Starts tracking session and initialize data processing
     fun startTracking() {
         trackingDataManager.updateTrackingStatus(TrackingStatus.ACTIVE)

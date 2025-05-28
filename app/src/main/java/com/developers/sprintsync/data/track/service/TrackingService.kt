@@ -11,6 +11,7 @@ import com.developers.sprintsync.data.track.service.ServiceCommand.FINISH_SERVIC
 import com.developers.sprintsync.data.track.service.ServiceCommand.LAUNCH_LOCATION_UPDATES
 import com.developers.sprintsync.data.track.service.ServiceCommand.PAUSE_SERVICE
 import com.developers.sprintsync.data.track.service.ServiceCommand.START_SERVICE
+import com.developers.sprintsync.data.track.service.ServiceCommand.STOP_LOCATION_UPDATES
 import com.developers.sprintsync.data.track.service.notification.TrackingNotificationConfig
 import com.developers.sprintsync.data.track.service.notification.TrackingNotificationManager
 import com.developers.sprintsync.data.track.service.processing.session.SessionManager
@@ -30,6 +31,7 @@ import javax.inject.Inject
  */
 object ServiceCommand {
     const val LAUNCH_LOCATION_UPDATES = "LAUNCH_LOCATION_UPDATES"
+    const val STOP_LOCATION_UPDATES = "STOP_LOCATION_UPDATES"
     const val START_SERVICE = "START_SERVICE"
     const val PAUSE_SERVICE = "PAUSE_SERVICE"
     const val FINISH_SERVICE = "FINISH_SERVICE"
@@ -44,9 +46,14 @@ class TrackingServiceDataHolder
 constructor(
     trackingDataManager: TrackingDataManager,
     sessionManager: SessionManager,
+    log: AppLogger
 ) {
     val trackingDataFlow: Flow<TrackingData> = trackingDataManager.trackingDataFlow
     val sessionDataFlow: Flow<SessionData> = sessionManager.sessionDataFlow
+
+    init {
+        log.i("Service Data Holder init")
+    }
 }
 
 /**
@@ -90,6 +97,7 @@ class TrackingService : LifecycleService() {
     ): Int {
         when (intent?.action) {
             LAUNCH_LOCATION_UPDATES -> launchLocationUpdates()
+            STOP_LOCATION_UPDATES -> stopLocationUpdates()
             START_SERVICE -> startTracking()
             PAUSE_SERVICE -> pauseTracking()
             FINISH_SERVICE -> stopTracking()
@@ -104,6 +112,16 @@ class TrackingService : LifecycleService() {
             log.i("Location updates launched")
         } catch (e: Exception) {
             log.e("Failed to launch location updates: ${e.message}", e)
+        }
+    }
+
+    // Stops location updates
+    private fun stopLocationUpdates() {
+        try {
+            trackingController.stopLocationUpdates()
+            log.i("Location updates stopped")
+        } catch (e: Exception) {
+            log.e("Failed to stopped location updates: ${e.message}", e)
         }
     }
 
