@@ -6,22 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.developers.sprintsync.R
-import com.developers.sprintsync.databinding.FragmentStatisticsBinding
 import com.developers.sprintsync.core.util.extension.findTopNavController
-import com.developers.sprintsync.presentation.workouts_statistics.data.GeneralStatistics
-import com.developers.sprintsync.presentation.workouts_statistics.data.WeeklyStatistics
+import com.developers.sprintsync.core.util.extension.observe
+import com.developers.sprintsync.core.util.extension.showErrorAndBack
+import com.developers.sprintsync.core.util.extension.showToast
+import com.developers.sprintsync.core.util.log.AppLogger
+import com.developers.sprintsync.databinding.FragmentStatisticsBinding
 import com.developers.sprintsync.presentation.workouts_statistics.chart.manager.ChartManager
 import com.developers.sprintsync.presentation.workouts_statistics.chart.manager.DefaultChartManager
 import com.developers.sprintsync.presentation.workouts_statistics.chart.navigator.ChartNavigator
-import com.developers.sprintsync.presentation.workouts_statistics.util.scroller.ChartTabsScrollerManager
-import com.developers.sprintsync.presentation.workouts_statistics.util.scroller.RangeNavigatingManager
+import com.developers.sprintsync.presentation.workouts_statistics.data.GeneralStatistics
+import com.developers.sprintsync.presentation.workouts_statistics.data.WeeklyStatistics
+import com.developers.sprintsync.presentation.workouts_statistics.util.scroller.ChartTabsScroller
+import com.developers.sprintsync.presentation.workouts_statistics.util.scroller.RangeNavigator
 import com.github.mikephil.charting.charts.CombinedChart
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+/**
+ * Fragment for displaying workout statistics and charts
+ */
 class WorkoutsStatisticsFragment : Fragment() {
     private var _binding: FragmentStatisticsBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
@@ -31,8 +35,11 @@ class WorkoutsStatisticsFragment : Fragment() {
     private var _chartManager: ChartManager? = null
     private val chartManager get() = checkNotNull(_chartManager) { "ChartManager is not initialized" }
 
-    private val tabsScroller = ChartTabsScrollerManager()
-    private val rangeNavigator = RangeNavigatingManager()
+    private val tabsScroller = ChartTabsScroller()
+    private val rangeNavigator = RangeNavigator()
+
+    @Inject
+    lateinit var log: AppLogger
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,137 +55,132 @@ class WorkoutsStatisticsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        tabsScroller.setScroller(binding.chartTabsScroller) { metric ->
+        try {
+            setupTabsScroller()
+            setupChartManager(binding.progressChart)
+            setupRangeNavigator()
+            setupStateObservers()
+            setupNavigationButtons()
+            chartManager.presetChart(viewModel.chartConfig.value)
+            setupNavigationButtons()
+            log.d("WorkoutsStatisticsFragment view created")
+        } catch (e: Exception) {
+            log.e("Error setting up WorkoutsStatisticsFragment", e)
+            showErrorAndBack(log)
+        }
+
+    }
+
+    // Sets up the tabs scroller for metric selection
+    private fun setupTabsScroller() {
+        tabsScroller.setup(binding.viewChartTabs) { metric ->
             viewModel.selectMetric(metric)
+            log.i("Selected metric: $metric")
         }
-        initSelectedMetricListener()
-        initChartManager(binding.progressChart)
-        initDataRangeListener()
-        initWeeklyStatisticsListener()
-        initGeneralStatisticsListener()
-        setRangeNavigatingButtons()
-        chartManager.presetChartConfiguration(viewModel.chartConfiguration.value)
-        initChartDataUpdateEvent()
-        initDisplayDataListener()
-        initDailyGoalsUpdateTimestampListener()
-        setUpdateGoalsButtonListener()
-    }
-
-    private fun initSelectedMetricListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedMetric.collect { metric ->
-                    tabsScroller.selectMetricTab(metric)
-                }
-            }
+        observe(viewModel.selectedMetric) { metric ->
+            tabsScroller.selectMetricTab(metric)
+            log.d("Metric tab updated: $metric")
         }
     }
 
-    private fun initChartManager(chart: CombinedChart) {
+    // Initializes the chart manager
+    private fun setupChartManager(chart: CombinedChart) {
         _chartManager = DefaultChartManager(chart)
+        log.d("ChartManager initialized")
     }
 
-    private fun initDataRangeListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.dateRange.collect { dateRange ->
-                    binding.progressChartNavigator.apply {
-                        tvDayMonthRange.text = dateRange.dayMonthRange
-                        tvYearRange.text = dateRange.yearsRange
-                    }
-                    rangeNavigator.updateNavigatingButtonsUI(binding.progressChartNavigator, dateRange.position)
-                }
+    // Sets up range navigator and date range observer
+    private fun setupRangeNavigator() {
+        binding.viewChartNavigator.apply {
+            btnPreviousRange.setOnClickListener {
+                chartManager.navigateRange(ChartNavigator.NavigationDirection.PREVIOUS)
+                log.i("Navigated to previous range")
+            }
+            btnNextRange.setOnClickListener {
+                chartManager.navigateRange(ChartNavigator.NavigationDirection.NEXT)
+                log.i("Navigated to next range")
             }
         }
-    }
 
-    private fun initChartDataUpdateEvent() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.chartDataUpdateEvent.collect { event ->
-                    chartManager.displayData(
-                        event.metric,
-                        event.dailyValues,
-                        event.referenceTimestamp,
-                    )
-                }
+        observe(viewModel.dateRange) { dateRange ->
+            binding.viewChartNavigator.apply {
+                tvDayMonthRange.text = dateRange.dayMonthRange
+                tvYearRange.text = dateRange.yearsRange
             }
+            rangeNavigator.updateNavigatingButtonsUI(binding.viewChartNavigator, dateRange.position)
+            log.d("Date range updated: ${dateRange.dayMonthRange}")
         }
     }
 
-    private fun initWeeklyStatisticsListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.weeklyStatistics.collect { weeklyStatistics ->
-                    if (weeklyStatistics == WeeklyStatistics.EMPTY) return@collect
-                    binding.weeklyStatisticsTable.apply {
-                        tvWorkoutsValue.text = weeklyStatistics.workouts
-                        tvWorkoutDaysValue.text = weeklyStatistics.workoutDays
-                        tvTotalDistanceValue.text = weeklyStatistics.totalDistance
-                        tvTotalDurationValue.text = weeklyStatistics.totalDuration
-                        tvBestDistanceValue.text = weeklyStatistics.bestDistance
-                        tvBestDurationValue.text = weeklyStatistics.bestDuration
-                        tvAvgPaceValue.text = weeklyStatistics.avgPace
-                        tvBestPaceValue.text = weeklyStatistics.bestPace
-                        tvTotalBurnedKcalValue.text = weeklyStatistics.totalCalories
-                    }
-                }
+    // Sets up state observers for statistics, chart data, and goals
+    private fun setupStateObservers() {
+        // Chart data updates
+        observe(viewModel.chartDataUpdate) { event ->
+            chartManager.displayData(
+                event.metric,
+                event.dailyValues,
+                event.referenceTimestamp,
+            )
+            log.i("Chart data updated: metric=${event.metric}")
+        }
+
+        // Weekly statistics
+        observe(viewModel.weeklyStatistics) { stats ->
+            if (stats == WeeklyStatistics.EMPTY) return@observe
+            binding.weeklyStatisticsTable.apply {
+                tvWorkoutsValue.text = stats.workouts
+                tvWorkoutDaysValue.text = stats.workoutDays
+                tvDistanceTotalValue.text = stats.totalDistance
+                tvDurationTotalValue.text = stats.totalDuration
+                tvBestDistanceValue.text = stats.bestDistance
+                tvBestDurationValue.text = stats.bestDuration
+                tvAvgPaceValue.text = stats.avgPace
+                tvBestPaceValue.text = stats.bestPace
+                tvCaloriesTotalValue.text = stats.totalCalories
             }
+            log.d("Weekly statistics updated")
         }
-    }
 
-    private fun initGeneralStatisticsListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.generalStatistics.collect { generalStatistics ->
-                    if (generalStatistics == GeneralStatistics.EMPTY) return@collect
-                    binding.generalStatisticsTable.apply {
-                        tvTotalWorkoutsValue.text = generalStatistics.totalWorkouts
-                        tvMaxWorkoutStreakValue.text = generalStatistics.maxWorkoutStreak
-                        tvTotalWorkoutDaysValue.text = generalStatistics.totalWorkoutDays
-                        tvTotalDistanceValue.text = generalStatistics.totalDistance
-                        tvTotalDurationValue.text = generalStatistics.totalDuration
-                        tvAvgPaceValue.text = generalStatistics.avgPace
-                        tvBestPaceValue.text = generalStatistics.bestPace
-                        tvTotalBurnedKcalValue.text = generalStatistics.totalCalories
-                    }
-                }
+        // General statistics
+        observe(viewModel.generalStatistics) { stats ->
+            if (stats == GeneralStatistics.EMPTY) return@observe
+            binding.generalStatisticsTable.apply {
+                tvWorkoutsTotalValue.text = stats.totalWorkouts
+                tvWorkoutStreakMaxValue.text = stats.maxWorkoutStreak
+                tvWorkoutDaysTotalValue.text = stats.totalWorkoutDays
+                tvDistanceTotalValue.text = stats.totalDistance
+                tvDurationTotalValue.text = stats.totalDuration
+                tvAvgPaceValue.text = stats.avgPace
+                tvBestPaceValue.text = stats.bestPace
+                tvCaloriesTotalValue.text = stats.totalCalories
             }
+            log.d("General statistics updated")
         }
+
+        // Displayed data feedback
+        observe(chartManager.displayData) {
+            viewModel.onDisplayedDataChanged(it)
+            log.d("Displayed chart data changed")
+        }
+
+        // Daily goals update date
+        observe(viewModel.dailyGoalsUpdateDate) { date ->
+            binding.btnUpdateGoals.tvUpdateTime.text = date
+            log.d("Daily goals update timestamp: $date")
+
+        }
+
     }
 
-    private fun initDisplayDataListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                chartManager.displayData.collect {
-                    viewModel.onDisplayedDataChanged(it)
-                }
+    private fun setupNavigationButtons() {
+        binding.btnUpdateGoals.root.setOnClickListener {
+            try {
+                findTopNavController().navigate(R.id.action_tabsFragment_to_updateGoalsFragment)
+                log.i("Navigated to update goals")
+            } catch (e: Exception) {
+                log.e("Error navigating to update goals", e)
+                showToast("Navigation error")
             }
-        }
-    }
-
-    private fun initDailyGoalsUpdateTimestampListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.dailyGoalsUpdateDate.collect { timestamp ->
-                    binding.btUpdateGoals.tvUpdateTime.text = timestamp.toString()
-                }
-            }
-        }
-    }
-
-    private fun setRangeNavigatingButtons() {
-        binding.progressChartNavigator.btPreviousRange.setOnClickListener {
-            chartManager.navigateRange(ChartNavigator.NavigationDirection.PREVIOUS)
-        }
-        binding.progressChartNavigator.btNextRange.setOnClickListener {
-            chartManager.navigateRange(ChartNavigator.NavigationDirection.NEXT)
-        }
-    }
-
-    private fun setUpdateGoalsButtonListener() {
-        binding.btUpdateGoals.root.setOnClickListener {
-            findTopNavController().navigate(R.id.action_tabsFragment_to_updateGoalsFragment)
         }
     }
 
@@ -186,9 +188,7 @@ class WorkoutsStatisticsFragment : Fragment() {
         super.onDestroyView()
         _chartManager = null
         _binding = null
+        log.d("Fragment view destroyed")
     }
 
-    companion object {
-        private const val TAG = "My stack: UserProfileFragment"
-    }
 }

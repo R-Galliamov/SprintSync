@@ -27,7 +27,7 @@ class TrackingErrorMessageProvider
             when (e) {
                 is TrackValidationException -> handleValidationException(e)
                 is TrackingServiceException -> handleTrackingServiceException(e)
-                else -> context.getString(R.string.err_unexpected)
+                else -> context.getString(R.string.err_unexpected_and_try)
             }
 
         private fun handleValidationException(e: TrackValidationException): String =

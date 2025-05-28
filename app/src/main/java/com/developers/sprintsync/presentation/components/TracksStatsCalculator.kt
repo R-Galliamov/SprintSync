@@ -3,6 +3,10 @@ package com.developers.sprintsync.presentation.components
 import com.developers.sprintsync.core.util.timestamp.TimestampUtils
 import com.developers.sprintsync.domain.track.model.Track
 
+/**
+ * Calculates aggregated statistics for a list of tracks.
+ * TODO replace with model
+ */
 class TracksStatsCalculator(
     tracks: List<Track>,
 ) {

@@ -2,12 +2,17 @@ package com.developers.sprintsync.domain.track.use_case.validator
 
 import com.developers.sprintsync.domain.track.model.Segment
 
+/**
+ * Validates segment data to ensure it meets required criteria.
+ * TODO refactor with Result
+ */
 object SegmentValidator {
     private const val MIN_DISTANCE_METERS = 0
     private const val MIN_DURATION_MILLIS = 0
     private const val MIN_PACE_MIN_PER_KM = 2
     private const val MAX_PACE_MIN_PER_KM = 30
     private const val MIN_CALORIES = 0
+
 
     fun validateOrThrow(data: Segment): Segment {
         if (data.durationMillis <= MIN_DURATION_MILLIS) throw SegmentValidationException.DurationTooShort()

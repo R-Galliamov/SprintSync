@@ -37,7 +37,7 @@ class LocationPermissionManager(
         onPermissionRational = onPermissionRational,
     )
 
-    fun shouldShowPermissionRational(): Boolean = shouldShowPermissionRational.invoke(PERMISSION)
+    fun shouldShowPermissionRationale(): Boolean = shouldShowPermissionRational.invoke(PERMISSION)
 
     companion object {
         const val PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION
@@ -45,3 +45,5 @@ class LocationPermissionManager(
         fun hasPermission(context: Context): Boolean = PermissionManager.hasPermission(context, PERMISSION)
     }
 }
+
+class MissingLocationPermissionException() : Exception()

@@ -10,31 +10,47 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
-import com.developers.sprintsync.core.presentation.view.ConfirmationDialogFragment
-import com.developers.sprintsync.core.presentation.view.ConfirmationDialogTag.DELETE
-import com.developers.sprintsync.core.presentation.view.pace_chart.PaceChartManager
-import com.developers.sprintsync.core.util.extension.collectFlow
+import com.developers.sprintsync.core.util.extension.navigateBack
+import com.developers.sprintsync.core.util.view.ConfirmationDialogFragment
+import com.developers.sprintsync.core.util.view.ConfirmationDialogTag.DELETE
+import com.developers.sprintsync.core.util.view.pace_chart.PaceChartManager
+import com.developers.sprintsync.core.util.extension.observe
+import com.developers.sprintsync.core.util.extension.showErrorAndBack
+import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.databinding.FragmentTrackDetailsBinding
 import com.developers.sprintsync.presentation.components.TrackDisplayModel
 import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+/**
+ * Fragment for displaying details of a past workout session.
+ */
 @AndroidEntryPoint
 class WorkoutDetailsFragment : Fragment() {
     private var _binding: FragmentTrackDetailsBinding? = null
-    private val binding get() = checkNotNull(_binding)
+    private val binding get() = checkNotNull(_binding) { "Binding not initialized" }
 
     private val args: WorkoutDetailsFragmentArgs by navArgs()
 
     private val viewModel by viewModels<WorkoutDetailsViewModel>()
 
-    private val paceChartManager by lazy { PaceChartManager(requireContext()) }
+    private val paceChart by lazy { PaceChartManager(requireContext()) }
 
-    private val deleteTrackDialog by lazy { createDeleteTrackDialog(args.trackId) }
+    private val deleteDialog by lazy { createDeleteDialog(args.trackId) }
+
+    @Inject
+    lateinit var log: AppLogger
 
     override fun onStart() {
         super.onStart()
-        viewModel.fetchTrackData(args.trackId)
+        try {
+            viewModel.fetchTrackData(args.trackId)
+            log.d("Fetching track data for trackId=${args.trackId}")
+        } catch (e: Exception) {
+            log.e("Error fetching track data", e)
+            showErrorAndBack(log)
+        }
     }
 
     override fun onCreateView(
@@ -51,46 +67,61 @@ class WorkoutDetailsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        initChartManager(binding.chart)
-        setLoadingOverlay()
-        observeTrackData()
-        setGoToMapButtonListener(args.trackId)
-        setBackButtonListener()
-        setDeleteTrackButtonListener()
+        try {
+            initChart(binding.chart)
+            setupLoadingOverlay()
+            observeState()
+            setupNavigationButtons()
+            setupDeleteButton()
+
+        } catch (e: Exception) {
+            log.e("Error setting up fragment", e)
+            showErrorAndBack(log)
+        }
     }
 
-    private fun initChartManager(chart: LineChart) {
-        paceChartManager.initialize(chart)
+    // Initializes the pace chart
+    private fun initChart(chart: LineChart) {
+        try {
+            paceChart.setup(chart)
+            log.d("Pace chart initialized")
+        } catch (e: Exception) {
+            log.e("Error initializing pace chart", e)
+        }
     }
 
-    private fun observeTrackData() {
-        collectFlow(viewModel.state) { state ->
-            when (state) {
-                WorkoutDetailsViewModel.DataState.Loading -> {
-                    binding.loadingOverlay.show()
-                }
+    // Observes ViewModel state to update UI
+    private fun observeState() {
+        observe(viewModel.state) { state ->
+            try {
+                when (state) {
+                    is WorkoutDetailsViewModel.State.Loading -> {
+                        binding.viewLoadingOverlay.show()
+                        log.d("Showing loading state")
+                    }
 
-                is WorkoutDetailsViewModel.DataState.Success -> {
-                    val track = state.track
-                    paceChartManager.setData(state.paceChartData)
-                    updateStatisticsValues(track)
-                    binding.loadingOverlay.hide()
-                }
+                    is WorkoutDetailsViewModel.State.Success -> {
+                        val track = state.track
+                        paceChart.setData(state.paceChartData)
+                        updateMetrics(track)
+                        binding.viewLoadingOverlay.hide()
+                        log.i("Loaded track data: trackId=${state.track.id}")
+                    }
 
-                is WorkoutDetailsViewModel.DataState.Error -> {
-                    Toast
-                        .makeText(
-                            requireContext(),
-                            getString(R.string.unexpected_error_message),
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    findNavController().navigateUp()
+                    is WorkoutDetailsViewModel.State.Error -> {
+                        showErrorAndBack(log)
+                        log.e("Error state", state.e)
+                    }
                 }
+            } catch (e: Exception) {
+                log.e("Error handling state", e)
+                showErrorAndBack(log)
             }
         }
     }
 
-    private fun updateStatisticsValues(track: TrackDisplayModel) {
+    // Updates UI with metric values
+    private fun updateMetrics(track: TrackDisplayModel) {
         binding.apply {
             tvDistanceValue.text = track.distanceUnit
             tvDurationValue.text = track.duration
@@ -98,48 +129,49 @@ class WorkoutDetailsFragment : Fragment() {
             tvBestPaceValue.text = track.bestPace
             tvCaloriesValue.text = track.calories
         }
+        log.d("Updated metrics: distance=${track.distanceUnit}")
     }
 
-    private fun setGoToMapButtonListener(trackId: Int) {
-        binding.btGoToMap.setOnClickListener {
-            navigateToMapFragment(trackId)
+    // Sets up navigation button listeners
+    private fun setupNavigationButtons() {
+        binding.btnBack.setOnClickListener {
+            navigateBack(log)
+        }
+        binding.btnMap.setOnClickListener {
+            navigateToMap(args.trackId)
         }
     }
 
-    private fun navigateToMapFragment(trackId: Int) {
+    private fun navigateToMap(trackId: Int) {
         val action = WorkoutDetailsFragmentDirections.actionTrackDetailsFragmentToMapFragment(trackId)
         findNavController().navigate(action)
+        log.i("Navigated to map: trackId=$trackId")
     }
 
-    private fun setBackButtonListener() {
-        binding.btBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun setLoadingOverlay() =
-        binding.loadingOverlay.apply {
+    private fun setupLoadingOverlay() =
+        binding.viewLoadingOverlay.apply {
             bindToLifecycle(lifecycle)
             setLoadingMessage(context.getString(R.string.loading_data_message))
         }
 
-    private fun setDeleteTrackButtonListener() {
-        binding.btDelete.setOnClickListener {
-            deleteTrackDialog.show(childFragmentManager, DELETE)
+    private fun setupDeleteButton() {
+        binding.btnDelete.setOnClickListener {
+            deleteDialog.show(childFragmentManager, DELETE)
         }
     }
 
-    private fun createDeleteTrackDialog(trackId: Int) =
-        ConfirmationDialogFragment().also {
-            it.setListener(
+    private fun createDeleteDialog(trackId: Int) =
+        ConfirmationDialogFragment().apply {
+            setListener(
                 object : ConfirmationDialogFragment.DialogListener {
                     override fun onConfirmed() {
-                        viewModel.deleteTrackById(trackId)
-                        findNavController().popBackStack()
+                        viewModel.deleteTrack(trackId)
+                        navigateBack(log)
+                        log.i("Track deleted: trackId=$trackId")
                     }
 
                     override fun onCancelled() {
-                        // NO-OP
+                        log.d("Delete cancelled")
                     }
                 },
             )
@@ -148,6 +180,7 @@ class WorkoutDetailsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        paceChartManager.cleanup()
+        paceChart.cleanup()
+        log.d("Fragment destroyed")
     }
 }

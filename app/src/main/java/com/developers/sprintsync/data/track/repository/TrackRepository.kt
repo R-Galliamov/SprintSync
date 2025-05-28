@@ -4,7 +4,7 @@ import com.developers.sprintsync.domain.track.model.Track
 import kotlinx.coroutines.flow.Flow
 
 interface TrackRepository {
-    val tracks: Flow<List<Track>>
+    val tracksFlow: Flow<List<Track>>
 
     suspend fun getTrackById(id: Int): Track
 

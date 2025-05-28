@@ -1,5 +1,6 @@
 package com.developers.sprintsync.presentation.workout_session.active.util.polyline
 
+import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.domain.track.model.LocationModel
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.toLatLng
@@ -11,7 +12,9 @@ import javax.inject.Inject
  * Polylines are created by connecting the start and end locations of active segments, splitting into
  * separate polylines when there are gaps in location continuity or when a stationary segment is encountered.
  */
-class PolylineFormatter @Inject constructor() {
+class PolylineFormatter @Inject constructor(
+    private val log: AppLogger
+) {
 
     /**
      * Formats a list of segments into a list of polylines.
@@ -51,7 +54,7 @@ class PolylineFormatter @Inject constructor() {
         }
         // Finalize any remaining points in the current polyline
         finalizePolyline(currentPolyline, polylines)
-
+        log.i("Formatted ${segments.size} segments into ${polylines.size} polylines")
         return polylines
     }
 
@@ -72,6 +75,7 @@ class PolylineFormatter @Inject constructor() {
             currentPolyline.add(segment.startLocation.toLatLng())
         }
         currentPolyline.add(segment.endLocation.toLatLng())
+        log.d("Added active segment to polyline: start=${segment.startLocation}, end=${segment.endLocation}")
     }
 
     /**
@@ -89,6 +93,7 @@ class PolylineFormatter @Inject constructor() {
         if (currentPolyline.isNotEmpty()) {
             polylines.add(currentPolyline.toList())
             currentPolyline.clear()
+            log.d("Finalized polyline with ${currentPolyline.size} points")
         }
     }
 }

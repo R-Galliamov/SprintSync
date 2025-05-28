@@ -1,18 +1,21 @@
 package com.developers.sprintsync.presentation.workout_session.active
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.developers.sprintsync.R
-import com.developers.sprintsync.core.util.extension.collectFlow
+import com.developers.sprintsync.core.util.extension.observe
 import com.developers.sprintsync.core.util.extension.findTopNavController
 import com.developers.sprintsync.core.util.extension.getBitmapDescriptor
 import com.developers.sprintsync.core.util.extension.setMapStyle
+import com.developers.sprintsync.core.util.extension.showErrorAndBack
+import com.developers.sprintsync.core.util.extension.showToast
+import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.map.GoogleMapStyle
 import com.developers.sprintsync.data.map.TrackPreviewStyle
 import com.developers.sprintsync.databinding.FragmentTrackingBinding
@@ -30,9 +33,14 @@ import com.developers.sprintsync.presentation.workout_session.active.util.tracki
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLngBounds
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+/**
+ * Fragment for managing the active workout session UI, including map and tracking controls.
+ */
 @AndroidEntryPoint
 class WorkoutSessionFragment : Fragment() {
+
     private var _binding: FragmentTrackingBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
@@ -41,13 +49,25 @@ class WorkoutSessionFragment : Fragment() {
     private var _map: GoogleMap? = null
     private val map get() = checkNotNull(_map) { getString(R.string.map_init_error) }
 
-    private val mapCamera = MapCameraManager()
-    private val mapMarker: MarkerManager by lazy { MarkerManager(requireContext().getBitmapDescriptor(R.drawable.ic_user_location)) }
+    @Inject
+    lateinit var mapCamera: MapCameraManager
+
+    @Inject
+    lateinit var mapMarker: MarkerManager
 
     private val serviceController by lazy { TrackingServiceController(requireContext()) }
 
     private var _trackingPanel: TrackingPanelController? = null
     private val trackingPanel get() = checkNotNull(_trackingPanel) { "Tracking panel isn't initialized" }
+
+    @Inject
+    lateinit var mapSnapshotCreator: MapSnapshotCreator
+
+    @Inject
+    lateinit var mapSnapshotPreparer: MapSnapshotPreparer
+
+    @Inject
+    lateinit var log: AppLogger
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,36 +83,42 @@ class WorkoutSessionFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
-        Log.d(TAG, "onViewCreated")
-        bindGeneralLoadingOverlay()
-        setMapLoadingOverlay()
-
-        initializeTrackingPanel()
-
-        binding.mapView.onCreate(savedInstanceState)
-        initializeMap {
-            observeUIEvents()
-            observeMapState()
+        try {
+            log.d("onViewCreated")
+            bindGeneralLoadingOverlay()
+            setMapLoadingOverlay()
+            initializeTrackingPanel()
+            binding.mapView.onCreate(savedInstanceState)
+            setupMap {
+                setUserLocationIcon()
+                observeUIEvents()
+                observeMapState()
+            }
+            observeUIState()
+            observeStateFlows()
+            setBackButtonListener()
+        } catch (e: Exception) {
+            log.e("Error setting up fragment", e)
+            showErrorAndBack(log)
         }
-
-        observeUIStaticState()
-        observeTrackingDuration()
-        observeTrackingMetrics()
-
-        setBackButtonListener()
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart")
-        serviceController.bind(requireActivity()) { connectionResult ->
-            viewModel.bindTo(connectionResult)
+        try {
+            log.d("Starting fragment, binding service")
+            serviceController.bind(requireActivity()) { connectionResult ->
+                viewModel.bindTo(connectionResult)
+            }
+            serviceController.launchLocationUpdates()
+            binding.mapView.onStart()
+        } catch (e: Exception) {
+            log.e("Failed to start fragment: ${e.message}", e)
+            showErrorAndBack(log)
         }
-        serviceController.launchLocationUpdates()
-        binding.mapView.onStart()
     }
 
+    // Sets up the tracking panel with start/pause/finish actions
     private fun initializeTrackingPanel() {
         _trackingPanel =
             TrackingPanelController(
@@ -103,110 +129,145 @@ class WorkoutSessionFragment : Fragment() {
             )
     }
 
-    private fun initializeMap(
+    // Initializes the Google Map and sets up map-ready callback
+    private fun setupMap(
         onMapReady: () -> Unit
     ) {
         binding.mapView.getMapAsync { map ->
-            mapCamera.attachMap(map)
-            map.setMapStyle(requireContext(), GoogleMapStyle.MINIMAL, TAG)
-            _map = map
-            Log.d(TAG, _map.toString())
-            onMapReady()
-        }
-    }
-
-    private fun observeUIStaticState() {
-        collectFlow(viewModel.uiStateFlow) { state ->
-            updatePauseCardVisibility(state)
-            when (state) {
-                UIState.Loading -> {
-                    showInitialLoading()
-                }
-
-                UIState.Initialized -> {
-                    hideInitialLoading()
-                    trackingPanel.updateState(TrackingPanelState.Initialized)
-                }
-
-                UIState.Active -> {
-                    trackingPanel.updateState(TrackingPanelState.Active)
-                }
-
-                UIState.Paused -> {
-                    trackingPanel.updateState(TrackingPanelState.Paused)
-                }
-
-                UIState.Completing -> {
-                    showCompletingLoading()
-                }
+            try {
+                mapCamera.attachToMap(map)
+                map.setMapStyle(requireContext(), GoogleMapStyle.MINIMAL)
+                _map = map
+                log.i("Map initialized")
+                onMapReady()
+            } catch (e: Exception) {
+                log.e("Failed to initialize map: ${e.message}", e)
+                showToast(requireContext().getString(R.string.err_map_init))
             }
         }
     }
 
-    private fun observeUIEvents() {
-        collectFlow(viewModel.uiEventFlow) { event ->
-            when (event) {
-                is UIEvent.RequestSnapshot -> {
-                    prepareMapForSnapshot(event.bounds, event.style)
-                    MapSnapshotCreator.createSnapshot(map) { bitmap ->
-                        viewModel.onSnapshotReady(bitmap)
+    // Sets icon for user location marker
+    private fun setUserLocationIcon() {
+        try {
+            val icon = requireContext().getBitmapDescriptor(R.drawable.ic_user_location)
+            requireNotNull(icon) { " Icon is null" }
+            mapMarker.setIcon(icon)
+        } catch (e: Exception) {
+            log.e("Failed to set user location icon", e)
+            showToast(requireContext().getString(R.string.err_marker_init))
+        }
+    }
+
+    // Observes UI state to update visibility and loading states
+    private fun observeUIState() {
+        observe(viewModel.uiStateFlow) { state ->
+            try {
+                updatePauseCardVisibility(state)
+                when (state) {
+                    UIState.Loading -> {
+                        showInitialLoading()
+                    }
+
+                    UIState.Initialized -> {
+                        hideInitialLoading()
+                        trackingPanel.updateState(TrackingPanelState.Initialized)
+                    }
+
+                    UIState.Active -> {
+                        trackingPanel.updateState(TrackingPanelState.Active)
+                    }
+
+                    UIState.Paused -> {
+                        trackingPanel.updateState(TrackingPanelState.Paused)
+                    }
+
+                    UIState.Completing -> {
+                        showCompletingLoading()
                     }
                 }
-
-                is UIEvent.NavigateToSummary -> navigateToSessionSummary(event.trackId)
-                is UIEvent.ErrorAndClose -> {
-                    Toast
-                        .makeText(requireContext(), event.message, Toast.LENGTH_LONG)
-                        .show() // TODO handle error event
-                    popBackStack()
-                }
+            } catch (e: Exception) {
+                log.e("Error handling UI state: ${e.message}", e)
+                showErrorAndBack(log)
             }
         }
     }
 
-    private fun observeTrackingDuration() {
-        collectFlow(viewModel.durationFlow) { duration ->
+    // Observes UI events for snapshot requests and navigation
+    private fun observeUIEvents() {
+        observe(viewModel.uiEventFlow) { event ->
+            try {
+                when (event) {
+                    is UIEvent.RequestSnapshot -> {
+                        prepareMapForSnapshot(event.bounds, event.style)
+                        mapSnapshotCreator.createSnapshot(map) { bitmap ->
+                            viewModel.onSnapshotReady(bitmap)
+                        }
+                    }
+
+                    is UIEvent.NavigateToSummary -> navigateToSessionSummary(event.trackId)
+                    is UIEvent.ErrorAndClose -> {
+                        showErrorAndBack(log, event.message)
+                    }
+                }
+                log.d("Processed UI event: ${event.javaClass.simpleName}")
+            } catch (e: Exception) {
+                log.e("Error handling UI event: ${e.message}", e)
+                showErrorAndBack(log)
+            }
+        }
+    }
+
+    // Observes duration and metrics flows
+    private fun observeStateFlows() {
+        observe(viewModel.durationFlow) { duration ->
             updateDuration(duration)
         }
-    }
-
-
-    private fun observeTrackingMetrics() {
-        collectFlow(viewModel.metricsFlow) { metrics ->
-            updateTrackingMetrics(metrics)
+        observe(viewModel.metricsFlow) { metrics ->
+            updateMetrics(metrics)
         }
     }
 
+    // Observes map state to update location and polylines
     private fun observeMapState() {
         val loadingView = binding.mapLoadingOverlay
-        collectFlow(viewModel.mapStateFlow) { state ->
-            when (state) {
-                MapUiState.Loading -> loadingView.show()
-                is MapUiState.LocationUpdated -> {
-                    if (binding.mapLoadingOverlay.isVisible) loadingView.hide()
-                    mapMarker.setMarker(map, state.location)
-                    mapCamera.moveCamera(state.location)
-                }
+        observe(viewModel.mapStateFlow) { state ->
+            try {
+                when (state) {
+                    MapUiState.Loading -> loadingView.show()
+                    is MapUiState.LocationUpdated -> {
+                        if (binding.mapLoadingOverlay.isVisible) loadingView.hide()
+                        mapMarker.updateMarker(map, state.location)
+                        mapCamera.moveCamera(state.location)
+                    }
 
-                is MapUiState.PolylinesUpdated -> state.polylines.forEach { map.addPolyline(it) }
+                    is MapUiState.PolylinesUpdated -> state.polylines.forEach { map.addPolyline(it) }
+                }
+                log.d("Map state updated: ${state.javaClass.simpleName}")
+            } catch (e: Exception) {
+                log.e("Error handling map state: ${e.message}", e)
+                showErrorAndBack(log)
             }
+
         }
     }
 
     private fun updateDuration(duration: String) {
         binding.tvDuration.text = duration
+        log.d("Updated duration: $duration")
     }
 
-    private fun updateTrackingMetrics(track: UiMetrics) {
+    private fun updateMetrics(metrics: UiMetrics) {
         binding.apply {
-            tvDistanceValue.text = track.distance
-            tvCaloriesValue.text = track.calories
-            tvPaceValue.text = track.pace
+            tvDistanceValue.text = metrics.distance
+            tvCaloriesValue.text = metrics.calories
+            tvPaceValue.text = metrics.pace
         }
+        log.d("Updated metrics: distance=${metrics.distance}")
     }
 
     private fun setBackButtonListener() {
-        binding.btBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             popBackStack()
         }
     }
@@ -234,7 +295,7 @@ class WorkoutSessionFragment : Fragment() {
 
     private fun showCompletingLoading() {
         binding.generalLoadingOverlay.apply {
-            setLoadingMessage(context.getString(R.string.completing_track_message))
+            setLoadingMessage(context.getString(R.string.message_completing_track))
             show()
         }
     }
@@ -245,51 +306,61 @@ class WorkoutSessionFragment : Fragment() {
             setLoadingMessage(getString(R.string.tracking_map_loading_message))
         }
 
+    // Prepares the map for taking a snapshot
     private fun prepareMapForSnapshot(bounds: LatLngBounds, style: TrackPreviewStyle) {
-        // val padding = MapCalculations.calculateTrackPadding(binding.mapView.width, binding.mapView.height)
-        MapSnapshotPreparer.prepareMap(
-            context = requireContext(),
-            map = map,
-            bounds = bounds,
-            padding = style.padding,
-            marker = mapMarker.marker,
-            mapStyle = style.mapStyle,
-        )
+        try {
+            mapSnapshotPreparer.prepareMap(
+                context = requireContext(),
+                map = map,
+                bounds = bounds,
+                padding = style.padding,
+                marker = mapMarker.marker,
+                mapStyle = style.mapStyle,
+            )
+            log.i("Map prepared for snapshot: bounds=$bounds")
+        } catch (e: Exception) {
+            log.e("Failed to prepare map for snapshot: ${e.message}", e)
+        }
     }
 
     private fun navigateToSessionSummary(trackId: Int) {
         val action = WorkoutSessionFragmentDirections.actionTrackingFragmentToSessionSummaryFragment(trackId)
         findTopNavController().navigate(action)
+        log.i("Navigated to session summary: trackId=$trackId")
     }
 
-    private fun popBackStack() = findTopNavController().popBackStack()
-
-    companion object {
-        private const val TAG = "My Stack: TrackingFragment"
+    private fun popBackStack() {
+        findTopNavController().popBackStack()
+        log.i("Navigated back")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG, "onPause")
+        log.d("onPause")
         binding.mapView.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume")
+        log.d("onResume")
         binding.mapView.onResume()
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, "onStop")
-        serviceController.unbind(requireActivity())
-        binding.mapView.onStop()
+        try {
+            log.d("Stopping fragment, unbinding service")
+            serviceController.unbindService(requireActivity())
+            binding.mapView.onStop()
+        } catch (e: Exception) {
+            log.e("Error stopping fragment: ${e.message}", e)
+            showErrorAndBack(log)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(TAG, "onDestroyView")
+        log.d("onDestroyView")
         binding.mapView.onDestroy()
         mapCamera.detachMap()
         _trackingPanel = null
@@ -298,6 +369,6 @@ class WorkoutSessionFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy")
+        log.d("onDestroy")
     }
 }

@@ -21,10 +21,10 @@
         android:paddingBottom="@dimen/space.large"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="10"
-        tools:listitem="@layout/item_track_card" />
+        tools:listitem="@layout/item_workout_card" />
 
-    <com.developers.sprintsync.core.presentation.view.LoadingOverlay
-        android:id="@+id/loading_overlay"
+    <com.developers.sprintsync.core.util.view.LoadingOverlay
+        android:id="@+id/view_loading_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -1,39 +1,64 @@
 package com.developers.sprintsync.data.user_parameters.source
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.domain.user_parameters.model.UserParameters
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/**
+ * Data source for managing user parameters using local storage.
+ */
+interface UserParametersDataSource {
+    /**
+     * Saves the user parameters to local storage.
+     * @param params The [UserParameters] to save.
+     */
+    suspend fun saveUserParameters(params: UserParameters)
+
+    /**
+     * Loads user parameters from local storage as a flow.
+     * @return Flow emitting the current [UserParameters] or null if not available or parsing fails.
+     */
+    fun loadUserParameters(): Flow<UserParameters?>
+}
+
+/**
+ * Implementation of [UserParametersDataSource] using DataStore and Gson for local persistence.
+ */
 class LocalUserParametersDataSource(
     private val dataStore: DataStore<Preferences>,
     private val gson: Gson,
+    private val log: AppLogger
 ) : UserParametersDataSource {
     override suspend fun saveUserParameters(params: UserParameters) {
-        val jsonString = gson.toJson(params)
-        dataStore.edit { prefs ->
-            prefs[STORAGE_KEY] = jsonString
+        try {
+            val jsonString = gson.toJson(params)
+            dataStore.edit { prefs ->
+                prefs[STORAGE_KEY] = jsonString
+            }
+            log.i("User parameters saved: $params")
+        } catch (e: Exception) {
+            log.e("Failed to save user parameters: ${e.message}", e)
         }
-        Log.d(TAG, "User parameters saved successfully")
     }
 
     override fun loadUserParameters(): Flow<UserParameters?> =
         dataStore.data.map { prefs ->
             prefs[STORAGE_KEY]?.let { jsonString ->
                 runCatching { gson.fromJson(jsonString, UserParameters::class.java) }
-                    .onFailure {
-                        Log.e("LocalSource", "Failed to parse user parameters", it)
+                    .onFailure { e ->
+                        log.e( "Failed to parse user parameters: ${e.message}", e)
                     }.getOrNull()
             }
         }
 
     companion object {
         private val STORAGE_KEY = stringPreferencesKey("user_parameters")
-        private const val TAG = "LocalUserParametersDataSource"
     }
 }
+

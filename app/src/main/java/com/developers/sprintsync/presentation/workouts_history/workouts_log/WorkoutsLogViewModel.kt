@@ -1,8 +1,8 @@
 package com.developers.sprintsync.presentation.workouts_history.workouts_log
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.track_preview.model.TrackWithPreview
 import com.developers.sprintsync.data.track_preview.repository.TrackPreviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,72 +14,76 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
+/**
+ * ViewModel for managing the workout log UI state and data.
+ */
 @HiltViewModel
 class WorkoutsLogViewModel
-    @Inject
-    constructor(
-        private val repository: TrackPreviewRepository,
-    ) : ViewModel() {
-        private val _state = MutableStateFlow(UiState.LOADING)
-        val state =
-            _state
-                .asStateFlow()
-                .onStart { fetchTracks() }
-                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), UiState.LOADING)
+@Inject
+constructor(
+    private val repository: TrackPreviewRepository, // TODO replace with use case
+    private val log: AppLogger,
+) : ViewModel() {
 
-        private fun fetchTracks() {
-            viewModelScope.launch {
-                Presenter.present(repository.tracksWithPreviewsFlow, _state)
-            }
-        }
+    private val presenter = Presenter()
 
-        data class UiState(
-            val showError: Boolean = false,
-            val showLoadingOverlay: Boolean = false,
-            val showEmptyTracksPlaceHolder: Boolean = false,
-            val tracks: List<WorkoutLogItem> = emptyList(),
-        ) {
-            companion object {
-                fun success(tracks: List<WorkoutLogItem>): UiState = UiState(tracks = tracks)
+    private val _state = MutableStateFlow(UiState.LOADING)
+    val state =
+        _state
+            .asStateFlow()
+            .onStart { fetchTracks() }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), UiState.LOADING)
 
-                fun error(): UiState = UiState(showError = true)
-
-                val LOADING: UiState = UiState(showLoadingOverlay = true)
-                val EMPTY: UiState = UiState(showEmptyTracksPlaceHolder = true)
-            }
-        }
-
-        private object Presenter {
-            suspend fun present(
-                dataFlow: Flow<List<TrackWithPreview>>,
-                uiStateFlow: MutableStateFlow<UiState>,
-            ) {
-                uiStateFlow.update { UiState.LOADING }
-                try {
-                    dataFlow.collect { tracks ->
-                        when {
-                            tracks.isEmpty() -> uiStateFlow.update { UiState.EMPTY }
-                            else -> {
-                                val workoutLogItem = WorkoutLogItem.create(tracks)
-                                uiStateFlow.update { UiState.success(workoutLogItem) }
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    logError(e)
-                    uiStateFlow.update { UiState.error() }
-                }
-            }
-
-            private fun logError(exception: Exception) {
-                Log.e(TAG, "Error fetching tracks: ${exception.message}", exception)
-            }
-        }
-
-        companion object {
-            private const val TAG = "RunHistoryViewModel"
+    /**
+     * Initiates fetching of workout tracks.
+     */
+    private fun fetchTracks() {
+        viewModelScope.launch {
+            presenter.present(repository.tracksWithPreviewsFlow, _state)
         }
     }
+
+    data class UiState(
+        val showError: Boolean = false,
+        val showLoadingOverlay: Boolean = false,
+        val showEmptyTracksPlaceHolder: Boolean = false,
+        val tracks: List<WorkoutLogItem> = emptyList(),
+    ) {
+        companion object {
+            fun success(tracks: List<WorkoutLogItem>): UiState = UiState(tracks = tracks)
+            fun error(): UiState = UiState(showError = true)
+            val LOADING: UiState = UiState(showLoadingOverlay = true)
+            val EMPTY: UiState = UiState(showEmptyTracksPlaceHolder = true)
+        }
+    }
+
+    private inner class Presenter {
+        suspend fun present(
+            dataFlow: Flow<List<TrackWithPreview>>,
+            uiStateFlow: MutableStateFlow<UiState>,
+        ) {
+            uiStateFlow.update { UiState.LOADING }
+            try {
+                dataFlow.collect { tracks ->
+                    when {
+                        tracks.isEmpty() -> {
+                            uiStateFlow.update { UiState.EMPTY }
+                            log.i("No tracks found, showing empty state")
+                        }
+
+                        else -> {
+                            val workoutLogItems = WorkoutLogItem.create(tracks)
+                            uiStateFlow.update { UiState.success(workoutLogItems) }
+                            log.i("Loaded ${workoutLogItems.size} workout log items")
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                log.e("Error fetching tracks", e)
+                uiStateFlow.update { UiState.error() }
+            }
+        }
+    }
+}

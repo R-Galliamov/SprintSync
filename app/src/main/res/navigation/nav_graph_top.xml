@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/tabsFragment"
-        android:name="com.developers.sprintsync.core.presentation.fragment.TabsFragment"
+        android:name="com.developers.sprintsync.presentation.main.TabsFragment"
         android:label="tabsFragment">
         <action
             android:id="@+id/action_tabsFragment_to_trackingFragment"
@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/locationRequestFragment"
-        android:name="com.developers.sprintsync.core.util.permission.LocationRequestFragment"
+        android:name="com.developers.sprintsync.presentation.location_request.LocationRequestFragment"
         android:label="fragment_location_request"
         tools:layout="@layout/fragment_location_request">
         <action

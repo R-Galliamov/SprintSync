@@ -31,6 +31,7 @@ import javax.inject.Inject
 
 // TODO create class to handle chart data
 // TODO use state machine
+// TODO cover with logs
 @HiltViewModel
 class WorkoutsStatisticsViewModel
     @Inject
@@ -43,7 +44,7 @@ class WorkoutsStatisticsViewModel
         private val dateFormatter: UpdateDateFormatter,
     ) : ViewModel() {
         private val _chartDataUpdateEvent = MutableStateFlow<ChartDataUpdateEvent?>(null)
-        val chartDataUpdateEvent get() = _chartDataUpdateEvent.asStateFlow().filterNotNull()
+        val chartDataUpdate get() = _chartDataUpdateEvent.asStateFlow().filterNotNull()
 
         val dailyGoalsUpdateDate =
             getDailyGoalsUpdateTimestampUseCase().map { dateFormatter.formatTimestamp(it) }
@@ -60,7 +61,7 @@ class WorkoutsStatisticsViewModel
 
         private var _chartConfiguration: MutableStateFlow<ChartConfigurationType> =
             MutableStateFlow(ChartConfigurationType.WEEKLY)
-        val chartConfiguration get() = _chartConfiguration.asStateFlow()
+        val chartConfig get() = _chartConfiguration.asStateFlow()
 
         private var _weeklyStatistics: MutableStateFlow<WeeklyStatistics> = MutableStateFlow(WeeklyStatistics.EMPTY)
         val weeklyStatistics get() = _weeklyStatistics.asStateFlow()

@@ -1,5 +1,6 @@
 package com.developers.sprintsync.data.track.service.di
 
+import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.domain.track.use_case.service.SegmentGenerator
 import com.developers.sprintsync.domain.track.use_case.service.SegmentGeneratorImpl
 import com.developers.sprintsync.domain.user_parameters.use_case.UserParametersUseCase
@@ -14,8 +15,8 @@ import kotlinx.coroutines.runBlocking
 @InstallIn(ServiceComponent::class)
 object SegmentGeneratorModule {
     @Provides
-    fun provideSegmentGenerator(useCase: UserParametersUseCase): SegmentGenerator {
+    fun provideSegmentGenerator(useCase: UserParametersUseCase, log: AppLogger): SegmentGenerator {
         val userWeight = runBlocking { useCase().first().weightKilos }
-        return SegmentGeneratorImpl(userWeight)
+        return SegmentGeneratorImpl(userWeight, log)
     }
 }

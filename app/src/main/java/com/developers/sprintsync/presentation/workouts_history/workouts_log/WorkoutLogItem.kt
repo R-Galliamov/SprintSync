@@ -22,7 +22,7 @@ data class WorkoutLogItem(
         fun create(data: List<TrackWithPreview>) = Formatter.format(data)
     }
 
-    private object Formatter {
+    private object Formatter { // TODO make independent
         fun format(tws: TrackWithPreview): WorkoutLogItem {
             val track = tws.track
             val date = DateFormatter.formatDate(track.timestamp, DateFormatter.Pattern.DAY_MONTH_YEAR_WEEK_DAY)

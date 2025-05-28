@@ -2,6 +2,7 @@ package com.developers.sprintsync.domain.track.use_case.validator
 
 import com.developers.sprintsync.domain.track.model.Track
 
+// TODO refactor with Result
 object TrackValidator {
     private const val MIN_TIMESTAMP = 0L
     private const val MIN_DURATION = 0L

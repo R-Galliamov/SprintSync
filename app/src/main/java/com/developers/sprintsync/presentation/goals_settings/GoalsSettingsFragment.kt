@@ -12,9 +12,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.developers.sprintsync.R
 import com.developers.sprintsync.domain.goal.model.Metric
-import com.developers.sprintsync.core.presentation.view.InputCardHandler
-import com.developers.sprintsync.core.presentation.view.InputCardView
-import com.developers.sprintsync.core.presentation.view.spinner.manager.SpinnerManager
+import com.developers.sprintsync.core.util.view.InputCardHandler
+import com.developers.sprintsync.core.util.view.InputCardView
+import com.developers.sprintsync.core.util.view.spinner.manager.SpinnerManager
 import com.developers.sprintsync.databinding.FragmentUpdateGoalsBinding
 import com.developers.sprintsync.domain.user_parameters.model.WellnessGoal
 import com.developers.sprintsync.presentation.user_parameters.util.WellnessGoalToSpinnerMapper
@@ -156,7 +156,7 @@ class GoalsSettingsFragment : Fragment() {
     }
 
     private fun setBackButton() {
-        binding.btBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
     }

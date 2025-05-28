@@ -83,7 +83,7 @@ class MapFragment : Fragment() {
     }
 
     private fun setBackButton() {
-        binding.btBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             findTopNavController().navigateUp()
         }
     }

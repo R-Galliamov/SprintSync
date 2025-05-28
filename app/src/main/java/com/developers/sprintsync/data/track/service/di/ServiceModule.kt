@@ -3,7 +3,7 @@ package com.developers.sprintsync.data.track.service.di
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.developers.sprintsync.core.presentation.activity.MainActivity
+import com.developers.sprintsync.presentation.main.MainActivity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

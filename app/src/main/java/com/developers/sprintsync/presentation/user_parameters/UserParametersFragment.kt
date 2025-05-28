@@ -11,8 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentParametersBinding
-import com.developers.sprintsync.core.presentation.view.InputCardHandler
-import com.developers.sprintsync.core.presentation.view.spinner.manager.SpinnerManager
+import com.developers.sprintsync.core.util.view.InputCardHandler
+import com.developers.sprintsync.core.util.view.spinner.manager.SpinnerManager
 import com.developers.sprintsync.presentation.user_parameters.util.GenderToSpinnerMapper
 import com.developers.sprintsync.presentation.user_parameters.util.WellnessGoalToSpinnerMapper
 import com.developers.sprintsync.core.util.extension.setState
@@ -20,7 +20,7 @@ import com.developers.sprintsync.domain.user_parameters.model.Gender
 import com.developers.sprintsync.domain.user_parameters.model.UserParameters
 import com.developers.sprintsync.presentation.user_parameters.util.DatePickerCreator
 import com.developers.sprintsync.domain.user_parameters.model.WellnessGoal
-import com.developers.sprintsync.core.presentation.view.InputCardView
+import com.developers.sprintsync.core.util.view.InputCardView
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

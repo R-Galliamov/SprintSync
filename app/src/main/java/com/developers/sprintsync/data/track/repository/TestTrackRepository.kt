@@ -63,7 +63,7 @@ class TestTrackRepository
             return Track(id, timestamp, durationMillis, distanceMeters, avgPace, bestPace, calories, segments)
         }
 
-        override val tracks: Flow<List<Track>>
+        override val tracksFlow: Flow<List<Track>>
             get() = flowOf(tracksList.toList())
 
         override suspend fun getTrackById(id: Int): Track =

@@ -1,7 +1,7 @@
 package com.developers.sprintsync.data.track_preview.repository.di
 
 import com.developers.sprintsync.data.track_preview.repository.TrackPreviewRepository
-import com.developers.sprintsync.data.track_preview.repository.TrackPreviewRepositoryImpl
+import com.developers.sprintsync.data.track_preview.repository.LocalFileDbTrackPreviewRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ import javax.inject.Singleton
 abstract class TrackPreviewRepositoryModule {
     @Binds
     @Singleton
-    abstract fun bindTrackPreviewRepository(impl: TrackPreviewRepositoryImpl): TrackPreviewRepository
+    abstract fun bindTrackPreviewRepository(impl: LocalFileDbTrackPreviewRepository): TrackPreviewRepository
 }

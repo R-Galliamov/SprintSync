@@ -33,10 +33,11 @@ class DefaultDebugTree : Timber.DebugTree() {
     }
 
     private fun formatTag(element: StackTraceElement) =
-        "${element.className.substringAfterLast('.')}.${element.methodName}():${element.lineNumber}"
+        "$IDENTIFIER${element.className.substringAfterLast('.')}.${element.methodName}():${element.lineNumber}"
 
     companion object {
         private const val CALLER_INDEX_OFFSET = 6
+        private const val IDENTIFIER = "AppLogs: "
     }
 }
 

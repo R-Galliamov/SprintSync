@@ -1,7 +1,7 @@
 package com.developers.sprintsync.presentation.user_parameters.util
 
-import com.developers.sprintsync.core.presentation.view.spinner.data.SpinnerItem
-import com.developers.sprintsync.core.presentation.view.spinner.mapper.ItemToSpinnerMapper
+import com.developers.sprintsync.core.util.view.spinner.data.SpinnerItem
+import com.developers.sprintsync.core.util.view.spinner.mapper.ItemToSpinnerMapper
 import com.developers.sprintsync.domain.user_parameters.model.WellnessGoal
 
 class WellnessGoalToSpinnerMapper : ItemToSpinnerMapper<WellnessGoal>() {

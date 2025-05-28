@@ -45,7 +45,7 @@ class DefaultChartManager(
 
     private var needToShowLoading = true
 
-    override fun presetChartConfiguration(configType: ChartConfigurationType) {
+    override fun presetChart(configType: ChartConfigurationType) {
         chartConfigurationType = configType
     }
 

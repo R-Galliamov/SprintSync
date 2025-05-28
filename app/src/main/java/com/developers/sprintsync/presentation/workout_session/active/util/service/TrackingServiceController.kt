@@ -73,7 +73,7 @@ class TrackingServiceController(
         }
     }
 
-    fun unbind(activity: Activity) {
+    fun unbindService(activity: Activity) {
         if (isBound) {
             activity.unbindService(connection)
             isBound = false

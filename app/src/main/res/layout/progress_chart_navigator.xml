@@ -7,7 +7,7 @@
 
     <!-- TODO: add ripple effect -->
     <ImageView
-        android:id="@+id/btPreviousRange"
+        android:id="@+id/btn_previous_range"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space.small"
@@ -37,7 +37,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/btNextRange"
+        android:id="@+id/btn_next_range"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space.small"

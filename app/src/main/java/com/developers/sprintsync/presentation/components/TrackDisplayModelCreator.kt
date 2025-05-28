@@ -11,6 +11,9 @@ import com.developers.sprintsync.presentation.workout_session.active.util.polyli
 import com.google.android.gms.maps.model.PolylineOptions
 import javax.inject.Inject
 
+/**
+ * Data model for displaying track details in the UI.
+ */
 data class TrackDisplayModel(
     val id: Int,
     val distanceUnit: String,
@@ -21,26 +24,35 @@ data class TrackDisplayModel(
     val polylines: List<PolylineOptions>,
 )
 
+/**
+ * Creates a [TrackDisplayModel] from a [Track] for UI display.
+ */
 class TrackDisplayModelCreator
-    @Inject
-    constructor(
-        private val polylineProcessor: PolylineProcessor,
-    ) {
-        fun create(track: Track): TrackDisplayModel {
-            val distance = DistanceUiFormatter.format(track.distanceMeters, DistanceUiPattern.WITH_UNIT)
-            val duration = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
-            val avgPace = PaceUiFormatter.format(track.avgPace, PaceUiFormatter.Pattern.TWO_DECIMALS)
-            val bestPace = PaceUiFormatter.format(track.bestPace, PaceUiFormatter.Pattern.TWO_DECIMALS)
-            val calories = CaloriesUiFormatter.format(track.calories, CaloriesUiFormatter.Pattern.PLAIN)
-            val polylines = polylineProcessor.generatePolylines(track.segments)
-            return TrackDisplayModel(
-                id = track.id,
-                distanceUnit = distance,
-                duration = duration,
-                avgPace = avgPace,
-                bestPace = bestPace,
-                calories = calories,
-                polylines = polylines,
-            )
-        }
+@Inject
+constructor(
+    private val polylineProcessor: PolylineProcessor,
+) {
+
+    /**
+     * Converts a [Track] into a [TrackDisplayModel] with formatted UI data.
+     * @param track The [Track] to convert.
+     * @return The formatted [TrackDisplayModel].
+     */
+    fun create(track: Track): TrackDisplayModel {
+        val distance = DistanceUiFormatter.format(track.distanceMeters, DistanceUiPattern.WITH_UNIT)
+        val duration = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
+        val avgPace = PaceUiFormatter.format(track.avgPace, PaceUiFormatter.Pattern.TWO_DECIMALS)
+        val bestPace = PaceUiFormatter.format(track.bestPace, PaceUiFormatter.Pattern.TWO_DECIMALS)
+        val calories = CaloriesUiFormatter.format(track.calories, CaloriesUiFormatter.Pattern.PLAIN)
+        val polylines = polylineProcessor.generatePolylines(track.segments)
+        return TrackDisplayModel(
+            id = track.id,
+            distanceUnit = distance,
+            duration = duration,
+            avgPace = avgPace,
+            bestPace = bestPace,
+            calories = calories,
+            polylines = polylines,
+        )
     }
+}

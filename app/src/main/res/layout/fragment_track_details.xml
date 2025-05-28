@@ -20,7 +20,7 @@
             android:layout_height="0dp">
 
             <ImageView
-                android:id="@+id/btDelete"
+                android:id="@+id/btn_delete"
                 style="@style/TransparentButton"
                 android:layout_marginTop="@dimen/space.regular"
                 android:layout_marginEnd="@dimen/space.regular"
@@ -145,7 +145,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvBestPace" />
 
             <LinearLayout
-                android:id="@+id/btGoToMap"
+                android:id="@+id/btn_map"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/button.height.small"
                 android:layout_marginTop="@dimen/space.regular"
@@ -199,13 +199,13 @@
 
     </ScrollView>
 
-    <com.developers.sprintsync.core.presentation.view.LoadingOverlay
-        android:id="@+id/loading_overlay"
+    <com.developers.sprintsync.core.util.view.LoadingOverlay
+        android:id="@+id/view_loading_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <FrameLayout
-        android:id="@+id/btBack"
+        android:id="@+id/btn_back"
         style="@style/TransparentButton"
         android:layout_marginStart="@dimen/space.regular"
         android:layout_marginTop="@dimen/space.regular"

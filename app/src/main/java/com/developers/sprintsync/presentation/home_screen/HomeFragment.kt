@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.developers.sprintsync.R
-import com.developers.sprintsync.core.util.extension.collectFlow
+import com.developers.sprintsync.core.util.extension.observe
 import com.developers.sprintsync.databinding.FragmentHomeBinding
 import com.developers.sprintsync.presentation.home_screen.util.SpannableStyler
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeStatistics() {
-        collectFlow(viewModel.statistics) { stats ->
+        observe(viewModel.statistics) { stats ->
             updateTotals(stats)
             updateBestResults(stats)
         }
@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
     private fun updateTotals(stat: WorkoutStatistics) {
         binding.apply {
             tvTotalRunsValue.text = stat.runs
-            tvTotalDistanceValue.text = stat.totalDistance
+            tvDistanceTotalValue.text = stat.totalDistance
             tvTotalKcalValue.text = stat.totalKiloCalories
         }
     }

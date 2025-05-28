@@ -10,5 +10,5 @@ class GetTracksFlowUseCase
     constructor(
         trackRepository: TrackRepository,
     ) {
-        val tracks: Flow<List<Track>> = trackRepository.tracks
+        val tracks: Flow<List<Track>> = trackRepository.tracksFlow
     }

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.FragmentOnboardingBinding
-import com.developers.sprintsync.core.presentation.activity.TAG
+import com.developers.sprintsync.presentation.main.TAG
 
 class OnboardingFragment : Fragment() {
     private var _binding: FragmentOnboardingBinding? = null

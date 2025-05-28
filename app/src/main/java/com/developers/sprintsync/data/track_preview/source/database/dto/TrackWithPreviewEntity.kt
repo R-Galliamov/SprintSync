@@ -5,6 +5,9 @@ import androidx.room.Relation
 import com.developers.sprintsync.data.track.database.dto.TrackEntity
 import com.developers.sprintsync.data.track_preview.model.TrackWithPreview
 
+/**
+ * Room data class representing a track and its associated preview, if available.
+ */
 data class TrackWithPreviewEntity(
     @Embedded val track: TrackEntity,
     @Relation(
@@ -13,7 +16,16 @@ data class TrackWithPreviewEntity(
     )
     val preview: TrackPreviewEntity?,
 ) {
+
+    /**
+     * Converts this entity to a [TrackWithPreview] domain model.
+     * @return The converted [TrackWithPreview].
+     */
     fun toDto(): TrackWithPreview = TrackWithPreview(track = this.track.toDto(), preview = this.preview?.toDto())
 }
 
+/**
+ * Converts a list of [TrackWithPreviewEntity] to a list of [TrackWithPreview] domain models.
+ * @return List of converted [TrackWithPreview] objects.
+ */
 fun List<TrackWithPreviewEntity>.toDto() = map(TrackWithPreviewEntity::toDto)

@@ -12,7 +12,7 @@ abstract class ChartManager {
 
     abstract val navigator: ChartNavigator
 
-    abstract fun presetChartConfiguration(configType: ChartConfigurationType)
+    abstract fun presetChart(configType: ChartConfigurationType)
 
     abstract fun displayData(
         metric: Metric,

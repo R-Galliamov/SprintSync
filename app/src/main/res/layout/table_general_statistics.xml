@@ -16,7 +16,7 @@
             android:text="@string/total_workouts" />
 
         <TextView
-            android:id="@+id/tvTotalWorkoutsValue"
+            android:id="@+id/tv_workouts_total_value"
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             android:text="@string/max_workout_streak" />
 
         <TextView
-            android:id="@+id/tvMaxWorkoutStreakValue"
+            android:id="@+id/tv_workout_streak_max_value"
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             android:text="@string/total_workout_days" />
 
         <TextView
-            android:id="@+id/tvTotalWorkoutDaysValue"
+            android:id="@+id/tv_workout_days_total_value"
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             android:text="@string/total_distance" />
 
         <TextView
-            android:id="@+id/tvTotalDistanceValue"
+            android:id="@+id/tv_distance_total_value"
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
             android:text="@string/total_duration" />
 
         <TextView
-            android:id="@+id/tvTotalDurationValue"
+            android:id="@+id/tv_duration_total_value"
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
             android:text="@string/total_burned_kcal" />
 
         <TextView
-            android:id="@+id/tvTotalBurnedKcalValue"
+            android:id="@+id/tv_calories_total_value"
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

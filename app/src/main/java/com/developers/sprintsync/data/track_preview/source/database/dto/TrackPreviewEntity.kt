@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey
 import com.developers.sprintsync.data.track.database.dto.TrackEntity
 import com.developers.sprintsync.data.track_preview.model.TrackPreview
 
+/**
+ * Room entity representing a track preview with a reference to its associated track.
+ */
 @Entity(
     foreignKeys = [
         ForeignKey(
@@ -23,8 +26,14 @@ data class TrackPreviewEntity(
     val trackId: Int,
     val filePath: String?,
 ) {
+
+    /**
+     * Converts this entity to a [TrackPreview] domain model.
+     * @return The converted [TrackPreview].
+     * @throws IllegalArgumentException if [filePath] is null.
+     */
     fun toDto(): TrackPreview {
-        require(this.filePath != null) { "filePath must not be null" }
+        require(this.filePath != null) { "filePath must not be null" } // TODO handle error
         val id = this.id
         val trackId = this.trackId
         val filePath = this.filePath
@@ -32,6 +41,12 @@ data class TrackPreviewEntity(
     }
 
     companion object {
+
+        /**
+         * Creates a [TrackPreviewEntity] from a [TrackPreview] domain model.
+         * @param dto The [TrackPreview] to convert.
+         * @return The corresponding [TrackPreviewEntity].
+         */
         fun fromDto(dto: TrackPreview) =
             TrackPreviewEntity(
                 id = dto.id,
@@ -40,5 +55,3 @@ data class TrackPreviewEntity(
             )
     }
 }
-
-fun List<TrackPreviewEntity>.toDto() = map(TrackPreviewEntity::toDto)
