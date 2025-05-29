@@ -6,4 +6,8 @@ data class PaceChartData(
     val data: List<List<Entry>>,
     val maxPace: Float,
     val minPace: Float,
-)
+) {
+    companion object {
+        val EMPTY = PaceChartData(emptyList(), 0f, 0f)
+    }
+}

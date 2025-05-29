@@ -2,7 +2,7 @@ package com.developers.sprintsync.presentation.workout_session.summary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.developers.sprintsync.core.util.view.pace_chart.SegmentsToPaceChartMapper
+import com.developers.sprintsync.core.util.view.pace_chart.PaceChartDataCreator
 import com.developers.sprintsync.core.util.view.pace_chart.model.PaceChartData
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.domain.track.use_case.storage.DeleteTrackByIdUseCase
@@ -25,7 +25,7 @@ class WorkoutSummaryViewModel
 constructor(
     private val getTrackByIdUseCase: GetTrackByIdUseCase,
     private val deleteTrackByIdUseCase: DeleteTrackByIdUseCase,
-    private val segmentsToPaceChartMapper: SegmentsToPaceChartMapper,
+    private val paceChartDataCreator: PaceChartDataCreator,
     private val trackDisplayModelCreator: TrackDisplayModelCreator,
     private val log: AppLogger,
 ) : ViewModel() {
@@ -43,7 +43,7 @@ constructor(
             try {
                 val track = getTrackByIdUseCase(trackId)
                 val uiTrack = trackDisplayModelCreator.create(track)
-                val chartData = segmentsToPaceChartMapper.map(track.segments)
+                val chartData = paceChartDataCreator.create(track.segments)
                 _state.update { State.Success(uiTrack, chartData) }
                 log.i("Fetched session data for trackId=$trackId")
             } catch (e: Exception) {
