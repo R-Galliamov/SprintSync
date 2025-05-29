@@ -21,11 +21,13 @@ import com.developers.sprintsync.presentation.workouts_statistics.data.WeeklySta
 import com.developers.sprintsync.presentation.workouts_statistics.util.scroller.ChartTabsScroller
 import com.developers.sprintsync.presentation.workouts_statistics.util.scroller.RangeNavigator
 import com.github.mikephil.charting.charts.CombinedChart
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Fragment for displaying workout statistics and charts
  */
+@AndroidEntryPoint
 class WorkoutsStatisticsFragment : Fragment() {
     private var _binding: FragmentStatisticsBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
