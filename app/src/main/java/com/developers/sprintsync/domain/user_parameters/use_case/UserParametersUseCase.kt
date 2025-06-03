@@ -11,5 +11,5 @@ class UserParametersUseCase
     constructor(
         private val repository: UserParametersRepository,
     ) {
-        operator fun invoke(): Flow<UserParameters> = repository.getUserParametersFlow().map { it ?: UserParameters.DEFAULT }
+        operator fun invoke(): Flow<UserParameters> = repository.getUserParametersFlow().map { it ?: UserParameters.DEFAULT } // TODO replace with state flow
     }

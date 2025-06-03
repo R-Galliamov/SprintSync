@@ -1,8 +1,6 @@
 package com.developers.sprintsync.presentation.components
 
 import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DistanceUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DistanceUiPattern
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
 import com.developers.sprintsync.core.util.track_formatter.PaceUiFormatter
@@ -31,6 +29,7 @@ class TrackDisplayModelCreator
 @Inject
 constructor(
     private val polylineProcessor: PolylineProcessor,
+    private val distanceFormatter: DistanceFormatter,
 ) {
 
     /**
@@ -39,7 +38,7 @@ constructor(
      * @return The formatted [TrackDisplayModel].
      */
     fun create(track: Track): TrackDisplayModel {
-        val distance = DistanceUiFormatter.format(track.distanceMeters, DistanceUiPattern.WITH_UNIT)
+        val distance = distanceFormatter.format(track.distanceMeters).withUnit
         val duration = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
         val avgPace = PaceUiFormatter.format(track.avgPace, PaceUiFormatter.Pattern.TWO_DECIMALS)
         val bestPace = PaceUiFormatter.format(track.bestPace, PaceUiFormatter.Pattern.TWO_DECIMALS)

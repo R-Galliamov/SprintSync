@@ -16,7 +16,6 @@ data class TimeParts(
 class TimePartsCalculator {
     fun calculateParts(
         milliseconds: Long,
-        locale: Locale = Locale.getDefault(),
     ): TimeParts {
         if (milliseconds < 0) throw IllegalArgumentException("Duration cannot be negative")
         val hours = TimeUnit.MILLISECONDS.toHours(milliseconds).toInt()

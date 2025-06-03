@@ -1,7 +1,5 @@
 package com.developers.sprintsync.presentation.goals_settings
 
-import com.developers.sprintsync.core.util.track_formatter.DistanceUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DistanceUiPattern
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
 import com.developers.sprintsync.domain.goal.model.DailyGoal
@@ -36,7 +34,7 @@ data class DailyGoalDisplayMode(
                 when (dailyGoal.metricType) {
                     Metric.DISTANCE -> {
                         val distance = dailyGoal.value
-                        DistanceUiFormatter.format(distance, DistanceUiPattern.PLAIN)
+                        "0" // TODO update with distance
                     }
 
                     Metric.DURATION -> DurationUiFormatter.format(dailyGoal.value.toLong(), DurationUiPattern.MM)

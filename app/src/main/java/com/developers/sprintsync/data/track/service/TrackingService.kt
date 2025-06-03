@@ -23,6 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,8 +50,8 @@ constructor(
     sessionManager: SessionManager,
     log: AppLogger
 ) {
-    val trackingDataFlow: Flow<TrackingData> = trackingDataManager.trackingDataFlow
-    val sessionDataFlow: Flow<SessionData> = sessionManager.sessionDataFlow
+    val trackingDataFlow: StateFlow<TrackingData> = trackingDataManager.trackingDataFlow
+    val sessionDataFlow: StateFlow<SessionData> = sessionManager.sessionDataFlow
 
     init {
         log.i("Service Data Holder init")
@@ -125,12 +127,15 @@ class TrackingService : LifecycleService() {
         }
     }
 
-    // Starts tracking and foreground service
+    // Starts tracking and foreground service with notification data updates
     private fun startTracking() {
         try {
             startForegroundNotification()
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
+                    launch {
+                        startNotificationUpdates()
+                    }
                     trackingController.startTracking()
                     log.i("Tracking started in coroutine")
                 } catch (e: Exception) {
@@ -167,8 +172,21 @@ class TrackingService : LifecycleService() {
     // Starts the foreground notification
     private fun startForegroundNotification() {
         val id = notificationConfig.notificationId
-        startForeground(id, notification)
-        log.i("Foreground notification started with ID: $id")
+        try {
+            startForeground(id, notification)
+            log.i("Foreground notification started with ID: $id")
+        } catch (e: Exception) {
+            log.e("Failed to start foreground notification with ID: $id")
+        }
+
+    }
+
+    private suspend fun startNotificationUpdates() {
+        try {
+            notificationManager.launchUpdates()
+        } catch (e: Exception) {
+            log.e("Failed to run notification updates: ${e.message}", e)
+        }
     }
 
     // Binder for service interaction

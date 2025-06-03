@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/best_distance" />
+            android:text="@string/longest_duration" />
 
         <TextView
             android:id="@+id/tvBestDurationValue"

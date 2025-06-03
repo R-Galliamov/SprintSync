@@ -21,6 +21,7 @@ import com.developers.sprintsync.presentation.workout_session.active.util.state_
 import com.google.android.gms.maps.model.PolylineOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -90,8 +91,8 @@ constructor(
 
     // Observes session and tracking data flows to update UI and map states
     private fun observeWorkoutSessionData(
-        sessionDataFlow: Flow<SessionData>,
-        trackingDataFlow: Flow<TrackingData>,
+        sessionDataFlow: StateFlow<SessionData>,
+        trackingDataFlow: StateFlow<TrackingData>,
     ) {
         viewModelScope.launch {
             sessionDataFlow.collect { data ->

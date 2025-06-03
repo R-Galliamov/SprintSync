@@ -49,18 +49,18 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun updateTotals(stat: WorkoutStatistics) {
+    private fun updateTotals(stat: RecordBoardUiModel) {
         binding.apply {
-            tvTotalRunsValue.text = stat.runs
+            tvTotalRunsValue.text = stat.totalWorkouts
             tvDistanceTotalValue.text = stat.totalDistance
-            tvTotalKcalValue.text = stat.totalKiloCalories
+            tvTotalKcalValue.text = stat.totalCalories
         }
     }
 
-    private fun updateBestResults(stat: WorkoutStatistics) {
+    private fun updateBestResults(stat: RecordBoardUiModel) {
         binding.apply {
             tvLongestDistanceValue.text = stat.longestDistance
-            tvBestPaceValue.text = stat.bestPace
+            tvBestPaceValue.text = stat.peakPace
             tvMaxDurationValue.text = spannableStyler.styleDuration(stat.maxDuration)
         }
     }

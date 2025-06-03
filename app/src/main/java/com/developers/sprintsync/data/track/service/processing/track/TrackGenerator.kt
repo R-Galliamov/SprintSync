@@ -3,7 +3,6 @@ package com.developers.sprintsync.data.track.service.processing.track
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.track.service.processing.segment.SegmentService
 import com.developers.sprintsync.data.track.service.processing.session.TimedLocation
-import com.developers.sprintsync.domain.track.use_case.service.ITrackCalculator
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Track
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +19,7 @@ class TrackGenerator
 constructor(
     private val initializer: TrackInitializer,
     private val segmentService: SegmentService,
-    private val trackCalculator: ITrackCalculator,
+    private val trackCalculator: TrackCalculator,
     private val log: AppLogger,
 ) {
     private var _trackFlow = MutableStateFlow(Track.INITIAL)

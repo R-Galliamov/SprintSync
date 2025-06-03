@@ -6,6 +6,7 @@ import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
 import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.domain.track.model.TrackingStatus
 import com.developers.sprintsync.presentation.workout_session.active.util.metrics_formatter.UiMetrics
+import com.developers.sprintsync.presentation.workout_session.active.util.metrics_formatter.UiMetricsFormatter
 import com.developers.sprintsync.presentation.workout_session.active.util.view.TrackingController
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,14 +46,20 @@ sealed class UIState {
  * Manages the UI state and metrics for the workout session.
  */
 @ViewModelScoped
-class UiStateHandler @Inject constructor(private val log: AppLogger) {
+class UiStateHandler @Inject constructor(
+    private val metricsFormatter: UiMetricsFormatter,
+    private val log: AppLogger
+) {
+    private val initialMetrics = metricsFormatter.format(0f, 0f, null)
+    private val initialDuration = formatDuration(0)
+
     private val _uiStateFlow = MutableStateFlow<UIState>(UIState.Loading)
     val uiStateFlow: StateFlow<UIState> get() = _uiStateFlow.asStateFlow()
 
-    private val _metricsFlow = MutableStateFlow(UiMetrics.INITIAL)
+    private val _metricsFlow = MutableStateFlow(initialMetrics)
     val metricsFlow: StateFlow<UiMetrics> get() = _metricsFlow.asStateFlow()
 
-    private val _durationFlow = MutableStateFlow(formatDuration(0))
+    private val _durationFlow = MutableStateFlow(initialDuration)
     val durationFlow: StateFlow<String> = _durationFlow.asStateFlow()
 
     /**
@@ -112,6 +119,6 @@ class UiStateHandler @Inject constructor(private val log: AppLogger) {
         val distance = track.distanceMeters
         val calories = track.calories
         val segment = track.segments.lastOrNull()
-        return UiMetrics.create(distance, calories, segment)
+        return metricsFormatter.format(distance, calories, segment)
     }
 }

@@ -2,11 +2,11 @@ package com.developers.sprintsync.presentation.workouts_history.workouts_log
 
 import com.developers.sprintsync.core.util.formatter.DateFormatter
 import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DistanceUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DistanceUiPattern
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
 import com.developers.sprintsync.data.track_preview.model.TrackWithPreview
+import com.developers.sprintsync.presentation.components.DistanceFormatter
+import javax.inject.Inject
 
 data class WorkoutLogItem(
     val id: Int,
@@ -17,16 +17,24 @@ data class WorkoutLogItem(
     val previewPath: String?,
 ) {
     companion object {
-        fun create(data: TrackWithPreview) = Formatter.format(data)
-
-        fun create(data: List<TrackWithPreview>) = Formatter.format(data)
+        val EMPTY = WorkoutLogItem(
+            id = 0,
+            date = "",
+            distance = "",
+            duration = "",
+            calories = "",
+            previewPath = null
+        )
     }
 
-    private object Formatter { // TODO make independent
-        fun format(tws: TrackWithPreview): WorkoutLogItem {
+}
+
+class WorkoutLogItemFormatter @Inject constructor(private val distanceFormatter: DistanceFormatter) {
+    fun format(tws: TrackWithPreview): WorkoutLogItem {
+        try {
             val track = tws.track
             val date = DateFormatter.formatDate(track.timestamp, DateFormatter.Pattern.DAY_MONTH_YEAR_WEEK_DAY)
-            val distance = DistanceUiFormatter.format(track.distanceMeters, DistanceUiPattern.WITH_UNIT)
+            val distance = distanceFormatter.format(tws.track.distanceMeters).withUnit
             val duration = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
             val calories = CaloriesUiFormatter.format(track.calories, CaloriesUiFormatter.Pattern.PLAIN)
             return WorkoutLogItem(
@@ -37,8 +45,10 @@ data class WorkoutLogItem(
                 calories = calories,
                 previewPath = tws.preview?.bitmapPath,
             )
+        } catch (e: Exception) {
+            return WorkoutLogItem.EMPTY
         }
-
-        fun format(list: List<TrackWithPreview>): List<WorkoutLogItem> = list.map { format(it) }
     }
+
+    fun format(list: List<TrackWithPreview>): List<WorkoutLogItem> = list.map { format(it) }
 }

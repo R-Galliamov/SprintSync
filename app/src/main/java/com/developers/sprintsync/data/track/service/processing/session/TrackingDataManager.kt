@@ -6,9 +6,9 @@ import com.developers.sprintsync.domain.track.model.TrackingData
 import com.developers.sprintsync.domain.track.model.TrackingStatus
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -27,7 +27,7 @@ constructor(
     private val trackFlow = trackGenerator.trackFlow
 
     // Combines tracking status and track data into a single flow
-    val trackingDataFlow: Flow<TrackingData> =
+    val trackingDataFlow: StateFlow<TrackingData> =
         combine(trackingStatusFlow, trackFlow) { status, track ->
             if (status == TrackingStatus.PAUSED) trackGenerator.resetLastTimedLocation()
             TrackingData(track, status)

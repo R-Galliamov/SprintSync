@@ -24,26 +24,6 @@
             tools:text="6" />
     </TableRow>
 
-
-    <TableRow>
-
-        <TextView
-            android:id="@+id/tvMaxWorkoutStreak"
-            style="@style/RegularText.Gray"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="@string/max_workout_streak" />
-
-        <TextView
-            android:id="@+id/tv_workout_streak_max_value"
-            style="@style/RegularText.Gray"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            tools:text="2" />
-    </TableRow>
-
     <TableRow>
 
         <TextView

@@ -9,6 +9,7 @@ import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -28,7 +29,7 @@ constructor(
     private var job: Job? = null
 
     // Combines location and duration into a session data flow
-    val sessionDataFlow =
+    val sessionDataFlow: StateFlow<SessionData> =
         locationProvider.locationFlow
             .combine(durationProvider.durationMillisFlow) { location, duration ->
                 SessionData(location, duration)

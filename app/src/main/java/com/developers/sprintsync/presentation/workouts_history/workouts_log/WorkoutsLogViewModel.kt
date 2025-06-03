@@ -24,6 +24,7 @@ class WorkoutsLogViewModel
 @Inject
 constructor(
     private val repository: TrackPreviewRepository, // TODO replace with use case
+    private val logItemFormatter: WorkoutLogItemFormatter,
     private val log: AppLogger,
 ) : ViewModel() {
 
@@ -66,15 +67,15 @@ constructor(
         ) {
             uiStateFlow.update { UiState.LOADING }
             try {
-                dataFlow.collect { tracks ->
+                dataFlow.collect { tws ->
                     when {
-                        tracks.isEmpty() -> {
+                        tws.isEmpty() -> {
                             uiStateFlow.update { UiState.EMPTY }
                             log.i("No tracks found, showing empty state")
                         }
 
                         else -> {
-                            val workoutLogItems = WorkoutLogItem.create(tracks)
+                            val workoutLogItems = logItemFormatter.format(tws)
                             uiStateFlow.update { UiState.success(workoutLogItems) }
                             log.i("Loaded ${workoutLogItems.size} workout log items")
                         }
