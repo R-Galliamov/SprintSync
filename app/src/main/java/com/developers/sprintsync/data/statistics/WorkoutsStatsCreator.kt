@@ -8,6 +8,7 @@ import javax.inject.Inject
 class WorkoutsStatsCreator @Inject constructor() {
 
     fun create(tracks: List<Track>): WorkoutsStats {
+        if (tracks.isEmpty()) return WorkoutsStats.EMPTY
         val totalWorkouts = tracks.size
         val totalWorkoutDays = calculateWorkoutDays(tracks)
         val totalDistanceMeters = tracks.sumOf { it.distanceMeters.toDouble() }.toFloat()
