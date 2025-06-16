@@ -12,8 +12,8 @@ import com.developers.sprintsync.data.track.service.ServiceCommand.LAUNCH_LOCATI
 import com.developers.sprintsync.data.track.service.ServiceCommand.PAUSE_SERVICE
 import com.developers.sprintsync.data.track.service.ServiceCommand.START_SERVICE
 import com.developers.sprintsync.data.track.service.ServiceCommand.STOP_LOCATION_UPDATES
-import com.developers.sprintsync.data.track.service.notification.TrackingNotificationConfig
-import com.developers.sprintsync.data.track.service.notification.TrackingNotificationManager
+import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationConfig
+import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationManager
 import com.developers.sprintsync.data.track.service.processing.session.SessionManager
 import com.developers.sprintsync.data.track.service.processing.session.TrackingController
 import com.developers.sprintsync.data.track.service.processing.session.TrackingDataManager
@@ -60,7 +60,6 @@ constructor(
 
 /**
  * Manages tracking operations as a foreground service
- * TODO add error handling
  */
 @AndroidEntryPoint
 class TrackingService : LifecycleService() {

@@ -2,13 +2,15 @@ package com.developers.sprintsync.data.track.service.di
 
 import android.app.Notification
 import android.app.NotificationManager
+import android.app.NotificationManager.IMPORTANCE_LOW
+import android.app.NotificationManager.IMPORTANCE_MAX
 import android.content.Context
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.developers.sprintsync.R
-import com.developers.sprintsync.data.track.service.notification.TrackingNotificationConfig
-import com.developers.sprintsync.data.track.service.notification.TrackingNotificationDataProvider
-import com.developers.sprintsync.data.track.service.notification.TrackingNotificationDataProviderImpl
+import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationConfig
+import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationDataProvider
+import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationDataProviderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -36,6 +38,7 @@ class TrackingNotificationModule {
             override val notificationId = 1
             override val channelId = CHANNEL_ID
             override val channelName = CHANNEL_NAME
+            override val notificationImportance = NOTIFICATION_IMPORTANCE
         }
 
     @Provides
@@ -72,5 +75,6 @@ class TrackingNotificationModule {
     companion object {
         private const val CHANNEL_ID = "tracking_channel"
         private const val CHANNEL_NAME = "Tracking location"
+        private const val NOTIFICATION_IMPORTANCE = IMPORTANCE_LOW
     }
 }
