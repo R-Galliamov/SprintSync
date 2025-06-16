@@ -1,5 +1,6 @@
 package com.developers.sprintsync.presentation.location_request
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,28 +15,29 @@ import com.developers.sprintsync.core.util.extension.navigateBack
 import com.developers.sprintsync.core.util.extension.showError
 import com.developers.sprintsync.core.util.extension.showErrorAndBack
 import com.developers.sprintsync.core.util.log.AppLogger
+import com.developers.sprintsync.core.util.permission.PermissionManager
 import com.developers.sprintsync.databinding.FragmentLocationRequestBinding
-import com.developers.sprintsync.core.util.permission.LocationPermissionManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Fragment for requesting location permissions and guiding the user to enable them.
- * TODO handle errors
  */
 @AndroidEntryPoint
 class LocationRequestFragment : Fragment() {
     private var _binding: FragmentLocationRequestBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
-    private val permissionManager: LocationPermissionManager by lazy {
-        LocationPermissionManager(
-            this,
-        )
-    }
-
     @Inject
     lateinit var log: AppLogger
+
+    private val permissionManager: PermissionManager by lazy {
+        PermissionManager(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            log,
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +51,7 @@ class LocationRequestFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         try {
-            if (LocationPermissionManager.hasPermission(requireContext())) {
+            if (permissionManager.hasPermission()) {
                 navigateToTracking()
                 log.i("Location permission already granted, navigating to tracking")
             }
@@ -66,7 +68,7 @@ class LocationRequestFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         try {
-            updateUi(permissionManager.shouldShowPermissionRationale())
+            updateUi(permissionManager.shouldShowRationale())
             setupBackButton()
             log.d("LocationRequestFragment view created")
         } catch (e: Exception) {
@@ -82,7 +84,7 @@ class LocationRequestFragment : Fragment() {
                 navigateToTracking()
                 log.i("Permission granted, navigating to tracking")
             } else {
-                updateUi(permissionManager.shouldShowPermissionRationale())
+                updateUi(permissionManager.shouldShowRationale())
                 log.i("Permission denied")
             }
         } catch (e: Exception) {
@@ -105,7 +107,7 @@ class LocationRequestFragment : Fragment() {
                 } else {
                     log.i("Requesting location permission")
                     permissionManager.requestPermission(
-                        onPermissionsGranted = { isGranted ->
+                        onResult = { isGranted ->
                             onPermissionResult(isGranted)
                         },
                     )

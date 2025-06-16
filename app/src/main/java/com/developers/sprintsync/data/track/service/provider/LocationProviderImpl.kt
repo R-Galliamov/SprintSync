@@ -1,10 +1,11 @@
 package com.developers.sprintsync.data.track.service.provider
 
+import android.Manifest
 import android.content.Context
 import android.os.Looper
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.core.util.permission.LocationPermissionManager
-import com.developers.sprintsync.core.util.permission.MissingLocationPermissionException
+import com.developers.sprintsync.core.util.permission.MissingPermissionException
+import com.developers.sprintsync.core.util.permission.PermissionManager
 import com.developers.sprintsync.domain.track.model.LocationModel
 import com.developers.sprintsync.domain.track.model.toDataModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -63,7 +64,7 @@ constructor(
 
     /**
      * Starts location updates using the Fused Location Provider.
-     * @throws MissingLocationPermissionException if the app lacks location permissions.
+     * @throws MissingPermissionException if the app lacks location permissions.
      * @throws SecurityException if the location provider encounters a security issue.
      * @throws Exception for other unexpected errors during location update initialization.
      */
@@ -73,9 +74,9 @@ constructor(
             return
         }
 
-        if (LocationPermissionManager.hasPermission(context).not()) {
+        if (PermissionManager.hasPermission(context, Manifest.permission.ACCESS_FINE_LOCATION).not()) {
             log.e("Missing location permission")
-            throw MissingLocationPermissionException()
+            throw MissingPermissionException()
         }
 
         locationCallback =

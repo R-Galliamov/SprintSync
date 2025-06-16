@@ -6,79 +6,98 @@ import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.developers.sprintsync.core.util.log.AppLogger
 
-open class PermissionManager(
+/**
+ * Exception thrown when a required permission is missing.
+ */
+class MissingPermissionException(
+    message: String = "Required permission is missing",
+) : Exception(message)
+
+/**
+ * Manages Android permission checks and requests.
+ */
+class PermissionManager(
     caller: ActivityResultCaller,
     private val context: Context,
-    private val shouldShowPermissionRational: (permission: String) -> Boolean,
+    private val permission: String,
+    private val shouldShowRationale: (permission: String) -> Boolean,
+    private val log: AppLogger,
 ) {
-    /*
-    constructor(activity: ComponentActivity) : this(
-        caller = activity as ActivityResultCaller,
-        context = activity,
-        shouldShowPermissionRational = { activity.shouldShowRequestPermissionRationale(it) },
-    )
-     */
 
-    constructor(fragment: Fragment) : this(
+    constructor(fragment: Fragment, permission: String, log: AppLogger) : this(
         caller = fragment,
         context = fragment.requireContext(),
-        shouldShowPermissionRational = { fragment.shouldShowRequestPermissionRationale(it) },
+        permission = permission,
+        shouldShowRationale = { fragment.shouldShowRequestPermissionRationale(it) },
+        log = log,
     )
 
-    private var onPermissionsGranted: ((isGranted: Boolean) -> Unit)? = null
+    private var onResult: ((isGranted: Boolean) -> Unit)? = null
 
-    private val requestPermissionLauncher =
+    private val requestLauncher =
         caller.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            onPermissionsGranted?.invoke(isGranted)
+            try {
+                log.i("Permission request result: $permission granted=$isGranted")
+                onResult?.invoke(isGranted)
+            } catch (e: Exception) {
+                log.e("Error handling permission result: ${e.message}", e)
+            }
         }
 
-    private val requestMultiplePermissionLauncher =
-        caller.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-            val isGranted = result.values.all { it }
-            onPermissionsGranted?.invoke(isGranted)
-        }
+    /**
+     * Checks if the permission rationale should be shown.
+     * @return True if the rationale should be displayed.
+     */
+    fun shouldShowRationale() = shouldShowRationale.invoke(permission)
 
-    private fun requestPermissions(permissionsToBeRequested: List<String>) {
-        if (permissionsToBeRequested.size > 1) {
-            requestMultiplePermissionLauncher.launch(permissionsToBeRequested.toTypedArray())
-        } else {
-            requestPermissionLauncher.launch(permissionsToBeRequested.firstOrNull())
+    /**
+     * Checks if the permission has been granted.
+     * @return True if the permission is granted.
+     */
+    fun hasPermission() = hasPermission(context, permission)
+
+    /**
+     * Requests the permission, handling rationale and result callbacks.
+     * @param onResult Callback for permission result.
+     * @param onRationale Callback to show rationale if needed.
+     */
+    fun requestPermission(
+        onResult: ((isGranted: Boolean) -> Unit)? = null,
+        onRationale: (() -> Unit)? = null,
+    ) {
+        require(permission.isNotEmpty()) { "Permission string cannot be empty" }
+        this.onResult = onResult
+
+        when {
+            hasPermission() -> {
+                log.i("Permission already granted: $permission")
+                onResult?.invoke(true)
+            }
+
+            shouldShowRationale() -> {
+                log.i("Showing permission rationale: $permission")
+                onRationale?.invoke()
+            }
+
+            else -> requestSystemPermission()
         }
     }
 
-    fun requestPermissions(
-        vararg permissions: String,
-        onPermissionsGranted: ((isGranted: Boolean) -> Unit)? = null,
-        onPermissionRational: (() -> Unit)? = null,
-    ) {
-        this.onPermissionsGranted = onPermissionsGranted
-
-        val permissionsToBeRequested =
-            permissions.filter { permission -> !hasPermission(context, permission) }
-        val shouldShowPermissionRational =
-            permissionsToBeRequested.any {
-                shouldShowPermissionRational.invoke(it)
-            }
-        when {
-            permissionsToBeRequested.isEmpty() -> {
-                onPermissionsGranted?.invoke(true)
-            }
-
-            shouldShowPermissionRational -> {
-                onPermissionRational?.invoke()
-                onPermissionsGranted?.invoke(false)
-            }
-
-            else -> requestPermissions(permissionsToBeRequested)
+    // Launches the system permission request
+    private fun requestSystemPermission() {
+        try {
+            requestLauncher.launch(permission)
+            log.d("Launching permission request: $permission")
+        } catch (e: Exception) {
+            log.e("Error launching permission request: ${e.message}", e)
+            onResult?.invoke(false)
         }
     }
 
     companion object {
-        fun hasPermission(
-            context: Context,
-            permission: String,
-        ): Boolean =
+        fun hasPermission(context: Context, permission: String): Boolean =
             ContextCompat.checkSelfPermission(
                 context,
                 permission,

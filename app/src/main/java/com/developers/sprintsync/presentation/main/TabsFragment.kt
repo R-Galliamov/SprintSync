@@ -1,5 +1,6 @@
 package com.developers.sprintsync.presentation.main
 
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,7 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.core.util.extension.showError
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.databinding.FragmentTabsBinding
-import com.developers.sprintsync.core.util.permission.LocationPermissionManager
+import com.developers.sprintsync.core.util.permission.PermissionManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -98,7 +99,7 @@ class TabsFragment : Fragment() {
     private fun setListeners() {
         binding.fabRun.setOnClickListener {
             try {
-                if (LocationPermissionManager.hasPermission(requireContext())) {
+                if (PermissionManager.hasPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
                     findNavController().navigate(R.id.action_tabsFragment_to_trackingFragment)
                     log.i("Navigated to TrackingFragment")
                 } else {
