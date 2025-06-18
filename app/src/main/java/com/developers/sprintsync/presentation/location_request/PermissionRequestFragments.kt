@@ -29,10 +29,9 @@ class NotificationRequestFragment : BasePermissionFragment() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override val screenConfig: PermissionScreenConfig = PermissionScreenConfig(
         permission = Manifest.permission.POST_NOTIFICATIONS,
-        iconResId = R.drawable.im_location_request, // TODO replace with notification icon
+        iconResId = R.drawable.im_notification_request,
         titleResId = R.string.prms_notification_request_title,
         descriptionResId = R.string.prms_notification_request_description,
     )
-
 }
 

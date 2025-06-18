@@ -45,7 +45,7 @@
     <!-- Image -->
     <dimen name="imageSize.mapPreview.height">120dp</dimen>
     <dimen name="imageSize.mapPreview.width">160dp</dimen>
-    <dimen name="imageSize.illustration.big.height">200dp</dimen>
+    <dimen name="imageSize.illustration.big.height">260dp</dimen>
     <dimen name="imageSize.illustration.small.height">48dp</dimen>
 
     <!-- Button -->
