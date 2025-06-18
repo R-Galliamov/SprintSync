@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setNavigation() {
-        val isFirstRun = true // TODO replace
+        val isFirstRun = false // TODO replace
         val navController = getRootNavController()
         NavigationManager.prepareRootNavController(isFirstRun, navController)
     }

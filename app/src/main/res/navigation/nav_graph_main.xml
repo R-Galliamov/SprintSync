@@ -13,9 +13,6 @@
             android:id="@+id/action_tabsFragment_to_trackingFragment"
             app:destination="@id/trackingFragment" />
         <action
-            android:id="@+id/action_tabsFragment_to_locationRequestFragment"
-            app:destination="@id/locationRequestFragment" />
-        <action
             android:id="@+id/action_tabsFragment_to_trackDetailsFragment"
             app:destination="@id/trackDetailsFragment">
             <argument
@@ -43,9 +40,6 @@
         android:label="fragment_tracking"
         tools:layout="@layout/fragment_workout_session">
         <action
-            android:id="@+id/action_tracking_to_locationRequestFragment"
-            app:destination="@id/locationRequestFragment" />
-        <action
             android:id="@+id/action_trackingFragment_to_sessionSummaryFragment"
             app:destination="@id/sessionSummaryFragment"
             app:popUpTo="@id/trackingFragment"
@@ -59,13 +53,17 @@
         android:id="@+id/locationRequestFragment"
         android:name="com.developers.sprintsync.presentation.location_request.LocationRequestFragment"
         android:label="fragment_location_request"
-        tools:layout="@layout/fragment_location_request">
-        <action
-            android:id="@+id/action_locationRequestFragment_to_trackingFragment"
-            app:destination="@id/trackingFragment"
-            app:popUpTo="@id/locationRequestFragment"
-            app:popUpToInclusive="true" />
+        tools:layout="@layout/fragment_permission_request">
+
     </fragment>
+
+    <fragment
+        android:id="@+id/notificationRequestFragment"
+        android:name="com.developers.sprintsync.presentation.location_request.NotificationRequestFragment"
+        android:label="fragment_notification_request"
+        tools:layout="@layout/fragment_permission_request">
+    </fragment>
+
     <fragment
         android:id="@+id/sessionSummaryFragment"
         android:name="com.developers.sprintsync.presentation.workout_session.summary.WorkoutSummaryFragment"

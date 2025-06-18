@@ -2,8 +2,11 @@ package com.developers.sprintsync.core.navigation
 
 import com.developers.sprintsync.R
 
-class NavGraphTopManager {
-    fun getNavGraphId(): Int = R.navigation.nav_graph_top
+/*
+ * Manages main navigation graph .
+ */
+class NavGraphMainManager {
+    fun getNavGraphId(): Int = R.navigation.nav_graph_main
 
     fun getOnboardingDestination(): Int = R.id.onboardingFragment
 
