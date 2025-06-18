@@ -99,7 +99,7 @@ class TabsFragment : Fragment() {
 
     // Sets up FAB click listener
     private fun setListeners() {
-        binding.fabRun.setOnClickListener {
+        binding.fabWorkoutSession.setOnClickListener {
             try {
                 permissionNavigator.routeUser(findNavController())
             } catch (e: Exception) {
