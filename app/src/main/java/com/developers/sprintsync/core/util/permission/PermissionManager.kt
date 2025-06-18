@@ -1,12 +1,29 @@
 package com.developers.sprintsync.core.util.permission
 
+import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.developers.sprintsync.core.util.log.AppLogger
+import javax.inject.Inject
+
+/**
+ * Checks for location and notification permissions.
+ */
+class PermissionChecker @Inject constructor(private val context: Context) {
+
+    fun hasLocation() =
+        PermissionManager.hasPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+
+
+    fun hasNotification() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        PermissionManager.hasPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+    } else true
+}
 
 /**
  * Exception thrown when a required permission is missing.

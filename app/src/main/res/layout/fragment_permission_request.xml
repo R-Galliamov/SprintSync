@@ -30,6 +30,7 @@
         app:layout_constraintVertical_bias="0.25">
 
         <ImageView
+            android:id="@+id/iv_permission"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/imageSize.illustration.big.height"
             android:layout_marginStart="@dimen/space.large"
@@ -38,14 +39,16 @@
             android:src="@drawable/im_location_request" />
 
         <TextView
+            android:id="@+id/tv_title"
             style="@style/RegularText.Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space.large"
             android:gravity="center"
-            android:text="@string/location_request_title" />
+            android:text="@string/prms_location_request_title" />
 
         <TextView
+            android:id="@+id/tv_description"
             style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +56,7 @@
             android:layout_marginTop="@dimen/space.regular"
             android:layout_marginEnd="@dimen/space.large"
             android:gravity="center"
-            android:text="@string/location_request_description" />
+            android:text="@string/prms_location_request_description" />
 
     </LinearLayout>
 
@@ -76,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/allow" />
+            android:text="@string/prms_allow" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

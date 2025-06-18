@@ -1,6 +1,5 @@
 package com.developers.sprintsync.presentation.main
 
-import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.developers.sprintsync.R
+import com.developers.sprintsync.core.navigation.PermissionNavigator
 import com.developers.sprintsync.core.util.extension.showError
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.databinding.FragmentTabsBinding
-import com.developers.sprintsync.core.util.permission.PermissionManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -25,7 +24,10 @@ class TabsFragment : Fragment() {
     private val binding get() = checkNotNull(_binding) { R.string.binding_init_error }
 
     @Inject
-    lateinit var log: AppLogger // Injected logger
+    lateinit var log: AppLogger
+
+    @Inject
+    lateinit var permissionNavigator: PermissionNavigator
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,13 +101,7 @@ class TabsFragment : Fragment() {
     private fun setListeners() {
         binding.fabRun.setOnClickListener {
             try {
-                if (PermissionManager.hasPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    findNavController().navigate(R.id.action_tabsFragment_to_trackingFragment)
-                    log.i("Navigated to TrackingFragment")
-                } else {
-                    findNavController().navigate(R.id.action_tabsFragment_to_locationRequestFragment)
-                    log.i("Navigated to LocationRequestFragment")
-                }
+                permissionNavigator.routeUser(findNavController())
             } catch (e: Exception) {
                 log.e("FAB click error: ${e.message}", e)
                 showError(log, null)

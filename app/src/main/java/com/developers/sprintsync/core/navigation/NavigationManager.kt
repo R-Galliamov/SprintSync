@@ -3,21 +3,21 @@ package com.developers.sprintsync.core.navigation
 import androidx.navigation.NavController
 
 object NavigationManager {
-    private val navGraphTopManager = NavGraphTopManager()
+    private val navGraphMainManager = NavGraphMainManager()
 
     fun prepareRootNavController(
         isFirstRun: Boolean,
         rootNavController: NavController,
     ) {
-        val graph = rootNavController.navInflater.inflate(navGraphTopManager.getNavGraphId())
+        val graph = rootNavController.navInflater.inflate(navGraphMainManager.getNavGraphId())
         graph.setStartDestination(getStartDestination(isFirstRun))
         rootNavController.graph = graph
     }
 
     private fun getStartDestination(isFirstRun: Boolean): Int =
         if (isFirstRun) {
-            navGraphTopManager.getOnboardingDestination()
+            navGraphMainManager.getOnboardingDestination()
         } else {
-            navGraphTopManager.getTabsDestination()
+            navGraphMainManager.getTabsDestination()
         }
 }
