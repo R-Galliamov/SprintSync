@@ -140,20 +140,6 @@ class WorkoutsStatisticsFragment : Fragment() {
             log.d("Weekly statistics updated")
         }
 
-        // General statistics
-        observe(viewModel.workoutsGeneralStats) { stats ->
-            binding.generalStatisticsTable.apply {
-                tvWorkoutsTotalValue.text = stats.totalWorkouts
-                tvWorkoutDaysTotalValue.text = stats.totalWorkoutDays
-                tvDistanceTotalValue.text = stats.totalDistance
-                tvDurationTotalValue.text = stats.totalDuration
-                tvAvgPaceValue.text = stats.avgPace
-                tvBestPaceValue.text = stats.peakPace
-                tvCaloriesTotalValue.text = stats.totalCalories
-            }
-            log.d("General statistics updated")
-        }
-
         // Displayed data feedback
         observe(chartManager.displayData) {
             viewModel.onDisplayedDataChanged(it)

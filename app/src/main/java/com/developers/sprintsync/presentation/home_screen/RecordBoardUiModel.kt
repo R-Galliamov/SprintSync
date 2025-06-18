@@ -17,7 +17,7 @@ data class RecordBoardUiModel(
     val maxDuration: TimeParts,
 ) {
     companion object {
-        val Empty = RecordBoardUiModel(
+        val EMPTY = RecordBoardUiModel(
             totalWorkouts = "",
             totalDistance = "",
             totalCalories = "",
@@ -50,7 +50,7 @@ class RecordBoardCreator @Inject constructor(
                 maxDuration = maxDuration,
             )
         } catch (e: Exception) {
-            return RecordBoardUiModel.Empty
+            return RecordBoardUiModel.EMPTY
         }
     }
 }

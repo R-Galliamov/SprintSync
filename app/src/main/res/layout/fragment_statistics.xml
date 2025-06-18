@@ -93,32 +93,6 @@
             android:layout_marginEnd="@dimen/space.regular"
             android:background="?colorSecondary" />
 
-        <TextView
-            style="@style/RegularText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space.big"
-            android:text="@string/general_overview"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/shape.strokeWidth"
-            android:layout_marginStart="@dimen/space.regular"
-            android:layout_marginTop="@dimen/space.small"
-            android:layout_marginEnd="@dimen/space.regular"
-            android:background="?colorSecondary" />
-
-        <include
-            android:id="@+id/generalStatisticsTable"
-            layout="@layout/table_general_statistics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space.regular"
-            android:layout_marginTop="@dimen/space.small"
-            android:layout_marginEnd="@dimen/space.regular"
-            app:layout_constraintTop_toBottomOf="@+id/generalOverview" />
-
     </LinearLayout>
 
 </ScrollView>

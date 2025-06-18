@@ -68,10 +68,6 @@ constructor(
         MutableStateFlow(WorkoutsStatsUiModel.EMPTY)
     val workoutsWeekStats get() = _workoutsWeekStats.asStateFlow()
 
-    private var _workoutsGeneralStats: MutableStateFlow<WorkoutsStatsUiModel> =
-        MutableStateFlow(WorkoutsStatsUiModel.EMPTY)
-    val workoutsGeneralStats get() = _workoutsGeneralStats.asStateFlow()
-
     private val chartDataSet =
         MutableStateFlow(ChartDataSet.EMPTY)
 
@@ -112,10 +108,6 @@ constructor(
         viewModelScope.launch {
             getTracksFlowUseCase.tracks.collect { tracks ->
                 tracksState.update { tracks }
-
-                val stats = workoutsStatsCreator.create(tracks)
-                val uiStats = workoutsStatsUiModelFormatter.format(stats)
-                _workoutsGeneralStats.update { uiStats }
 
                 chartDataSet.update {
                     chartDataPreparer.prepareChartSet(tracks, goalsState.value, WeekDay.MONDAY)
