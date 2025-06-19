@@ -75,6 +75,6 @@ class SegmentMetricsCalculator @Inject constructor(
         val speedInMetersPerMinute =
             speedCalculator.calculateSpeed(durationMillis, distanceMeters, SpeedUnit.METERS_PER_MINUTES)
         val durationHours = TimeConverter.convertFromMillis(durationMillis, TimeConverter.TimeUnit.HOURS)
-        return caloriesCalculator.calculateCalories(weightKg, speedInMetersPerMinute, durationHours)
+        return caloriesCalculator.totalCalories(weightKg, speedInMetersPerMinute, durationHours)
     }
 }
