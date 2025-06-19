@@ -26,11 +26,11 @@ sealed interface SegmentBuilder {
         ): Result<Segment> =
             runCatching {
                 val durationMillis =
-                    calculator.calculateDurationInMillis(startData.timestampMillis, endData.timestampMillis)
-                val distanceMeters = calculator.calculateDistanceInMeters(startData.location, endData.location)
+                    calculator.calculateDurationMillis(startData.timestampMillis, endData.timestampMillis)
+                val distanceMeters = calculator.calculateDistanceMeters(startData.location, endData.location)
                 val pace = calculator.calculatePaceInMinPerKm(durationMillis, distanceMeters)
-                val burnedCalories =
-                    calculator.calculateBurnedCalories(userParameters.weightKilos, distanceMeters, durationMillis)
+                val calories =
+                    calculator.calculateCalories(userParameters.weightKilos, distanceMeters, durationMillis)
 
                 val segment =
                     Segment.Active(
@@ -42,7 +42,7 @@ sealed interface SegmentBuilder {
                         durationMillis = durationMillis,
                         distanceMeters = distanceMeters,
                         pace = pace,
-                        calories = burnedCalories,
+                        calories = calories,
                     )
 
                 SegmentValidator.validateOrThrow(segment)
@@ -63,7 +63,7 @@ sealed interface SegmentBuilder {
         ): Result<Segment> =
             runCatching {
                 val durationMillis =
-                    calculator.calculateDurationInMillis(startData.timestampMillis, endData.timestampMillis)
+                    calculator.calculateDurationMillis(startData.timestampMillis, endData.timestampMillis)
 
                 val segment =
                     Segment.Stationary(
