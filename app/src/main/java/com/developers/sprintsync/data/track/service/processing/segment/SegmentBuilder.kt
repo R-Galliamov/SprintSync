@@ -7,18 +7,38 @@ import com.developers.sprintsync.domain.track.use_case.validator.SegmentValidato
 import com.developers.sprintsync.domain.user_parameters.model.UserParameters
 import javax.inject.Inject
 
+/**
+ * Interface for building track segments from timed location data.
+ */
 sealed interface SegmentBuilder {
+    /**
+     * Builds a segment from start and end location data.
+     * @param id Unique identifier for the segment.
+     * @param startData Starting timed location of the segment.
+     * @param endData Ending timed location of the segment.
+     * @return Result containing the built [Segment] or an error if building fails.
+     */
     fun build(
         id: Long,
         startData: TimedLocation,
         endData: TimedLocation,
     ): Result<Segment>
 
+    /**
+     * Builds an active segment with metrics like distance, pace, and calories.
+     */
     class ActiveSegmentBuilder @Inject constructor(
         private val userParameters: UserParameters,
         private val calculator: SegmentMetricsCalculator,
     ) : SegmentBuilder {
 
+        /**
+         * Constructs an active segment with calculated metrics.
+         * @param id Unique identifier for the segment.
+         * @param startData Starting timed location.
+         * @param endData Ending timed location.
+         * @return Result containing the [Segment.Active] or an error if calculations or validation fail.
+         */
         override fun build(
             id: Long,
             startData: TimedLocation,
@@ -26,11 +46,11 @@ sealed interface SegmentBuilder {
         ): Result<Segment> =
             runCatching {
                 val durationMillis =
-                    calculator.calculateDurationInMillis(startData.timestampMillis, endData.timestampMillis)
-                val distanceMeters = calculator.calculateDistanceInMeters(startData.location, endData.location)
-                val pace = calculator.calculatePaceInMinPerKm(durationMillis, distanceMeters)
-                val burnedCalories =
-                    calculator.calculateBurnedCalories(userParameters.weightKilos, distanceMeters, durationMillis)
+                    calculator.calculateDurationMillis(startData.timestampMillis, endData.timestampMillis)
+                val distanceMeters = calculator.calculateDistanceMeters(startData.location, endData.location)
+                val pace = calculator.calculatePaceMPKm(durationMillis, distanceMeters)
+                val calories =
+                    calculator.calculateCalories(userParameters.weightKg, distanceMeters, durationMillis)
 
                 val segment =
                     Segment.Active(
@@ -42,7 +62,7 @@ sealed interface SegmentBuilder {
                         durationMillis = durationMillis,
                         distanceMeters = distanceMeters,
                         pace = pace,
-                        calories = burnedCalories,
+                        calories = calories,
                     )
 
                 SegmentValidator.validateOrThrow(segment)
@@ -51,11 +71,20 @@ sealed interface SegmentBuilder {
             }
     }
 
+    /**
+     * Builds a stationary segment with duration but no movement.
+     */
     class StationarySegmentBuilder @Inject constructor(
         private val calculator: SegmentMetricsCalculator
     ) : SegmentBuilder {
 
-
+        /**
+         * Constructs a stationary segment with duration.
+         * @param id Unique identifier for the segment.
+         * @param startData Starting timed location.
+         * @param endData Ending timed location.
+         * @return Result containing the [Segment.Stationary] or an error if calculations or validation fail.
+         */
         override fun build(
             id: Long,
             startData: TimedLocation,
@@ -63,7 +92,7 @@ sealed interface SegmentBuilder {
         ): Result<Segment> =
             runCatching {
                 val durationMillis =
-                    calculator.calculateDurationInMillis(startData.timestampMillis, endData.timestampMillis)
+                    calculator.calculateDurationMillis(startData.timestampMillis, endData.timestampMillis)
 
                 val segment =
                     Segment.Stationary(
