@@ -2,7 +2,7 @@ package com.developers.sprintsync.data.user_parameters.repository
 
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.user_parameters.source.UserParametersDataSource
-import com.developers.sprintsync.domain.user_parameters.model.UserParameters
+import com.developers.sprintsync.domain.user_profile.model.UserParameters
 import kotlinx.coroutines.flow.Flow
 
 /**

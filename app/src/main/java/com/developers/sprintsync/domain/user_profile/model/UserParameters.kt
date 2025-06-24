@@ -1,18 +1,19 @@
-package com.developers.sprintsync.domain.user_parameters.model
+package com.developers.sprintsync.domain.user_profile.model
 
 data class UserParameters(
-    val gender: Gender,
+    val sex: Sex,
     val birthDateTimestamp: Long,
-    val weightKilos: Float,
+    val weightKg: Float,
     val wellnessGoal: WellnessGoal,
     val useStatsPermission: Boolean,
 ) {
+
     companion object {
         val DEFAULT =
             UserParameters(
-                gender = Gender.MALE,
+                sex = Sex.MALE,
                 birthDateTimestamp = 946684800L,
-                weightKilos = 70.0f,
+                weightKg = 70.0f,
                 wellnessGoal = WellnessGoal.MAINTAIN_WEIGHT,
                 useStatsPermission = true,
             )

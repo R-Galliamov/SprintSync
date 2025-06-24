@@ -1,7 +1,7 @@
 package com.developers.sprintsync.data.goal.repository
 
 import com.developers.sprintsync.data.goal.source.DailyGoalDataSource
-import com.developers.sprintsync.domain.goal.model.DailyGoal
+import com.developers.sprintsync.domain.workouts_plan.model.DailyGoal
 import kotlinx.coroutines.flow.Flow
 
 interface DailyGoalRepository {

@@ -1,7 +1,7 @@
 package com.developers.sprintsync.data.goal.util
 
 import android.util.Log
-import com.developers.sprintsync.domain.goal.model.DailyGoal
+import com.developers.sprintsync.domain.workouts_plan.model.DailyGoal
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

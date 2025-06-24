@@ -1,7 +1,7 @@
-package com.developers.sprintsync.domain.user_parameters.use_case
+package com.developers.sprintsync.domain.user_profile.use_case
 
 import com.developers.sprintsync.data.user_parameters.repository.UserParametersRepository
-import com.developers.sprintsync.domain.user_parameters.model.UserParameters
+import com.developers.sprintsync.domain.user_profile.model.UserParameters
 import javax.inject.Inject
 
 class UpdateUserParametersUseCase

@@ -1,6 +1,6 @@
 package com.developers.sprintsync.presentation.goals_settings
 
-import com.developers.sprintsync.domain.goal.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
 import com.developers.sprintsync.core.util.KilometersToMetersConverter
 import com.developers.sprintsync.core.util.time.TimeConverter
 import javax.inject.Inject

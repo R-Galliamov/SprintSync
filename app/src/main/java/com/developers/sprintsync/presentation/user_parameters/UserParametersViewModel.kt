@@ -3,11 +3,11 @@ package com.developers.sprintsync.presentation.user_parameters
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.core.util.formatter.DateFormatter
-import com.developers.sprintsync.domain.user_parameters.model.Gender
-import com.developers.sprintsync.domain.user_parameters.model.UserParameters
-import com.developers.sprintsync.domain.user_parameters.model.WellnessGoal
-import com.developers.sprintsync.domain.user_parameters.use_case.UpdateUserParametersUseCase
-import com.developers.sprintsync.domain.user_parameters.use_case.UserParametersUseCase
+import com.developers.sprintsync.domain.user_profile.model.Sex
+import com.developers.sprintsync.domain.user_profile.model.UserParameters
+import com.developers.sprintsync.domain.user_profile.model.WellnessGoal
+import com.developers.sprintsync.domain.user_profile.use_case.UpdateUserParametersUseCase
+import com.developers.sprintsync.domain.user_profile.use_case.UserParametersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -28,7 +28,7 @@ class UserParametersViewModel
     }
 
 data class UserParametersDisplayMode(
-    val gender: Gender,
+    val sex: Sex,
     val birthDate: String,
     val birthDateTimestamp: Long,
     val weight: String,
@@ -42,14 +42,14 @@ data class UserParametersDisplayMode(
     private object Formatter {
         fun format(parameters: UserParameters): UserParametersDisplayMode =
             UserParametersDisplayMode(
-                gender = parameters.gender,
+                sex = parameters.sex,
                 birthDate =
                     DateFormatter.formatDate(
                         parameters.birthDateTimestamp,
                         DateFormatter.Pattern.DAY_MONTH_YEAR,
                     ),
                 birthDateTimestamp = parameters.birthDateTimestamp,
-                weight = parameters.weightKilos.toString(),
+                weight = parameters.weightKg.toString(),
                 wellnessGoal = parameters.wellnessGoal,
                 useStatsPermission = parameters.useStatsPermission,
             )

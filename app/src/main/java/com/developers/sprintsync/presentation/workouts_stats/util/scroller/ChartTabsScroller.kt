@@ -2,7 +2,7 @@ package com.developers.sprintsync.presentation.workouts_stats.util.scroller
 
 import android.view.View
 import com.developers.sprintsync.databinding.ProgressChartTabsScrollerBinding
-import com.developers.sprintsync.domain.goal.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
 
 class ChartTabsScroller {
     private val tabs = mutableMapOf<Metric, View>()

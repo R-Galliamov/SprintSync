@@ -2,7 +2,7 @@ package com.developers.sprintsync.presentation.workouts_stats.chart.data.process
 
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.ChartDataSet
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.WeekDay
-import com.developers.sprintsync.domain.goal.model.DailyGoal
+import com.developers.sprintsync.domain.workouts_plan.model.DailyGoal
 import com.developers.sprintsync.domain.track.model.Track
 import javax.inject.Inject
 

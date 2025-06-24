@@ -4,7 +4,7 @@ import com.developers.sprintsync.presentation.workouts_stats.chart.config.ChartC
 import com.developers.sprintsync.presentation.workouts_stats.chart.navigator.ChartNavigator
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.DisplayData
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues
-import com.developers.sprintsync.domain.goal.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
 import kotlinx.coroutines.flow.StateFlow
 
 abstract class ChartManager {

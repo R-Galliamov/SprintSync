@@ -2,12 +2,12 @@ package com.developers.sprintsync.presentation.goals_settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.developers.sprintsync.domain.goal.model.Metric
-import com.developers.sprintsync.domain.goal.use_case.GetLastDailyGoalsUseCase
-import com.developers.sprintsync.domain.goal.use_case.SaveDailyGoalUseCase
-import com.developers.sprintsync.domain.user_parameters.model.WellnessGoal
-import com.developers.sprintsync.domain.user_parameters.use_case.UpdateUserParametersUseCase
-import com.developers.sprintsync.domain.user_parameters.use_case.UserParametersUseCase
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.use_case.GetLastDailyGoalsUseCase
+import com.developers.sprintsync.domain.workouts_plan.use_case.SaveDailyGoalUseCase
+import com.developers.sprintsync.domain.user_profile.model.WellnessGoal
+import com.developers.sprintsync.domain.user_profile.use_case.UpdateUserParametersUseCase
+import com.developers.sprintsync.domain.user_profile.use_case.UserParametersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

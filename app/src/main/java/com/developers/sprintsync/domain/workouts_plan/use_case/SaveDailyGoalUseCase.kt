@@ -1,7 +1,7 @@
-package com.developers.sprintsync.domain.goal.use_case
+package com.developers.sprintsync.domain.workouts_plan.use_case
 
 import com.developers.sprintsync.data.goal.repository.DailyGoalRepository
-import com.developers.sprintsync.domain.goal.model.DailyGoal
+import com.developers.sprintsync.domain.workouts_plan.model.DailyGoal
 import javax.inject.Inject
 
 class SaveDailyGoalUseCase

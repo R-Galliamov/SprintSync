@@ -10,8 +10,8 @@ import com.developers.sprintsync.data.user_parameters.repository.UserParametersR
 import com.developers.sprintsync.data.user_parameters.repository.UserParametersRepositoryImpl
 import com.developers.sprintsync.data.user_parameters.source.LocalUserParametersDataSource
 import com.developers.sprintsync.data.user_parameters.source.UserParametersDataSource
-import com.developers.sprintsync.domain.user_parameters.model.UserParameters
-import com.developers.sprintsync.domain.user_parameters.use_case.UserParametersUseCase
+import com.developers.sprintsync.domain.user_profile.model.UserParameters
+import com.developers.sprintsync.domain.user_profile.use_case.UserParametersUseCase
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides

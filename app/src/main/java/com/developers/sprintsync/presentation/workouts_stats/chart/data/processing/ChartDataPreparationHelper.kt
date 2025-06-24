@@ -2,7 +2,7 @@ package com.developers.sprintsync.presentation.workouts_stats.chart.data.process
 
 import com.developers.sprintsync.core.util.extension.isMultipleOf
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues
-import com.developers.sprintsync.domain.goal.model.DailyGoal
+import com.developers.sprintsync.domain.workouts_plan.model.DailyGoal
 import com.developers.sprintsync.domain.track.model.Track
 import java.util.Calendar
 

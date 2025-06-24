@@ -4,7 +4,7 @@ import android.util.Log
 import com.developers.sprintsync.core.util.extension.setOrAdd
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.ChartDataSet
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues
-import com.developers.sprintsync.domain.goal.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.MetricsMap
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.TimestampMetricsMap
 import com.developers.sprintsync.core.util.timestamp.TimestampUtils

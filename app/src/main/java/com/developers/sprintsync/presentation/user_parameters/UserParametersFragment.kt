@@ -16,10 +16,10 @@ import com.developers.sprintsync.core.util.view.spinner.manager.SpinnerManager
 import com.developers.sprintsync.presentation.user_parameters.util.GenderToSpinnerMapper
 import com.developers.sprintsync.presentation.user_parameters.util.WellnessGoalToSpinnerMapper
 import com.developers.sprintsync.core.util.extension.setState
-import com.developers.sprintsync.domain.user_parameters.model.Gender
-import com.developers.sprintsync.domain.user_parameters.model.UserParameters
+import com.developers.sprintsync.domain.user_profile.model.Sex
+import com.developers.sprintsync.domain.user_profile.model.UserParameters
 import com.developers.sprintsync.presentation.user_parameters.util.DatePickerCreator
-import com.developers.sprintsync.domain.user_parameters.model.WellnessGoal
+import com.developers.sprintsync.domain.user_profile.model.WellnessGoal
 import com.developers.sprintsync.core.util.view.InputCardView
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,8 +31,8 @@ class UserParametersFragment : Fragment() {
     private var _binding: FragmentParametersBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
-    private var _genderSpinnerManager: SpinnerManager<Gender>? = null
-    private val genderSpinnerManager get() = checkNotNull(_genderSpinnerManager) { getString(R.string.spinner_manager_init_error) }
+    private var _sexSpinnerManager: SpinnerManager<Sex>? = null
+    private val genderSpinnerManager get() = checkNotNull(_sexSpinnerManager) { getString(R.string.spinner_manager_init_error) }
 
     private var _goalSpinnerManager: SpinnerManager<WellnessGoal>? = null
     private val wellnessGoalToSpinnerMapper get() = checkNotNull(_goalSpinnerManager) { getString(R.string.spinner_manager_init_error) }
@@ -73,9 +73,9 @@ class UserParametersFragment : Fragment() {
 
     private fun initGenderSpinnerManager() {
         val spinner = binding.userParameters.spinnerGender
-        val items = Gender.entries
+        val items = Sex.entries
         val mapper = GenderToSpinnerMapper()
-        _genderSpinnerManager = SpinnerManager(spinner, items, mapper)
+        _sexSpinnerManager = SpinnerManager(spinner, items, mapper)
     }
 
     private fun initWellnessGoalSpinnerManager() {
@@ -90,7 +90,7 @@ class UserParametersFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.parametersFlow.collect { parameters ->
                     _datePicker = createDatePickerIfNull(parameters.birthDateTimestamp)
-                    updateGenderUI(parameters.gender)
+                    updateGenderUI(parameters.sex)
                     updateBirthDateUI(parameters.birthDate)
                     updateWeightUI(parameters.weight)
                     updateWellnessGoalUI(parameters.wellnessGoal)
@@ -105,8 +105,8 @@ class UserParametersFragment : Fragment() {
             updateBirthDateUI(selectedDateFormatted)
         }
 
-    private fun updateGenderUI(gender: Gender) {
-        genderSpinnerManager.setSelectedItem(gender)
+    private fun updateGenderUI(sex: Sex) {
+        genderSpinnerManager.setSelectedItem(sex)
     }
 
     private fun updateWeightUI(weight: String) {
@@ -159,7 +159,7 @@ class UserParametersFragment : Fragment() {
     }
 
     private fun clearResources() {
-        _genderSpinnerManager = null
+        _sexSpinnerManager = null
         _goalSpinnerManager = null
         _datePicker = null
         _binding = null

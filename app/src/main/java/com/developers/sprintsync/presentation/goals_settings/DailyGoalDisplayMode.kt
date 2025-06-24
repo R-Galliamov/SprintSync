@@ -2,8 +2,8 @@ package com.developers.sprintsync.presentation.goals_settings
 
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
-import com.developers.sprintsync.domain.goal.model.DailyGoal
-import com.developers.sprintsync.domain.goal.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.model.DailyGoal
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
 
 /**
  * Data model for displaying a daily goal in the UI.

@@ -1,4 +1,4 @@
-package com.developers.sprintsync.domain.goal.model
+package com.developers.sprintsync.domain.workouts_plan.model
 
 data class DailyGoal(
     val id: Int = 0,

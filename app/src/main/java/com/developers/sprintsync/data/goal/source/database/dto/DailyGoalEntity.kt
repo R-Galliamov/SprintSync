@@ -2,8 +2,8 @@ package com.developers.sprintsync.data.goal.source.database.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.developers.sprintsync.domain.goal.model.Metric
-import com.developers.sprintsync.domain.goal.model.DailyGoal
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.model.DailyGoal
 
 @Entity
 data class DailyGoalEntity(

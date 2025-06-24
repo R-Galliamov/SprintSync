@@ -1,9 +1,9 @@
 package com.developers.sprintsync.presentation.workouts_stats.chart.data.processing
 
-import com.developers.sprintsync.domain.goal.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.MetricsMap
 import com.developers.sprintsync.core.util.timestamp.TimestampBuilder
-import com.developers.sprintsync.domain.goal.model.DailyGoal
+import com.developers.sprintsync.domain.workouts_plan.model.DailyGoal
 
 class DailyGoalProvider(
     private val goals: List<DailyGoal>,

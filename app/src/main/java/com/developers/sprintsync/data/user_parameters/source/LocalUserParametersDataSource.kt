@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.domain.user_parameters.model.UserParameters
+import com.developers.sprintsync.domain.user_profile.model.UserParameters
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

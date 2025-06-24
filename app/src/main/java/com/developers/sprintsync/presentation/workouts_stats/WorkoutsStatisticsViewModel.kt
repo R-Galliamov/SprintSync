@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.data.statistics.WorkoutsStatsCreator
-import com.developers.sprintsync.domain.goal.model.DailyGoal
-import com.developers.sprintsync.domain.goal.model.Metric
-import com.developers.sprintsync.domain.goal.use_case.GetDailyGoalsFlowUseCase
-import com.developers.sprintsync.domain.goal.use_case.GetDailyGoalsUpdateTimestampUseCase
+import com.developers.sprintsync.domain.workouts_plan.model.DailyGoal
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.use_case.GetDailyGoalsFlowUseCase
+import com.developers.sprintsync.domain.workouts_plan.use_case.GetDailyGoalsUpdateTimestampUseCase
 import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.domain.track.use_case.storage.GetTracksFlowUseCase
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.ChartConfigurationType

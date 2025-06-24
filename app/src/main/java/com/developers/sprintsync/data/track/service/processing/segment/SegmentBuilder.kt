@@ -4,7 +4,7 @@ import com.developers.sprintsync.data.track.service.processing.calculator.Segmen
 import com.developers.sprintsync.data.track.service.processing.session.TimedLocation
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.use_case.validator.SegmentValidator
-import com.developers.sprintsync.domain.user_parameters.model.UserParameters
+import com.developers.sprintsync.domain.user_profile.model.UserParameters
 import javax.inject.Inject
 
 /**

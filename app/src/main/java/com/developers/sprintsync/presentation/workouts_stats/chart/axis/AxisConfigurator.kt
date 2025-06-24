@@ -2,7 +2,7 @@ package com.developers.sprintsync.presentation.workouts_stats.chart.axis
 
 import com.developers.sprintsync.core.util.style_provider.textStyle.ResourceTextStyleProvider
 import com.developers.sprintsync.presentation.workouts_stats.chart.formatters.axis.SelectiveYAxisValueFormatter
-import com.developers.sprintsync.domain.goal.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis

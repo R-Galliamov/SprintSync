@@ -6,7 +6,7 @@ import com.developers.sprintsync.core.util.log.TimberAppLogger
 import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
 import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
-import com.developers.sprintsync.domain.goal.model.Metric
+import com.developers.sprintsync.domain.workouts_plan.model.Metric
 import com.developers.sprintsync.presentation.components.KilometerFormatter
 import kotlin.math.abs
 
