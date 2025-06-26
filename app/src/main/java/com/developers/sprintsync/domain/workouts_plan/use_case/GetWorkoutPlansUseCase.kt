@@ -7,7 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 class GetWorkoutPlansUseCase(val repository: WorkoutPlanRepository) {
 
-    operator fun invoke(forceRefresh: Boolean = false): Flow<Resource<List<WorkoutPlan>>> {
-        return repository.getWorkoutPlans(forceRefresh)
-    }
+    operator fun invoke(forceRefresh: Boolean = false): Flow<Resource<List<WorkoutPlan>>> = TODO()
 }

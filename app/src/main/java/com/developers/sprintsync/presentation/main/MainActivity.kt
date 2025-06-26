@@ -6,7 +6,10 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.databinding.ActivityMainBinding
 import com.developers.sprintsync.core.navigation.NavigationManager
 import com.developers.sprintsync.core.util.extension.getRootNavController
+import com.developers.sprintsync.core.util.log.AppLogger
+import com.developers.sprintsync.data.workout_plan.data_source.remote.FBWorkoutPlanDataSource
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 const val TAG = "My stack"
 
@@ -14,6 +17,9 @@ const val TAG = "My stack"
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+
+    @Inject
+    lateinit var log: AppLogger
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,3 +40,4 @@ class MainActivity : AppCompatActivity() {
         _binding = null
     }
 }
+

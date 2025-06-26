@@ -1,13 +1,13 @@
 package com.developers.sprintsync.data.track.service.processing.calculator.calories
 
-import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.METCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.METProvider
 import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.VO2CalculatorFactory
 
 /**
  * Calculates calories burned based on MET (Metabolic Equivalent of Task) values.
  */
 class CaloriesCalculator {
-    private val metCalculator = METCalculator(VO2CalculatorFactory())
+    private val metCalculator = METProvider(VO2CalculatorFactory())
 
     /**
      * Calculates calories burned using speed, duration, and user's weight.
@@ -17,14 +17,14 @@ class CaloriesCalculator {
      * @return Total calories burned.
      * @throws IllegalArgumentException if speedMPM is negative or durationHours is not positive.
      */
-    fun calculateCalories(
+    fun totalCalories(
         speedMPM: Float,
         durationHours: Float,
         weightKg: Float,
     ): Float {
         require(speedMPM >= 0) { "Speed must be non-negative" }
         require(durationHours > 0) { "Duration must be greater than zero" }
-        val met = metCalculator.calculateMet(speedMPM)
+        val met = metCalculator.metForSpeed(speedMPM)
         return calculateCaloriesFromMet(met, durationHours, weightKg)
     }
 
