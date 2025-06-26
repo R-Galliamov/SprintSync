@@ -1,102 +1,95 @@
 [versions]
-splashscreen = "1.1.0-rc01"
-lifecycle = "2.8.7"
-nav = "2.8.9"
-hilt-android = "2.54"
-play-services-maps = "19.2.0"
-play-services = "21.3.0"
-google-services = "4.4.2"
+appcompat = "1.7.0"
+coil = "2.7.0"
+constraintlayout = "2.2.1"
+core-ktx = "1.16.0"
+datastore = "1.1.4"
+detekt = "1.22.0"
+espresso = "3.6.1"
 firebase-bom = "33.15.0"
-firebase-perf = "1.4.2"
 firebase-crashlytics = "3.0.3"
-mpandroidchart = "v3.1.0"
-room = "2.7.0"
+firebase-perf = "1.4.2"
 gson = "2.11.0"
 gson-extras = "1.3.0"
-coil = "2.7.0"
-datastore = "1.1.4"
-core-ktx = "1.16.0"
-appcompat = "1.7.0"
-material = "1.12.0"
-constraintlayout = "2.2.1"
+google-services = "4.4.2"
+hilt-android = "2.54"
 junit-jupiter = "5.11.4"
-mockito = "5.15.2"
-espresso = "3.6.1"
-detekt = "1.22.0"
+kotlin-android = "2.0.21"
+ksp = "2.0.21-1.0.27"
 ktlint = "11.0.0"
+lifecycle = "2.8.7"
+material = "1.12.0"
+mockito = "5.15.2"
+mpandroidchart = "v3.1.0"
+nav = "2.8.9"
+play-services = "21.3.0"
+play-services-maps = "19.2.0"
+room = "2.7.0"
+splashscreen = "1.1.0-rc01"
 timber = "5.0.1"
 ulid-creator = "5.2.3"
 
 android-application = "8.9.3"
-kotlin-android = "2.0.21"
-ksp = "2.0.21-1.0.27"
-
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "android-application" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
-kotlin-android-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
-google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
+kotlin-android-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "nav" }
 parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin-android" }
+safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "nav" }
 
 [libraries]
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+# Core AndroidX & UI
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+splashscreen-lib = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 
+# Google & AndroidX Jetpack libs
+datastore-prefs = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-perf = { group = "com.google.firebase", name = "firebase-perf" }
+firebase_storage = { group = "com.google.firebase", name = "firebase-storage" }
+firebase_firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+play-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "play-services" }
+play-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "play-services-maps" }
+lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycle" }
+lifecycle-vm-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "nav" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "nav" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+
+# DI
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt-android" }
 
-lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycle" }
-lifecycle-vm-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-
-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "nav" }
-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "nav" }
-
-play-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "play-services-maps" }
-play-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "play-services" }
-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
-firebase-perf = { group = "com.google.firebase", name = "firebase-perf" }
-firebase_storage = {group = "com.google.firebase", name = "firebase-storage" }
-firebase_firestore = {group = "com.google.firebase", name = "firebase-firestore" }
-
-splashscreen-lib = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
-
-mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
-
-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-
-datastore-prefs = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
-
+# 3rd party
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 gson-extras = { group = "org.danilopianini", name = "gson-extras", version.ref = "gson-extras" }
-
-coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
-
+mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
-
 ulid_creator = { group = "com.github.f4b6a3", name = "ulid-creator", version.ref = "ulid-creator" }
 
+# Testing
+android-test-runner = { group = "de.mannodermaus.junit5", name = "android-test-runner", version.ref = "junit-jupiter" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+junit-ext = { group = "androidx.test.ext", name = "junit", version.ref = "junit-jupiter" }
+junit4 = { group = "junit", name = "junit", version.ref = "junit-jupiter" }
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
 junit-platform = { group = "org.junit.platform", name = "junit-platform-console", version.ref = "junit-jupiter" }
-
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
 mockito-junit = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }
-
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
-junit4 = { group = "junit", name = "junit", version.ref = "junit-jupiter" }
-junit-ext = { group = "androidx.test.ext", name = "junit", version.ref = "junit-jupiter" }
-android-test-runner = { group = "de.mannodermaus.junit5", name = "android-test-runner", version.ref = "junit-jupiter" }
