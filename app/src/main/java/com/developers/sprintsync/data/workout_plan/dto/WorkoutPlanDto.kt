@@ -17,11 +17,8 @@ data class WorkoutPlanDto(
 )
 
 sealed class PlanDayDto {
-    abstract val type: String
 
-    data object RestDto : PlanDayDto() {
-        override val type: String = WorkoutPlanDtoConstants.TYPE_REST
-    }
+    data object RestDto : PlanDayDto()
 
     data class WorkoutSessionDto(
         val id: Int,
@@ -29,7 +26,5 @@ sealed class PlanDayDto {
         val title: String,
         val description: String,
         val targets: Map<String, Float>
-    ) : PlanDayDto() {
-        override val type: String = WorkoutPlanDtoConstants.TYPE_WORKOUT_SESSION
-    }
+    ) : PlanDayDto()
 }

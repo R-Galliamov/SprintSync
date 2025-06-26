@@ -23,7 +23,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "de.mannodermaus.junit5.AndroidJUnit5Builder"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         detekt {
             toolVersion = libs.versions.detekt.get()
@@ -119,13 +119,28 @@ dependencies {
     implementation(libs.ulid.creator)
 
     // --- TESTS ---
-    testImplementation(libs.junit.jupiter.api)
+    androidTestImplementation(libs.androidx.arch.core.testing)
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.truth)
+
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.junit)
-    testRuntimeOnly(libs.junit.jupiter.engine)
 
+    // Junit-4
+    testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    testImplementation(libs.androidx.arch.core.testing)
+    testImplementation(libs.coroutines.test)
+
+    androidTestImplementation(libs.junit)
     androidTestImplementation(libs.android.test.runner)
-    androidTestImplementation(libs.espresso.core)
+
+    // Junit-5
     androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.junit5.android.runner)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.api)
+
+    androidTestImplementation(libs.espresso.core)
 }
