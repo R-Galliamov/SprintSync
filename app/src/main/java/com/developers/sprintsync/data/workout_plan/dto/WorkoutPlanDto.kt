@@ -8,23 +8,21 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = WorkoutPlanDtoConstants.TABLE_NAME)
 data class WorkoutPlanDto(
-    @PrimaryKey val id: String,
-    @SerializedName(FIELD_START_DATE) val startDate: Long,
-    val title: String,
-    val owner: String,
-    val description: String,
-    val days: List<PlanDayDto>
+    @PrimaryKey val id: String = "",
+    @SerializedName(FIELD_START_DATE) val startDate: Long = 0L,
+    val title: String = "",
+    val owner: String = "",
+    val description: String = "",
+    val days: List<PlanDayDto> = emptyList()
 )
 
 sealed class PlanDayDto {
-
     data object RestDto : PlanDayDto()
-
     data class WorkoutSessionDto(
-        val id: Int,
-        @SerializedName(FIELD_RUN_DAY) val runDay: Int,
-        val title: String,
-        val description: String,
-        val targets: Map<String, Float>
+        val id: Int = 0,
+        @SerializedName(FIELD_RUN_DAY) val runDay: Int = 0,
+        val title: String = "",
+        val description: String = "",
+        val targets: Map<String, Float> = emptyMap()
     ) : PlanDayDto()
 }
