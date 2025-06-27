@@ -4,7 +4,6 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory
-import org.json.JSONArray
 
 abstract class SealedTypeConverter<T : Any>(
     private val sealedClass: Class<T>
@@ -22,20 +21,15 @@ abstract class SealedTypeConverter<T : Any>(
 
     @TypeConverter
     fun fromList(items: List<T>): String {
-        val jsonArray = JSONArray()
-        for (item in items) {
-            val itemString = itemToJson(item)
-            jsonArray.put(itemString)
-        }
-        return jsonArray.toString()
+        val jsonStrings: List<String> = items.map { itemToJson(it) }
+        return gson.toJson(jsonStrings)
     }
 
     @TypeConverter
     fun toList(itemsString: String): List<T> {
-        val jsonArray = JSONArray(itemsString)
-        return (0 until jsonArray.length())
-            .map { jsonArray.getString(it) }
-            .map { gson.fromJson(it, sealedClass) }
+        val type = object : com.google.gson.reflect.TypeToken<List<String>>() {}.type
+        val jsonStrings: List<String> = gson.fromJson(itemsString, type)
+        return jsonStrings.map { gson.fromJson(it, sealedClass) }
     }
 
     private fun createAdapterFactory(): RuntimeTypeAdapterFactory<T> {
@@ -43,7 +37,7 @@ abstract class SealedTypeConverter<T : Any>(
 
         val nestedClasses = sealedClass.declaredClasses
 
-        for (nestedClass in nestedClasses) {
+        nestedClasses.forEach { nestedClass ->
             @Suppress("UNCHECKED_CAST")
             val subtype = nestedClass as Class<out T>
             val typeName = getTypeNameFromClass(nestedClass)
@@ -62,17 +56,9 @@ abstract class SealedTypeConverter<T : Any>(
 
     private fun getTypeNameFromClass(clazz: Class<*>): String {
         return clazz.simpleName
-            .removeSuffix("Dto")
-            .removeSuffix("Data")
-            .removeSuffix("Model")
-            .let { convertCamelCaseToSnakeCase(it) }
-    }
-
-    private fun convertCamelCaseToSnakeCase(input: String): String {
-        return input.replace(Regex("([a-z])([A-Z])"), "$1_$2").lowercase()
     }
 
     companion object {
-        const val CLASS_TYPE_FIELD = "__class_type"
+        const val CLASS_TYPE_FIELD = "class_type"
     }
 }
