@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
 import com.developers.sprintsync.core.util.extension.findTopNavController
 import com.developers.sprintsync.core.util.extension.getBitmapDescriptor
@@ -42,14 +42,17 @@ class WorkoutSessionFragment : Fragment() {
     private var _binding: FragmentWorkoutSessionBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
 
-    private val viewModel by viewModels<WorkoutSessionViewModel>()
+    private val viewModel by activityViewModels<WorkoutSessionViewModel>()
 
     private var _map: GoogleMap? = null
     private val map get() = checkNotNull(_map) { getString(R.string.map_init_error) }
 
-    private val serviceController by lazy { TrackingServiceController(requireContext(), log) }
+    private val serviceController by lazy {
+        log.i("TrackingServiceController - Initializing new instance for Fragment: ${this.hashCode()}")
+        TrackingServiceController(requireContext(), log)
+    }
 
-    private val trackingControllerView : TrackingController by lazy { binding.trackingController }
+    private val trackingControllerView: TrackingController by lazy { binding.trackingController }
 
     @Inject
     lateinit var mapCamera: MapCameraManager
@@ -80,8 +83,8 @@ class WorkoutSessionFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        log.d("onCreate - HashCode: ${this.hashCode()}")
         try {
-            log.d("onViewCreated")
             bindGeneralLoadingOverlay()
             setMapLoadingOverlay()
             setupTrackingPanel()
@@ -105,7 +108,7 @@ class WorkoutSessionFragment : Fragment() {
         try {
             log.d("Starting fragment, binding service")
             serviceController.bind(requireActivity()) { connectionResult ->
-                 viewModel.bindTo(connectionResult)
+                viewModel.bindTo(connectionResult)
             }
             serviceController.launchLocationUpdates()
             binding.mapView.onStart()

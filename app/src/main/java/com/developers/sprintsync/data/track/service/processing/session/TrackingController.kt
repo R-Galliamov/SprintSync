@@ -23,22 +23,29 @@ constructor(
 
     // Starts tracking session and initialize data processing
     fun startTracking() {
-        trackingDataManager.updateTrackingStatus(TrackingStatus.ACTIVE)
+        trackingDataManager.updateTrackingStatus(TrackingStatus.Active)
         sessionManager.start { trackingDataManager.updateTimedLocation(it) }
         log.i("Start tracking")
     }
 
     // Pauses tracking session
     fun pauseTracking() {
-        trackingDataManager.updateTrackingStatus(TrackingStatus.PAUSED)
-        sessionManager.pause()
+        trackingDataManager.updateTrackingStatus(TrackingStatus.Paused)
+        sessionManager.stop()
         log.i("Pause tracking")
     }
 
     // Stops tracking session
     fun stopTracking() {
-        trackingDataManager.updateTrackingStatus(TrackingStatus.COMPLETED)
+        trackingDataManager.updateTrackingStatus(TrackingStatus.Completed { resetTracking() })
         sessionManager.stop()
         log.i("Stop tracking")
+    }
+
+    // Resets tracking session
+    private fun resetTracking() {
+        trackingDataManager.resetTracking()
+        sessionManager.resetSession()
+        log.i("Reset tracking")
     }
 }

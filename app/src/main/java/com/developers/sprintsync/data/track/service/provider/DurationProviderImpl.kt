@@ -61,36 +61,41 @@ constructor(
             log.i("DurationProvider not running, skipping pause")
             return
         }
-
-        _isRunning = false
+        cancelJob()
         accumulatedTime += System.currentTimeMillis() - startTime
         startTime = INITIAL_TIME
-        job?.cancel()
-        job = null
         _durationMillisFlow.value = accumulatedTime
         log.i("DurationProvider paused, accumulated time: $accumulatedTime ms")
     }
 
-    // Resets duration tracking
-    override fun reset() {
+    // Stops duration tracking
+    private fun cancelJob() {
         _isRunning = false
         job?.cancel()
         job = null
+    }
 
+    // Stops duration tracking and resets accumulated time
+    override fun reset() {
+        cancelJob()
+        resetTimeValues()
         log.i("DurationProvider reset, accumulated time: $accumulatedTime ms")
-
-        accumulatedTime = INITIAL_TIME
-        startTime = INITIAL_TIME
-        _durationMillisFlow.value = INITIAL_TIME
     }
 
     // Starts a coroutine job to update duration flow
-    private fun startDurationUpdateJob() =  scope.launch {
+    private fun startDurationUpdateJob() = scope.launch {
         while (_isRunning) {
             val elapsed = System.currentTimeMillis() - startTime
             _durationMillisFlow.value = accumulatedTime + elapsed
             delay(UPDATE_INTERVAL)
         }
+    }
+
+    // Resets time values
+    private fun resetTimeValues() {
+        accumulatedTime = INITIAL_TIME
+        startTime = INITIAL_TIME
+        _durationMillisFlow.value = INITIAL_TIME
     }
 
     companion object {

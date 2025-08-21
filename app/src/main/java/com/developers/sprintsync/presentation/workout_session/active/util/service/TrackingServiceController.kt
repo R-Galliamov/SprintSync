@@ -52,7 +52,7 @@ class TrackingServiceController(
             ) {
                 val localBinder = binder as? TrackingService.LocalBinder
                 val service = localBinder?.getService()
-                val data = service?.data
+                val data = service?.dataHolder
 
                 if (data != null) {
                     isBound = true

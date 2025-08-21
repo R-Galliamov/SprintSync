@@ -69,10 +69,10 @@ class UiStateHandler @Inject constructor(
     fun handleStatus(status: TrackingStatus) {
         try {
             val newState = when (status) {
-                TrackingStatus.INITIALIZED -> UIState.Initialized
-                TrackingStatus.ACTIVE -> UIState.Active
-                TrackingStatus.PAUSED -> UIState.Paused
-                TrackingStatus.COMPLETED -> UIState.Completing
+                is TrackingStatus.Initialized -> UIState.Initialized
+                is TrackingStatus.Active -> UIState.Active
+                is TrackingStatus.Paused -> UIState.Paused
+                is TrackingStatus.Completed -> UIState.Completing
             }
 
             if (newState != _uiStateFlow.value) {

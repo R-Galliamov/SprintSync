@@ -23,13 +23,13 @@ constructor(
     scope: CoroutineScope,
     private val log: AppLogger
 ) {
-    private val trackingStatusFlow = MutableStateFlow(TrackingStatus.INITIALIZED)
+    private val trackingStatusFlow = MutableStateFlow<TrackingStatus>(TrackingStatus.Initialized)
     private val trackFlow = trackGenerator.trackFlow
 
     // Combines tracking status and track data into a single flow
     val trackingDataFlow: StateFlow<TrackingData> =
         combine(trackingStatusFlow, trackFlow) { status, track ->
-            if (status == TrackingStatus.PAUSED) trackGenerator.resetLastTimedLocation()
+            if (status is TrackingStatus.Paused) trackGenerator.resetLastTimedLocation()
             TrackingData(track, status)
         }.stateIn(
             scope = scope,
@@ -44,5 +44,9 @@ constructor(
     fun updateTrackingStatus(status: TrackingStatus) {
         trackingStatusFlow.update { status }
         log.i("Tracking status updated to: $status")
+    }
+
+    fun resetTracking() {
+        trackGenerator.resetTrack()
     }
 }

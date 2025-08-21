@@ -48,6 +48,11 @@ constructor(
     // for i.e. when service is paused and there is no need to create segment
     fun resetLastTimedLocation() = segmentService.resetData()
 
+    // Resets track to initial state
+    fun resetTrack() {
+        _trackFlow.update { Track.INITIAL }
+    }
+
     // Handles new segment by initializing or updating current track
     private fun handleNewSegment(segment: Segment) {
         if (isTrackInitialized().not()) {

@@ -55,7 +55,7 @@ class UiEventHandler @Inject constructor(
     suspend fun handleState(state: TrackingData) {
         try {
             when (state.status) {
-                TrackingStatus.COMPLETED -> handleCompleteState(state.track)
+                is TrackingStatus.Completed -> handleCompleteState(state.track)
                 else -> log.d("State ${state.status} received")
             }
         } catch (e: Exception) {

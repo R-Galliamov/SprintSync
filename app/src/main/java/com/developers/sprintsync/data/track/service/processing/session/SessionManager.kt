@@ -29,7 +29,7 @@ constructor(
     private var job: Job? = null
 
     // Combines location and duration into a session data flow
-    val sessionDataFlow: StateFlow<SessionData> =
+    val _sessionDataFlow: StateFlow<SessionData> =
         locationProvider.locationFlow
             .combine(durationProvider.durationMillisFlow) { location, duration ->
                 SessionData(location, duration)
@@ -38,6 +38,7 @@ constructor(
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = SessionData.INITIAL,
             )
+    val sessionDataFlow: StateFlow<SessionData> = _sessionDataFlow
 
     // Starts location updates
     fun launchLocationUpdates() = locationProvider.start()
@@ -61,33 +62,35 @@ constructor(
         job = startTimedLocationCollectionJob(onNewTimedLocation)
     }
 
-    fun pause() {
+    // Pauses tracking session data
+    fun stop() {
         if (!isRunning) {
             log.i("Session not running, skipping pause")
             return
         }
-
-        job?.cancel()
-        job = null
-        isRunning = false
+        cancelJob()
 
         durationProvider.pause()
         log.i("Session paused")
     }
 
-    fun stop() {
+    // Stops tracking session data
+    fun resetSession() {
         if (!isRunning) {
             log.i("Session not running, skipping stop")
             return
         }
-
-        job?.cancel()
-        job = null
-        isRunning = false
+        cancelJob()
 
         locationProvider.stop()
         durationProvider.reset()
         log.i("Session stopped and reset")
+    }
+
+    private fun cancelJob() {
+        job?.cancel()
+        job = null
+        isRunning = false
     }
 
     // Starts a coroutine job to collect and process location and duration data

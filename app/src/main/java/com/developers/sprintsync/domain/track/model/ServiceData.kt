@@ -5,15 +5,15 @@ data class TrackingData(
     val status: TrackingStatus,
 ) {
     companion object {
-        val INITIAL = TrackingData(track = Track.INITIAL, TrackingStatus.INITIALIZED)
+        val INITIAL = TrackingData(track = Track.INITIAL, TrackingStatus.Initialized)
     }
 }
 
-enum class TrackingStatus {
-    INITIALIZED,
-    ACTIVE,
-    PAUSED,
-    COMPLETED,
+sealed class TrackingStatus {
+    data object Initialized : TrackingStatus()
+    data object Active : TrackingStatus()
+    data object Paused : TrackingStatus()
+    data class Completed(val onFinish: () -> Unit) : TrackingStatus()
 }
 
 data class SessionData(

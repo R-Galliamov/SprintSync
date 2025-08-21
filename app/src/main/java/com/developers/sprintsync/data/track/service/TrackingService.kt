@@ -12,18 +12,16 @@ import com.developers.sprintsync.data.track.service.ServiceCommand.LAUNCH_LOCATI
 import com.developers.sprintsync.data.track.service.ServiceCommand.PAUSE_SERVICE
 import com.developers.sprintsync.data.track.service.ServiceCommand.START_SERVICE
 import com.developers.sprintsync.data.track.service.ServiceCommand.STOP_LOCATION_UPDATES
-import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationConfig
-import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationManager
 import com.developers.sprintsync.data.track.service.processing.session.SessionManager
 import com.developers.sprintsync.data.track.service.processing.session.TrackingController
 import com.developers.sprintsync.data.track.service.processing.session.TrackingDataManager
 import com.developers.sprintsync.domain.track.model.SessionData
 import com.developers.sprintsync.domain.track.model.TrackingData
+import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationConfig
+import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationManager
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -54,7 +52,7 @@ constructor(
     val sessionDataFlow: StateFlow<SessionData> = sessionManager.sessionDataFlow
 
     init {
-        log.i("Service Data Holder init")
+        log.i("TrackingServiceDataHolder HashCode: ${this.hashCode()} - INIT")
     }
 }
 
@@ -76,12 +74,17 @@ class TrackingService : LifecycleService() {
     lateinit var trackingController: TrackingController
 
     @Inject
-    lateinit var data: TrackingServiceDataHolder
+    lateinit var dataHolder: TrackingServiceDataHolder
 
     @Inject
     lateinit var log: AppLogger
 
     private val binder = LocalBinder()
+
+    override fun onCreate() {
+        super.onCreate()
+        log.i("HashCode: ${this.hashCode()} - ON CREATE. DataHolder HashCode: ${dataHolder.hashCode()}")
+    }
 
     /**
      * Handles incoming intents to control tracking operations.
@@ -96,6 +99,7 @@ class TrackingService : LifecycleService() {
         flags: Int,
         startId: Int,
     ): Int {
+        super.onStartCommand(intent, flags, startId)
         when (intent?.action) {
             LAUNCH_LOCATION_UPDATES -> launchLocationUpdates()
             STOP_LOCATION_UPDATES -> stopLocationUpdates()
@@ -103,7 +107,7 @@ class TrackingService : LifecycleService() {
             PAUSE_SERVICE -> pauseTracking()
             FINISH_SERVICE -> stopTracking()
         }
-        return super.onStartCommand(intent, flags, startId)
+        return START_STICKY
     }
 
     // Initiates location updates

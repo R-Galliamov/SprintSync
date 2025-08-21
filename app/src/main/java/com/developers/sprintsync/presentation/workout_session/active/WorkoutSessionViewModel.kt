@@ -1,10 +1,10 @@
 package com.developers.sprintsync.presentation.workout_session.active
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.core.util.log.AppLogger
+import com.developers.sprintsync.data.track.service.TrackingServiceDataHolder
 import com.developers.sprintsync.data.track_preview.util.cropper.BitmapCropper
 import com.developers.sprintsync.data.track_preview.util.cropper.TrackPreviewDimensions
 import com.developers.sprintsync.domain.track.model.SessionData
@@ -20,7 +20,7 @@ import com.developers.sprintsync.presentation.workout_session.active.util.state_
 import com.developers.sprintsync.presentation.workout_session.active.util.state_handler.ui.UiStateHandler
 import com.google.android.gms.maps.model.PolylineOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,6 +42,11 @@ constructor(
     private val bitmapCropper: BitmapCropper,
     private val log: AppLogger,
 ) : ViewModel() {
+
+    // Crucially, cancel any previous ongoing observations
+    // that were started by a previous call to bindTo (e.g., from an old fragment instance)
+    private var serviceObservationsJob: Job? = null
+
     val uiEventFlow = uiEventHandler.uiEventFlow
     val uiStateFlow = uiStateHandler.uiStateFlow
     val mapStateFlow = mapStateHandler.mapStateFlow
@@ -56,11 +61,9 @@ constructor(
     fun bindTo(connectionResult: ServiceConnectionResult) {
         when (connectionResult) {
             is ServiceConnectionResult.Success -> {
-                log.i("Service connection successful, observing session data")
-                observeWorkoutSessionData(
-                    connectionResult.dataHolder.sessionDataFlow,
-                    connectionResult.dataHolder.trackingDataFlow,
-                )
+                val dataHolder = connectionResult.dataHolder
+                resetServiceObservations(dataHolder)
+                log.d("Service connected. Setting up new observations. DataHolder: ${dataHolder.hashCode()}")
             }
 
             is ServiceConnectionResult.Failure -> {
@@ -89,28 +92,44 @@ constructor(
         }
     }
 
-    // Observes session and tracking data flows to update UI and map states
-    private fun observeWorkoutSessionData(
-        sessionDataFlow: StateFlow<SessionData>,
-        trackingDataFlow: StateFlow<TrackingData>,
-    ) {
-        viewModelScope.launch {
-            sessionDataFlow.collect { data ->
-                data.userLocation?.toLatLng()?.let { latLng ->
-                    mapStateHandler.emitLocation(latLng)
-                }
-                data.durationMillis.let { uiStateHandler.handleDuration(it) }
+    private fun resetServiceObservations(dataHolder: TrackingServiceDataHolder) {
+        serviceObservationsJob?.cancel()
+        serviceObservationsJob = null
+
+        serviceObservationsJob = viewModelScope.launch {
+            launch {
+                log.d("Starting collection of sessionDataFlow")
+                collectSessionDataFlow(dataHolder.sessionDataFlow)
+                log.d("Finished collection of sessionDataFlow")
+            }
+
+            launch {
+                log.d("Starting collection of trackingDataFlow")
+                collectTrackingDataFlow(dataHolder.trackingDataFlow)
+                log.d("Finished collection of trackingDataFlow")
             }
         }
-        viewModelScope.launch {
-            trackingDataFlow.collect { data ->
-                val polylines = retrievePolylines(data.track)
-                mapStateHandler.emitPolylines(polylines)
-                uiStateHandler.handleStatus(data.status)
-                uiStateHandler.handleTrack(data.track)
-                uiEventHandler.handleState(data)
-                log.d("Processed tracking data: status=${data.status}, segments=${data.track.segments.size}")
+    }
+
+    // Observes session data flow to update UI and map states
+    private suspend fun collectSessionDataFlow(sessionDataFlow: StateFlow<SessionData>) {
+        sessionDataFlow.collect { data ->
+            data.userLocation?.toLatLng()?.let { latLng ->
+                mapStateHandler.emitLocation(latLng)
             }
+            data.durationMillis.let { uiStateHandler.handleDuration(it) }
+        }
+    }
+
+    // Observes tracking data flow to update UI and map states
+    private suspend fun collectTrackingDataFlow(trackingDataFlow: StateFlow<TrackingData>) {
+        trackingDataFlow.collect { data ->
+            val polylines = retrievePolylines(data.track)
+            mapStateHandler.emitPolylines(polylines)
+            uiStateHandler.handleStatus(data.status)
+            uiStateHandler.handleTrack(data.track)
+            uiEventHandler.handleState(data)
+            log.d("Processed tracking data: status=${data.status}, segments=${data.track.segments.size}")
         }
     }
 
@@ -119,5 +138,11 @@ constructor(
         val polylines = polylineProcessor.generatePolylines(segments)
         log.i("Generated ${polylines.size} polylines for ${segments.size} segments")
         return polylines
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        serviceObservationsJob?.cancel()
+        serviceObservationsJob = null
     }
 }
