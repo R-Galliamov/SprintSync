@@ -28,7 +28,6 @@ fun PlanDayDto.toDomain(): PlanDay = when (this) {
     )
 }
 
-// WorkoutPlan -> WorkoutPlanDto
 fun WorkoutPlan.toDto(): WorkoutPlanDto = WorkoutPlanDto(
     id = id,
     startDate = startDate,
@@ -38,7 +37,6 @@ fun WorkoutPlan.toDto(): WorkoutPlanDto = WorkoutPlanDto(
     days = days.map { it.toDto() }
 )
 
-// PlanDay -> PlanDayDto
 fun PlanDay.toDto(): PlanDayDto = when (this) {
     is PlanDay.Rest -> PlanDayDto.RestDto
     is PlanDay.WorkoutSession -> PlanDayDto.WorkoutSessionDto(

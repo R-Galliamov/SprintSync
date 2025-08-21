@@ -4,6 +4,8 @@ import com.developers.sprintsync.data.track.service.processing.calculator.calori
 import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.VO2Calculator
 import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.VO2CalculatorFactory
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 class CaloriesCalculatingChainTest {
     private val vO2CalculatorFactory = VO2CalculatorFactory()
