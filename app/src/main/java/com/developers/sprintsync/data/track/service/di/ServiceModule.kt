@@ -3,6 +3,10 @@ package com.developers.sprintsync.data.track.service.di
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import com.developers.sprintsync.data.track.service.processing.calculator.DefaultDistanceCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.DistanceCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.PaceCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.SmoothedPaceCalculator
 import com.developers.sprintsync.data.track.service.processing.segment.SegmentGenerator
 import com.developers.sprintsync.data.track.service.processing.segment.SegmentGeneratorImpl
 import com.developers.sprintsync.data.track.service.provider.DurationProvider
@@ -32,6 +36,9 @@ abstract class ServiceBindingModule {
 
     @Binds
     abstract fun bindSegmentGenerator(impl: SegmentGeneratorImpl): SegmentGenerator
+
+    @Binds
+    abstract fun bindDistanceCalculator(impl: DefaultDistanceCalculator): DistanceCalculator
 }
 
 @Module
@@ -54,6 +61,13 @@ object ServiceModule {
             },
             PendingIntent.FLAG_UPDATE_CURRENT,
         )
+
+
+    @Provides
+    fun provideSmoothedPaceCalculator(paceCalculator: PaceCalculator): SmoothedPaceCalculator {
+        val windowSize = 10
+        return SmoothedPaceCalculator(paceCalculator, windowSize)
+    }
 
     /*
     @Provides

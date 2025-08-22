@@ -127,7 +127,7 @@ constructor(
     }
 
     private companion object {
-        const val LOCATION_UPDATE_INTERVAL = 5000L
+        const val LOCATION_UPDATE_INTERVAL = 1000L
         const val LOCATION_UPDATE_MIN_DISTANCE = 0F
     }
 }

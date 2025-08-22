@@ -27,13 +27,12 @@ interface SegmentGenerator {
 }
 
 /**
- * Implementation of [SegmentGenerator] using a segment builder factory and user weight.
+ * Implementation of [SegmentGenerator] using a segment builder factory.
  */
 class SegmentGeneratorImpl @Inject constructor(
     private val factory: SegmentBuilderFactory,
     private val log: AppLogger,
 ) : SegmentGenerator {
-
 
     override fun generateSegment(
         segmentId: Long,
@@ -46,7 +45,7 @@ class SegmentGeneratorImpl @Inject constructor(
         builder.build(segmentId, startData, endData).fold(
             onSuccess = { segment ->
                 onSuccess(segment)
-                log.i("Segment generated: id=$segmentId")
+                log.i("Segment generated: $segment")
             },
             onFailure = { e ->
                 log.e("Failed to generate segment id=$segmentId: ${e.message}", e)
