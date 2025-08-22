@@ -224,13 +224,15 @@ class WorkoutSessionFragment : Fragment() {
             try {
                 when (state) {
                     MapUiState.Loading -> loadingView.show()
-                    is MapUiState.LocationUpdated -> {
+                    is MapUiState.RedrawLocationMarker -> {
                         if (binding.mapLoadingOverlay.isVisible) loadingView.hide()
                         mapMarker.updateMarker(map, state.location)
                         mapCamera.moveCamera(state.location)
                     }
 
-                    is MapUiState.PolylinesUpdated -> state.polylines.forEach { map.addPolyline(it) }
+                    is MapUiState.DrawPolylines -> {
+                        state.polylines.forEach { map.addPolyline(it) }
+                    }
                 }
                 log.d("Map state updated: ${state.javaClass.simpleName}")
             } catch (e: Exception) {

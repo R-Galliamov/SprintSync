@@ -7,23 +7,25 @@ import javax.inject.Inject
 /**
  * Tracks processed segments and identifies new ones for processing.
  */
-class SegmentsTracker
-@Inject
-constructor(private val log: AppLogger) {
-    private val processedSegments = mutableListOf<Segment>()
+class SegmentsTracker @Inject constructor(private val log: AppLogger) {
+
+    private var processedSegmentsForCurrentPath = mutableSetOf<Segment>()
+
+    /*
+     * Tracks processed segments and identifies new ones for processing.
+     */
+    fun getUnprocessedSegments(allCurrentSegments: List<Segment>): List<Segment> {
+        if (allCurrentSegments.isEmpty()) return emptyList()
+        val newSegments = allCurrentSegments.filter { it !in processedSegmentsForCurrentPath }
+        log.d("Identified ${newSegments.size} new segments out of ${allCurrentSegments.size}. Processed before: ${processedSegmentsForCurrentPath.size}")
+        return newSegments
+    }
 
     /**
-     * Filters out new segments from the provided list and adds them to the processed list.
-     * @param segments The list of [Segment] objects to check.
-     * @return A list of new [Segment] objects that were not previously processed.
+     * Marks a list of segments as processed for the current path rendering..
      */
-    fun getNewSegmentsAndAdd(segments: List<Segment>): List<Segment> {
-        val newSegments =
-            segments.filter { segment ->
-                !processedSegments.contains(segment)
-            }
-        processedSegments.addAll(newSegments)
-        log.i("Processed ${newSegments.size} new segments, total processed: ${processedSegments.size}")
-        return newSegments
+    fun markSegmentsAsProcessed(segments: List<Segment>) {
+        processedSegmentsForCurrentPath.addAll(segments)
+        log.d("Marked ${segments.size} segments as processed. Total processed: ${processedSegmentsForCurrentPath.size}")
     }
 }

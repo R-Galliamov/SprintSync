@@ -7,8 +7,8 @@ import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.track.service.TrackingServiceDataHolder
 import com.developers.sprintsync.data.track_preview.util.cropper.BitmapCropper
 import com.developers.sprintsync.data.track_preview.util.cropper.TrackPreviewDimensions
+import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.SessionData
-import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.domain.track.model.TrackingData
 import com.developers.sprintsync.domain.track.model.toLatLng
 import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineProcessor
@@ -37,8 +37,8 @@ constructor(
     private val mapStateHandler: MapStateHandler,
     private val snapshotStateHandler: SnapshotStateHandler,
     private val trackPreviewDimensions: TrackPreviewDimensions,
-    private val segmentsTracker: SegmentsTracker,
     private val polylineProcessor: PolylineProcessor,
+    private val segmentsTracker: SegmentsTracker,
     private val bitmapCropper: BitmapCropper,
     private val log: AppLogger,
 ) : ViewModel() {
@@ -63,6 +63,10 @@ constructor(
             is ServiceConnectionResult.Success -> {
                 val dataHolder = connectionResult.dataHolder
                 resetServiceObservations(dataHolder)
+
+                val polylines = getWholePathPolylines(dataHolder.trackingDataFlow.value.track.segments)
+                mapStateHandler.emitPolylines(polylines)
+
                 log.d("Service connected. Setting up new observations. DataHolder: ${dataHolder.hashCode()}")
             }
 
@@ -124,7 +128,7 @@ constructor(
     // Observes tracking data flow to update UI and map states
     private suspend fun collectTrackingDataFlow(trackingDataFlow: StateFlow<TrackingData>) {
         trackingDataFlow.collect { data ->
-            val polylines = retrievePolylines(data.track)
+            val polylines = getUnprocessedPathPolylines(data.track.segments)
             mapStateHandler.emitPolylines(polylines)
             uiStateHandler.handleStatus(data.status)
             uiStateHandler.handleTrack(data.track)
@@ -133,11 +137,22 @@ constructor(
         }
     }
 
-    private fun retrievePolylines(track: Track): List<PolylineOptions> {
-        val segments = segmentsTracker.getNewSegmentsAndAdd(track.segments)
-        val polylines = polylineProcessor.generatePolylines(segments)
-        log.i("Generated ${polylines.size} polylines for ${segments.size} segments")
-        return polylines
+    // Generates polylines for unprocessed segments
+    private fun getUnprocessedPathPolylines(segments: List<Segment>): List<PolylineOptions> {
+        if (segments.isEmpty()) return emptyList()
+        val unprocessedSegments = segmentsTracker.getUnprocessedSegments(segments)
+        segmentsTracker.markSegmentsAsProcessed(unprocessedSegments)
+        val newPolylines = polylineProcessor.generatePolylines(unprocessedSegments)
+        log.d("Generated ${newPolylines.size} polylines for unprocessed segments")
+        return newPolylines
+    }
+
+    // Generates polylines for the whole track
+    private fun getWholePathPolylines(segments: List<Segment>): List<PolylineOptions> {
+        if (segments.isEmpty()) return emptyList()
+        segmentsTracker.markSegmentsAsProcessed(segments)
+        log.d("Generated ${segments.size} polylines for the whole track")
+        return polylineProcessor.generatePolylines(segments)
     }
 
     override fun onCleared() {

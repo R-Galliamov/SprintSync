@@ -11,9 +11,9 @@ import javax.inject.Inject
 sealed class MapUiState {
     data object Loading : MapUiState()
 
-    data class LocationUpdated(val location: LatLng) : MapUiState()
+    data class RedrawLocationMarker(val location: LatLng) : MapUiState()
 
-    data class PolylinesUpdated(val polylines: List<PolylineOptions>) : MapUiState()
+    data class DrawPolylines(val polylines: List<PolylineOptions>) : MapUiState()
 }
 
 @ViewModelScoped
@@ -22,10 +22,11 @@ class MapStateHandler @Inject constructor() {
     val mapStateFlow get() = _mapUiState.asStateFlow()
 
     fun emitLocation(location: LatLng) {
-        _mapUiState.update { MapUiState.LocationUpdated(location) }
+        _mapUiState.update { MapUiState.RedrawLocationMarker(location) }
     }
 
     fun emitPolylines(polylines: List<PolylineOptions>) {
-        _mapUiState.update { MapUiState.PolylinesUpdated(polylines) }
+        if (polylines.isEmpty()) return
+        _mapUiState.update { MapUiState.DrawPolylines(polylines) }
     }
 }
