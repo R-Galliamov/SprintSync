@@ -1,5 +1,6 @@
 package com.developers.sprintsync.tracking_session.presentation.tracking.util.polyline
 
+import com.developers.sprintsync.core.util.log.TimberAppLogger
 import com.developers.sprintsync.domain.track.model.Latitude
 import com.developers.sprintsync.domain.track.model.LocationModel
 import com.developers.sprintsync.domain.track.model.Longitude
@@ -15,7 +16,8 @@ class PolylineStatsWorkoutLogItemFormatterTest {
 
     @BeforeEach
     fun setUp() {
-        formatter = PolylineFormatter()
+        val logger = TimberAppLogger()
+        formatter = PolylineFormatter(logger)
     }
 
     @Test
