@@ -1,6 +1,7 @@
 package com.developers.sprintsync.tracking_session.presentation.tracking.util.polyline
 
 import android.graphics.Color
+import com.developers.sprintsync.core.util.log.TimberAppLogger
 import com.developers.sprintsync.domain.track.model.Latitude
 import com.developers.sprintsync.domain.track.model.LocationModel
 import com.developers.sprintsync.domain.track.model.Longitude
@@ -19,7 +20,7 @@ import org.junit.jupiter.api.Test
  */
 class PolylineProcessorTest {
     private lateinit var processor: PolylineProcessor
-    private val polylineFormatter = PolylineFormatter()
+    private val polylineFormatter = PolylineFormatter(TimberAppLogger())
     private val polylineOptionsCreator = PolylineOptionsCreator()
 
     @BeforeEach

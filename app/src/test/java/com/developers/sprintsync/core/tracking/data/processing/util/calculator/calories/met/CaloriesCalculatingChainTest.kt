@@ -1,10 +1,11 @@
 package com.developers.sprintsync.core.tracking.data.processing.util.calculator.calories.met
 
-import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.METCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.METProvider
 import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.VO2Calculator
 import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.VO2CalculatorFactory
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
 class CaloriesCalculatingChainTest {
@@ -49,8 +50,8 @@ class CaloriesCalculatingChainTest {
         expectedVO2: Float,
         expectedMET: Float,
     ) {
-        val metCalculator = METCalculator(VO2CalculatorFactory())
-        val actualMET = metCalculator.calculateMET(speedInMetersPerMinute)
+        val metCalculator = METProvider(VO2CalculatorFactory())
+        val actualMET = metCalculator.metForSpeed(speedInMetersPerMinute)
         assertWithTolerance(expectedMET, actualMET)
     }
 
