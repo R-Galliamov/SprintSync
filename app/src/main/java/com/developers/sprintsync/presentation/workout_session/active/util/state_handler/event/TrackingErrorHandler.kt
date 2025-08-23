@@ -3,7 +3,7 @@ package com.developers.sprintsync.presentation.workout_session.active.util.state
 import android.content.Context
 import com.developers.sprintsync.R
 import com.developers.sprintsync.data.track.service.TrackingServiceException
-import com.developers.sprintsync.domain.track.use_case.validator.TrackValidationException
+import com.developers.sprintsync.domain.track.validator.TrackValidationException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject

@@ -3,7 +3,7 @@ package com.developers.sprintsync.data.track.service.processing.segment
 import com.developers.sprintsync.data.track.service.processing.calculator.MetricsCalcOrchestrator
 import com.developers.sprintsync.data.track.service.processing.session.TimedLocation
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.use_case.validator.SegmentValidator
+import com.developers.sprintsync.domain.track.validator.Validator
 import com.developers.sprintsync.domain.user_profile.model.UserParameters
 import javax.inject.Inject
 
@@ -29,15 +29,16 @@ interface SegmentBuilder {
  * Builds a segment with metrics like distance, pace, and calories.
  */
 class DefaultSegmentBuilder @Inject constructor(
-    private val userParameters: UserParameters,
     val calculator: MetricsCalcOrchestrator,
+    private val userParameters: UserParameters,
+    private val validator: Validator<Segment>,
 ) : SegmentBuilder {
     /**
      * Constructs an active segment with calculated metrics.
      * @param id Unique identifier for the segment.
      * @param startData Starting timed location.
      * @param endData Ending timed location.
-     * @return Result containing the [Segment.Active] or an error if calculations or validation fail.
+     * @return Result containing the [Segment] or an error if calculations or validation fail.
      */
     override fun build(
         id: Long,
@@ -48,7 +49,7 @@ class DefaultSegmentBuilder @Inject constructor(
             val durationMillis =
                 calculator.calculateDurationMillis(startData.timestampMillis, endData.timestampMillis)
             val distanceMeters = calculator.calculateDistanceMeters(startData.location, endData.location)
-            val pace = calculator.calculatePaceMPKm(durationMillis, distanceMeters) ?: 0f // TODO find better solution
+            val pace = calculator.calculatePaceMinPerKm(durationMillis, distanceMeters)
             val calories =
                 calculator.calculateCalories(userParameters.weightKg, distanceMeters, durationMillis)
 
@@ -64,12 +65,6 @@ class DefaultSegmentBuilder @Inject constructor(
                 calories = calories,
             )
 
-            SegmentValidator.validateOrThrow(segment)
-
-            return Result.success(segment)
+            return validator.validate(segment)
         }
-
-    fun resetAccumulatedData() {
-        calculator.reset()
-    }
 }

@@ -55,10 +55,10 @@ class MetricsCalcOrchestrator @Inject constructor(
      * @param distanceMeters Distance of the segment in meters.
      * @return Pace in minutes per kilometer.
      */
-    fun calculatePaceMPKm(
+    fun calculatePaceMinPerKm(
         durationMillis: Long,
         distanceMeters: Float,
-    ): Float? {
+    ): Float {
         paceCalculator.addSegment(distanceMeters, durationMillis)
         return paceCalculator.getCurrentPaceMinPerKm()
     }
@@ -81,7 +81,7 @@ class MetricsCalcOrchestrator @Inject constructor(
         return caloriesCalculator.totalCalories(weightKg, speedInMetersPerMinute, durationHours)
     }
 
-    fun reset() {
+    fun resetAccumulatedData() {
         paceCalculator.reset()
     }
 }

@@ -8,7 +8,7 @@ import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.domain.track.model.TrackingData
 import com.developers.sprintsync.domain.track.model.TrackingStatus
-import com.developers.sprintsync.domain.track.use_case.validator.TrackValidator
+import com.developers.sprintsync.domain.track.validator.TrackValidator
 import com.developers.sprintsync.presentation.workout_session.active.util.polyline.PolylineFormatter
 import com.google.android.gms.maps.model.LatLngBounds
 import dagger.hilt.android.scopes.ViewModelScoped

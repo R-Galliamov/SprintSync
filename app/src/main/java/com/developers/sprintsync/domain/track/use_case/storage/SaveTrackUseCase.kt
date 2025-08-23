@@ -4,7 +4,7 @@ import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.track.repository.TrackRepository
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Track
-import com.developers.sprintsync.domain.track.use_case.validator.TrackValidator
+import com.developers.sprintsync.domain.track.validator.TrackValidator
 import javax.inject.Inject
 
 /**

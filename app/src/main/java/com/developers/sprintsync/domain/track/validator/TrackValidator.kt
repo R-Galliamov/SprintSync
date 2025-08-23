@@ -1,4 +1,4 @@
-package com.developers.sprintsync.domain.track.use_case.validator
+package com.developers.sprintsync.domain.track.validator
 
 import com.developers.sprintsync.domain.track.model.Track
 

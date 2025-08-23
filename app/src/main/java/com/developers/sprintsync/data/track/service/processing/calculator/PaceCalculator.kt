@@ -73,8 +73,7 @@ class DistanceBufferedPaceCalculator @Inject constructor(
     /**
      * Returns current pace in min/km, or null if not enough data
      */
-    fun getCurrentPaceMinPerKm(): Float? {
-        if (accumulatedDistance <= 0f) return null
+    fun getCurrentPaceMinPerKm(): Float {
         return paceCalculator.getPaceInMinPerKm(accumulatedTime, accumulatedDistance)
     }
 

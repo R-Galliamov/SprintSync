@@ -3,7 +3,7 @@ package com.developers.sprintsync.data.track.service.processing.segment
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.track.service.processing.session.TimedLocation
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.use_case.validator.SegmentValidationException
+import com.developers.sprintsync.domain.track.validator.SegmentValidationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull

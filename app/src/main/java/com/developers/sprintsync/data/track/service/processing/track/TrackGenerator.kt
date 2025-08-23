@@ -30,14 +30,14 @@ constructor(
 
     init {
         observeSegmentFlow()
-        log.i("TrackGenerator initialized")
+        log.d("TrackGenerator initialized")
     }
 
     // Observes segment data flow and processes new segments
     private fun observeSegmentFlow() = scope.launch {
         segmentService.data.collect {
             handleNewSegment(it)
-            log.i("New segment received: $it")
+            log.d("New segment received: $it")
         }
     }
 
@@ -66,14 +66,14 @@ constructor(
     private fun initializeTrack(segment: Segment) {
         val track = initializer.initializeTrack(segment)
         updateTrackFlow(track)
-        log.i("Track initialized with segment: $segment")
+        log.d("Track initialized with segment: $segment")
     }
 
     // Adds a new segment to the existing track
     private fun addSegmentToTrack(segment: Segment) {
         val track = trackCalculator.updateTrackWithSegment(track, segment)
         updateTrackFlow(track)
-        log.i("Track updated with new segment: $segment")
+        log.d("Track updated with new segment: $segment")
     }
 
     // Checks if track is initialized
@@ -82,6 +82,6 @@ constructor(
     // Updates track flow with new track data
     private fun updateTrackFlow(track: Track) {
         _trackFlow.update { track }
-        log.i("Track flow updated: $track")
+        log.d("Track flow updated: $track")
     }
 }
