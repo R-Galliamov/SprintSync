@@ -25,25 +25,14 @@ class PaceChartDataCreator @Inject constructor(
             }
 
             val data = mutableListOf<List<Entry>>()
-            var current = mutableListOf<Entry>()
+            val current = mutableListOf<Entry>()
             var maxPace = Float.NEGATIVE_INFINITY
             var minPace = Float.POSITIVE_INFINITY
 
             for (segment in segments) {
-                when (segment) {
-                    is Segment.Active -> {
-                        maxPace = maxOf(maxPace, segment.pace)
-                        minPace = minOf(minPace, segment.pace)
-                        current += segment.toEntry()
-                    }
-
-                    is Segment.Stationary -> {
-                        if (current.isNotEmpty()) {
-                            data += current.toList()
-                            current = mutableListOf()
-                        }
-                    }
-                }
+                maxPace = maxOf(maxPace, segment.pace)
+                minPace = minOf(minPace, segment.pace)
+                current += segment.toEntry()
             }
 
             if (current.isNotEmpty()) {
@@ -58,8 +47,8 @@ class PaceChartDataCreator @Inject constructor(
         }
     }
 
-    // Converts an active segment to a chart entry
-    private fun Segment.Active.toEntry(): Entry {
+    // Converts a segment to a chart entry
+    private fun Segment.toEntry(): Entry {
         try {
             require(startTime >= 0) { "Start time must be non-negative" }
             require(endTime > 0) { "End time must be greater than 0" }

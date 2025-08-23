@@ -4,11 +4,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.developers.sprintsync.data.track.service.processing.calculator.DefaultDistanceCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.DistanceBufferedPaceCalculator
 import com.developers.sprintsync.data.track.service.processing.calculator.DistanceCalculator
 import com.developers.sprintsync.data.track.service.processing.calculator.PaceCalculator
 import com.developers.sprintsync.data.track.service.processing.calculator.SmoothedPaceCalculator
-import com.developers.sprintsync.data.track.service.processing.segment.SegmentGenerator
-import com.developers.sprintsync.data.track.service.processing.segment.SegmentGeneratorImpl
+import com.developers.sprintsync.data.track.service.processing.segment.DefaultSegmentBuilder
+import com.developers.sprintsync.data.track.service.processing.segment.SegmentBuilder
 import com.developers.sprintsync.data.track.service.provider.DurationProvider
 import com.developers.sprintsync.data.track.service.provider.DurationProviderImpl
 import com.developers.sprintsync.data.track.service.provider.LocationProvider
@@ -27,6 +28,23 @@ import kotlinx.coroutines.SupervisorJob
 
 @Module
 @InstallIn(ServiceComponent::class)
+object CalculationsModule {
+
+    @Provides
+    fun provideSmoothedPaceCalculator(paceCalculator: PaceCalculator): SmoothedPaceCalculator {
+        val windowSize = 10
+        return SmoothedPaceCalculator(paceCalculator, windowSize)
+    }
+
+    @Provides
+    fun provideCurrentPaceCalculator(paceCalculator: PaceCalculator): DistanceBufferedPaceCalculator {
+        val bufferDistanceMeters = 200f
+        return DistanceBufferedPaceCalculator(paceCalculator, bufferDistanceMeters)
+    }
+}
+
+@Module
+@InstallIn(ServiceComponent::class)
 abstract class ServiceBindingModule {
     @Binds
     abstract fun bindLocationProvider(impl: LocationProviderImpl): LocationProvider
@@ -35,10 +53,10 @@ abstract class ServiceBindingModule {
     abstract fun bindDurationProvider(impl: DurationProviderImpl): DurationProvider
 
     @Binds
-    abstract fun bindSegmentGenerator(impl: SegmentGeneratorImpl): SegmentGenerator
+    abstract fun bindDistanceCalculator(impl: DefaultDistanceCalculator): DistanceCalculator
 
     @Binds
-    abstract fun bindDistanceCalculator(impl: DefaultDistanceCalculator): DistanceCalculator
+    abstract fun bindSegmentBuilder(impl: DefaultSegmentBuilder): SegmentBuilder
 }
 
 @Module
@@ -61,13 +79,6 @@ object ServiceModule {
             },
             PendingIntent.FLAG_UPDATE_CURRENT,
         )
-
-
-    @Provides
-    fun provideSmoothedPaceCalculator(paceCalculator: PaceCalculator): SmoothedPaceCalculator {
-        val windowSize = 10
-        return SmoothedPaceCalculator(paceCalculator, windowSize)
-    }
 
     /*
     @Provides

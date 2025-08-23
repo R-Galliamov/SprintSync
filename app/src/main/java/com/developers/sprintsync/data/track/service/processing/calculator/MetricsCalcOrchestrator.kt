@@ -11,8 +11,8 @@ import javax.inject.Inject
 /**
  * Calculates metrics for a track segment, such as duration, distance, pace, and calories burned.
  */
-class SegmentMetricsCalculator @Inject constructor(
-    private val paceCalculator: SmoothedPaceCalculator,
+class MetricsCalcOrchestrator @Inject constructor(
+    private val paceCalculator: DistanceBufferedPaceCalculator,
 ) {
     private val caloriesCalculator = CaloriesCalculator()
 
@@ -58,7 +58,10 @@ class SegmentMetricsCalculator @Inject constructor(
     fun calculatePaceMPKm(
         durationMillis: Long,
         distanceMeters: Float,
-    ): Float = paceCalculator.addSample(durationMillis, distanceMeters)
+    ): Float? {
+        paceCalculator.addSegment(distanceMeters, durationMillis)
+        return paceCalculator.getCurrentPaceMinPerKm()
+    }
 
     /**
      * Calculates calories burned during a segment based on user weight, distance, and duration.
@@ -76,5 +79,9 @@ class SegmentMetricsCalculator @Inject constructor(
             speedCalculator.calculateSpeed(durationMillis, distanceMeters, SpeedUnit.METERS_PER_MINUTES)
         val durationHours = TimeConverter.convertFromMillis(durationMillis, TimeConverter.TimeUnit.HOURS)
         return caloriesCalculator.totalCalories(weightKg, speedInMetersPerMinute, durationHours)
+    }
+
+    fun reset() {
+        paceCalculator.reset()
     }
 }

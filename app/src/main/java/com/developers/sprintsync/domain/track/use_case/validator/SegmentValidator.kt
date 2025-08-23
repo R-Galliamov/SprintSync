@@ -16,12 +16,10 @@ object SegmentValidator {
 
     fun validateOrThrow(data: Segment): Segment {
         if (data.durationMillis <= MIN_DURATION_MILLIS) throw SegmentValidationException.DurationTooShort()
-        if (data is Segment.Active) {
-            if (data.distanceMeters < MIN_DISTANCE_METERS) throw SegmentValidationException.DistanceTooShort()
-            if (data.pace <= MIN_PACE_MIN_PER_KM) throw SegmentValidationException.PaceTooFast()
-            if (data.pace >= MAX_PACE_MIN_PER_KM) throw SegmentValidationException.PaceTooSlow()
-            if (data.calories < MIN_CALORIES) throw SegmentValidationException.CaloriesNegative()
-        }
+        if (data.distanceMeters < MIN_DISTANCE_METERS) throw SegmentValidationException.DistanceTooShort()
+        if (data.pace <= MIN_PACE_MIN_PER_KM) throw SegmentValidationException.PaceTooFast()
+        if (data.pace >= MAX_PACE_MIN_PER_KM) throw SegmentValidationException.PaceTooSlow()
+        if (data.calories < MIN_CALORIES) throw SegmentValidationException.CaloriesNegative()
         return data
     }
 }

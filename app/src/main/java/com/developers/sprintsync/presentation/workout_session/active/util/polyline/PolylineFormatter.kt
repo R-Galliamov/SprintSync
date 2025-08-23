@@ -9,8 +9,6 @@ import javax.inject.Inject
 
 /**
  * A formatter that converts a list of segments into a list of polylines for map visualization.
- * Polylines are created by connecting the start and end locations of active segments, splitting into
- * separate polylines when there are gaps in location continuity or when a stationary segment is encountered.
  */
 class PolylineFormatter @Inject constructor(
     private val log: AppLogger
@@ -18,11 +16,6 @@ class PolylineFormatter @Inject constructor(
 
     /**
      * Formats a list of segments into a list of polylines.
-     *
-     * This method processes each segment in the input list. For active segments, it builds a polyline by
-     * connecting consecutive locations, splitting into a new polyline if the start location of an active
-     * segment does not match the end location of the previous segment. Stationary segments cause a break
-     * in the polyline, finalizing the current one.
      *
      * @param segments The list of segments to format.
      * @return A list of polylines, where each polyline is a list of LatLng coordinates.
@@ -37,20 +30,12 @@ class PolylineFormatter @Inject constructor(
         var lastProcessedEndLocation: LocationModel? = null
 
         segments.forEach { segment ->
-            when (segment) {
-                is Segment.Active -> {
-                    // If the start location doesn't match the last end location, start a new polyline
-                    if (segment.startLocation != lastProcessedEndLocation) {
-                        finalizePolyline(currentPolyline, polylines)
-                    }
-                    handleActiveSegment(segment, currentPolyline)
-                    lastProcessedEndLocation = segment.endLocation
-                }
-                is Segment.Stationary -> {
-                    // Stationary segment breaks the polyline continuity
-                    finalizePolyline(currentPolyline, polylines)
-                }
+            // If the start location doesn't match the last end location, start a new polyline
+            if (segment.startLocation != lastProcessedEndLocation) {
+                finalizePolyline(currentPolyline, polylines)
             }
+            handleSegment(segment, currentPolyline)
+            lastProcessedEndLocation = segment.endLocation
         }
         // Finalize any remaining points in the current polyline
         finalizePolyline(currentPolyline, polylines)
@@ -66,8 +51,8 @@ class PolylineFormatter @Inject constructor(
      * @param segment The active segment to process.
      * @param currentPolyline The current polyline being built.
      */
-    private fun handleActiveSegment(
-        segment: Segment.Active,
+    private fun handleSegment(
+        segment: Segment,
         currentPolyline: MutableList<LatLng>,
     ) {
         // Add the start location only if the polyline is empty

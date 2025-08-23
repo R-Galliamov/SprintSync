@@ -39,3 +39,51 @@ class SmoothedPaceCalculator @Inject constructor(
     }
 }
 
+/**
+ *  Calculates pace based on a rolling buffer of recent distance segments.
+ */
+class DistanceBufferedPaceCalculator @Inject constructor(
+    private val paceCalculator: PaceCalculator,
+    private val bufferDistanceMeters: Float = 200f
+) {
+
+    private data class PaceSegment(val distanceMeters: Float, val timeMillis: Long)
+
+    private val segments = mutableListOf<PaceSegment>()
+    private var accumulatedDistance = 0f
+    private var accumulatedTime = 0L
+
+    /**
+     * Adds a new segment of run
+     */
+    fun addSegment(coveredMeters: Float, durationMillis: Long) {
+        segments.add(PaceSegment(coveredMeters, durationMillis))
+        accumulatedDistance += coveredMeters
+        accumulatedTime += durationMillis
+
+        // Remove oldest segments if buffer exceeded
+        while (accumulatedDistance > bufferDistanceMeters && segments.isNotEmpty()) {
+            val first = segments.first()
+            accumulatedDistance -= first.distanceMeters
+            accumulatedTime -= first.timeMillis
+            segments.removeAt(0)
+        }
+    }
+
+    /**
+     * Returns current pace in min/km, or null if not enough data
+     */
+    fun getCurrentPaceMinPerKm(): Float? {
+        if (accumulatedDistance <= 0f) return null
+        return paceCalculator.getPaceInMinPerKm(accumulatedTime, accumulatedDistance)
+    }
+
+    /** Clears the buffer */
+    fun reset() {
+        segments.clear()
+        accumulatedDistance = 0f
+        accumulatedTime = 0L
+    }
+}
+
+

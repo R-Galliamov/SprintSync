@@ -33,43 +33,24 @@ class TrackCalculator @Inject constructor() {
     private fun calculateDistance(
         track: Track,
         newSegment: Segment,
-    ): Float =
-        when (newSegment) {
-            is Segment.Active -> track.distanceMeters + newSegment.distanceMeters
-            is Segment.Stationary -> track.distanceMeters
-        }
+    ): Float = track.distanceMeters + newSegment.distanceMeters
 
     private fun calculateAvgPace(
         track: Track,
         newSegment: Segment,
-    ): Float =
-        when (newSegment) {
-            is Segment.Active -> (track.avgPace + newSegment.pace) / 2
-            is Segment.Stationary -> track.avgPace
-        }
+    ): Float = (track.avgPace + newSegment.pace) / 2
 
     private fun calculateBestPace(
         track: Track,
         newSegment: Segment,
-    ): Float =
-        when (newSegment) {
-            is Segment.Active -> {
-                if (track.segments.filterIsInstance<Segment.Active>().isEmpty()) {
-                    newSegment.pace
-                } else {
-                    minOf(track.bestPace, newSegment.pace)
-                }
-            }
-
-            is Segment.Stationary -> track.bestPace
-        }
-
-    private fun calculateCalories(
-        track: Track,
-        newSegment: Segment,
-    ): Float =
-        when (newSegment) {
-            is Segment.Active -> track.calories + newSegment.calories
-            is Segment.Stationary -> track.calories
-        }
+    ): Float = if (track.segments.isEmpty()) {
+        newSegment.pace
+    } else {
+        minOf(track.bestPace, newSegment.pace)
+    }
 }
+
+private fun calculateCalories(
+    track: Track,
+    newSegment: Segment,
+): Float = track.calories + newSegment.calories

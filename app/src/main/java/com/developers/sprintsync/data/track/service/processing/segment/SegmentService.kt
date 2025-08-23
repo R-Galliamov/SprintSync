@@ -15,7 +15,7 @@ class SegmentService
 @Inject
 constructor(
     private val stateManager: SegmentGeneratingStateManager,
-    private val generator: SegmentGenerator,
+    private val segmentBuilder: SegmentBuilder,
     private val log: AppLogger,
 ) {
     private val _data = MutableStateFlow<Segment?>(null)
@@ -28,10 +28,11 @@ constructor(
             is SegmentGeneratingState.Initialized -> {
                 val startData = currentState.lastData
                 val segmentId = getNextSegmentId(_data.value)
-                generator.generateSegment(
-                    segmentId = segmentId,
+                segmentBuilder.build(
+                    id = segmentId,
                     startData = startData,
                     endData = data,
+                ).fold(
                     onSuccess = { segment ->
                         log.i("New Segment generated: $segment")
                         _data.update { segment }

@@ -41,12 +41,10 @@ class UiMetricsFormatter @Inject constructor(private val distanceFormatter: Dist
 
     // Retrieves pace from the last segment or returns invalid pace
     private fun getPace(segment: Segment?): String {
-        val pace = when (segment) {
-            is Segment.Active -> PaceUiFormatter.format(segment.pace, PaceUiFormatter.Pattern.TWO_DECIMALS)
-            else -> INVALID_PACE
-        }
-        return pace
+        return segment?.let { convertPace(it.pace) } ?: INVALID_PACE
     }
+
+    private fun convertPace(pace: Float) = PaceUiFormatter.format(pace, PaceUiFormatter.Pattern.TWO_DECIMALS)
 
     companion object {
         private const val INVALID_PACE = "-"
