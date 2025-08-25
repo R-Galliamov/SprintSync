@@ -13,6 +13,7 @@
         android:layout_marginEnd="@dimen/space.regular"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:paddingTop="@dimen/space.regular"
         android:paddingBottom="@dimen/space.special.fabPadding"
         tools:context=".user.ui.userProfile.StatisticsFragment">
 
