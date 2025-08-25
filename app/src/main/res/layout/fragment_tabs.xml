@@ -22,7 +22,7 @@
         android:id="@+id/bottomNavBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:backgroundTint="?colorPrimaryVariant"
+        app:backgroundTint="?colorPrimary"
         app:hideOnScroll="true"
         app:itemIconTint="@drawable/bottom_nav_selector"
         app:itemTextColor="@drawable/bottom_nav_selector"
@@ -34,8 +34,6 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabWorkoutSession"
         android:layout_width="wrap_content"
-
-
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/lag5"
         android:src="@drawable/ic_logo_48dp"
