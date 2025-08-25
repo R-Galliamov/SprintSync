@@ -27,8 +27,7 @@
         <!-- Fourthly brand color. -->
         <item name="colorFourthly">@color/red_400</item>
 
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:windowLightStatusBar">true</item>
 
         <!-- Window color. -->
         <item name="android:windowBackground">?colorPrimary</item>
