@@ -20,13 +20,9 @@ class GoalsSettingsViewModel
     @Inject
     constructor(
         getLastDailyGoalsUseCase: GetLastDailyGoalsUseCase,
-        private val userParametersUseCase: UserParametersUseCase,
-        private val updateUserParametersUseCase: UpdateUserParametersUseCase,
         private val saveDailyGoalUseCase: SaveDailyGoalUseCase,
     ) : ViewModel() {
         private var metricValuesMap = mutableMapOf<Metric, Float>()
-
-        val wellnessGoal: Flow<WellnessGoal> = userParametersUseCase().map { it.wellnessGoal }
 
         val dailyGoals =
             getLastDailyGoalsUseCase.invoke().map { goals ->
@@ -49,13 +45,6 @@ class GoalsSettingsViewModel
                         val dailyGoal = displayMode.toDailyGoal()
                         saveDailyGoalUseCase(dailyGoal)
                     }
-            }
-        }
-
-        fun saveWellnessGoal(goal: WellnessGoal) {
-            viewModelScope.launch {
-                val parameters = userParametersUseCase().first()
-                updateUserParametersUseCase(parameters.copy(wellnessGoal = goal))
             }
         }
 

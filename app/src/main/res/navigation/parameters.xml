@@ -9,5 +9,5 @@
         android:id="@+id/parametersFragment"
         android:name="com.developers.sprintsync.presentation.user_parameters.UserParametersFragment"
         android:label="ParametersFragment"
-        tools:layout="@layout/fragment_parameters" />
+        tools:layout="@layout/fragment_user_parameters" />
 </navigation>

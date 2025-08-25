@@ -29,12 +29,6 @@
             android:orientation="vertical">
 
             <include
-                android:id="@+id/generalGoal"
-                layout="@layout/item_general_goal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <include
                 android:id="@+id/dailyGoals"
                 layout="@layout/item_daily_goals"
                 android:layout_width="match_parent"

@@ -15,19 +15,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <include
-        android:id="@+id/generalGoal"
-        layout="@layout/item_general_goal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space.big" />
-
-    <include
-        android:id="@+id/cardSwitch"
-        layout="@layout/item_switch_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space.small" />
-
-
 </LinearLayout>

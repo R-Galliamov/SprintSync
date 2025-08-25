@@ -15,25 +15,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserParametersViewModel
-    @Inject
-    constructor(
-        userParametersUseCase: UserParametersUseCase,
-        private val updateUserParameters: UpdateUserParametersUseCase,
-    ) : ViewModel() {
-        val parametersFlow = userParametersUseCase().map { UserParametersDisplayMode.create(it) }
+@Inject
+constructor(
+    userParametersUseCase: UserParametersUseCase,
+    private val updateUserParameters: UpdateUserParametersUseCase,
+) : ViewModel() {
+    val parametersFlow = userParametersUseCase().map { UserParametersDisplayMode.create(it) }
 
-        fun saveParameters(parameters: UserParameters) {
-            viewModelScope.launch { updateUserParameters(parameters) }
-        }
+    fun saveParameters(parameters: UserParameters) {
+        viewModelScope.launch { updateUserParameters(parameters) }
     }
+}
 
 data class UserParametersDisplayMode(
     val sex: Sex,
     val birthDate: String,
     val birthDateTimestamp: Long,
     val weight: String,
-    val wellnessGoal: WellnessGoal,
-    val useStatsPermission: Boolean,
 ) {
     companion object {
         fun create(parameters: UserParameters) = Formatter.format(parameters)
@@ -50,8 +48,6 @@ data class UserParametersDisplayMode(
                     ),
                 birthDateTimestamp = parameters.birthDateTimestamp,
                 weight = parameters.weightKg.toString(),
-                wellnessGoal = parameters.wellnessGoal,
-                useStatsPermission = parameters.useStatsPermission,
             )
     }
 }
