@@ -21,6 +21,8 @@ constructor(
     private val _data = MutableStateFlow<Segment?>(null)
     val data = _data.asStateFlow().filterNotNull()
 
+    private val timedLocations: MutableList<TimedLocation> = mutableListOf()
+
     // Processes new location data to generate segments
     fun addTimedLocation(data: TimedLocation) {
         when (val currentState = stateManager.state.value) {

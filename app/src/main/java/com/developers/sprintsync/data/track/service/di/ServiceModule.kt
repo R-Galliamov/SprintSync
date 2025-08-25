@@ -3,8 +3,9 @@ package com.developers.sprintsync.data.track.service.di
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.track.service.processing.calculator.DefaultDistanceCalculator
-import com.developers.sprintsync.data.track.service.processing.calculator.DistanceBufferedPaceCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.DistanceBufferedPaceAnalyzer
 import com.developers.sprintsync.data.track.service.processing.calculator.DistanceCalculator
 import com.developers.sprintsync.data.track.service.processing.calculator.PaceCalculator
 import com.developers.sprintsync.data.track.service.processing.calculator.SmoothedPaceCalculator
@@ -37,9 +38,13 @@ object CalculationsModule {
     }
 
     @Provides
-    fun provideCurrentPaceCalculator(paceCalculator: PaceCalculator): DistanceBufferedPaceCalculator {
-        val bufferDistanceMeters = 200f
-        return DistanceBufferedPaceCalculator(paceCalculator, bufferDistanceMeters)
+    fun provideCurrentPaceAnalyzer(
+        paceCalculator: PaceCalculator,
+        smoothedPaceCalculator: SmoothedPaceCalculator,
+        log: AppLogger
+    ): DistanceBufferedPaceAnalyzer {
+        val bufferDistanceMeters = 10f
+        return DistanceBufferedPaceAnalyzer(paceCalculator, smoothedPaceCalculator, log, bufferDistanceMeters)
     }
 }
 
