@@ -1,10 +1,13 @@
 package com.developers.sprintsync.data.track.service.processing.track
 
+import com.developers.sprintsync.data.track.service.processing.calculator.PaceCalculator
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Track
 import javax.inject.Inject
 
-class TrackCalculator @Inject constructor() {
+class TrackCalculator @Inject constructor(
+    private val paceCalculator: PaceCalculator,
+) {
     fun updateTrackWithSegment(
         track: Track,
         segment: Segment,
@@ -38,7 +41,11 @@ class TrackCalculator @Inject constructor() {
     private fun calculateAvgPace(
         track: Track,
         newSegment: Segment,
-    ): Float = (track.avgPace + newSegment.pace) / 2
+    ): Float {
+        val distance = track.distanceMeters + newSegment.distanceMeters
+        val duration = track.durationMillis + newSegment.durationMillis
+        return paceCalculator.getPaceInMinPerKm(duration, distance)
+    }
 
     private fun calculateBestPace(
         track: Track,
