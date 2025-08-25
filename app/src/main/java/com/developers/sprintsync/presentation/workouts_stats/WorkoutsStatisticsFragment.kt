@@ -60,9 +60,7 @@ class WorkoutsStatisticsFragment : Fragment() {
             setupChartManager(binding.progressChart)
             setupRangeNavigator()
             setupStateObservers()
-            setupNavigationButtons()
             chartManager.presetChart(viewModel.chartConfig.value)
-            setupNavigationButtons()
             log.d("WorkoutsStatisticsFragment view created")
         } catch (e: Exception) {
             log.e("Error setting up WorkoutsStatisticsFragment", e)
@@ -144,26 +142,6 @@ class WorkoutsStatisticsFragment : Fragment() {
         observe(chartManager.displayData) {
             viewModel.onDisplayedDataChanged(it)
             log.d("Displayed chart data changed")
-        }
-
-        // Daily goals update date
-        observe(viewModel.dailyGoalsUpdateDate) { date ->
-            binding.btnUpdateGoals.tvUpdateTime.text = date
-            log.d("Daily goals update timestamp: $date")
-
-        }
-
-    }
-
-    private fun setupNavigationButtons() {
-        binding.btnUpdateGoals.root.setOnClickListener {
-            try {
-                findTopNavController().navigate(R.id.action_tabsFragment_to_updateGoalsFragment)
-                log.i("Navigated to update goals")
-            } catch (e: Exception) {
-                log.e("Error navigating to update goals", e)
-                showToast("Navigation error")
-            }
         }
     }
 

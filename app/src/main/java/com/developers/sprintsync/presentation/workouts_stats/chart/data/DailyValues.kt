@@ -1,19 +1,17 @@
 package com.developers.sprintsync.presentation.workouts_stats.chart.data
 
-sealed class DailyValues(
-    open val goal: Float,
-) {
+sealed class DailyValues {
     data class Present(
-        override val goal: Float,
         val actualValue: Float,
-    ) : DailyValues(goal) {
+    ) : DailyValues() {
         companion object {
-            val EMPTY = Present(0f, 0f)
+            val EMPTY = Present(0f)
         }
     }
 
-    data class Missing(
-        override val goal: Float,
-    ) : DailyValues(goal)
+    data object Missing : DailyValues()
 }
+
+fun List<DailyValues>.getActualValues(): List<Float> =
+    this.filterIsInstance<DailyValues.Present>().map { it.actualValue }
 

@@ -4,14 +4,13 @@ import android.content.Context
 import com.developers.sprintsync.R
 import com.developers.sprintsync.core.util.style_provider.AppThemeProvider
 import com.developers.sprintsync.core.util.style_provider.textStyle.ResourceTextStyleProvider
-import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues
 import com.developers.sprintsync.domain.workouts_plan.model.Metric
-import com.developers.sprintsync.presentation.workouts_stats.chart.config.LineConfiguration
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.BarConfiguration
+import com.developers.sprintsync.presentation.workouts_stats.chart.config.LineConfiguration
+import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues
 import com.developers.sprintsync.presentation.workouts_stats.chart.formatters.entries.CaloriesValueFormatter
 import com.developers.sprintsync.presentation.workouts_stats.chart.formatters.entries.DistanceValueFormatter
 import com.developers.sprintsync.presentation.workouts_stats.chart.formatters.entries.DurationValueFormatter
-import com.developers.sprintsync.presentation.workouts_stats.chart.data.calculator.ValuesCalculator
 import com.github.mikephil.charting.data.LineDataSet
 
 /**
@@ -24,7 +23,6 @@ class DataConfigFactory(
 ) {
     private val colors by lazy { AppThemeProvider(context).Color() }
     private val barStyleProvider by lazy { ResourceTextStyleProvider(context, R.style.ChartLabel_barLabel) }
-    private val calculator = ValuesCalculator()
 
     fun createBarConfiguration(
         metric: Metric,
@@ -58,7 +56,10 @@ class DataConfigFactory(
 
     private fun calculateMissingBarHeight(
         dailyValues: List<DailyValues>,
-    ): Float = calculator.calculateMinGoal(dailyValues) * MISSING_BAR_MULTIPLIER
+    ): Float {
+        val maxValue = dailyValues.filterIsInstance<DailyValues.Present>().maxOfOrNull { it.actualValue } ?: 0f
+        return maxValue * MISSING_BAR_MULTIPLIER
+    }
 
     companion object {
         private const val BAR_WIDTH = 0.5f

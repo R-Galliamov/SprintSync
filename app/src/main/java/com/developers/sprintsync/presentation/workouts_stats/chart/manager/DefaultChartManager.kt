@@ -2,19 +2,19 @@ package com.developers.sprintsync.presentation.workouts_stats.chart.manager
 
 import android.util.Log
 import android.view.View
-import com.developers.sprintsync.presentation.workouts_stats.chart.data.DisplayData
-import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues
 import com.developers.sprintsync.domain.workouts_plan.model.Metric
-import com.developers.sprintsync.presentation.workouts_stats.chart.navigator.NavigatorState
-import com.developers.sprintsync.presentation.workouts_stats.chart.navigator.RangePosition
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.ChartConfigurationType
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.ChartConfigurator
-import com.developers.sprintsync.presentation.workouts_stats.chart.data.calculator.ValuesCalculator
+import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues
+import com.developers.sprintsync.presentation.workouts_stats.chart.data.DisplayData
+import com.developers.sprintsync.presentation.workouts_stats.chart.data.getActualValues
+import com.developers.sprintsync.presentation.workouts_stats.chart.data.transformer.CombinedDataPreparer
 import com.developers.sprintsync.presentation.workouts_stats.chart.factory.DataConfigFactory
 import com.developers.sprintsync.presentation.workouts_stats.chart.factory.WeeklyConfigFactory
-import com.developers.sprintsync.presentation.workouts_stats.chart.data.transformer.CombinedDataPreparer
 import com.developers.sprintsync.presentation.workouts_stats.chart.interaction.ChartGestureListener
 import com.developers.sprintsync.presentation.workouts_stats.chart.navigator.ChartNavigator
+import com.developers.sprintsync.presentation.workouts_stats.chart.navigator.NavigatorState
+import com.developers.sprintsync.presentation.workouts_stats.chart.navigator.RangePosition
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.data.CombinedData
 import kotlinx.coroutines.CoroutineScope
@@ -40,8 +40,6 @@ class DefaultChartManager(
     override val navigator get() = checkNotNull(_navigator) { "Navigator is not initialized" }
     private var navigatorStateScope: CoroutineScope? = null
     private val dispatcher = Dispatchers.IO
-
-    private val calculator = ValuesCalculator()
 
     private var needToShowLoading = true
 
@@ -201,22 +199,23 @@ class DefaultChartManager(
                 .toMap()
 
         _displayData.value = DisplayData(
-                data = indexedDailyValues,
-                rangePosition = rangePosition,
-            )
+            data = indexedDailyValues,
+            rangePosition = rangePosition,
+        )
     }
 
     private fun scaleUpMaximum(displayedData: List<DailyValues>) {
         Log.d("ChartManagerImpl", "Chart maximum scaled up")
-        val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
-        configurator.scaleYAxisMaximum(maxVisibleDataValue)
+        val maxValue = getMaxValue(displayedData)
+        configurator.scaleYAxisMaximum(maxValue)
     }
 
     private fun scaleUpMaximumAnimated(
         displayedData: List<DailyValues>,
         onScalingEnd: () -> Unit,
     ) {
-        val maxVisibleDataValue = calculator.calculateMaxOfGoalAndActualValue(displayedData)
+        val maxVisibleDataValue =
+            displayedData.filterIsInstance<DailyValues.Present>().maxOfOrNull { it.actualValue } ?: 0f
         configurator.animateYAxisScaling(maxVisibleDataValue) {
             onScalingEnd()
         }
@@ -227,13 +226,22 @@ class DefaultChartManager(
         displayedData: List<DailyValues>,
     ) {
         Log.d("ChartManagerImpl", "Chart label updated")
-        val label = calculator.calculateLastGoal(displayedData)
+        val label = getAverage(displayedData)
         configurator.highlightYAxisLabel(metric, label)
     }
 
     private fun resetConfig() {
         Log.d("ChartManagerImpl", "Chart configuration reset")
         chartConfigurationType = null
+    }
+
+    private fun getAverage(displayedData: List<DailyValues>): Float {
+        val presentValues = displayedData.getActualValues()
+        return presentValues.average().toFloat()
+    }
+
+    private fun getMaxValue(displayedData: List<DailyValues>): Float {
+        return displayedData.getActualValues().maxOrNull() ?: 0f
     }
 
     companion object {

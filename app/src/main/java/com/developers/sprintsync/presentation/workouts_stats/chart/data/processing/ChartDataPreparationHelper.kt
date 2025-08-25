@@ -1,13 +1,13 @@
 package com.developers.sprintsync.presentation.workouts_stats.chart.data.processing
 
 import com.developers.sprintsync.core.util.extension.isMultipleOf
-import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues
-import com.developers.sprintsync.domain.workouts_plan.model.DailyGoal
 import com.developers.sprintsync.domain.track.model.Track
+import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues
 import java.util.Calendar
 
 class ChartDataPreparationHelper {
-    fun getEarliestTimestamp(tracks: List<Track>): Long? = tracks.minByOrNull { it.timestamp }.takeIf { it != null }?.timestamp
+    fun getEarliestTimestamp(tracks: List<Track>): Long? =
+        tracks.minByOrNull { it.timestamp }.takeIf { it != null }?.timestamp
 
     fun getWeekDayIndexFromTimestamp(timestamp: Long): Int {
         val calendar = Calendar.getInstance().apply { timeInMillis = timestamp }
@@ -19,15 +19,12 @@ class ChartDataPreparationHelper {
     fun getDailyValues(
         firstDataIndex: Int,
         startIndex: Int,
-        goals: List<DailyGoal>,
     ): List<DailyValues> {
-        val goalValue = goals.firstOrNull()?.value ?: 0f
-
         val dailyValues = mutableListOf<DailyValues>()
         if (hasMissingStartData(firstDataIndex, startIndex)) {
             val shiftDays = calculateShiftDays(firstDataIndex, startIndex)
             repeat(shiftDays) {
-                dailyValues.add(DailyValues.Missing(goalValue))
+                dailyValues.add(DailyValues.Missing)
             }
         }
         return dailyValues
@@ -35,10 +32,9 @@ class ChartDataPreparationHelper {
 
     fun fillDailyValuesToRange(
         dailyValuesList: MutableList<DailyValues>,
-        goal: Float,
     ): List<DailyValues> {
         while (!dailyValuesList.size.isMultipleOf(DAYS_IN_WEEK)) {
-            dailyValuesList.add(DailyValues.Missing(goal))
+            dailyValuesList.add(DailyValues.Missing)
         }
         return dailyValuesList
     }

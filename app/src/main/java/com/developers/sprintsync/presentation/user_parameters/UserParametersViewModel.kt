@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.core.util.formatter.DateFormatter
 import com.developers.sprintsync.domain.user_profile.model.Sex
 import com.developers.sprintsync.domain.user_profile.model.UserParameters
-import com.developers.sprintsync.domain.user_profile.model.WellnessGoal
 import com.developers.sprintsync.domain.user_profile.use_case.UpdateUserParametersUseCase
 import com.developers.sprintsync.domain.user_profile.use_case.UserParametersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

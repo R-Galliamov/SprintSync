@@ -148,8 +148,8 @@ class DataTransformer {
         }
 
         private fun transformToLineEntries(data: List<DailyValues>): List<BarEntry> =
-            data.mapIndexed { index, dailyValues ->
-                BarEntry(index.toFloat(), dailyValues.goal)
+            List(data.size) { index ->
+                BarEntry(index.toFloat(), 10f) // TODO replace with avg
             }
     }
 
