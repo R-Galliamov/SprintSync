@@ -2,7 +2,7 @@ package com.developers.sprintsync.data.track.service.processing.track
 
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.track.service.processing.segment.SegmentService
-import com.developers.sprintsync.data.track.service.processing.session.TimedLocation
+import com.developers.sprintsync.data.track.service.processing.session.TrackPoint
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Track
 import kotlinx.coroutines.CoroutineScope
@@ -42,7 +42,7 @@ constructor(
     }
 
     // Adds new timed location to segment service
-    fun addTimedLocation(data: TimedLocation) = segmentService.addTimedLocation(data)
+    fun addTimedLocation(point: TrackPoint) = segmentService.addTimedLocation(point)
 
     // Resets last timed location in segment service,
     // for i.e. when service is paused and there is no need to create segment

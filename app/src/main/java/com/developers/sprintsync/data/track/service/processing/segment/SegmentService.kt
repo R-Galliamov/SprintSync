@@ -1,7 +1,7 @@
 package com.developers.sprintsync.data.track.service.processing.segment
 
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.data.track.service.processing.session.TimedLocation
+import com.developers.sprintsync.data.track.service.processing.session.TrackPoint
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.validator.SegmentValidationException
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,27 +21,27 @@ constructor(
     private val _data = MutableStateFlow<Segment?>(null)
     val data = _data.asStateFlow().filterNotNull()
 
-    private val timedLocations: MutableList<TimedLocation> = mutableListOf()
+    private val trackPoints: MutableList<TrackPoint> = mutableListOf()
 
     // Processes new location data to generate segments
-    fun addTimedLocation(data: TimedLocation) {
+    fun addTimedLocation(point: TrackPoint) {
         when (val currentState = stateManager.state.value) {
-            is SegmentGeneratingState.Uninitialized -> stateManager.initializeState(data)
+            is SegmentGeneratingState.Uninitialized -> stateManager.initializeState(point)
             is SegmentGeneratingState.Initialized -> {
-                val startData = currentState.lastData
+                val startPoint = currentState.lastPoint
                 val segmentId = getNextSegmentId(_data.value)
                 segmentBuilder.build(
                     id = segmentId,
-                    startData = startData,
-                    endData = data,
+                    startPoint = startPoint,
+                    endPoint = point,
                 ).fold(
                     onSuccess = { segment ->
                         log.i("New Segment generated: $segment")
                         _data.update { segment }
-                        stateManager.updateState(data)
+                        stateManager.updateState(point)
                     },
                     onFailure = { e ->
-                        handleException(e, data)
+                        handleException(e, point)
                     },
                 )
             }
@@ -60,7 +60,7 @@ constructor(
     // Handles errors during segment generation
     private fun handleException(
         e: Throwable,
-        data: TimedLocation,
+        data: TrackPoint,
     ) {
         log.e("Error generating segment: ${e.message}", e)
         if (e is SegmentValidationException.PaceTooFast) {

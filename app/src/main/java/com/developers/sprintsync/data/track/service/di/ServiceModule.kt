@@ -5,10 +5,10 @@ import android.content.Context
 import android.content.Intent
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.track.service.processing.calculator.DefaultDistanceCalculator
-import com.developers.sprintsync.data.track.service.processing.calculator.DistanceBufferedPaceAnalyzer
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.DistanceBufferedPaceAnalyzer
 import com.developers.sprintsync.data.track.service.processing.calculator.DistanceCalculator
-import com.developers.sprintsync.data.track.service.processing.calculator.PaceCalculator
-import com.developers.sprintsync.data.track.service.processing.calculator.SmoothedPaceCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.PaceCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.SmoothedPaceCalculator
 import com.developers.sprintsync.data.track.service.processing.segment.DefaultSegmentBuilder
 import com.developers.sprintsync.data.track.service.processing.segment.SegmentBuilder
 import com.developers.sprintsync.data.track.service.provider.DurationProvider

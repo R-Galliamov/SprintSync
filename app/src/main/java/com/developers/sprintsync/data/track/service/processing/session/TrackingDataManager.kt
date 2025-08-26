@@ -38,7 +38,7 @@ constructor(
         )
 
     // Updates track with new timed location
-    fun updateTimedLocation(data: TimedLocation) = trackGenerator.addTimedLocation(data)
+    fun updateTimedLocation(data: TrackPoint) = trackGenerator.addTimedLocation(data)
 
     // Updates tracking status
     fun updateTrackingStatus(status: TrackingStatus) {

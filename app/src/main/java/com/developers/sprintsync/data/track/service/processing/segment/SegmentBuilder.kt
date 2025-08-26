@@ -1,7 +1,7 @@
 package com.developers.sprintsync.data.track.service.processing.segment
 
 import com.developers.sprintsync.data.track.service.processing.calculator.MetricsCalcOrchestrator
-import com.developers.sprintsync.data.track.service.processing.session.TimedLocation
+import com.developers.sprintsync.data.track.service.processing.session.TrackPoint
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.validator.Validator
 import com.developers.sprintsync.domain.user_profile.model.UserParameters
@@ -14,14 +14,14 @@ interface SegmentBuilder {
     /**
      * Builds a segment from start and end location data.
      * @param id Unique identifier for the segment.
-     * @param startData Starting timed location of the segment.
-     * @param endData Ending timed location of the segment.
+     * @param startPoint Starting timed location of the segment.
+     * @param endPoint Ending timed location of the segment.
      * @return Result containing the built [Segment] or an error if building fails.
      */
     fun build(
         id: Long,
-        startData: TimedLocation,
-        endData: TimedLocation,
+        startPoint: TrackPoint,
+        endPoint: TrackPoint,
     ): Result<Segment>
 }
 
@@ -36,29 +36,29 @@ class DefaultSegmentBuilder @Inject constructor(
     /**
      * Constructs an active segment with calculated metrics.
      * @param id Unique identifier for the segment.
-     * @param startData Starting timed location.
-     * @param endData Ending timed location.
+     * @param startPoint Starting timed location.
+     * @param endPoint Ending timed location.
      * @return Result containing the [Segment] or an error if calculations or validation fail.
      */
     override fun build(
         id: Long,
-        startData: TimedLocation,
-        endData: TimedLocation,
+        startPoint: TrackPoint,
+        endPoint: TrackPoint,
     ): Result<Segment> =
         runCatching {
             val durationMillis =
-                calculator.calculateDurationMillis(startData.timestampMillis, endData.timestampMillis)
-            val distanceMeters = calculator.calculateDistanceMeters(startData.location, endData.location)
-            val pace = calculator.calculatePaceMinPerKm(durationMillis, distanceMeters)
+                calculator.calculateDurationMillis(startPoint.timeMs, endPoint.timeMs)
+            val distanceMeters = calculator.calculateDistanceMeters(startPoint.location, endPoint.location)
+            val pace = calculator.getCurrentPaceMinPerKm(durationMillis, distanceMeters)
             val calories =
                 calculator.calculateCalories(userParameters.weightKg, distanceMeters, durationMillis)
 
             val segment = Segment(
                 id = id,
-                startLocation = startData.location,
-                startTime = startData.timestampMillis,
-                endLocation = endData.location,
-                endTime = endData.timestampMillis,
+                startLocation = startPoint.location,
+                startTime = startPoint.timeMs,
+                endLocation = endPoint.location,
+                endTime = endPoint.timeMs,
                 durationMillis = durationMillis,
                 distanceMeters = distanceMeters,
                 pace = pace,

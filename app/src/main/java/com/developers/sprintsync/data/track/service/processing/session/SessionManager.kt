@@ -47,7 +47,7 @@ constructor(
     fun stopLocationUpdates() = locationProvider.stop()
 
     // Begins tracking session data
-    fun start(onNewTimedLocation: (timedLocation: TimedLocation) -> Unit) {
+    fun start(onNewTimedLocation: (trackPoint: TrackPoint) -> Unit) {
         if (isRunning) {
             log.i("Session already running, skipping start")
             return
@@ -94,12 +94,12 @@ constructor(
     }
 
     // Starts a coroutine job to collect and process location and duration data
-    private fun startTimedLocationCollectionJob(onNewTimedLocation: (timedLocation: TimedLocation) -> Unit): Job =
+    private fun startTimedLocationCollectionJob(onNewTimedLocation: (trackPoint: TrackPoint) -> Unit): Job =
         scope.launch {
             try {
                 locationProvider.locationFlow
                     .withLatestConcat(durationProvider.durationMillisFlow) { location, duration ->
-                        TimedLocation(location, duration)
+                        TrackPoint(location, duration)
                     }.collect { timedLocation ->
                         if (isRunning) {
                             log.i("New timed location: $timedLocation")

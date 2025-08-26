@@ -1,6 +1,6 @@
 package com.developers.sprintsync.data.track.service.processing.track
 
-import com.developers.sprintsync.data.track.service.processing.calculator.PaceCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.PaceCalculator
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.model.Track
 import javax.inject.Inject
