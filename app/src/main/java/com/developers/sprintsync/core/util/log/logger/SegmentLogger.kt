@@ -10,7 +10,7 @@ object SegmentLogger {
 
         val segmentDetails =
             segments.joinToString(separator = " | ") {
-                "ID:${it.id} [(${it.startLocation.latitude.value},${it.startLocation.longitude.value}) -> (${it.endLocation.latitude.value},${it.endLocation.longitude.value})]"
+                "ID:${it.id} [(${it.startLocation.lat.value},${it.startLocation.lon.value}) -> (${it.endLocation.lat.value},${it.endLocation.lon.value})]"
             }
         Log.d(TAG, "Segments: $segmentDetails")
     }
