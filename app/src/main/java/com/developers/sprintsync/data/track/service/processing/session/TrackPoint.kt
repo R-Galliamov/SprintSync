@@ -6,4 +6,5 @@ import com.developers.sprintsync.domain.track.model.LocationModel
 data class TrackPoint(
     val location: LocationModel,
     val timeMs: Long,
+    val accuracyM: Float? = null
 )

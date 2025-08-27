@@ -1,6 +1,7 @@
 package com.developers.sprintsync.data.track.service.processing.segment
 
 import com.developers.sprintsync.core.util.log.AppLogger
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.RunPaceAnalyzer
 import com.developers.sprintsync.data.track.service.processing.session.TrackPoint
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.validator.SegmentValidationException
@@ -16,6 +17,7 @@ class SegmentService
 constructor(
     private val stateManager: SegmentGeneratingStateManager,
     private val segmentBuilder: SegmentBuilder,
+    private val paceAnalyzer: RunPaceAnalyzer,
     private val log: AppLogger,
 ) {
     private val _data = MutableStateFlow<Segment?>(null)
@@ -51,6 +53,7 @@ constructor(
     // Resets segment data and state
     fun resetData() {
         _data.update { null }
+        paceAnalyzer.reset()
         stateManager.reset()
         log.i("Data and state reset")
     }

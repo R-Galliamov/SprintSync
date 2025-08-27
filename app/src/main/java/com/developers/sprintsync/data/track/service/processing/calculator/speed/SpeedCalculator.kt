@@ -1,6 +1,8 @@
 package com.developers.sprintsync.data.track.service.processing.calculator.speed
 
-class SpeedCalculator {
+import javax.inject.Inject
+
+class SpeedCalculator @Inject constructor() {
     private val factory = SpeedCalculatorFactory()
 
     fun calculateSpeed(

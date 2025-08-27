@@ -26,7 +26,7 @@ ksp = "2.0.21-1.0.27"
 ktlint = "11.0.0"
 lifecycle = "2.8.7"
 material = "1.12.0"
-mockito = "5.15.2"
+mockk = "1.13.12"
 mpandroidchart = "v3.1.0"
 nav = "2.8.9"
 play-services = "21.3.0"
@@ -78,6 +78,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 
 # DI
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt-android" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt-android" }
 
 # 3rd party
@@ -104,6 +105,6 @@ junit-vintage-engine = { group = "org.junit.vintage", name = "junit-vintage-engi
 # Junit-5
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
 
-mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
-mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
-mockito-junit = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }
+# MockK (Kotlin-first)
+mockk-core = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }

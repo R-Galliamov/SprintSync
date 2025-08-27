@@ -107,6 +107,7 @@ dependencies {
 
     // --- DI ---
     implementation(libs.hilt.android)
+    implementation(libs.hilt.android.testing)
     ksp(libs.hilt.compiler)
 
     // --- 3rd party ---
@@ -127,8 +128,7 @@ dependencies {
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.assertj)
     testImplementation(libs.coroutines.test)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.junit)
+    testImplementation(libs.mockk.core)
     testImplementation(libs.truth)
 
     // Junit-4

@@ -4,11 +4,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.data.track.service.processing.calculator.DefaultDistanceCalculator
-import com.developers.sprintsync.data.track.service.processing.calculator.pace.DistanceBufferedPaceAnalyzer
+import com.developers.sprintsync.data.track.service.processing.calculator.AndLocDistCalculator
 import com.developers.sprintsync.data.track.service.processing.calculator.DistanceCalculator
-import com.developers.sprintsync.data.track.service.processing.calculator.pace.PaceCalculator
-import com.developers.sprintsync.data.track.service.processing.calculator.pace.SmoothedPaceCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.RunPaceAnalyzer
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.hampel.EmaSmoother
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.hampel.HampelFilter
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.hampel.HampelPaceAnalyzer
 import com.developers.sprintsync.data.track.service.processing.segment.DefaultSegmentBuilder
 import com.developers.sprintsync.data.track.service.processing.segment.SegmentBuilder
 import com.developers.sprintsync.data.track.service.provider.DurationProvider
@@ -32,20 +33,32 @@ import kotlinx.coroutines.SupervisorJob
 object CalculationsModule {
 
     @Provides
-    fun provideSmoothedPaceCalculator(paceCalculator: PaceCalculator): SmoothedPaceCalculator {
-        val windowSize = 10
-        return SmoothedPaceCalculator(paceCalculator, windowSize)
+    @ServiceScoped
+    fun providePaceAnalyzer(
+        log: AppLogger,
+        filter: HampelFilter,
+        emaSmoother: EmaSmoother,
+        distCalculator: DistanceCalculator
+    ): RunPaceAnalyzer {
+        return HampelPaceAnalyzer(
+            maxSpeedMps = 7.5f,
+            log = log,
+            hampelFilter = filter,
+            emaSmoother = emaSmoother,
+            distCalculator = distCalculator
+        )
     }
 
     @Provides
-    fun provideCurrentPaceAnalyzer(
-        paceCalculator: PaceCalculator,
-        smoothedPaceCalculator: SmoothedPaceCalculator,
-        log: AppLogger
-    ): DistanceBufferedPaceAnalyzer {
-        val bufferDistanceMeters = 10f
-        return DistanceBufferedPaceAnalyzer(paceCalculator, smoothedPaceCalculator, log, bufferDistanceMeters)
-    }
+    fun provideHampelFilter(): HampelFilter = HampelFilter(
+        windowSize = 15,
+        k = 4f,
+    )
+
+    @Provides
+    fun provideEmaSmoother(): EmaSmoother = EmaSmoother(
+        tauSec = 10f,
+    )
 }
 
 @Module
@@ -58,7 +71,7 @@ abstract class ServiceBindingModule {
     abstract fun bindDurationProvider(impl: DurationProviderImpl): DurationProvider
 
     @Binds
-    abstract fun bindDistanceCalculator(impl: DefaultDistanceCalculator): DistanceCalculator
+    abstract fun bindDistanceCalculator(impl: AndLocDistCalculator): DistanceCalculator
 
     @Binds
     abstract fun bindSegmentBuilder(impl: DefaultSegmentBuilder): SegmentBuilder

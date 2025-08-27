@@ -1,6 +1,7 @@
 package com.developers.sprintsync.data.track.service.processing.segment
 
 import com.developers.sprintsync.data.track.service.processing.calculator.MetricsCalcOrchestrator
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.RunPaceAnalyzer
 import com.developers.sprintsync.data.track.service.processing.session.TrackPoint
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.validator.Validator
@@ -32,6 +33,7 @@ class DefaultSegmentBuilder @Inject constructor(
     val calculator: MetricsCalcOrchestrator,
     private val userParameters: UserParameters,
     private val validator: Validator<Segment>,
+    private val paceAnalyzer: RunPaceAnalyzer
 ) : SegmentBuilder {
     /**
      * Constructs an active segment with calculated metrics.
@@ -49,7 +51,10 @@ class DefaultSegmentBuilder @Inject constructor(
             val durationMillis =
                 calculator.calculateDurationMillis(startPoint.timeMs, endPoint.timeMs)
             val distanceMeters = calculator.calculateDistanceMeters(startPoint.location, endPoint.location)
-            val pace = calculator.getCurrentPaceMinPerKm(durationMillis, distanceMeters)
+            if (paceAnalyzer.snapshot.paceMinPerKm == null) {
+                paceAnalyzer.add(startPoint).paceMinPerKm
+            }
+            val pace = paceAnalyzer.add(endPoint).paceMinPerKm ?: 0f
             val calories =
                 calculator.calculateCalories(userParameters.weightKg, distanceMeters, durationMillis)
 
