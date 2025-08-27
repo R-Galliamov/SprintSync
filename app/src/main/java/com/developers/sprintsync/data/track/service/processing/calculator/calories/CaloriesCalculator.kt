@@ -2,11 +2,12 @@ package com.developers.sprintsync.data.track.service.processing.calculator.calor
 
 import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.METProvider
 import com.developers.sprintsync.data.track.service.processing.calculator.calories.met.VO2CalculatorFactory
+import javax.inject.Inject
 
 /**
  * Calculates calories burned based on MET (Metabolic Equivalent of Task) values.
  */
-class CaloriesCalculator {
+class CaloriesCalculator @Inject constructor() {
     private val metCalculator = METProvider(VO2CalculatorFactory())
 
     /**

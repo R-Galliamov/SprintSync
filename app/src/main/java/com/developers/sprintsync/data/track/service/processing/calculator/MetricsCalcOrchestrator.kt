@@ -5,18 +5,16 @@ import com.developers.sprintsync.data.track.service.processing.calculator.calori
 import com.developers.sprintsync.data.track.service.processing.calculator.speed.SpeedCalculator
 import com.developers.sprintsync.data.track.service.processing.calculator.speed.SpeedUnit
 import com.developers.sprintsync.domain.track.model.LocationModel
-import com.developers.sprintsync.domain.track.model.distanceBetweenInMeters
 import javax.inject.Inject
 
 /**
  * Calculates metrics for a track segment, such as duration, distance, pace, and calories burned.
  */
 class MetricsCalcOrchestrator @Inject constructor(
-    private val paceCalculator: DistanceBufferedPaceAnalyzer,
+    private val distanceCalculator: DistanceCalculator,
+    private val caloriesCalculator: CaloriesCalculator,
+    private val speedCalculator: SpeedCalculator,
 ) {
-    private val caloriesCalculator = CaloriesCalculator()
-
-    private val speedCalculator = SpeedCalculator()
 
     /**
      * Calculates the duration of a segment in milliseconds.
@@ -36,31 +34,17 @@ class MetricsCalcOrchestrator @Inject constructor(
 
     /**
      * Calculates the distance between two locations in meters.
-     * @param firstLocation Starting location of the segment.
-     * @param secondLocation Ending location of the segment.
+     * @param l1 Starting location of the segment.
+     * @param l2 Ending location of the segment.
      * @return Distance in meters.
      * @throws IllegalArgumentException if firstLocation and secondLocation are the same.
      */
     fun calculateDistanceMeters(
-        firstLocation: LocationModel,
-        secondLocation: LocationModel,
+        l1: LocationModel,
+        l2: LocationModel,
     ): Float {
-        require(firstLocation != secondLocation) { "Start and end location cannot be the same" }
-        return firstLocation.distanceBetweenInMeters(secondLocation)
-    }
-
-    /**
-     * Calculates the pace in minutes per kilometer.
-     * @param durationMillis Duration of the segment in milliseconds.
-     * @param distanceMeters Distance of the segment in meters.
-     * @return Pace in minutes per kilometer.
-     */
-    fun calculatePaceMinPerKm(
-        durationMillis: Long,
-        distanceMeters: Float,
-    ): Float {
-        paceCalculator.addSegment(distanceMeters, durationMillis)
-        return paceCalculator.currentPace.value
+        require(l1 != l2) { "Start and end location cannot be the same" }
+        return distanceCalculator.distM(l1, l2)
     }
 
     /**
@@ -79,9 +63,5 @@ class MetricsCalcOrchestrator @Inject constructor(
             speedCalculator.calculateSpeed(durationMillis, distanceMeters, SpeedUnit.METERS_PER_MINUTES)
         val durationHours = TimeConverter.convertFromMillis(durationMillis, TimeConverter.TimeUnit.HOURS)
         return caloriesCalculator.totalCalories(weightKg, speedInMetersPerMinute, durationHours)
-    }
-
-    fun resetAccumulatedData() {
-        paceCalculator.resetAccumulatedData()
     }
 }
