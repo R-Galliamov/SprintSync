@@ -21,7 +21,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
-    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+    private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
     private val spannableStyler by lazy { SpannableStyler(requireContext()) }
 
@@ -88,7 +88,6 @@ class HomeFragment : Fragment() {
     private fun updateGeneralStatistics(stats: WorkoutsStatsUiModel) {
         try {
             binding.generalStatisticsTable.apply {
-                tvWorkoutsTotalValue.text = stats.totalWorkouts
                 tvWorkoutDaysTotalValue.text = stats.totalWorkoutDays
                 tvDistanceTotalValue.text = stats.totalDistance
                 tvDurationTotalValue.text = stats.totalDuration

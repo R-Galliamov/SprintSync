@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="runs">Runs</string>
+    <string name="stats_peak_pace">Peak pace</string>
+    <string name="stats_longest_distance">Longest distance</string>
+    <string name="stats_longest_duration">Longest duration</string>
+    <string name="stats_total_distance">Total distance</string>
+    <string name="stats_total_duration">Total duration</string>
+    <string name="stats_total_burned_kcal">Total calories burned</string>
+    <string name="stats_total_workout_days">Total workout days</string>
+    <string name="stats_workout_days">Workout days</string>
+</resources>

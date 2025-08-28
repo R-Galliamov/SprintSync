@@ -47,7 +47,7 @@ fun <T> Fragment.observe(
 fun Fragment.showError(log: AppLogger, message: String? = null ) {
     if (this.isAdded && this.view != null) {
         val context = this.context ?: return
-        val errMessage = message ?: context.getString(R.string.err_unexpected)
+        val errMessage = message ?: context.getString(R.string.error_unexpected)
         showToast(errMessage)
         log.e("Error displayed: $errMessage", Exception(errMessage))
     }

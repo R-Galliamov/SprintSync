@@ -13,7 +13,7 @@ import com.developers.sprintsync.presentation.main.TAG
 
 class OnboardingFragment : Fragment() {
     private var _binding: FragmentOnboardingBinding? = null
-    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+    private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space.regular"
         android:gravity="center"
-        android:text="@string/empty_logs_state_title" />
+        android:text="@string/state_empty_runs_title" />
 
     <TextView
         style="@style/SmallText"
@@ -38,5 +38,5 @@
         android:layout_marginTop="@dimen/space.regular"
         android:layout_marginEnd="@dimen/space.large"
         android:gravity="center"
-        android:text="@string/empty_logs_state_description" />
+        android:text="@string/state_empty_runs_message" />
 </LinearLayout>

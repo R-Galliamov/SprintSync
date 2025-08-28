@@ -18,14 +18,14 @@ import com.google.android.gms.maps.GoogleMap
 
 class MapFragment : Fragment() {
     private var _binding: FragmentMapBinding? = null
-    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+    private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
     private val args: MapFragmentArgs by navArgs()
 
     private val viewModel by activityViewModels<MapViewModel>()
 
     private var _map: GoogleMap? = null
-    private val map get() = checkNotNull(_map) { getString(R.string.map_init_error) }
+    private val map get() = checkNotNull(_map) { getString(R.string.error_map_not_initialized) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

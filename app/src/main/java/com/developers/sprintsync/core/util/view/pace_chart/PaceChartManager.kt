@@ -16,7 +16,7 @@ class PaceChartManager(
     private val context: Context,
 ) {
     private var _chart: LineChart? = null
-    private val chart get() = requireNotNull(_chart) { context.getString(R.string.chart_is_not_initialized) }
+    private val chart get() = requireNotNull(_chart) { context.getString(R.string.error_chart_not_initialized) }
 
     private val colors = AppThemeProvider(context).Color()
 

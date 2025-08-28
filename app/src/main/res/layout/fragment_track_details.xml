@@ -24,7 +24,7 @@
                 style="@style/TransparentButton"
                 android:layout_marginTop="@dimen/space.regular"
                 android:layout_marginEnd="@dimen/space.regular"
-                android:contentDescription="@string/delete_track"
+                android:contentDescription="@string/action_delete_track"
                 android:src="@drawable/ic_delete_24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
                 android:layout_marginStart="@dimen/space.large"
                 android:layout_marginTop="@dimen/space.large"
                 android:paddingTop="@dimen/space.large"
-                android:text="@string/pace_track"
+                android:text="@string/pace_chart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.regular"
-                android:text="@string/distance"
+                android:text="@string/label_distance"
                 app:layout_constraintStart_toStartOf="@id/tvPaceTrack"
                 app:layout_constraintTop_toBottomOf="@id/chart" />
 
@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
-                android:text="@string/duration"
+                android:text="@string/label_duration"
                 app:layout_constraintStart_toStartOf="@id/tvPaceTrack"
                 app:layout_constraintTop_toBottomOf="@id/tvDistance" />
 
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
-                android:text="@string/avg_pace"
+                android:text="@string/label_avg_pace"
                 app:layout_constraintStart_toStartOf="@id/tvPaceTrack"
                 app:layout_constraintTop_toBottomOf="@id/tvDuration" />
 
@@ -120,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
-                android:text="@string/best_pace"
+                android:text="@string/stats_peak_pace"
                 app:layout_constraintStart_toStartOf="@id/tvPaceTrack"
                 app:layout_constraintTop_toBottomOf="@id/tvAvgPace" />
 
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space.small"
-                android:text="@string/burned_kcal"
+                android:text="@string/label_calories_burned"
                 app:layout_constraintStart_toStartOf="@id/tvPaceTrack"
                 app:layout_constraintTop_toBottomOf="@id/tvBestPace" />
 
@@ -172,7 +172,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/lag2"
-                    android:text="@string/on_map" />
+                    android:text="@string/action_view_on_map" />
 
                 <ImageView
                     android:id="@+id/ivGoToMap"
@@ -210,7 +210,7 @@
         android:layout_marginStart="@dimen/space.regular"
         android:layout_marginTop="@dimen/space.regular"
         android:background="@drawable/bt_circle_secondary"
-        android:contentDescription="@string/move_back"
+        android:contentDescription="@string/action_go_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

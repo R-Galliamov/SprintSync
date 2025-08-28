@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="msg_loading_generic">Loading your data…</string>
+    <string name="msg_loading_map">Getting the map ready for your run…</string>
+    <string name="msg_finalizing_run">Finishing up. One moment…</string>
+    <string name="msg_data_loading_failed">Data loading failed. Try again or refresh later.</string>
+</resources>

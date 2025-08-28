@@ -15,8 +15,8 @@ class LocationRequestFragment : BasePermissionFragment() {
     override val screenConfig: PermissionScreenConfig = PermissionScreenConfig(
         permission = Manifest.permission.ACCESS_FINE_LOCATION,
         iconResId = R.drawable.im_location_request,
-        titleResId = R.string.prms_location_request_title,
-        descriptionResId = R.string.prms_location_request_description,
+        titleResId = R.string.permission_location_title,
+        descriptionResId = R.string.permission_location_description,
     )
 }
 
@@ -30,8 +30,8 @@ class NotificationRequestFragment : BasePermissionFragment() {
     override val screenConfig: PermissionScreenConfig = PermissionScreenConfig(
         permission = Manifest.permission.POST_NOTIFICATIONS,
         iconResId = R.drawable.im_notification_request,
-        titleResId = R.string.prms_notification_request_title,
-        descriptionResId = R.string.prms_notification_request_description,
+        titleResId = R.string.permission_notifications_title,
+        descriptionResId = R.string.permission_notifications_description,
     )
 }
 

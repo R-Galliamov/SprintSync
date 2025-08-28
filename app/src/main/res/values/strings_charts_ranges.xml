@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pace_chart">Pace chart</string>
+    <string name="prev_range">Previous range</string>
+    <string name="next_range">Next range</string>
+</resources>

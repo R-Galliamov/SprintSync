@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Initializing -->
+    <string name="error_binding_not_initialized">Binding not initialized</string>
+    <string name="error_spinner_not_initialized">Spinner not initialized</string>
+    <string name="error_date_picker_not_initialized">Date picker not initialized</string>
+    <string name="error_map_not_initialized">Map not initialized</string>
+    <string name="error_chart_not_initialized">Chart not initialized</string>
+
+    <!-- Generic error -->
+    <string name="error_unexpected_retry">Oops! Something went wrong. Please try again.</string>
+    <string name="error_unexpected">Oops! Something went wrong.</string>
+
+    <!-- Track-related errors -->
+    <string name="error_run_too_short_duration">Your workout was too short to save. Keep going a bit longer!</string>
+    <string name="error_run_too_short_distance">You haven\'t gone far enough to save this track. Try covering more distance!</string>
+    <string name="error_run_insufficient_data">Not enough data to save your track. Keep going a bit longer!</string>
+    <string name="error_run_calculation_failed">Something went wrong with the calculations. Please try again.</string>
+
+    <!-- Service-related errors -->
+    <string name="error_service_connection_failed">Couldn\'t connect to the tracking service. Please try again.</string>
+    <string name="error_service_disconnected">The tracking service stopped unexpectedly. Please restart the app.</string>
+    <string name="error_location_updates_unavailable">Couldn\'t get location updates. Check your GPS and try again.</string>
+
+    <!-- Map related errors -->
+    <string name="error_map_load_failed">Couldn\'t load the map.</string>
+    <string name="error_map_marker_load_failed">Couldn\'t load the user icon</string>
+
+</resources>

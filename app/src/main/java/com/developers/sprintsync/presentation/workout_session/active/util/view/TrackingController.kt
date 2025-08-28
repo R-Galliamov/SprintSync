@@ -44,7 +44,7 @@ class TrackingController (
         }
 
         fun textRes(): Int = when (this) {
-            Initialized -> R.string.start
+            Initialized -> R.string.action_start
             else -> View.NO_ID
         }
     }

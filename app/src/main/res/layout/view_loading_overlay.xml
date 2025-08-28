@@ -15,7 +15,7 @@
             android:id="@+id/loading_animation"
             android:layout_width="@dimen/loadingOverlay.progressBarSize"
             android:layout_height="@dimen/loadingOverlay.progressBarSize"
-            android:contentDescription="@string/loading_description"
+            android:contentDescription="@string/msg_loading_generic"
             android:src="@drawable/anim_loading_vector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

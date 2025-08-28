@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/workouts" />
+            android:text="@string/runs" />
 
         <TextView
             android:id="@+id/tvWorkoutsValue"
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/workout_days" />
+            android:text="@string/stats_workout_days" />
 
         <TextView
             android:id="@+id/tvWorkoutDaysValue"
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/total_distance" />
+            android:text="@string/stats_total_distance" />
 
         <TextView
             android:id="@+id/tv_distance_total_value"
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/total_duration" />
+            android:text="@string/stats_total_duration" />
 
         <TextView
             android:id="@+id/tv_duration_total_value"
@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/best_distance" />
+            android:text="@string/stats_longest_distance" />
 
         <TextView
             android:id="@+id/tvBestDistanceValue"
@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/longest_duration" />
+            android:text="@string/stats_longest_duration" />
 
         <TextView
             android:id="@+id/tvBestDurationValue"
@@ -127,7 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/avg_pace" />
+            android:text="@string/label_avg_pace" />
 
         <TextView
             android:id="@+id/tvAvgPaceValue"
@@ -146,7 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/best_pace" />
+            android:text="@string/stats_peak_pace" />
 
         <TextView
             android:id="@+id/tvBestPaceValue"
@@ -165,7 +165,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@string/total_burned_kcal" />
+            android:text="@string/stats_total_burned_kcal" />
 
         <TextView
             android:id="@+id/tv_calories_total_value"

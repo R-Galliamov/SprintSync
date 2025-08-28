@@ -25,8 +25,8 @@ class ConfirmationDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         MaterialAlertDialogBuilder(requireContext(), R.style.ConfirmationMaterialDialog)
-            .setTitle(R.string.dialog_delete_track_title)
-            .setMessage(R.string.dialog_delete_track_message)
+            .setTitle(R.string.dialog_delete_run_title)
+            .setMessage(R.string.dialog_delete_run_message)
             .setNegativeButton("No") { _, _ ->
                 dialogListener?.onCancelled()
             }.setPositiveButton("Yes") { _, _ ->

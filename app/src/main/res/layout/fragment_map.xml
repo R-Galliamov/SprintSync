@@ -27,7 +27,7 @@
         android:layout_marginStart="@dimen/space.regular"
         android:layout_marginTop="@dimen/space.regular"
         android:background="@drawable/bt_circle_secondary"
-        android:contentDescription="@string/move_back"
+        android:contentDescription="@string/action_go_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

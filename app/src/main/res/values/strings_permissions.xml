@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="prms_allow">Allow</string>
-    <string name="prms_to_settings">To settings</string>
 
-    <string name="prms_location_request_title">Location usage</string>
-    <string name="prms_location_request_description">Location access is essential for our app to work correctly. This will allow us to map your routes and provide accurate stats.</string>
+    <string name="permission_location_title">Location access</string>
+    <string name="permission_location_description">Location access is required to map your routes and provide accurate stats.</string>
 
-    <string name="prms_notification_request_title">Notifications</string>
-    <string name="prms_notification_request_description"> During your run, we\'ll display key metrics right in the notification pane — everything under control!</string>
+    <string name="permission_notifications_title">Notifications</string>
+    <string name="permission_notifications_description"> During your run, key metrics will appear in the notification panel.</string>
 
 </resources>

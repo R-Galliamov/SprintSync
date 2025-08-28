@@ -10,7 +10,7 @@ class DatePickerCreator {
         onPositiveButtonClickListener: (String) -> Unit,
     ) = MaterialDatePicker.Builder.datePicker()
         .setSelection(selection)
-        .setTitleText(R.string.select_date)
+        .setTitleText(R.string.action_select_date)
         .setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
         .build()
         .also { picker ->

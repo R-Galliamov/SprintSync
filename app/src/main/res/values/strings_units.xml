@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_km">km</string>
+    <string name="unit_kcal">kcal</string>
+    <string name="unit_min_per_km">min/km</string>
+    <string name="unit_min">min</string>
+    <string name="unit_kg">kg</string>
+</resources>

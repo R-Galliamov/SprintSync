@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.developers.sprintsync.R
-import com.developers.sprintsync.core.util.extension.findTopNavController
 import com.developers.sprintsync.core.util.extension.observe
 import com.developers.sprintsync.core.util.extension.showErrorAndBack
-import com.developers.sprintsync.core.util.extension.showToast
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.databinding.FragmentStatisticsBinding
 import com.developers.sprintsync.presentation.workouts_stats.chart.manager.ChartManager
@@ -28,7 +26,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class WorkoutsStatisticsFragment : Fragment() {
     private var _binding: FragmentStatisticsBinding? = null
-    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+    private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
     private val viewModel by activityViewModels<WorkoutsStatisticsViewModel>()
 

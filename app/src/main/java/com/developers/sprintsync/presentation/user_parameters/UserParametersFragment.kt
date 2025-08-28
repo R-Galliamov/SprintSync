@@ -26,13 +26,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class UserParametersFragment : Fragment() {
     private var _binding: FragmentUserParametersBinding? = null
-    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+    private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
     private var _sexSpinnerManager: SpinnerManager<Sex>? = null
-    private val genderSpinnerManager get() = checkNotNull(_sexSpinnerManager) { getString(R.string.spinner_manager_init_error) }
+    private val genderSpinnerManager get() = checkNotNull(_sexSpinnerManager) { getString(R.string.error_spinner_not_initialized) }
 
     private var _datePicker: MaterialDatePicker<Long>? = null
-    private val datePicker get() = checkNotNull(_datePicker) { getString(R.string.date_picker_init_error) } // TODO get rid of such kind of checks or wrap in try block
+    private val datePicker get() = checkNotNull(_datePicker) { getString(R.string.error_date_picker_not_initialized) } // TODO get rid of such kind of checks or wrap in try block
 
     private val viewModel: UserParametersViewModel by viewModels()
 

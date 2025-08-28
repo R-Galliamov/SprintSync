@@ -7,7 +7,6 @@ import com.developers.sprintsync.databinding.ActivityMainBinding
 import com.developers.sprintsync.core.navigation.NavigationManager
 import com.developers.sprintsync.core.util.extension.getRootNavController
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.data.workout_plan.data_source.remote.FBWorkoutPlanDataSource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -16,7 +15,7 @@ const val TAG = "My stack"
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
-    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+    private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
     @Inject
     lateinit var log: AppLogger

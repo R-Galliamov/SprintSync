@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dialogs -->
+    <string name="dialog_delete_run_title">Delete run</string>
+    <string name="dialog_delete_run_message">Delete this run?</string>
+</resources>

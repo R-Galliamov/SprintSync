@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_allow">Allow</string>
+    <string name="action_open_settings">Open settings</string>
+    <string name="action_start_run">Start run</string>
+    <string name="action_start">Start</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_save">Save</string>
+    <string name="action_apply">Apply</string>
+    <string name="action_delete_track">Delete track</string>
+    <string name="action_go_back">Go back</string>
+    <string name="action_select_date">Select date</string>
+    <string name="action_view_on_map">View on map</string>
+</resources>

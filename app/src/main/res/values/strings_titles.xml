@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stats_record_board_title">Record Board</string>
+    <string name="stats_personal_bests_title">Personal bests</string>
+    <string name="stats_weekly_overview_title">Weekly overview</string>
+    <string name="stats_overview_title">Overview</string>
+    <string name="stats_great_job_title">Great job!</string>
+</resources>

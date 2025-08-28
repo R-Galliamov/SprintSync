@@ -21,7 +21,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class TabsFragment : Fragment() {
     private var _binding: FragmentTabsBinding? = null
-    private val binding get() = checkNotNull(_binding) { R.string.binding_init_error }
+    private val binding get() = checkNotNull(_binding) { R.string.error_binding_not_initialized }
 
     @Inject
     lateinit var log: AppLogger

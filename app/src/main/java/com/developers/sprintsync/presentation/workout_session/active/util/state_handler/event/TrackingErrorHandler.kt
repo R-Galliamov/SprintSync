@@ -27,7 +27,7 @@ class TrackingErrorMessageProvider
             when (e) {
                 is TrackValidationException -> handleValidationException(e)
                 is TrackingServiceException -> handleTrackingServiceException(e)
-                else -> context.getString(R.string.err_unexpected_and_try)
+                else -> context.getString(R.string.error_unexpected_retry)
             }
 
         private fun handleValidationException(e: TrackValidationException): String =
@@ -37,21 +37,21 @@ class TrackingErrorMessageProvider
                 is TrackValidationException.BestPaceInvalid,
                 is TrackValidationException.CaloriesNegative,
                 ->
-                    context.getString(R.string.err_track_calculation)
+                    context.getString(R.string.error_run_calculation_failed)
 
                 is TrackValidationException.DurationTooShort ->
-                    context.getString(R.string.err_track_short_duration)
+                    context.getString(R.string.error_run_too_short_duration)
 
                 is TrackValidationException.DistanceTooShort ->
-                    context.getString(R.string.err_track_short_distance)
+                    context.getString(R.string.error_run_too_short_distance)
 
                 is TrackValidationException.TooFewSegments ->
-                    context.getString(R.string.err_track_few_segments)
+                    context.getString(R.string.error_run_insufficient_data)
             }
 
         private fun handleTrackingServiceException(e: TrackingServiceException): String =
             when (e) {
-                is TrackingServiceException.BindingFailed -> context.getString(R.string.err_svc_binding)
-                is TrackingServiceException.ServiceDisconnected -> context.getString(R.string.err_svc_disconnected)
+                is TrackingServiceException.BindingFailed -> context.getString(R.string.error_service_connection_failed)
+                is TrackingServiceException.ServiceDisconnected -> context.getString(R.string.error_service_disconnected)
             }
     }

@@ -23,7 +23,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class WorkoutsLogFragment : Fragment() {
     private var _binding: FragmentTrackHistoryBinding? = null
-    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+    private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
     private val viewModel by viewModels<WorkoutsLogViewModel>()
 

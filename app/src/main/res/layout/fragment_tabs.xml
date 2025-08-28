@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/lag5"
         android:src="@drawable/ic_logo_48dp"
-        android:contentDescription="@string/start_run_desc"
+        android:contentDescription="@string/action_start_run"
         app:layout_anchor="@id/bottomNavBar"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavBar"
         app:layout_constraintEnd_toEndOf="@+id/bottomNavBar" />

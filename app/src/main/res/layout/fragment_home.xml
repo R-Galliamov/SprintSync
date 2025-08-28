@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space.large"
             android:paddingTop="@dimen/space.large"
-            android:text="@string/record_board"
+            android:text="@string/stats_record_board_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -110,7 +110,7 @@
             android:paddingStart="@dimen/space.large"
             android:paddingEnd="@dimen/space.large"
             android:padding="@dimen/space.regular"
-            android:text="@string/best_results" />
+            android:text="@string/stats_personal_bests_title" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -136,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/lag2"
-                android:text="@string/distance"
+                android:text="@string/label_distance"
                 app:layout_constraintBottom_toBottomOf="@id/ivLongestDistance"
                 app:layout_constraintStart_toEndOf="@id/ivLongestDistance"
                 app:layout_constraintTop_toTopOf="@id/ivLongestDistance" />
@@ -176,7 +176,7 @@
                 style="@style/RegularText.Caps.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pace"
+                android:text="@string/label_pace"
                 app:layout_constraintBottom_toBottomOf="@id/ivBestPace"
                 app:layout_constraintStart_toStartOf="@id/tvLongestDistance"
                 app:layout_constraintTop_toTopOf="@id/ivBestPace" />
@@ -217,7 +217,7 @@
                 style="@style/RegularText.Caps.Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/duration"
+                android:text="@string/label_duration"
                 app:layout_constraintBottom_toBottomOf="@id/ivMaxDuration"
                 app:layout_constraintStart_toStartOf="@id/tvBestPace"
                 app:layout_constraintTop_toTopOf="@id/ivMaxDuration" />
@@ -247,7 +247,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/space.big"
-                android:text="@string/general_overview"
+                android:text="@string/stats_overview_title"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View

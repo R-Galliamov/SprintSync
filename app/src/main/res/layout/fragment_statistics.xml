@@ -21,7 +21,7 @@
             style="@style/RegularText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/weekly_overview_title"
+            android:text="@string/stats_weekly_overview_title"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
@@ -46,7 +46,6 @@
             android:layout_marginTop="@dimen/space.regular"
             android:background="@drawable/card_outlined_black">
 
-            <!-- TODO: scrolling works bad inside another scroll view -->
             <com.github.mikephil.charting.charts.CombinedChart
                 android:id="@+id/progress_chart"
                 android:layout_width="match_parent"

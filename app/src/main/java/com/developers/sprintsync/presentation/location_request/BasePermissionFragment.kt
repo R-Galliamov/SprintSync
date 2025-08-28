@@ -38,7 +38,7 @@ data class PermissionScreenConfig(
 @AndroidEntryPoint
 abstract class BasePermissionFragment : Fragment() {
     private var _binding: FragmentPermissionRequestBinding? = null
-    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+    private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
     /** Defines screen UI and permission logic for the inheritor. */
     abstract val screenConfig: PermissionScreenConfig
@@ -149,9 +149,9 @@ abstract class BasePermissionFragment : Fragment() {
     /** Sets button text according to whether rationale is shown. */
     private fun updateButtonText(shouldShowRationale: Boolean) {
         binding.tvAllowPermission.text = if (shouldShowRationale) {
-            getString(R.string.prms_to_settings)
+            getString(R.string.action_open_settings)
         } else {
-            getString(R.string.prms_allow)
+            getString(R.string.action_allow)
         }
         log.d("Button text updated: showRationale=$shouldShowRationale")
     }

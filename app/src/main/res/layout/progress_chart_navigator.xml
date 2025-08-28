@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space.small"
-        android:contentDescription="@string/previous_range"
+        android:contentDescription="@string/prev_range"
         android:src="@drawable/bt_previous_selector_32dp" />
 
     <LinearLayout

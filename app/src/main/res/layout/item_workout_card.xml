@@ -46,7 +46,7 @@
         android:layout_height="@dimen/imageSize.mapPreview.height"
         android:layout_marginTop="@dimen/space.small"
         android:layout_marginEnd="@dimen/space.small"
-        android:contentDescription="@string/map_preview"
+        android:contentDescription="@string/label_map_preview"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/shape.cornerRadius"
         app:layout_constraintEnd_toEndOf="@id/guideline"
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:contentDescription="@string/map_preview"
+            android:contentDescription="@string/label_map_preview"
             android:src="@drawable/ic_map_32dp" />
     </com.google.android.material.card.MaterialCardView>
 
@@ -68,7 +68,7 @@
         android:layout_width="@dimen/iconSize.small"
         android:layout_height="@dimen/iconSize.small"
         android:layout_marginStart="@dimen/space.small"
-        android:contentDescription="@string/distance"
+        android:contentDescription="@string/label_distance"
         android:src="@drawable/ic_distance_24dp"
         app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toTopOf="@id/cvMapPreview" />
@@ -89,7 +89,7 @@
         android:layout_width="@dimen/iconSize.small"
         android:layout_height="@dimen/iconSize.small"
         android:layout_marginTop="@dimen/space.small"
-        android:contentDescription="@string/duration"
+        android:contentDescription="@string/label_duration"
         android:src="@drawable/ic_duration_32dp"
         app:layout_constraintStart_toStartOf="@id/ivDistance"
         app:layout_constraintTop_toBottomOf="@id/ivDistance" />
@@ -110,7 +110,7 @@
         android:layout_width="@dimen/iconSize.small"
         android:layout_height="@dimen/iconSize.small"
         android:layout_marginTop="@dimen/space.small"
-        android:contentDescription="@string/burned_kcal"
+        android:contentDescription="@string/label_calories_burned"
         android:src="@drawable/ic_kcal_48dp"
         app:layout_constraintStart_toStartOf="@id/ivDuration"
         app:layout_constraintTop_toBottomOf="@id/ivDuration" />

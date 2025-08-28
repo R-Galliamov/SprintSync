@@ -40,12 +40,12 @@ import javax.inject.Inject
 class WorkoutSessionFragment : Fragment() {
 
     private var _binding: FragmentWorkoutSessionBinding? = null
-    private val binding get() = checkNotNull(_binding) { getString(R.string.binding_init_error) }
+    private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
     private val viewModel by activityViewModels<WorkoutSessionViewModel>()
 
     private var _map: GoogleMap? = null
-    private val map get() = checkNotNull(_map) { getString(R.string.map_init_error) }
+    private val map get() = checkNotNull(_map) { getString(R.string.error_map_not_initialized) }
 
     private var serviceController: TrackingServiceController? = null
 
@@ -147,7 +147,7 @@ class WorkoutSessionFragment : Fragment() {
                 onMapReady()
             } catch (e: Exception) {
                 log.e("Failed to initialize map: ${e.message}", e)
-                showToast(requireContext().getString(R.string.err_map_init))
+                showToast(requireContext().getString(R.string.error_map_load_failed))
             }
         }
     }
@@ -160,7 +160,7 @@ class WorkoutSessionFragment : Fragment() {
             mapMarker.setIcon(icon)
         } catch (e: Exception) {
             log.e("Failed to set user location icon", e)
-            showToast(requireContext().getString(R.string.err_marker_init))
+            showToast(requireContext().getString(R.string.error_map_marker_load_failed))
         }
     }
 
@@ -288,7 +288,7 @@ class WorkoutSessionFragment : Fragment() {
     private fun setCompletingLoadingVisibility(isVisible: Boolean) {
         if (isVisible) {
             binding.generalLoadingOverlay.apply {
-                setLoadingMessage(context.getString(R.string.message_completing_track))
+                setLoadingMessage(context.getString(R.string.msg_finalizing_run))
                 show()
             }
         }
@@ -297,7 +297,7 @@ class WorkoutSessionFragment : Fragment() {
     private fun setMapLoadingOverlay() =
         binding.mapLoadingOverlay.apply {
             bindToLifecycle(lifecycle)
-            setLoadingMessage(getString(R.string.tracking_map_loading_message))
+            setLoadingMessage(getString(R.string.msg_loading_map))
         }
 
     // Prepares the map for taking a snapshot

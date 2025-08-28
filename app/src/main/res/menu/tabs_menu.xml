@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/home"
-        android:contentDescription="@string/home"
+        android:contentDescription="@string/nav_home"
         android:icon="@drawable/ic_home_48dp"
-        android:title="@string/home"
+        android:title="@string/nav_home"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/statistics"
-        android:contentDescription="@string/statistics"
+        android:contentDescription="@string/nav_statistics"
         android:icon="@drawable/ic_analysis_24dp"
-        android:title="@string/statistics"
+        android:title="@string/nav_statistics"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/history"
-        android:contentDescription="@string/history"
+        android:contentDescription="@string/nav_history"
         android:icon="@drawable/ic_plan_32dp"
-        android:title="@string/history"
+        android:title="@string/nav_history"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/parameters"
-        android:contentDescription="@string/pace"
+        android:contentDescription="@string/nav_profile"
         android:icon="@drawable/ic_profile_48dp"
-        android:title="@string/parameters"
+        android:title="@string/nav_profile"
         app:showAsAction="ifRoom" />
 </menu>

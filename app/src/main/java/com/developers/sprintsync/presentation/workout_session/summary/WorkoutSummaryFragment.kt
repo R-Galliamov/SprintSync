@@ -156,7 +156,7 @@ class WorkoutSummaryFragment : Fragment() {
     private fun setLoadingOverlay() =
         binding.viewLoadingOverlay.apply {
             bindToLifecycle(lifecycle)
-            setLoadingMessage(context.getString(R.string.message_completing_track))
+            setLoadingMessage(context.getString(R.string.msg_finalizing_run))
         }
 
     private fun createDeleteDialog(trackId: Int) =
