@@ -15,35 +15,39 @@ constructor(
     private val log: AppLogger,
 ) {
 
+    init {
+        log.i("TrackingController HashCode: ${this.hashCode()} - INIT")
+    }
+
     // Initiates location updates
     fun startLocationUpdates() = sessionManager.launchLocationUpdates()
 
     // Stops location updates
     fun stopLocationUpdates() = sessionManager.stopLocationUpdates()
 
-    // Starts tracking session and initialize data processing
-    fun startTracking() {
+    // Starts or resumes tracking session and initialize data processing
+    fun start() {
         trackingDataManager.updateTrackingStatus(TrackingStatus.Active)
         sessionManager.start { trackingDataManager.updateTimedLocation(it) }
         log.i("Start tracking")
     }
 
-    // Pauses tracking session
-    fun pauseTracking() {
+    // Stops tracking session
+    fun stops() {
         trackingDataManager.updateTrackingStatus(TrackingStatus.Paused)
         sessionManager.stop()
         log.i("Pause tracking")
     }
 
-    // Stops tracking session
-    fun stopTracking() {
-        trackingDataManager.updateTrackingStatus(TrackingStatus.Completed { resetTracking() })
+    // Finishes tracking session
+    fun finish() {
+        trackingDataManager.updateTrackingStatus(TrackingStatus.Completed)
         sessionManager.stop()
         log.i("Stop tracking")
     }
 
     // Resets tracking session
-    private fun resetTracking() {
+    fun reset() {
         trackingDataManager.resetTracking()
         sessionManager.resetSession()
         log.i("Reset tracking")

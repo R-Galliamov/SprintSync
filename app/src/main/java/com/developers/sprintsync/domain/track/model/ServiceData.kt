@@ -13,7 +13,7 @@ sealed class TrackingStatus {
     data object Initialized : TrackingStatus()
     data object Active : TrackingStatus()
     data object Paused : TrackingStatus()
-    data class Completed(val onFinish: () -> Unit) : TrackingStatus()
+    data object Completed : TrackingStatus()
 }
 
 data class SessionData(

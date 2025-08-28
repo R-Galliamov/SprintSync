@@ -47,10 +47,7 @@ class WorkoutSessionFragment : Fragment() {
     private var _map: GoogleMap? = null
     private val map get() = checkNotNull(_map) { getString(R.string.map_init_error) }
 
-    private val serviceController by lazy {
-        log.i("TrackingServiceController - Initializing new instance for Fragment: ${this.hashCode()}")
-        TrackingServiceController(requireContext(), log)
-    }
+    private var serviceController: TrackingServiceController? = null
 
     private val trackingControllerView: TrackingController by lazy { binding.trackingController }
 
@@ -85,6 +82,7 @@ class WorkoutSessionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         log.d("onCreate - HashCode: ${this.hashCode()}")
         try {
+            initServiceController()
             bindGeneralLoadingOverlay()
             setMapLoadingOverlay()
             setupTrackingPanel()
@@ -106,11 +104,11 @@ class WorkoutSessionFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         try {
-            log.d("Starting fragment, binding service")
-            serviceController.bind(requireActivity()) { connectionResult ->
+            log.i("Starting fragment, binding service")
+            serviceController?.bind(requireActivity()) { connectionResult ->
                 viewModel.bindTo(connectionResult)
             }
-            serviceController.launchLocationUpdates()
+            serviceController?.launchLocationUpdates()
             binding.mapView.onStart()
         } catch (e: Exception) {
             log.e("Failed to start fragment: ${e.message}", e)
@@ -118,14 +116,19 @@ class WorkoutSessionFragment : Fragment() {
         }
     }
 
+    private fun initServiceController() {
+        serviceController = serviceController ?: TrackingServiceController(requireContext(), log)
+        log.i("TrackingServiceController (HashCode: {${serviceController?.hashCode()}}) Initialized for Fragment (HashCode: ${this.hashCode()})")
+    }
+
     // Sets up the tracking panel with start/pause/finish actions
     private fun setupTrackingPanel() {
         val listener = object : TrackingController.OnInteractionListener {
-            override fun onStart() = serviceController.startService()
+            override fun onStart() = serviceController?.startService() ?: Unit
 
-            override fun onPause() = serviceController.pauseService()
+            override fun onPause() = serviceController?.pauseService() ?: Unit
 
-            override fun onFinish() = serviceController.finishService()
+            override fun onFinish() = serviceController?.finishService() ?: Unit
 
         }
         trackingControllerView.setOnInteractionListener(listener)
@@ -318,8 +321,8 @@ class WorkoutSessionFragment : Fragment() {
         val shouldStop = viewModel.uiStateFlow.value.shouldStopLocationUpdatesWhenClosed
         if (shouldStop) {
             try {
-                serviceController.stopLocationUpdates()
-                log.d("Stopped location updates on close")
+               // serviceController?.stopLocationUpdates()
+                log.i("Stopped location updates on close")
             } catch (e: Exception) {
                 log.e("Error stopping location updates: ${e.message}", e)
             }
@@ -334,21 +337,21 @@ class WorkoutSessionFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        log.d("onPause")
+        log.i("onPause")
         binding.mapView.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        log.d("onResume")
+        log.i("onResume")
         binding.mapView.onResume()
     }
 
     override fun onStop() {
         super.onStop()
         try {
-            log.d("Stopping fragment, unbinding service")
-            serviceController.unbindService(requireActivity())
+            log.i("Stopping fragment, unbinding service")
+            serviceController?.unbindService(requireActivity())
             stopLocationUpdatesIfShould()
             binding.mapView.onStop()
         } catch (e: Exception) {
@@ -359,7 +362,7 @@ class WorkoutSessionFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        log.d("onDestroyView")
+        log.i("onDestroyView")
         binding.mapView.onDestroy()
         mapCamera.detachMap()
         _binding = null
@@ -367,6 +370,6 @@ class WorkoutSessionFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        log.d("onDestroy")
+        log.i("onDestroy")
     }
 }

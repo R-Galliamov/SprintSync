@@ -17,12 +17,23 @@ import com.developers.sprintsync.data.track.service.processing.session.TrackingC
 import com.developers.sprintsync.data.track.service.processing.session.TrackingDataManager
 import com.developers.sprintsync.domain.track.model.SessionData
 import com.developers.sprintsync.domain.track.model.TrackingData
+import com.developers.sprintsync.domain.track.model.TrackingStatus
 import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationConfig
 import com.developers.sprintsync.presentation.workout_session.notification.TrackingNotificationManager
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.scopes.ServiceScoped
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -46,14 +57,34 @@ class TrackingServiceDataHolder
 constructor(
     trackingDataManager: TrackingDataManager,
     sessionManager: SessionManager,
+    scope: CoroutineScope,
     log: AppLogger
 ) {
-    val trackingDataFlow: StateFlow<TrackingData> = trackingDataManager.trackingDataFlow
-    val sessionDataFlow: StateFlow<SessionData> = sessionManager.sessionDataFlow
+    private val serviceActive = MutableStateFlow(false)
+
+    val trackingDataFlow: StateFlow<TrackingData> =
+        trackingDataManager.trackingDataFlow.combine(serviceActive) { d, a ->
+            if (d.status == TrackingStatus.Completed || a) d else null
+        }.filterNotNull().stateIn(scope, SharingStarted.WhileSubscribed(), TrackingData.INITIAL)
+
+    val sessionDataFlow: StateFlow<SessionData> = sessionManager.sessionDataFlow.emitIfActive(serviceActive)
+        .stateIn(scope, SharingStarted.WhileSubscribed(), SessionData.INITIAL)
+
+    fun activate() {
+        serviceActive.value = true
+    }
+
+    fun deactivate() {
+        serviceActive.value = false
+    }
 
     init {
         log.i("TrackingServiceDataHolder HashCode: ${this.hashCode()} - INIT")
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun <T> Flow<T>.emitIfActive(active: StateFlow<Boolean>): Flow<T> =
+        active.flatMapLatest { isActive -> if (isActive) this else emptyFlow() }
 }
 
 /**
@@ -104,8 +135,8 @@ class TrackingService : LifecycleService() {
             LAUNCH_LOCATION_UPDATES -> launchLocationUpdates()
             STOP_LOCATION_UPDATES -> stopLocationUpdates()
             START_SERVICE -> startTracking()
-            PAUSE_SERVICE -> pauseTracking()
-            FINISH_SERVICE -> stopTracking()
+            PAUSE_SERVICE -> stop()
+            FINISH_SERVICE -> finish()
         }
         return START_STICKY
     }
@@ -113,6 +144,7 @@ class TrackingService : LifecycleService() {
     // Initiates location updates
     private fun launchLocationUpdates() {
         try {
+            dataHolder.activate()
             trackingController.startLocationUpdates()
             log.i("Location updates launched")
         } catch (e: Exception) {
@@ -130,16 +162,17 @@ class TrackingService : LifecycleService() {
         }
     }
 
-    // Starts tracking and foreground service with notification data updates
+    // Starts or resumes tracking and foreground service with notification data updates
     private fun startTracking() {
         try {
+            dataHolder.activate()
             startForegroundNotification()
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     launch {
                         startNotificationUpdates()
                     }
-                    trackingController.startTracking()
+                    trackingController.start()
                     log.i("Tracking started in coroutine")
                 } catch (e: Exception) {
                     log.e("Failed to start tracking in coroutine: ${e.message}", e)
@@ -151,20 +184,22 @@ class TrackingService : LifecycleService() {
         }
     }
 
-    // Pauses tracking
-    private fun pauseTracking() {
+    // Stops tracking
+    private fun stop() {
         try {
-            trackingController.pauseTracking()
+            trackingController.stops()
             log.i("Service paused")
         } catch (e: Exception) {
             log.e("Failed to pause tracking: ${e.message}", e)
         }
     }
 
-    // Stops tracking and service
-    private fun stopTracking() {
+    // Finishes tracking and service
+    private fun finish() {
         try {
-            trackingController.stopTracking()
+            trackingController.finish()
+            dataHolder.deactivate()
+            trackingController.reset()
             stopSelf()
             log.i("Service stopped")
         } catch (e: Exception) {

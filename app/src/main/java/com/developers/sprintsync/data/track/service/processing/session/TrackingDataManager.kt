@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+import javax.inject.Singleton
 
 // Manages tracking data and status updates
 @ServiceScoped
@@ -23,6 +24,11 @@ constructor(
     scope: CoroutineScope,
     private val log: AppLogger
 ) {
+
+    init {
+        log.i("TrackingDataManager initialized. HashCode: ${this.hashCode()}")
+    }
+
     private val trackingStatusFlow = MutableStateFlow<TrackingStatus>(TrackingStatus.Initialized)
     private val trackFlow = trackGenerator.trackFlow
 
@@ -47,6 +53,7 @@ constructor(
     }
 
     fun resetTracking() {
+        trackingStatusFlow.update { TrackingStatus.Initialized }
         trackGenerator.resetTrack()
     }
 }

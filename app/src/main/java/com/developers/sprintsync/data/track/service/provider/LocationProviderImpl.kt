@@ -43,6 +43,10 @@ constructor(
     private val _locationFlow = MutableSharedFlow<LocationModel>(replay = 0)
     override val locationFlow = _locationFlow.asSharedFlow()
 
+    init {
+        log.i("LocationProvider initialized. HashCode: ${this.hashCode()}")
+    }
+
     private val client: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(
             context,
@@ -114,13 +118,13 @@ constructor(
     // Stops location updates
     override fun stop() {
         if (!_isRunning) {
-            log.i("LocationProvider not running, skipping stop")
+            log.i("LocationProvider not running, skipping stop. HashCode: ${this.hashCode()}")
             return
         }
 
         locationCallback?.let { callback ->
             client.removeLocationUpdates(callback)
-            log.i("Location updates stopped")
+            log.i("Location updates stopped. HashCode: ${this.hashCode()}")
         }
         locationCallback = null
         _isRunning = false

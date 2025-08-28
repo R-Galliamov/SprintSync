@@ -15,7 +15,23 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-// Manages location and duration tracking for a session
+/**
+ * Manages the lifecycle of a session, including tracking location and duration.
+ *
+ * This class is responsible for:
+ * - Starting and stopping location updates.
+ * - Starting, pausing, and resetting the session duration.
+ * - Combining location and duration data into a single flow (`sessionDataFlow`).
+ * - Collecting and processing timed location updates.
+ *
+ * It uses a [LocationProvider] to get location data and a [DurationProvider]
+ * to track the session duration. It operates within a provided [CoroutineScope].
+ *
+ * @property locationProvider The provider for location data.
+ * @property durationProvider The provider for session duration.
+ * @property scope The coroutine scope for managing background tasks.
+ * @property log The application logger for logging events and errors.
+ */
 @ServiceScoped
 class SessionManager
 @Inject
@@ -28,8 +44,12 @@ constructor(
     private var isRunning: Boolean = false
     private var job: Job? = null
 
+    init {
+        log.i("SessionManager initialized. HashCode: ${this.hashCode()}")
+    }
+
     // Combines location and duration into a session data flow
-    val _sessionDataFlow: StateFlow<SessionData> =
+    private val _sessionDataFlow: StateFlow<SessionData> =
         locationProvider.locationFlow
             .combine(durationProvider.durationMillisFlow) { location, duration ->
                 SessionData(location, duration)
@@ -76,12 +96,7 @@ constructor(
 
     // Stops tracking session data
     fun resetSession() {
-        if (!isRunning) {
-            log.i("Session not running, skipping stop")
-            return
-        }
         cancelJob()
-
         locationProvider.stop()
         durationProvider.reset()
         log.i("Session stopped and reset")

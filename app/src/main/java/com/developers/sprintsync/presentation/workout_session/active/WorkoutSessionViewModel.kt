@@ -21,7 +21,7 @@ import com.developers.sprintsync.presentation.workout_session.active.util.state_
 import com.google.android.gms.maps.model.PolylineOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -63,8 +63,8 @@ constructor(
             is ServiceConnectionResult.Success -> {
                 val dataHolder = connectionResult.dataHolder
                 resetServiceObservations(dataHolder)
-
-                val polylines = getWholePathPolylines(dataHolder.trackingDataFlow.value.track.segments)
+                val segments = dataHolder.trackingDataFlow.value.track.segments
+                val polylines = getWholePathPolylines(segments)
                 mapStateHandler.emitPolylines(polylines)
 
                 log.d("Service connected. Setting up new observations. DataHolder: ${dataHolder.hashCode()}")
@@ -116,7 +116,7 @@ constructor(
     }
 
     // Observes session data flow to update UI and map states
-    private suspend fun collectSessionDataFlow(sessionDataFlow: StateFlow<SessionData>) {
+    private suspend fun collectSessionDataFlow(sessionDataFlow: Flow<SessionData>) {
         sessionDataFlow.collect { data ->
             data.userLocation?.toLatLng()?.let { latLng ->
                 mapStateHandler.emitLocation(latLng)
@@ -126,7 +126,7 @@ constructor(
     }
 
     // Observes tracking data flow to update UI and map states
-    private suspend fun collectTrackingDataFlow(trackingDataFlow: StateFlow<TrackingData>) {
+    private suspend fun collectTrackingDataFlow(trackingDataFlow: Flow<TrackingData>) {
         trackingDataFlow.collect { data ->
             val polylines = getUnprocessedPathPolylines(data.track.segments)
             mapStateHandler.emitPolylines(polylines)
