@@ -22,15 +22,15 @@ data class WorkoutsStatsUiModel(
 ) {
     companion object {
         val EMPTY = WorkoutsStatsUiModel(
-            totalWorkouts = "",
-            totalWorkoutDays = "",
-            totalDistance = "",
-            totalDuration = "",
-            longestDistance = "",
-            longestDuration = "",
-            avgPace = "",
-            peakPace = "",
-            totalCalories = "",
+            totalWorkouts = "0",
+            totalWorkoutDays = "0",
+            totalDistance = "0",
+            totalDuration = "0",
+            longestDistance = "0",
+            longestDuration = "0",
+            avgPace = "-",
+            peakPace = "-",
+            totalCalories = "0",
         )
     }
 }
