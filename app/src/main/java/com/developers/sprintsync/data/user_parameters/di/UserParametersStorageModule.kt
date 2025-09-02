@@ -6,12 +6,13 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.data.user_parameters.repository.UserParametersRepository
 import com.developers.sprintsync.data.user_parameters.repository.UserParametersRepositoryImpl
 import com.developers.sprintsync.data.user_parameters.source.LocalUserParametersDataSource
 import com.developers.sprintsync.data.user_parameters.source.UserParametersDataSource
+import com.developers.sprintsync.domain.core.Resource
+import com.developers.sprintsync.domain.user_profile.UserParametersRepository
 import com.developers.sprintsync.domain.user_profile.model.UserParameters
-import com.developers.sprintsync.domain.user_profile.use_case.UserParametersUseCase
+import com.developers.sprintsync.domain.user_profile.use_case.FetchUserParameters
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -29,7 +30,15 @@ class UserParametersStorageModule {
 
     @Provides
     @Singleton
-    fun provideUserParameters(useCase: UserParametersUseCase): UserParameters = runBlocking { useCase.invoke().first() }
+    fun provideUserParameters(fetchUP: FetchUserParameters): UserParameters? =
+        runBlocking {
+            when (val r = fetchUP()
+                .first { it is Resource.Result }) {
+                is Resource.Result.Success<UserParameters> -> r.data
+                else -> null
+            }
+        }
+
 
     @Provides
     @Singleton

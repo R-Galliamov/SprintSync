@@ -86,6 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
+            android:imeOptions="actionDone"
             android:importantForAutofill="no"
             android:inputType="numberDecimal"
             android:maxLength="5"

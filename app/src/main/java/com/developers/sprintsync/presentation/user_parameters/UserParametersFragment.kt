@@ -4,21 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.developers.sprintsync.R
+import com.developers.sprintsync.core.util.extension.observe
+import com.developers.sprintsync.core.util.extension.showError
+import com.developers.sprintsync.core.util.log.AppLogger
+import com.developers.sprintsync.core.util.view.DatePickerFactory
 import com.developers.sprintsync.core.util.view.InputCardHandler
 import com.developers.sprintsync.core.util.view.InputCardView
-import com.developers.sprintsync.core.util.view.spinner.manager.SpinnerManager
+import com.developers.sprintsync.core.util.view.SpinnerBinder
 import com.developers.sprintsync.databinding.FragmentUserParametersBinding
 import com.developers.sprintsync.domain.user_profile.model.Sex
-import com.developers.sprintsync.domain.user_profile.model.UserParameters
-import com.developers.sprintsync.presentation.user_parameters.util.DatePickerCreator
-import com.developers.sprintsync.presentation.user_parameters.util.GenderToSpinnerMapper
-import com.google.android.material.datepicker.MaterialDatePicker
+import com.developers.sprintsync.presentation.user_parameters.model.UserParametersUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,16 +30,18 @@ class UserParametersFragment : Fragment() {
     private var _binding: FragmentUserParametersBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
-    private var _sexSpinnerManager: SpinnerManager<Sex>? = null
-    private val genderSpinnerManager get() = checkNotNull(_sexSpinnerManager) { getString(R.string.error_spinner_not_initialized) }
-
-    private var _datePicker: MaterialDatePicker<Long>? = null
-    private val datePicker get() = checkNotNull(_datePicker) { getString(R.string.error_date_picker_not_initialized) } // TODO get rid of such kind of checks or wrap in try block
-
-    private val viewModel: UserParametersViewModel by viewModels()
+    private val viewModel: UserParametersViewModel by activityViewModels()
 
     @Inject
     lateinit var inputCardHandler: InputCardHandler
+
+    @Inject
+    lateinit var datePickerFactory: DatePickerFactory
+
+    @Inject
+    lateinit var log: AppLogger
+
+    private var sexBinder: SpinnerBinder<Sex>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,43 +57,84 @@ class UserParametersFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        setSexBinder()
         configureInputCards()
-        initGenderSpinnerManager()
-        initParametersFlowListeners()
-        setBirthDateCardListener()
+        setCardBirthDateListener()
+        setOnWeightChangedListener()
+        observeUiState()
+        observeErrors()
+    }
+
+    private fun setSexBinder() {
+        val label = viewModel.sexLabel
+        sexBinder = SpinnerBinder<Sex>({ label(it) }).also {
+            it.attach(binding.userParameters.spinnerGender, Sex.entries)
+            it.setOnSelected { selected -> viewModel.onSexChanged(selected) }
+            log.d("setGenderBinder")
+        }
+    }
+
+    private fun showDatePicker(selected: Long?) {
+        val picker = datePickerFactory.create(selected)
+        picker.addOnPositiveButtonClickListener { sel -> viewModel.onDateChanged(sel) }
+        picker.show(childFragmentManager, "birthDate")
+        log.d("showDatePicker")
     }
 
     private fun configureInputCards() {
         inputCardHandler.configureInputCards(binding.root, createTextInputViews())
+        log.d("configureInputCards")
     }
 
-    private fun initGenderSpinnerManager() {
-        val spinner = binding.userParameters.spinnerGender
-        val items = Sex.entries
-        val mapper = GenderToSpinnerMapper()
-        _sexSpinnerManager = SpinnerManager(spinner, items, mapper)
+    private fun setOnWeightChangedListener() {
+        val weightView = binding.userParameters.etWeightValue
+        weightView.setOnEditorActionListener { _, actionId, _ ->
+            val input = weightView.text
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.onWeightChanged(input); true
+            } else false
+        }
+
+        weightView.setOnFocusChangeListener { _, hasFocus ->
+            val input = weightView.text
+            if (!hasFocus) viewModel.onWeightChanged(input)
+        }
+
     }
 
-    private fun initParametersFlowListeners() {
+    private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.parametersFlow.collect { parameters ->
-                    _datePicker = createDatePickerIfNull(parameters.birthDateTimestamp)
-                    updateGenderUI(parameters.sex)
-                    updateBirthDateUI(parameters.birthDate)
-                    updateWeightUI(parameters.weight)
+                viewModel.state.collect { s ->
+                    when (s) {
+                        UserParametersUiState.Empty -> {/* NO-OP */
+                        }
+
+                        UserParametersUiState.Loading -> {/* NO-OP */
+                        }
+
+                        is UserParametersUiState.Success -> {
+                            val p = s.draft
+                            p.sex?.let { updateGenderUI(it) }
+                            updateBirthDateUI(p.birthDateText)
+                            updateWeightUI(p.weightText)
+                        }
+                    }
+
                 }
             }
         }
     }
 
-    private fun createDatePickerIfNull(selectedDateTimestamp: Long): MaterialDatePicker<Long> =
-        _datePicker ?: DatePickerCreator().create(selectedDateTimestamp) { selectedDateFormatted ->
-            updateBirthDateUI(selectedDateFormatted)
+    private fun observeErrors() {
+        observe(viewModel.errors) { errors ->
+            val message = getString(errors.first().titleRes)
+            showError(log, message)
         }
+    }
 
     private fun updateGenderUI(sex: Sex) {
-        genderSpinnerManager.setSelectedItem(sex)
+        sexBinder?.setSelection(sex)
     }
 
     private fun updateWeightUI(weight: String) {
@@ -100,23 +145,11 @@ class UserParametersFragment : Fragment() {
         binding.userParameters.tvBirthDate.text = date
     }
 
-    private fun setBirthDateCardListener() {
+    private fun setCardBirthDateListener() {
         binding.userParameters.cardBirthDate.setOnClickListener {
-            datePicker.show(parentFragmentManager, TAG)
+            val bdEpoch = viewModel.upDraft?.birthDateEpochMillis
+            showDatePicker(bdEpoch)
         }
-    }
-
-    private fun saveParameters() = createUserParameters()?.let { viewModel.saveParameters(it) }
-
-    // TODO replace with UserParameters creator. Move to view model.
-    private fun createUserParameters(): UserParameters? {
-        val gender = genderSpinnerManager.getSelectedItem()
-        val birthDateTimestamp = datePicker.selection ?: return null
-        val weight =
-            binding.userParameters.etWeightValue.text
-                .toString()
-                .toFloat()
-        return UserParameters(gender, birthDateTimestamp, weight)
     }
 
     private fun createTextInputViews(): List<InputCardView> {
@@ -126,18 +159,13 @@ class UserParametersFragment : Fragment() {
     }
 
     private fun clearResources() {
-        _sexSpinnerManager = null
-        _datePicker = null
+        sexBinder?.detach()
+        sexBinder = null
         _binding = null
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        saveParameters()
         clearResources()
-    }
-
-    companion object {
-        private const val TAG = "My stack: ParametersFragment"
     }
 }

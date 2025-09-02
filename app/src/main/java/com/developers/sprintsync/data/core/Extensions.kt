@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onStart
 
 private fun Any.isEmptyCollection(): Boolean = this is Collection<*> && this.isEmpty()
@@ -59,3 +60,31 @@ fun <T> Flow<T?>.toResource(): Flow<Resource<T>> {
 }
 
 fun <T> resourceFlow(block: suspend FlowCollector<T?>.() -> Unit): Flow<Resource<T>> = flow(block).toResource()
+
+suspend fun <T, O> Resource<T>.mapResource(transform: suspend (T) -> O): Resource<O> =
+    when (this) {
+        is Resource.Result.Success -> Resource.Result.Success(transform(data))
+        is Resource.Result.Empty -> Resource.Result.Empty
+        is Resource.Result.Error -> Resource.Result.Error(throwable)
+        Resource.Loading -> Resource.Loading
+    }
+
+suspend fun <T, O : Any> Resource<T>.mapResourceNotNull(transform: suspend (T) -> O?): Resource<O> =
+    when (this) {
+        is Resource.Result.Success -> transform(data)?.let { Resource.Result.Success(it) } ?: Resource.Result.Empty
+        is Resource.Result.Empty -> Resource.Result.Empty
+        is Resource.Result.Error -> Resource.Result.Error(throwable)
+        Resource.Loading -> Resource.Loading
+    }
+
+suspend fun <T, O> Resource<T>.flatMapResource(transform: suspend (T) -> Resource<O>): Resource<O> =
+    when (this) {
+        is Resource.Result.Success -> transform(data)
+        is Resource.Result.Empty -> Resource.Result.Empty
+        is Resource.Result.Error -> Resource.Result.Error(throwable)
+        Resource.Loading -> Resource.Loading
+    }
+
+fun <T, O : Any> Flow<Resource<T>>.mapResourceNotNull(transform: suspend (T) -> O?): Flow<Resource<O>> {
+    return this.mapNotNull { res -> res.mapResourceNotNull { t -> transform(t) } }
+}

@@ -1,16 +1,18 @@
 package com.developers.sprintsync.domain.user_profile.model
 
+import java.time.LocalDate
+
 data class UserParameters(
     val sex: Sex,
-    val birthDateTimestamp: Long,
+    val birthDate: LocalDate,
     val weightKg: Float,
 ) {
 
     companion object {
         val DEFAULT =
             UserParameters(
-                sex = Sex.MALE,
-                birthDateTimestamp = 946684800L,
+                sex = Sex.UNSPECIFIED,
+                birthDate = LocalDate.ofYearDay(2000, 1),
                 weightKg = 70.0f,
             )
     }

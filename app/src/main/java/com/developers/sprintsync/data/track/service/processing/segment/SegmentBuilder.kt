@@ -31,7 +31,7 @@ interface SegmentBuilder {
  */
 class DefaultSegmentBuilder @Inject constructor(
     val calculator: MetricsCalcOrchestrator,
-    private val userParameters: UserParameters,
+    private val userParameters: UserParameters?,
     private val validator: Validator<Segment>,
     private val paceAnalyzer: RunPaceAnalyzer
 ) : SegmentBuilder {
@@ -55,8 +55,9 @@ class DefaultSegmentBuilder @Inject constructor(
                 paceAnalyzer.add(startPoint).paceMinPerKm
             }
             val pace = paceAnalyzer.add(endPoint).paceMinPerKm ?: 0f
+            val weight = userParameters?.weightKg ?: 75f
             val calories =
-                calculator.calculateCalories(userParameters.weightKg, distanceMeters, durationMillis)
+                calculator.calculateCalories(weight, distanceMeters, durationMillis)
 
             val segment = Segment(
                 id = id,
