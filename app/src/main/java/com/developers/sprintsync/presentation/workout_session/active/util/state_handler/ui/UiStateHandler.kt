@@ -1,8 +1,8 @@
 package com.developers.sprintsync.presentation.workout_session.active.util.state_handler.ui
 
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
+import com.developers.sprintsync.presentation.components.formatter.DurationUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.DurationUiPattern
 import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.domain.track.model.TrackingStatus
 import com.developers.sprintsync.presentation.workout_session.active.util.metrics_formatter.UiMetrics

@@ -15,7 +15,7 @@ import com.developers.sprintsync.core.util.extension.navigateBack
 import com.developers.sprintsync.core.util.extension.showError
 import com.developers.sprintsync.core.util.extension.showErrorAndBack
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.core.util.permission.PermissionManager
+import com.developers.sprintsync.core.util.PermissionManager
 import com.developers.sprintsync.databinding.FragmentPermissionRequestBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

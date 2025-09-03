@@ -321,7 +321,7 @@ class WorkoutSessionFragment : Fragment() {
         val shouldStop = viewModel.uiStateFlow.value.shouldStopLocationUpdatesWhenClosed
         if (shouldStop) {
             try {
-               // serviceController?.stopLocationUpdates()
+                // serviceController?.stopLocationUpdates()
                 log.i("Stopped location updates on close")
             } catch (e: Exception) {
                 log.e("Error stopping location updates: ${e.message}", e)

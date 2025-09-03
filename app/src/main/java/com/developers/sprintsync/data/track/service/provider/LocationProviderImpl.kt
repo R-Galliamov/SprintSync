@@ -4,8 +4,8 @@ import android.Manifest
 import android.content.Context
 import android.os.Looper
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.core.util.permission.MissingPermissionException
-import com.developers.sprintsync.core.util.permission.PermissionManager
+import com.developers.sprintsync.core.util.MissingPermissionException
+import com.developers.sprintsync.core.util.PermissionManager
 import com.developers.sprintsync.domain.track.model.LocationModel
 import com.developers.sprintsync.domain.track.model.toDataModel
 import com.google.android.gms.location.FusedLocationProviderClient

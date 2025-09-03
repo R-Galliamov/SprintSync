@@ -1,12 +1,12 @@
 package com.developers.sprintsync.presentation.workouts_stats
 
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
-import com.developers.sprintsync.core.util.track_formatter.PaceUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.CaloriesUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.DurationUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.DurationUiPattern
+import com.developers.sprintsync.presentation.components.formatter.PaceUiFormatter
 import com.developers.sprintsync.domain.statistics.model.WorkoutsStats
-import com.developers.sprintsync.presentation.components.DistanceFormatter
+import com.developers.sprintsync.presentation.components.formatter.DistanceFormatter
 import javax.inject.Inject
 
 data class WorkoutsStatsUiModel(

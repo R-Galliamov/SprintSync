@@ -1,6 +1,6 @@
 package com.developers.sprintsync.data.workout_plan.converter
 
-import com.developers.sprintsync.data.core.SealedTypeConverter
+import com.developers.sprintsync.data.components.SealedTypeConverter
 import com.google.gson.Gson
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach

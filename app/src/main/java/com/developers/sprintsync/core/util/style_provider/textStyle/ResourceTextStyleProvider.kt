@@ -16,14 +16,13 @@ interface TextStyleProvider {
 
 /**
  * Provides text styling attributes from a style resource.
- * TODO use DaggerHilt
  */
 class ResourceTextStyleProvider(
     private val context: Context,
     private val styleResId: Int,
 ) : TextStyleProvider {
 
-    private val log = TimberAppLogger() // TODO inject this
+    private val log = TimberAppLogger()
 
     /**
      * The text color from the style resource, defaulting to black.

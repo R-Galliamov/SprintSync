@@ -1,7 +1,7 @@
 package com.developers.sprintsync.presentation.user_parameters.di
 
-import com.developers.sprintsync.core.util.view.DatePickerFactory
-import com.developers.sprintsync.core.util.view.DefDatePickerFactory
+import com.developers.sprintsync.presentation.components.view.DatePickerFactory
+import com.developers.sprintsync.presentation.components.view.DefDatePickerFactory
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

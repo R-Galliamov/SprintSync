@@ -3,11 +3,11 @@ package com.developers.sprintsync.presentation.workouts_stats.chart.formatters.a
 import com.developers.sprintsync.core.util.DistanceConverter
 import com.developers.sprintsync.core.util.extension.approximatelyEquals
 import com.developers.sprintsync.core.util.log.TimberAppLogger
-import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
+import com.developers.sprintsync.presentation.components.formatter.CaloriesUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.DurationUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.DurationUiPattern
 import com.developers.sprintsync.domain.workouts_plan.model.Metric
-import com.developers.sprintsync.presentation.components.KilometerFormatter
+import com.developers.sprintsync.presentation.components.formatter.KilometerFormatter
 import kotlin.math.abs
 
 class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {

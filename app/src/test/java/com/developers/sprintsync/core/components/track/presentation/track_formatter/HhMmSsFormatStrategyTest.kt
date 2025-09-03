@@ -1,6 +1,6 @@
 package com.developers.sprintsync.core.components.track.presentation.track_formatter
 
-import com.developers.sprintsync.core.util.track_formatter.DurationFormatStrategy
+import com.developers.sprintsync.presentation.components.formatter.DurationFormatStrategy
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test

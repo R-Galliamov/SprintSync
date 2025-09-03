@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import com.developers.sprintsync.R
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.core.util.permission.PermissionChecker
+import com.developers.sprintsync.core.util.PermissionChecker
 import javax.inject.Inject
 
 /*

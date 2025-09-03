@@ -1,6 +1,6 @@
 package com.developers.sprintsync.presentation.workouts_stats.data
 
-import com.developers.sprintsync.core.util.formatter.DateFormatter
+import com.developers.sprintsync.presentation.components.formatter.DateFormatter
 import com.developers.sprintsync.core.util.timestamp.TimestampUtils
 import com.developers.sprintsync.presentation.workouts_stats.chart.navigator.RangePosition
 

@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivCardTop" />
 
-    <com.developers.sprintsync.core.util.view.LoadingOverlay
+    <com.developers.sprintsync.presentation.components.view.LoadingOverlay
         android:id="@+id/map_loading_overlay"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -184,7 +184,7 @@
         android:layout_marginBottom="@dimen/space.regular"
         app:layout_constraintBottom_toBottomOf="@id/ivCardBottom" />
 
-    <com.developers.sprintsync.core.util.view.LoadingOverlay
+    <com.developers.sprintsync.presentation.components.view.LoadingOverlay
         android:id="@+id/general_loading_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

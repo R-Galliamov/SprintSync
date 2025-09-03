@@ -14,10 +14,10 @@ import com.developers.sprintsync.R
 import com.developers.sprintsync.core.util.extension.observe
 import com.developers.sprintsync.core.util.extension.showError
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.core.util.view.DatePickerFactory
-import com.developers.sprintsync.core.util.view.InputCardHandler
-import com.developers.sprintsync.core.util.view.InputCardView
-import com.developers.sprintsync.core.util.view.SpinnerBinder
+import com.developers.sprintsync.presentation.components.view.DatePickerFactory
+import com.developers.sprintsync.presentation.components.view.InputCardHandler
+import com.developers.sprintsync.presentation.components.view.InputCardView
+import com.developers.sprintsync.presentation.components.view.SpinnerBinder
 import com.developers.sprintsync.databinding.FragmentUserParametersBinding
 import com.developers.sprintsync.domain.user_profile.model.Sex
 import com.developers.sprintsync.presentation.user_parameters.model.UserParametersUiState

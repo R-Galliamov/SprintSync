@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.developers.sprintsync.core.database.AppDb
+import com.developers.sprintsync.data.database.AppDb
 import com.developers.sprintsync.data.workout_plan.dto.PlanDayDto
 import com.developers.sprintsync.data.workout_plan.dto.WorkoutPlanDto
 import com.google.common.truth.Truth.assertThat

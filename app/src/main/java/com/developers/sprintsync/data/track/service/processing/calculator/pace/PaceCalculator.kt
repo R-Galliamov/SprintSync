@@ -1,7 +1,7 @@
 package com.developers.sprintsync.data.track.service.processing.calculator.pace
 
 import com.developers.sprintsync.core.util.DistanceConverter
-import com.developers.sprintsync.core.util.time.TimeConverter
+import com.developers.sprintsync.data.components.TimeConverter
 import javax.inject.Inject
 
 class PaceCalculator @Inject constructor(

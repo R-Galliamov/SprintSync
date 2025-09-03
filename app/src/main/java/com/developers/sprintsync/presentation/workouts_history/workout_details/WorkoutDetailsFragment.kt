@@ -10,9 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
 import com.developers.sprintsync.core.util.extension.navigateBack
-import com.developers.sprintsync.core.util.view.ConfirmationDialogFragment
-import com.developers.sprintsync.core.util.view.ConfirmationDialogTag.DELETE
-import com.developers.sprintsync.core.util.view.pace_chart.PaceChartManager
+import com.developers.sprintsync.presentation.components.view.ConfirmationDialogFragment
+import com.developers.sprintsync.presentation.components.view.ConfirmationDialogTag.DELETE
+import com.developers.sprintsync.presentation.components.view.pace_chart.PaceChartManager
 import com.developers.sprintsync.core.util.extension.observe
 import com.developers.sprintsync.core.util.extension.showErrorAndBack
 import com.developers.sprintsync.core.util.log.AppLogger

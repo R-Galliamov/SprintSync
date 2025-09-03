@@ -231,7 +231,7 @@
 
     </FrameLayout>
 
-    <com.developers.sprintsync.core.util.view.LoadingOverlay
+    <com.developers.sprintsync.presentation.components.view.LoadingOverlay
         android:id="@+id/view_loading_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

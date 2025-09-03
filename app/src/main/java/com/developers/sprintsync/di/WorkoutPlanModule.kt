@@ -1,7 +1,7 @@
 package com.developers.sprintsync.di
 
-import com.developers.sprintsync.core.database.AppDb
-import com.developers.sprintsync.core.id_generator.IdGenerator
+import com.developers.sprintsync.data.database.AppDb
+import com.developers.sprintsync.data.components.IdGenerator
 import com.developers.sprintsync.data.workout_plan.dao.WorkoutPlanDao
 import com.developers.sprintsync.data.workout_plan.data_source.local.LocalWorkoutPlanDataSource
 import com.developers.sprintsync.data.workout_plan.data_source.local.RoomWorkoutPlanDataSource

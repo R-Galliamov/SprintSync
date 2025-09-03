@@ -1,11 +1,11 @@
 package com.developers.sprintsync.presentation.home_screen
 
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.core.util.time.TimeParts
-import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.PaceUiFormatter
+import com.developers.sprintsync.presentation.components.TimeParts
+import com.developers.sprintsync.presentation.components.formatter.CaloriesUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.PaceUiFormatter
 import com.developers.sprintsync.domain.statistics.model.WorkoutsStats
-import com.developers.sprintsync.presentation.components.DistanceFormatter
+import com.developers.sprintsync.presentation.components.formatter.DistanceFormatter
 import javax.inject.Inject
 
 data class RecordBoardUiModel(

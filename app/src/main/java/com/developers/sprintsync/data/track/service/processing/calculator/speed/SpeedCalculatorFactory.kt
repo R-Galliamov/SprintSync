@@ -1,6 +1,6 @@
 package com.developers.sprintsync.data.track.service.processing.calculator.speed
 
-import com.developers.sprintsync.core.util.time.TimeConverter
+import com.developers.sprintsync.data.components.TimeConverter
 
 class SpeedCalculatorFactory {
     fun getCalculator(unit: SpeedUnit): SpeedCalculatorStrategy =

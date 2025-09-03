@@ -1,7 +1,7 @@
 package com.developers.sprintsync.presentation.components.di
 
-import com.developers.sprintsync.presentation.components.DistanceFormatter
-import com.developers.sprintsync.presentation.components.KilometerFormatter
+import com.developers.sprintsync.presentation.components.formatter.DistanceFormatter
+import com.developers.sprintsync.presentation.components.formatter.KilometerFormatter
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

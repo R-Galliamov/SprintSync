@@ -1,11 +1,11 @@
 package com.developers.sprintsync.presentation.workouts_history.workouts_log
 
-import com.developers.sprintsync.core.util.formatter.DateFormatter
-import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DurationUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.DurationUiPattern
+import com.developers.sprintsync.presentation.components.formatter.DateFormatter
+import com.developers.sprintsync.presentation.components.formatter.CaloriesUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.DurationUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.DurationUiPattern
 import com.developers.sprintsync.data.track_preview.model.TrackWithPreview
-import com.developers.sprintsync.presentation.components.DistanceFormatter
+import com.developers.sprintsync.presentation.components.formatter.DistanceFormatter
 import javax.inject.Inject
 
 data class WorkoutLogItem(

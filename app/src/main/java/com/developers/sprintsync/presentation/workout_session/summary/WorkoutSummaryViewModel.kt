@@ -2,8 +2,8 @@ package com.developers.sprintsync.presentation.workout_session.summary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.developers.sprintsync.core.util.view.pace_chart.PaceChartDataCreator
-import com.developers.sprintsync.core.util.view.pace_chart.model.PaceChartData
+import com.developers.sprintsync.presentation.components.view.pace_chart.PaceChartDataCreator
+import com.developers.sprintsync.presentation.components.view.pace_chart.model.PaceChartData
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.domain.track.use_case.storage.DeleteTrackByIdUseCase
 import com.developers.sprintsync.domain.track.use_case.storage.GetTrackByIdUseCase

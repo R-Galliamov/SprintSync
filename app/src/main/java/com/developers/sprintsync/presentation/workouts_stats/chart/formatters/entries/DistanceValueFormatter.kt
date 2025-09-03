@@ -2,7 +2,7 @@ package com.developers.sprintsync.presentation.workouts_stats.chart.formatters.e
 
 import com.developers.sprintsync.core.util.DistanceConverter
 import com.developers.sprintsync.core.util.log.TimberAppLogger
-import com.developers.sprintsync.presentation.components.KilometerFormatter
+import com.developers.sprintsync.presentation.components.formatter.KilometerFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 
 class DistanceValueFormatter : ValueFormatter() {

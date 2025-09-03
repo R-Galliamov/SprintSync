@@ -6,7 +6,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.TextAppearanceSpan
 import com.developers.sprintsync.R
-import com.developers.sprintsync.core.util.time.TimeParts
+import com.developers.sprintsync.presentation.components.TimeParts
 import java.util.Locale
 
 class SpannableStyler(

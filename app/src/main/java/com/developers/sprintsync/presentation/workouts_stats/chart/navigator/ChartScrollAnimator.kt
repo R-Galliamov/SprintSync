@@ -1,6 +1,6 @@
 package com.developers.sprintsync.presentation.workouts_stats.chart.navigator
 
-import com.developers.sprintsync.core.util.animator.Animator
+import com.developers.sprintsync.presentation.workouts_stats.util.Animator
 import com.github.mikephil.charting.charts.CombinedChart
 
 class ChartScrollAnimator(

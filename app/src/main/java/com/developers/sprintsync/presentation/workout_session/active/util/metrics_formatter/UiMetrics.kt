@@ -1,9 +1,9 @@
 package com.developers.sprintsync.presentation.workout_session.active.util.metrics_formatter
 
-import com.developers.sprintsync.core.util.track_formatter.CaloriesUiFormatter
-import com.developers.sprintsync.core.util.track_formatter.PaceUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.CaloriesUiFormatter
+import com.developers.sprintsync.presentation.components.formatter.PaceUiFormatter
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.presentation.components.DistanceFormatter
+import com.developers.sprintsync.presentation.components.formatter.DistanceFormatter
 import javax.inject.Inject
 
 /**

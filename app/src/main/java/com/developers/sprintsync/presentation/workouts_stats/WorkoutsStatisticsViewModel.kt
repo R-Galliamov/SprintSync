@@ -13,7 +13,7 @@ import com.developers.sprintsync.presentation.workouts_stats.chart.data.WeekDay
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.processing.WeeklyChartDataPreparer
 import com.developers.sprintsync.presentation.workouts_stats.data.ChartDataUpdateEvent
 import com.developers.sprintsync.presentation.workouts_stats.data.DateRange
-import com.developers.sprintsync.presentation.workouts_stats.util.filter.TimeWindowTrackFilter
+import com.developers.sprintsync.presentation.workouts_stats.util.TimeWindowTrackFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
