@@ -1,9 +1,9 @@
 package com.developers.sprintsync.data.workout_plan.repository
 
 import com.developers.sprintsync.data.components.IdGenerator
-import com.developers.sprintsync.data.components.fromLocalOrRemote
-import com.developers.sprintsync.data.components.runResult
-import com.developers.sprintsync.data.components.toResource
+import com.developers.sprintsync.domain.core.fromLocalOrRemote
+import com.developers.sprintsync.domain.core.runResult
+import com.developers.sprintsync.domain.core.toResource
 import com.developers.sprintsync.data.workout_plan.data_source.local.LocalWorkoutPlanDataSource
 import com.developers.sprintsync.data.workout_plan.data_source.remote.RemoteWorkoutPlanDataSource
 import com.developers.sprintsync.data.workout_plan.mapper.toDomain

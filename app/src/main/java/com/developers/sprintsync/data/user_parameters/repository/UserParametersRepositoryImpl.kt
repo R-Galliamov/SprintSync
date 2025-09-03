@@ -1,9 +1,9 @@
 package com.developers.sprintsync.data.user_parameters.repository
 
 import com.developers.sprintsync.core.util.log.AppLogger
-import com.developers.sprintsync.data.components.mapResourceNotNull
-import com.developers.sprintsync.data.components.runResult
-import com.developers.sprintsync.data.components.toResource
+import com.developers.sprintsync.domain.core.mapResourceNotNull
+import com.developers.sprintsync.domain.core.runResult
+import com.developers.sprintsync.domain.core.toResource
 import com.developers.sprintsync.data.user_parameters.model.toDomain
 import com.developers.sprintsync.data.user_parameters.model.toStored
 import com.developers.sprintsync.data.user_parameters.source.UserParametersDataSource
