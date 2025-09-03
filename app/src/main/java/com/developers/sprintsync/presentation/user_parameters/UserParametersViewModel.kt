@@ -151,7 +151,7 @@ private fun UserParameters.toDraft(): UserParametersDraft {
         .toInstant()
         .toEpochMilli()
 
-    val bdText = DateFormatter.formatDate(bdEpochMilli, DateFormatter.Pattern.DAY_MONTH_YEAR_FULL)
+    val bdText = DateFormatter.formatDate(bdEpochMilli, DateFormatter.Pattern.DAY_MONTH_YEAR)
     val weightText = this.weightKg.toString()
     return UserParametersDraft(
         sex, bdEpochMilli, bdText, weightText

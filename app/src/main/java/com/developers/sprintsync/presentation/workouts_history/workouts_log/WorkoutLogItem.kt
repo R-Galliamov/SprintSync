@@ -33,7 +33,7 @@ class WorkoutLogItemFormatter @Inject constructor(private val distanceFormatter:
     fun format(tws: TrackWithPreview): WorkoutLogItem {
         try {
             val track = tws.track
-            val date = DateFormatter.formatDate(track.timestamp, DateFormatter.Pattern.DAY_MONTH_YEAR_WEEK_DAY)
+            val date = DateFormatter.formatDate(track.timestamp, DateFormatter.Pattern.WEEK_DAY_DAY_MONTH_YEAR)
             val distance = distanceFormatter.format(tws.track.distanceMeters).withUnit
             val duration = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
             val calories = CaloriesUiFormatter.format(track.calories, CaloriesUiFormatter.Pattern.PLAIN)

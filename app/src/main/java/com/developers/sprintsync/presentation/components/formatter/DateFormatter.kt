@@ -36,7 +36,7 @@ object DateFormatter {
     ) {
         YEAR("yyyy"),
         DAY_MONTH("dd MMM"),
-        DAY_MONTH_YEAR_FULL("dd MMM yyyy"),
-        DAY_MONTH_YEAR_WEEK_DAY("dd.MM.yyyy, EEE"),
+        DAY_MONTH_YEAR("dd MMM yyyy"),
+        WEEK_DAY_DAY_MONTH_YEAR("EEEE, d MMM yyyy"),
     }
 }
