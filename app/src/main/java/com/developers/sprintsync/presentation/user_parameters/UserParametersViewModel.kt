@@ -11,6 +11,7 @@ import com.developers.sprintsync.domain.user_profile.use_case.FetchUserParameter
 import com.developers.sprintsync.domain.user_profile.use_case.SaveResult
 import com.developers.sprintsync.domain.user_profile.use_case.SaveUserParameters
 import com.developers.sprintsync.domain.user_profile.use_case.UserParamsError
+import com.developers.sprintsync.presentation.components.formatter.DateFormatter
 import com.developers.sprintsync.presentation.user_parameters.model.UIError
 import com.developers.sprintsync.presentation.user_parameters.model.UserParametersDraft
 import com.developers.sprintsync.presentation.user_parameters.model.UserParametersUiState
@@ -24,10 +25,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -139,11 +137,6 @@ private fun Sex.toUi(): String {
     }
 }
 
-private fun LocalDate.toUi(): String {
-    val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.getDefault())
-    return this.format(formatter)
-}
-
 private fun Set<UserParamsError>.toUiErr(): Set<UIError> = map { err ->
     when (err) {
         UserParamsError.INVALID_BIRTHDATE -> UIError.INVALID_DATE_INPUT
@@ -158,7 +151,7 @@ private fun UserParameters.toDraft(): UserParametersDraft {
         .toInstant()
         .toEpochMilli()
 
-    val bdText = this.birthDate.toUi()
+    val bdText = DateFormatter.formatDate(bdEpochMilli, DateFormatter.Pattern.DAY_MONTH_YEAR_FULL)
     val weightText = this.weightKg.toString()
     return UserParametersDraft(
         sex, bdEpochMilli, bdText, weightText
