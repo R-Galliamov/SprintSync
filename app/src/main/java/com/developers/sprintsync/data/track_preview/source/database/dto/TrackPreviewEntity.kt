@@ -33,7 +33,7 @@ data class TrackPreviewEntity(
      * @throws IllegalArgumentException if [filePath] is null.
      */
     fun toDto(): TrackPreview {
-        require(this.filePath != null) { "filePath must not be null" } // TODO handle error
+        require(this.filePath != null) { "filePath must not be null" }
         val id = this.id
         val trackId = this.trackId
         val filePath = this.filePath

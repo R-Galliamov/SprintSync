@@ -8,14 +8,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-// TODO firebase security rules
-/*
-match /workout_plans/{planId} {
-  allow read: if resource.data.isSystem == true || resource.data.createdBy == request.auth.uid;
-  allow write: if resource.data.createdBy == request.auth.uid;
-}
- */
-
 class FBWorkoutPlanDataSource (
     private val db: FirebaseFirestore,
 ) : RemoteWorkoutPlanDataSource {

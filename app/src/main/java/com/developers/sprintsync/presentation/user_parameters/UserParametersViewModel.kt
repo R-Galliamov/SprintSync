@@ -8,11 +8,11 @@ import com.developers.sprintsync.domain.core.Resource
 import com.developers.sprintsync.domain.user_profile.model.Sex
 import com.developers.sprintsync.domain.user_profile.model.UserParameters
 import com.developers.sprintsync.domain.user_profile.use_case.FetchUserParameters
-import com.developers.sprintsync.domain.user_profile.use_case.SaveResult
+import com.developers.sprintsync.domain.core.AppResult
 import com.developers.sprintsync.domain.user_profile.use_case.SaveUserParameters
 import com.developers.sprintsync.domain.user_profile.use_case.UserParamsError
 import com.developers.sprintsync.presentation.components.formatter.DateFormatter
-import com.developers.sprintsync.presentation.user_parameters.model.UIError
+import com.developers.sprintsync.presentation.components.UIError
 import com.developers.sprintsync.presentation.user_parameters.model.UserParametersDraft
 import com.developers.sprintsync.presentation.user_parameters.model.UserParametersUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -102,19 +102,24 @@ constructor(
         viewModelScope.launch {
             up?.let {
                 val next = mutator(up)
-                when (val result = saveUserParameters(next)) {
-                    is SaveResult.Invalid -> {
-                        val err = result.errors.toUiErr()
+                when (val r = saveUserParameters(next)) {
+                    is AppResult.Failure.Unexpected -> {
+                        val err = r.cause.toUiErr()
                         emitError(err)
                     }
 
-                    SaveResult.Ok -> {/* NO-OP */
+                    is AppResult.Failure.Validation<UserParamsError> -> {
+                        val err = r.errors.toUiErr()
+                        emitError(err)
+                    }
+
+                    is AppResult.Success<*> -> {
+                        /* NO-OP*/
                     }
                 }
             }
         }
     }
-
 
     private fun emitError(error: UIError) {
         emitError(setOf(error))
@@ -137,6 +142,8 @@ private fun Sex.toUi(): String {
     }
 }
 
+private fun Exception.toUiErr(): UIError = UIError.UNSPECIFIED
+
 private fun Set<UserParamsError>.toUiErr(): Set<UIError> = map { err ->
     when (err) {
         UserParamsError.INVALID_BIRTHDATE -> UIError.INVALID_DATE_INPUT
@@ -157,3 +164,4 @@ private fun UserParameters.toDraft(): UserParametersDraft {
         sex, bdEpochMilli, bdText, weightText
     )
 }
+

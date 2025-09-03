@@ -5,6 +5,7 @@ import com.developers.sprintsync.data.track.repository.TrackRepository
 import com.developers.sprintsync.domain.track.model.Segment
 import com.developers.sprintsync.domain.track.use_case.storage.SaveTrackUseCase
 import com.developers.sprintsync.domain.track.validator.SegmentValidator
+import com.developers.sprintsync.domain.track.validator.TrackValidator
 import com.developers.sprintsync.domain.track.validator.Validator
 import dagger.Module
 import dagger.Provides
@@ -20,7 +21,8 @@ object TrackModule {
 
     @Provides
     fun provideSaveTrackUseCase(
-        trackRepository: TrackRepository,
+        validator: TrackValidator,
+        repo: TrackRepository,
         log: AppLogger
-    ) = SaveTrackUseCase(trackRepository, log)
+    ) = SaveTrackUseCase(validator, repo, log)
 }

@@ -24,7 +24,7 @@ constructor(
 
     override val tracksFlow = trackDao.getAllTracks()
 
-    override suspend fun saveTrack(track: Track): Int {
+    override suspend fun save(track: Track): Int {
         val entity = TrackEntity.fromDto(track)
         val trackId = trackDao.insertTrack(entity).toInt()
         mutex.withLock { cache.put(trackId, track) }

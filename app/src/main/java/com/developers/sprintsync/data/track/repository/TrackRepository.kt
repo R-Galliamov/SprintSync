@@ -10,7 +10,7 @@ interface TrackRepository {
 
     suspend fun getLastTrack(): Track?
 
-    suspend fun saveTrack(track: Track): Int
+    suspend fun save(track: Track): Int
 
     suspend fun deleteTrackById(id: Int)
 }

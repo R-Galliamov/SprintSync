@@ -6,7 +6,7 @@ data class Track(
     val durationMillis: Long,
     val distanceMeters: Float,
     val avgPace: Float,
-    val bestPace: Float, // TODO delete parameter
+    val bestPace: Float,
     val calories: Float,
     val segments: List<Segment>,
 ) {

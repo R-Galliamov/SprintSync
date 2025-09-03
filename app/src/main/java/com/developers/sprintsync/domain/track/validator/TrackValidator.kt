@@ -2,48 +2,48 @@ package com.developers.sprintsync.domain.track.validator
 
 import com.developers.sprintsync.domain.track.model.Track
 
-// TODO refactor with Result
-object TrackValidator {
-    private const val MIN_TIMESTAMP = 0L
-    private const val MIN_DURATION = 0L
-    private const val MIN_DISTANCE = 0
-    private const val MIN_PACE = 0f
-    private const val MIN_CALORIES = 0
-    private const val MIN_SEGMENTS = 2
+data class TrackValidationPolicy(
+    val minTimestamp: Long,
+    val minDuration: Long,
+    val minDistance: Int,
+    val minPace: Float,
+    val minCalories: Int,
+    val minSegments: Int,
+)
 
-    /**
-     * Validates a [Track] and throws a [TrackValidationException] if any validation fails.
-     *
-     * @param data The track to validate.
-     * @return The validated track if all checks pass.
-     * @throws TrackValidationException If any validation rule is violated.
-     */
-    fun validateOrThrow(data: Track): Track {
-        if (data.timestamp < MIN_TIMESTAMP) throw TrackValidationException.InvalidTimestamp()
-        if (data.durationMillis <= MIN_DURATION) throw TrackValidationException.DurationTooShort()
-        if (data.distanceMeters <= MIN_DISTANCE) throw TrackValidationException.DistanceTooShort()
-        if (data.avgPace <= MIN_PACE) throw TrackValidationException.AvgPaceInvalid()
-        if (data.bestPace <= MIN_PACE) throw TrackValidationException.BestPaceInvalid()
-        if (data.calories < MIN_CALORIES) throw TrackValidationException.CaloriesNegative()
-        if (data.segments.size < MIN_SEGMENTS) throw TrackValidationException.TooFewSegments()
-        return data
+object TrackLimits {
+    const val MIN_TIMESTAMP: Long = 0L
+    const val MIN_DURATION: Long = 0L
+    const val MIN_DISTANCE: Int = 0
+    const val MIN_PACE: Float = 0f
+    const val MIN_CALORIES: Int = 0
+    const val MIN_SEGMENTS: Int = 2
+}
+
+
+class TrackValidator(private val policy: TrackValidationPolicy) {
+
+    fun validate(track: Track): Set<TrackErrors> {
+        val errors = mutableSetOf<TrackErrors>()
+
+        if (track.timestamp < policy.minTimestamp) errors += TrackErrors.InvalidTimestamp
+        if (track.durationMillis <= policy.minDuration) errors += TrackErrors.DurationTooShort
+        if (track.distanceMeters <= policy.minDistance) errors += TrackErrors.DistanceTooShort
+        if (track.avgPace <= policy.minPace) errors += TrackErrors.AvgPaceInvalid
+        if (track.bestPace <= policy.minPace) errors += TrackErrors.BestPaceInvalid
+        if (track.calories < policy.minCalories) errors += TrackErrors.CaloriesNegative
+        if (track.segments.size < policy.minSegments) errors += TrackErrors.TooFewSegments
+
+        return errors
     }
 }
 
-sealed class TrackValidationException(
-    override val message: String,
-) : Exception(message) {
-    class InvalidTimestamp : TrackValidationException("Invalid timestamp")
-
-    class DurationTooShort : TrackValidationException("Duration must be greater than zero")
-
-    class DistanceTooShort : TrackValidationException("Distance must be greater than zero")
-
-    class AvgPaceInvalid : TrackValidationException("Average pace must be positive")
-
-    class BestPaceInvalid : TrackValidationException("Best pace must be positive")
-
-    class CaloriesNegative : TrackValidationException("Calories burned cannot be negative")
-
-    class TooFewSegments : TrackValidationException("Track must contain at least two segments")
+enum class TrackErrors() {
+    InvalidTimestamp,
+    DurationTooShort,
+    DistanceTooShort,
+    AvgPaceInvalid,
+    BestPaceInvalid,
+    CaloriesNegative,
+    TooFewSegments
 }

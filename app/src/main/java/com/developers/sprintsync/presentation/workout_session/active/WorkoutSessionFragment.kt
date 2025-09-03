@@ -199,7 +199,8 @@ class WorkoutSessionFragment : Fragment() {
 
                     is UIEvent.NavigateToSummary -> navigateToSessionSummary(event.trackId)
                     is UIEvent.ErrorAndClose -> {
-                        showErrorAndBack(log, event.message) // TODO we don't need error here
+                        val message = getString(event.err.first().titleRes)
+                        showErrorAndBack(log, message)
                     }
                 }
                 log.d("Processed UI event: ${event.javaClass.simpleName}")

@@ -2,6 +2,7 @@ package com.developers.sprintsync.domain.user_profile.use_case
 
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.domain.core.Resource
+import com.developers.sprintsync.domain.core.AppResult
 import com.developers.sprintsync.domain.user_profile.UserParametersRepository
 import com.developers.sprintsync.domain.user_profile.model.UserParameters
 import java.time.LocalDate
@@ -12,17 +13,25 @@ class SaveUserParameters(
     private val validator: UserParametersValidator,
     private val log: AppLogger,
 ) {
-    suspend operator fun invoke(params: UserParameters): SaveResult {
-        val vr = validator.validate(params)
-        if (vr.isNotEmpty()) return SaveResult.Invalid(vr)
-        return when (val sr = repo.save(params)) {
-            Resource.Result.Empty -> SaveResult.Ok
-            is Resource.Result.Error -> SaveResult.Invalid(emptySet(), sr.throwable)
-            is Resource.Result.Success<Unit> -> SaveResult.Ok
-        }.also {
-            log.d("invoke: $it")
+    suspend operator fun invoke(params: UserParameters): AppResult<Unit?, UserParamsError> {
+        val errors = validator.validate(params)
+        if (errors.isNotEmpty()) {
+            log.w("User params validation failed: $errors")
+            return AppResult.Failure.Validation(errors)
         }
+        return when (val r = repo.save(params)) {
+            Resource.Result.Empty,
+            is Resource.Result.Success<*> -> AppResult.Success(Unit)
+
+            is Resource.Result.Error -> r.throwable.toUnexpected()
+        }.also { log.d("SaveUserParameters result: $it") }
     }
+}
+
+private fun Throwable.toUnexpected(): AppResult.Failure.Unexpected = when (this) {
+    is kotlinx.coroutines.CancellationException -> throw this
+    is Exception -> AppResult.Failure.Unexpected(this)
+    else -> AppResult.Failure.Unexpected(IllegalStateException("Non-Exception throwable: $this"))
 }
 
 
@@ -38,11 +47,6 @@ data class UserParamsPolicy(
 )
 
 enum class UserParamsError { INVALID_BIRTHDATE, INVALID_WEIGHT }
-
-sealed interface SaveResult {
-    data object Ok : SaveResult
-    data class Invalid(val errors: Set<UserParamsError>, val throwable: Throwable? = null) : SaveResult
-}
 
 class UserParametersValidator(
     private val policy: UserParamsPolicy,
