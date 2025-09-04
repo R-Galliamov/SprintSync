@@ -65,7 +65,7 @@ class DefaultChartManager(
         chart.post {
             chart.data = chartData
 
-            _navigator ?: initNavigator(chart) //TODO sometimes it doesn't work
+            _navigator ?: initNavigator(chart)
             navigatorStateScope ?: initNavigatorStateListener(metric, navigator)
             chartConfigurationType?.let {
                 val config =
@@ -82,10 +82,6 @@ class DefaultChartManager(
                 navigator.invalidate()
             }
         }
-    }
-
-    override fun displayEntry(dayIndex: Int) {
-        TODO("Not yet implemented")
     }
 
     private fun initNavigator(chart: CombinedChart) {

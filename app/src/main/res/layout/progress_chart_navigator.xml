@@ -5,7 +5,6 @@
     android:gravity="center"
     android:orientation="horizontal">
 
-    <!-- TODO: add ripple effect -->
     <ImageView
         android:id="@+id/btn_previous_range"
         android:layout_width="wrap_content"

@@ -72,7 +72,6 @@ class ChartNavigator(
     }
 
     // works only when viewport is initialised meaning first range is displayed. Must be called to shift range
-    // TODO delegate logic to another class
     fun shiftViewPortRange(
         direction: NavigationDirection,
         shiftRanges: Int = DEFAULT_RANGE_SHIFT,
@@ -164,7 +163,7 @@ class ChartNavigator(
         val firstIndexToBeDisplayed = coercedRangeIndex * rangeLimits.chartRange
 
         CoroutineScope(Dispatchers.Main).launch {
-            chart.moveViewToX(firstIndexToBeDisplayed - 0.5f) // TODO add entry index converter to x position
+            chart.moveViewToX(firstIndexToBeDisplayed - 0.5f)
             _state.update {
                 when (state.value) {
                     is NavigatorState.DataLoaded ->

@@ -22,9 +22,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-// TODO create class to handle chart data
-// TODO use state machine
-// TODO cover with logs
 @HiltViewModel
 class WorkoutsStatisticsViewModel
 @Inject
@@ -75,7 +72,7 @@ constructor(
         val maxIndex = displayedData.data.keys.max()
         val filteredTracks =
             timeWindowTrackFilter.filterTracks(tracksState.value, referenceTimestamp, minIndex, maxIndex)
-        val stats = workoutsStatsCreator.create(filteredTracks) // TODO move to use case
+        val stats = workoutsStatsCreator.create(filteredTracks)
         val uiStats = workoutsStatsUiModelFormatter.format(stats)
         _workoutsWeekStats.update { uiStats }
 

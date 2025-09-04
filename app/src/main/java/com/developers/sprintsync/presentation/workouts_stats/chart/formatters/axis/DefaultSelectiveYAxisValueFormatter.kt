@@ -41,7 +41,7 @@ class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {
                 Metric.DURATION -> DurationUiFormatter.format(selectedValue.toLong(), DurationUiPattern.MM_UNIT)
                 Metric.DISTANCE -> KilometerFormatter(DistanceConverter(TimberAppLogger()), TimberAppLogger()).format(
                     selectedValue
-                ).withUnit // TODO Inject
+                ).withUnit
 
                 Metric.CALORIES -> CaloriesUiFormatter.format(selectedValue, CaloriesUiFormatter.Pattern.WITH_UNIT)
             }

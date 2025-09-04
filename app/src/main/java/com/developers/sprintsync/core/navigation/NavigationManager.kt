@@ -6,8 +6,8 @@ object NavigationManager {
     private val navGraphMainManager = NavGraphMainManager()
 
     fun prepareRootNavController(
-        isFirstRun: Boolean,
         rootNavController: NavController,
+        isFirstRun: Boolean = false,
     ) {
         val graph = rootNavController.navInflater.inflate(navGraphMainManager.getNavGraphId())
         graph.setStartDestination(getStartDestination(isFirstRun))

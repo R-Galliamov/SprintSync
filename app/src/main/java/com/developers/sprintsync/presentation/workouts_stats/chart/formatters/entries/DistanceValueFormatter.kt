@@ -7,5 +7,5 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 
 class DistanceValueFormatter : ValueFormatter() {
     override fun getFormattedValue(value: Float): String =
-        KilometerFormatter(DistanceConverter(TimberAppLogger()), TimberAppLogger()).format(value).value // TODO inject
+        KilometerFormatter(DistanceConverter(TimberAppLogger()), TimberAppLogger()).format(value).value
 }

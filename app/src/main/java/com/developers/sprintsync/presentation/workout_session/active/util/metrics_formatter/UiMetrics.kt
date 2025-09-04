@@ -17,7 +17,7 @@ data class UiMetrics(
 
 /**
  * Formats raw workout data into [UiMetrics] for UI display.
- * // TODO inject and log
+ *
  */
 class UiMetricsFormatter @Inject constructor(private val distanceFormatter: DistanceFormatter) {
 

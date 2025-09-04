@@ -23,7 +23,7 @@ import javax.inject.Inject
 class WorkoutsLogViewModel
 @Inject
 constructor(
-    private val repository: TrackPreviewRepository, // TODO replace with use case
+    private val repository: TrackPreviewRepository,
     private val logItemFormatter: WorkoutLogItemFormatter,
     private val log: AppLogger,
 ) : ViewModel() {

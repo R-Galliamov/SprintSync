@@ -20,7 +20,6 @@
         android:layout_marginBottom="@dimen/space.regular"
         android:background="?colorSecondary" />
 
-    <!-- TODO create styles for card and buttons -->
     <Spinner
         android:id="@+id/spinnerGender"
         android:layout_width="match_parent"

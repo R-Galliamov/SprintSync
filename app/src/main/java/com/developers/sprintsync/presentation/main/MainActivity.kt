@@ -22,16 +22,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // installSplashScreen() // TODO set splash screen
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setNavigation()
     }
 
     private fun setNavigation() {
-        val isFirstRun = false // TODO replace
         val navController = getRootNavController()
-        NavigationManager.prepareRootNavController(isFirstRun, navController)
+        NavigationManager.prepareRootNavController(navController)
     }
 
     override fun onDestroy() {
