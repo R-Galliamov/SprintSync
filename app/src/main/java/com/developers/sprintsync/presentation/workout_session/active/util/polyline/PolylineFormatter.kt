@@ -11,7 +11,7 @@ import javax.inject.Inject
  * A formatter that converts a list of segments into a list of polylines for map visualization.
  */
 class PolylineFormatter @Inject constructor(
-    private val log: AppLogger
+    private val log: AppLogger,
 ) {
 
     /**
@@ -39,7 +39,7 @@ class PolylineFormatter @Inject constructor(
         }
         // Finalize any remaining points in the current polyline
         finalizePolyline(currentPolyline, polylines)
-        log.i("Formatted ${segments.size} segments into ${polylines.size} polylines")
+        log.d("Polylines generated: ${polylines.size}")
         return polylines
     }
 
@@ -60,7 +60,6 @@ class PolylineFormatter @Inject constructor(
             currentPolyline.add(segment.startLocation.toLatLng())
         }
         currentPolyline.add(segment.endLocation.toLatLng())
-        log.d("Added active segment to polyline: start=${segment.startLocation}, end=${segment.endLocation}")
     }
 
     /**
@@ -78,7 +77,6 @@ class PolylineFormatter @Inject constructor(
         if (currentPolyline.isNotEmpty()) {
             polylines.add(currentPolyline.toList())
             currentPolyline.clear()
-            log.d("Finalized polyline with ${currentPolyline.size} points")
         }
     }
 }

@@ -5,27 +5,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.developers.sprintsync.R
+import com.developers.sprintsync.core.util.extension.adjustCameraToBounds
 import com.developers.sprintsync.core.util.extension.findTopNavController
+import com.developers.sprintsync.core.util.extension.observe
 import com.developers.sprintsync.core.util.extension.setMapStyle
+import com.developers.sprintsync.core.util.extension.showToast
+import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.map.GoogleMapStyle
 import com.developers.sprintsync.databinding.FragmentMapBinding
-import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.model.Track
 import com.google.android.gms.maps.GoogleMap
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MapFragment : Fragment() {
     private var _binding: FragmentMapBinding? = null
     private val binding get() = checkNotNull(_binding) { getString(R.string.error_binding_not_initialized) }
 
     private val args: MapFragmentArgs by navArgs()
 
-    private val viewModel by activityViewModels<MapViewModel>()
+    private val viewModel by viewModels<MapViewModel>()
 
     private var _map: GoogleMap? = null
     private val map get() = checkNotNull(_map) { getString(R.string.error_map_not_initialized) }
+
+    @Inject
+    lateinit var log: AppLogger
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,43 +49,46 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        updateProgressBarVisibility(true)
-        initMap(savedInstanceState) {
-            map.setMapStyle(requireContext(), GoogleMapStyle.DETAILED)
-            setDataObserver()
-        }
+        binding.loadingOverlay.bindToLifecycle(lifecycle)
+        binding.mapView.onCreate(savedInstanceState)
+        viewModel.fetchTrack(args.trackId)
+        setupMap { observeState() }
         setBackButton()
     }
 
-    private fun initMap(
-        savedInstanceState: Bundle?,
-        onMapReady: () -> Unit,
+    private fun setupMap(
+        onMapReady: () -> Unit
     ) {
-        binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync { map ->
-            _map = map
-            onMapReady()
+            try {
+                map.setMapStyle(requireContext(), GoogleMapStyle.DETAILED)
+                _map = map
+                log.i("Map initialized")
+                onMapReady()
+            } catch (e: Exception) {
+                log.e("Failed to initialize map: ${e.message}", e)
+                showToast(requireContext().getString(R.string.error_map_load_failed))
+            }
         }
     }
 
-    private fun setDataObserver() {
-        viewModel.getTrackById(args.trackId).observe(viewLifecycleOwner) { track ->
-            track ?: return@observe
-            getNonEmptySegments(track)?.let { segments ->
-                updateProgressBarVisibility(false)
-                /*
-                mapManager.addPolylines(segments)
-                map.adjustCamera(
-                    MapCalculations.calculateBounds(
-                        segments.flatten(),
-                        MapCalculations.calculateTrackPadding(
-                            binding.mapView.width,
-                            binding.mapView.height,
-                        ),
-                    ),
-                )
+    private fun observeState() {
+        observe(viewModel.state) { state ->
+            when (state) {
+                MapViewModel.UiState.Loading -> {
+                    showLoading(true)
+                }
 
-                 */
+                is MapViewModel.UiState.Success -> {
+                    showLoading(false)
+                    if (state.polylines.isNotEmpty()) {
+                        state.polylines.forEach {
+                            map.addPolyline(it)
+                        }
+                        map.adjustCameraToBounds(state.bounds, state.padding)
+                    }
+                    log.d("Map loaded successfully")
+                }
             }
         }
     }
@@ -88,12 +99,10 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun getNonEmptySegments(track: Track): List<Segment>? = track.segments.takeIf { it.isNotEmpty() }
-
-    private fun updateProgressBarVisibility(isVisible: Boolean) {
+    private fun showLoading(isVisible: Boolean) {
         when (isVisible) {
-            true -> binding.progressBar.visibility = View.VISIBLE
-            false -> binding.progressBar.visibility = View.GONE
+            true -> binding.loadingOverlay.show()
+            false -> binding.loadingOverlay.hide()
         }
     }
 
