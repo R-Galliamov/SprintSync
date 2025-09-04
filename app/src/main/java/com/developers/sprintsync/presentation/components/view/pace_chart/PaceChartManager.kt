@@ -2,6 +2,8 @@ package com.developers.sprintsync.presentation.components.view.pace_chart
 
 import android.content.Context
 import com.developers.sprintsync.R
+import com.developers.sprintsync.core.util.log.AppLogger
+import com.developers.sprintsync.core.util.log.TimberAppLogger
 import com.developers.sprintsync.core.util.style_provider.AppThemeProvider
 import com.developers.sprintsync.presentation.components.view.pace_chart.formatter.PaceChartDurationFormatter
 import com.developers.sprintsync.presentation.components.view.pace_chart.formatter.PaceChartPaceFormatter
@@ -14,6 +16,7 @@ import com.github.mikephil.charting.data.LineDataSet
 
 class PaceChartManager(
     private val context: Context,
+    private val log: AppLogger = TimberAppLogger()
 ) {
     private var _chart: LineChart? = null
     private val chart get() = requireNotNull(_chart) { context.getString(R.string.error_chart_not_initialized) }
@@ -26,7 +29,7 @@ class PaceChartManager(
     }
 
     fun setData(chartData: PaceChartData) {
-        val lineDataSets = chartData.data.map { getLineDataSet(it) }
+        val lineDataSets = chartData.data.map { createLineDataSet(it) }
         setYAxisLimits(chartData.maxPace, chartData.minPace)
         chart.data = LineData(lineDataSets)
         refreshChart()
@@ -43,7 +46,7 @@ class PaceChartManager(
         }
     }
 
-    private fun getLineDataSet(entries: List<Entry>): LineDataSet =
+    private fun createLineDataSet(entries: List<Entry>): LineDataSet =
         LineDataSet(entries, CHART_DATA_LABEL).apply {
             setDrawValues(false)
             setDrawCircles(false)

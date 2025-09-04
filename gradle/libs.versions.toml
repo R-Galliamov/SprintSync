@@ -35,7 +35,6 @@ room = "2.7.0"
 splashscreen = "1.1.0-rc01"
 timber = "5.0.1"
 truth = "1.4.2"
-ulid-creator = "5.2.3"
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "android-application" }
@@ -87,7 +86,6 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 gson-extras = { group = "org.danilopianini", name = "gson-extras", version.ref = "gson-extras" }
 mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
-ulid_creator = { group = "com.github.f4b6a3", name = "ulid-creator", version.ref = "ulid-creator" }
 
 # Testing
 androidx-arch-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "arch-core-testing" }

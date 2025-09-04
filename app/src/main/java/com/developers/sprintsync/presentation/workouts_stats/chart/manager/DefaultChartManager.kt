@@ -3,7 +3,7 @@ package com.developers.sprintsync.presentation.workouts_stats.chart.manager
 import android.view.View
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.core.util.log.TimberAppLogger
-import com.developers.sprintsync.domain.workouts_plan.model.Metric
+import com.developers.sprintsync.presentation.components.Metric
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.ChartConfigurationType
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.ChartConfigurator
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues

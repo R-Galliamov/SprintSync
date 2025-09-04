@@ -2,7 +2,7 @@ package com.developers.sprintsync.presentation.workouts_stats.util.scroller
 
 import android.view.View
 import com.developers.sprintsync.databinding.ProgressChartTabsScrollerBinding
-import com.developers.sprintsync.domain.workouts_plan.model.Metric
+import com.developers.sprintsync.presentation.components.Metric
 
 class ChartTabsScroller {
     private val tabs = mutableMapOf<Metric, View>()
@@ -64,7 +64,8 @@ class ChartTabsScroller {
 
     private fun calculateTabCenterX(view: View): Int = view.left + view.width / DIVISOR_FOR_CENTER
 
-    private fun calculateScrollerCenterX(view: ProgressChartTabsScrollerBinding): Int = view.tabs.width / DIVISOR_FOR_CENTER
+    private fun calculateScrollerCenterX(view: ProgressChartTabsScrollerBinding): Int =
+        view.tabs.width / DIVISOR_FOR_CENTER
 
     companion object {
         private const val DIVISOR_FOR_CENTER = 2

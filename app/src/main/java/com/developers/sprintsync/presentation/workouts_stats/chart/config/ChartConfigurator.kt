@@ -2,7 +2,7 @@ package com.developers.sprintsync.presentation.workouts_stats.chart.config
 
 import com.developers.sprintsync.R
 import com.developers.sprintsync.core.util.style_provider.AppThemeProvider
-import com.developers.sprintsync.domain.workouts_plan.model.Metric
+import com.developers.sprintsync.presentation.components.Metric
 import com.developers.sprintsync.presentation.workouts_stats.chart.axis.YAxisScaler
 import com.developers.sprintsync.presentation.workouts_stats.chart.interaction.InteractionConfigurator
 import com.developers.sprintsync.presentation.workouts_stats.chart.axis.AxisConfigurator

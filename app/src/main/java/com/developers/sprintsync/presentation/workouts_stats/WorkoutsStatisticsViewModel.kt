@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.developers.sprintsync.data.statistics.WorkoutsStatsCreator
 import com.developers.sprintsync.domain.track.model.Track
 import com.developers.sprintsync.domain.track.use_case.storage.GetTracksFlowUseCase
-import com.developers.sprintsync.domain.workouts_plan.model.Metric
+import com.developers.sprintsync.presentation.components.Metric
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.ChartConfigurationType
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.ChartDataSet
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.DisplayData

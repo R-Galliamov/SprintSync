@@ -116,7 +116,6 @@ dependencies {
     implementation(libs.gson.extras)
     implementation(libs.mpandroidchart)
     implementation(libs.timber)
-    implementation(libs.ulid.creator)
 
     // --- TESTS ---
     androidTestImplementation(libs.android.test.runner)

@@ -2,7 +2,7 @@ package com.developers.sprintsync.data.workout_plan.mapper
 
 import com.developers.sprintsync.data.workout_plan.dto.PlanDayDto
 import com.developers.sprintsync.data.workout_plan.dto.WorkoutPlanDto
-import com.developers.sprintsync.domain.workouts_plan.model.Metric
+import com.developers.sprintsync.presentation.components.Metric
 import com.developers.sprintsync.domain.workouts_plan.model.PlanDay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
