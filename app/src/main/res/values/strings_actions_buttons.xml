@@ -11,4 +11,5 @@
     <string name="action_go_back">Go back</string>
     <string name="action_select_date">Select date</string>
     <string name="action_view_on_map">View on map</string>
+    <string name="action_open_tracker">Run!</string>
 </resources>
