@@ -3,6 +3,7 @@ package com.developers.sprintsync.presentation.workouts_stats.chart.data.transfo
 import com.developers.sprintsync.presentation.workouts_stats.chart.data.DailyValues
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.BarConfiguration
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.LineConfiguration
+import com.developers.sprintsync.presentation.workouts_stats.chart.data.getActualValues
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -147,10 +148,13 @@ class DataTransformer {
             }
         }
 
-        private fun transformToLineEntries(data: List<DailyValues>): List<BarEntry> =
-            List(data.size) { index ->
-                BarEntry(index.toFloat(), 10f) // TODO replace with avg
+        private fun transformToLineEntries(data: List<DailyValues>): List<BarEntry> {
+            val avg = data.getActualValues().average().toFloat()
+            return List(data.size) { index ->
+                BarEntry(index.toFloat(), avg)
             }
+        }
+
     }
 
     companion object {

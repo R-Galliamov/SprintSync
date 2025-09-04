@@ -1,7 +1,8 @@
 package com.developers.sprintsync.presentation.workouts_stats.chart.manager
 
-import android.util.Log
 import android.view.View
+import com.developers.sprintsync.core.util.log.AppLogger
+import com.developers.sprintsync.core.util.log.TimberAppLogger
 import com.developers.sprintsync.domain.workouts_plan.model.Metric
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.ChartConfigurationType
 import com.developers.sprintsync.presentation.workouts_stats.chart.config.ChartConfigurator
@@ -27,6 +28,7 @@ import kotlinx.coroutines.withContext
 
 class DefaultChartManager(
     private val chart: CombinedChart,
+    private val log: AppLogger = TimberAppLogger(),
 ) : ChartManager() {
     private var _generalData: List<DailyValues> = emptyList()
 
@@ -85,17 +87,17 @@ class DefaultChartManager(
     }
 
     private fun initNavigator(chart: CombinedChart) {
-        Log.d("ChartManagerImpl", "Navigator initialized")
+        log.d("Navigator initialized")
         _navigator = ChartNavigator(chart)
     }
 
     private fun initNavigatorStateScope() {
-        Log.d("ChartManagerImpl", "NavigatorStateScope initialized")
+        log.d("NavigatorStateScope initialized")
         navigatorStateScope = CoroutineScope(dispatcher)
     }
 
     private fun cancelNavigatorStateScope() {
-        Log.d("ChartManagerImpl", "NavigatorStateScope canceled")
+        log.d("NavigatorStateScope canceled")
         navigatorStateScope?.cancel()
         navigatorStateScope = null
     }
@@ -104,23 +106,20 @@ class DefaultChartManager(
         metric: Metric,
         navigator: ChartNavigator,
     ) {
-        Log.d("ChartManagerImpl", "NavigatorStateListener initialized")
         initNavigatorStateScope()
 
         navigatorStateScope?.launch {
             navigator.state.collect { state ->
                 when (state) {
                     is NavigatorState.Initialised -> {
-                        Log.d(TAG, "NavigatorState.Initialised")
+                        /* NO-IP */
                     }
 
                     is NavigatorState.DataLoaded -> { // Keep showing loading bar
-                        Log.d(TAG, "NavigatorState.DataLoaded")
                         navigator.setDisplayedRange(Int.MAX_VALUE)
                     }
 
                     is NavigatorState.ViewportActive -> {
-                        Log.d(TAG, "NavigatorState.ViewportActive")
                         updateDisplayedData(
                             state.viewportIndices.firstDisplayedEntryIndex,
                             state.rangeLimits.chartRange,
@@ -131,7 +130,6 @@ class DefaultChartManager(
                                 .toList()
                         when (state) {
                             is NavigatorState.ViewportActive.InitialDisplay -> {
-                                Log.d(TAG, "NavigatorState.InitialDisplay")
                                 scaleUpMaximum(displayedDataList)
                                 updateYAxisLabel(metric, displayedDataList)
                                 configurator.updateChartDisplay()
@@ -141,7 +139,6 @@ class DefaultChartManager(
                             }
 
                             is NavigatorState.ViewportActive.Navigating -> {
-                                Log.d(TAG, "NavigatorState.Navigating")
                                 scaleUpMaximumAnimated(displayedDataList) {
                                     updateYAxisLabel(metric, displayedDataList)
                                     configurator.updateChartDisplay()
@@ -149,7 +146,6 @@ class DefaultChartManager(
                             }
 
                             is NavigatorState.ViewportActive.DataReloaded -> {
-                                Log.d(TAG, "NavigatorState.DataReloaded")
                                 navigator.setDisplayedRange(Int.MAX_VALUE)
                                 navigator.commitDataReload()
                                 /*
@@ -171,7 +167,6 @@ class DefaultChartManager(
         metric: Metric,
         data: List<DailyValues>,
     ): CombinedData {
-        Log.d("ChartManagerImpl", "Chart data transformed")
         val dataConfigFactory = DataConfigFactory(chart.context)
         return CombinedDataPreparer().prepareCombinedData(
             data,
@@ -185,7 +180,6 @@ class DefaultChartManager(
         range: Int,
         rangePosition: RangePosition,
     ) {
-        Log.d("ChartManagerImpl", "Chart data updated")
         val toIndexExclusive = firstVisibleEntryIndex + range
         val displayedEntries =
             _generalData.subList(firstVisibleEntryIndex, toIndexExclusive.coerceAtMost(_generalData.size))
@@ -201,7 +195,6 @@ class DefaultChartManager(
     }
 
     private fun scaleUpMaximum(displayedData: List<DailyValues>) {
-        Log.d("ChartManagerImpl", "Chart maximum scaled up")
         val maxValue = getMaxValue(displayedData)
         configurator.scaleYAxisMaximum(maxValue)
     }
@@ -221,13 +214,11 @@ class DefaultChartManager(
         metric: Metric,
         displayedData: List<DailyValues>,
     ) {
-        Log.d("ChartManagerImpl", "Chart label updated")
         val label = getAverage(displayedData)
         configurator.highlightYAxisLabel(metric, label)
     }
 
     private fun resetConfig() {
-        Log.d("ChartManagerImpl", "Chart configuration reset")
         chartConfigurationType = null
     }
 
@@ -240,7 +231,4 @@ class DefaultChartManager(
         return displayedData.getActualValues().maxOrNull() ?: 0f
     }
 
-    companion object {
-        private const val TAG = "My stack: ChartManagerImpl"
-    }
 }

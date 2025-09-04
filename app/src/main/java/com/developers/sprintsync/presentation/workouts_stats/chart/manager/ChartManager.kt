@@ -20,7 +20,5 @@ abstract class ChartManager {
         referencedTimestamp: Long,
     )
 
-    fun displayRange(rangeIndex: Int) = navigator.setDisplayedRange(rangeIndex)
-
     fun navigateRange(direction: ChartNavigator.NavigationDirection) = navigator.shiftViewPortRange(direction)
 }

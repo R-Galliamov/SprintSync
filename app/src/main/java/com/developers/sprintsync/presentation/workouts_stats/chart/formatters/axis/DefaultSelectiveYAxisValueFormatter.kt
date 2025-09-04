@@ -71,7 +71,5 @@ class DefaultSelectiveYAxisValueFormatter : SelectiveYAxisValueFormatter() {
         private const val START_POSITION = 0f
         private const val START_INDEX_VALUE = 0
         private const val TOLERANCE_MULTIPLIER = 0.5f
-
-        private const val TAG = "My stack: SelectiveYAxisValueForm"
     }
 }

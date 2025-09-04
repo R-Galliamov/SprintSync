@@ -3,7 +3,6 @@ package com.developers.sprintsync.data.statistics
 import com.developers.sprintsync.core.util.timestamp.TimestampUtils
 import com.developers.sprintsync.domain.statistics.model.WorkoutsStats
 import com.developers.sprintsync.domain.track.model.Track
-import com.developers.sprintsync.presentation.components.formatter.DistanceFormatter
 import javax.inject.Inject
 
 class WorkoutsStatsCreator @Inject constructor() {
