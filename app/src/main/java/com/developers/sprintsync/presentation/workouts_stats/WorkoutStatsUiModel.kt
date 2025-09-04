@@ -45,9 +45,9 @@ class WorkoutsStatsUiModelFormatter @Inject constructor(
             WorkoutsStatsUiModel(
                 totalWorkouts = stats.totalWorkouts.toString(),
                 totalWorkoutDays = stats.totalWorkoutDays.toString(),
-                totalDistance = distanceFormatter.format(stats.totalDistanceMeters).value,
+                totalDistance = distanceFormatter.format(stats.totalDistanceMeters).withUnit,
                 totalDuration = DurationUiFormatter.format(stats.totalDurationMillis, DurationUiPattern.HH_MM_SS),
-                longestDistance = distanceFormatter.format(stats.longestDistanceMeters).value,
+                longestDistance = distanceFormatter.format(stats.longestDistanceMeters).withUnit,
                 longestDuration = DurationUiFormatter.format(
                     stats.longestDurationMillis,
                     DurationUiPattern.HH_MM_SS

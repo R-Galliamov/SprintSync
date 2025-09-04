@@ -3,6 +3,7 @@ package com.developers.sprintsync.data.statistics
 import com.developers.sprintsync.core.util.timestamp.TimestampUtils
 import com.developers.sprintsync.domain.statistics.model.WorkoutsStats
 import com.developers.sprintsync.domain.track.model.Track
+import com.developers.sprintsync.presentation.components.formatter.DistanceFormatter
 import javax.inject.Inject
 
 class WorkoutsStatsCreator @Inject constructor() {
@@ -35,18 +36,4 @@ class WorkoutsStatsCreator @Inject constructor() {
 
     private fun calculateWorkoutDays(tracks: List<Track>): Int =
         tracks.map { TimestampUtils.getStartOfDayTimestamp(it.timestamp) }.distinct().size
-
-    private fun calculateWorkoutStreak(tracks: List<Track>): Int {
-        val workoutDaysTimestamps =
-            tracks.map { TimestampUtils.getStartOfDayTimestamp(it.timestamp) }.distinct().sorted()
-
-        var nextDayTimestamp = TimestampUtils.addDaysToTimestamp(workoutDaysTimestamps.first(), 1)
-        var maxStreak = 1
-        workoutDaysTimestamps.forEach {
-            if (it == nextDayTimestamp) maxStreak++
-            nextDayTimestamp = TimestampUtils.addDaysToTimestamp(it, 1)
-        }
-
-        return maxStreak
-    }
 }
