@@ -1,22 +1,22 @@
-# SprintSync – Run Tracker (Android)
+# 🏃 SprintSync – Run Tracker (Android)
 
 **Status:** In testing  
 
 ---
 
-## Overview
+## 📱 Overview
 SprintSync is a running tracker that records **distance, pace, duration, calories**, and maps your route.  
 It supports **pause/resume**, a **foreground tracking service** with ongoing notification, and **clear post-run stats**.
 
 ---
 
-## Problem & Audience
+## 🎯 Problem & Audience
 Self-initiated fitness app for **recreational runners** who want **lightweight tracking without accounts**.  
 Focus: **accurate on-device tracking** and **clear post-run stats**.
 
 ---
 
-## Role & Ownership
+## 👤 Role & Ownership
 - Solo developer  
 - Designed flows in **Figma**  
 - Defined **IA and navigation**  
@@ -25,7 +25,7 @@ Focus: **accurate on-device tracking** and **clear post-run stats**.
 
 ---
 
-## Architecture
+## 🏗️ Architecture
 - **Patterns:** Clean Architecture, MVVM  
 - **Layers:** Core, Data, Domain, Presentation (feature sub-packages; single-module project)  
 - **Navigation:** Android Jetpack Navigation Component  
@@ -34,7 +34,7 @@ Focus: **accurate on-device tracking** and **clear post-run stats**.
 
 ---
 
-## Key Features
+## ✨ Key Features
 - Start, pause, resume, stop workouts  
 - Real-time GPS tracking via **foreground service** with ongoing notification  
 - **Route visualization** on Google Maps  
@@ -47,22 +47,22 @@ Focus: **accurate on-device tracking** and **clear post-run stats**.
 
 ---
 
-## Tech Stack
+## 🛠 Tech Stack
 - **Language:** Kotlin  
 - **Architecture:** Clean Architecture, MVVM  
 - **Concurrency:** Coroutines, Flow  
-- **Dependency Injection:** Hilt 
+- **Dependency Injection:** Hilt  
 - **Navigation:** Jetpack Navigation Component  
 - **Database:** Room  
 - **Preferences:** DataStore  
 - **Location:** Google Play Services Location  
 - **Maps:** Google Maps SDK for Android  
-- **UI:** Views/XML with Material Design 
+- **UI:** Views/XML with Material Design  
 - **Charts:** MPAndroidChart  
 - **Imaging:** Coil  
 - **JSON:** Gson  
 - **Logging:** Timber  
-- **Testing:** JUnit 4/5
+- **Testing:** JUnit 4/5  
 - **Static analysis:** ktlint, detekt  
-- **Firebase:** Crashlytics
+- **Firebase:** Crashlytics  
 - **Play Services:** Base, Maps  
