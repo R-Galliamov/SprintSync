@@ -1,6 +1,7 @@
 package com.developers.sprintsync.presentation.components.view.pace_chart
 
 import com.developers.sprintsync.core.util.log.AppLogger
+import com.developers.sprintsync.domain.track.model.LocationModel
 import com.developers.sprintsync.presentation.components.view.pace_chart.model.PaceChartData
 import com.developers.sprintsync.domain.track.model.Segment
 import com.github.mikephil.charting.data.Entry
@@ -25,27 +26,39 @@ class PaceChartDataCreator @Inject constructor(
             }
 
             val data = mutableListOf<List<Entry>>()
-            val current = mutableListOf<Entry>()
+            var current = mutableListOf<Entry>()
+            var prevEnd: LocationModel? = null
+
             var maxPace = Float.NEGATIVE_INFINITY
             var minPace = Float.POSITIVE_INFINITY
 
-            for (segment in segments) {
-                maxPace = maxOf(maxPace, segment.pace)
-                minPace = minOf(minPace, segment.pace)
-                current += segment.toEntry()
+            for (s in segments) {
+                maxPace = maxOf(maxPace, s.pace)
+                minPace = minOf(minPace, s.pace)
+
+                val connected = prevEnd == null || s.startLocation == prevEnd
+                if (!connected) {
+                    if (current.isNotEmpty()) data += current.toList()
+                    current = mutableListOf()
+                }
+
+                current += s.toEntry()
+                prevEnd = s.endLocation
             }
 
-            if (current.isNotEmpty()) {
-                data += current.toList()
-            }
+            if (current.isNotEmpty()) data += current.toList()
 
-            log.d("Pace chart data created: segments=${segments.size}, entries=${data.sumOf { it.size }}, maxPace=$maxPace, minPace=$minPace")
+            log.d(
+                "Pace chart data created: segments=${segments.size}, entries=${data.sumOf { it.size }}, " +
+                        "maxPace=$maxPace, minPace=$minPace"
+            )
             return PaceChartData(data, maxPace, minPace)
         } catch (e: Exception) {
             log.e("Error creating pace chart data: ${e.message}", e)
             return PaceChartData.EMPTY
         }
     }
+
 
     // Converts a segment to a chart entry
     private fun Segment.toEntry(): Entry {
