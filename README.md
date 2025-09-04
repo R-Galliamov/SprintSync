@@ -18,7 +18,7 @@ Focus: **accurate on-device tracking** and **clear post-run stats**.
 
 ## 👤 Role & Ownership
 - Solo developer  
-- Designed flows in **Figma**  
+- Designed in **Figma**  
 - Defined **IA and navigation**  
 - Implemented **Clean Architecture + MVVM**  
 - Wrote all code  
