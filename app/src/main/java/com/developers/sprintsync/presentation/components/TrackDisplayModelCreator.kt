@@ -41,8 +41,8 @@ constructor(
     fun create(track: Track): TrackDisplayModel {
         val distance = distanceFormatter.format(track.distanceMeters).withUnit
         val duration = DurationUiFormatter.format(track.durationMillis, DurationUiPattern.HH_MM_SS)
-        val avgPace = PaceUiFormatter.format(track.avgPace, PaceUiFormatter.Pattern.TWO_DECIMALS)
-        val bestPace = PaceUiFormatter.format(track.bestPace, PaceUiFormatter.Pattern.TWO_DECIMALS)
+        val avgPace = formatPace(track.avgPace)
+        val bestPace = formatPace(track.bestPace)
         val calories = CaloriesUiFormatter.format(track.calories, CaloriesUiFormatter.Pattern.PLAIN)
         val polylines = polylineProcessor.generatePolylines(track.segments)
         return TrackDisplayModel(
@@ -54,5 +54,17 @@ constructor(
             calories = calories,
             polylines = polylines,
         )
+    }
+
+
+    private fun formatPace(pace: Float?): String {
+        return if (pace == null) EMPTY_VALUE else PaceUiFormatter.format(
+            pace,
+            PaceUiFormatter.Pattern.TWO_DECIMALS
+        )
+    }
+
+    companion object {
+        const val EMPTY_VALUE = "-"
     }
 }

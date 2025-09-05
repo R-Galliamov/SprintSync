@@ -5,8 +5,8 @@ data class Track(
     val timestamp: Long,
     val durationMillis: Long,
     val distanceMeters: Float,
-    val avgPace: Float,
-    val bestPace: Float,
+    val avgPace: Float?,
+    val bestPace: Float?,
     val calories: Float,
     val segments: List<Segment>,
 ) {
@@ -17,8 +17,8 @@ data class Track(
                 timestamp = 0L,
                 durationMillis = 0L,
                 distanceMeters = 0f,
-                avgPace = 0f,
-                bestPace = 0f,
+                avgPace = null,
+                bestPace = null,
                 calories = 0f,
                 segments = emptyList(),
             )

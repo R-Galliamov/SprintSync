@@ -6,10 +6,8 @@ import android.content.Intent
 import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.track.service.processing.calculator.AndLocDistCalculator
 import com.developers.sprintsync.data.track.service.processing.calculator.DistanceCalculator
+import com.developers.sprintsync.data.track.service.processing.calculator.pace.RollingRunPaceAnalyzer
 import com.developers.sprintsync.data.track.service.processing.calculator.pace.RunPaceAnalyzer
-import com.developers.sprintsync.data.track.service.processing.calculator.pace.hampel.EmaSmoother
-import com.developers.sprintsync.data.track.service.processing.calculator.pace.hampel.HampelFilter
-import com.developers.sprintsync.data.track.service.processing.calculator.pace.hampel.HampelPaceAnalyzer
 import com.developers.sprintsync.data.track.service.processing.segment.DefaultSegmentBuilder
 import com.developers.sprintsync.data.track.service.processing.segment.SegmentBuilder
 import com.developers.sprintsync.data.track.service.provider.DurationProvider
@@ -35,30 +33,13 @@ object CalculationsModule {
     @Provides
     @ServiceScoped
     fun providePaceAnalyzer(
+        distCalc: DistanceCalculator,
         log: AppLogger,
-        filter: HampelFilter,
-        emaSmoother: EmaSmoother,
-        distCalculator: DistanceCalculator
     ): RunPaceAnalyzer {
-        return HampelPaceAnalyzer(
-            maxSpeedMps = 7.5f,
-            log = log,
-            hampelFilter = filter,
-            emaSmoother = emaSmoother,
-            distCalculator = distCalculator
-        )
+        val windowSeconds: Long = 10
+        val lagSeconds: Long = 5
+        return RollingRunPaceAnalyzer(windowSeconds, lagSeconds, distCalc, log)
     }
-
-    @Provides
-    fun provideHampelFilter(): HampelFilter = HampelFilter(
-        windowSize = 15,
-        k = 4f,
-    )
-
-    @Provides
-    fun provideEmaSmoother(): EmaSmoother = EmaSmoother(
-        tauSec = 10f,
-    )
 }
 
 @Module

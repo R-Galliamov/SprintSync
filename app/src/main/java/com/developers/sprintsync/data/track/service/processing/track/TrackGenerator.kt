@@ -42,7 +42,7 @@ constructor(
     }
 
     // Adds new timed location to segment service
-    fun addTimedLocation(point: TrackPoint) = segmentService.addTimedLocation(point)
+    fun addTimedLocation(point: TrackPoint) = segmentService.addTrackPoint(point)
 
     // Resets last timed location in segment service,
     // for i.e. when service is paused and there is no need to create segment

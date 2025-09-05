@@ -7,17 +7,9 @@ import com.developers.sprintsync.domain.track.model.Segment
 import com.github.mikephil.charting.data.Entry
 import javax.inject.Inject
 
-/**
- * Creates [PaceChartData] from a list of track segments for pace chart visualization.
- */
 class PaceChartDataCreator @Inject constructor(
     private val log: AppLogger,
 ) {
-    /**
-     * Converts segments into [PaceChartData], grouping active segments and tracking pace range.
-     * @param segments List of [Segment] to process.
-     * @return [PaceChartData] containing chart entries, max pace, and min pace.
-     */
     fun create(segments: List<Segment>): PaceChartData {
         try {
             if (segments.isEmpty()) {
@@ -28,21 +20,32 @@ class PaceChartDataCreator @Inject constructor(
             val data = mutableListOf<List<Entry>>()
             var current = mutableListOf<Entry>()
             var prevEnd: LocationModel? = null
+            var prevEntry: Entry? = null
 
             var maxPace = Float.NEGATIVE_INFINITY
             var minPace = Float.POSITIVE_INFINITY
 
             for (s in segments) {
-                maxPace = maxOf(maxPace, s.pace)
-                minPace = minOf(minPace, s.pace)
+                s.pace?.let {
+                    maxPace = maxOf(maxPace, it)
+                    minPace = minOf(minPace, it)
+                }
 
                 val connected = prevEnd == null || s.startLocation == prevEnd
                 if (!connected) {
                     if (current.isNotEmpty()) data += current.toList()
                     current = mutableListOf()
+                    prevEntry = null
                 }
 
-                current += s.toEntry()
+                val entry = s.toEntry()
+                if (entry != null) {
+                    current += entry
+                    prevEntry = entry
+                } else if (prevEntry != null) {
+                    current += prevEntry
+                }
+
                 prevEnd = s.endLocation
             }
 
@@ -59,22 +62,17 @@ class PaceChartDataCreator @Inject constructor(
         }
     }
 
-
-    // Converts a segment to a chart entry
-    private fun Segment.toEntry(): Entry {
+    private fun Segment.toEntry(): Entry? {
         try {
             require(startTime >= 0) { "Start time must be non-negative" }
             require(endTime > 0) { "End time must be greater than 0" }
-            require(!pace.isNaN() && pace.isFinite()) { "Pace must be a valid number" }
+            require(pace != null) { "Pace mustn't be null" }
+            require(!pace!!.isNaN() && pace!!.isFinite()) { "Pace must be a valid number" }
             val centerTime = (startTime + endTime) / 2f
-            return Entry(centerTime, pace)
+            return Entry(centerTime, pace!!)
         } catch (e: Exception) {
             log.e("Error converting segment to entry: ${e.message}", e)
-            return EMPTY_ENTRY
+            return null
         }
-    }
-
-    private companion object {
-        private val EMPTY_ENTRY = Entry(Float.NaN, Float.NaN)
     }
 }

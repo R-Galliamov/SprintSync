@@ -15,8 +15,8 @@ class WorkoutsStatsCreator @Inject constructor() {
         val totalDurationMillis = tracks.sumOf { it.durationMillis }
         val longestDistanceMeters = tracks.maxOf { it.distanceMeters }
         val longestDurationMillis = tracks.maxOf { it.durationMillis }
-        val avgPaceMPKm = tracks.map { it.avgPace }.average().toFloat()
-        val peakPaceMPKm = tracks.minOf { it.avgPace }
+        val avgPaceMPKm = tracks.mapNotNull { it.avgPace }.average().toFloat()
+        val peakPaceMPKm = tracks.mapNotNull { it.bestPace }.min()
         val totalCalories = tracks.sumOf { it.calories.toDouble() }.toFloat()
 
         return WorkoutsStats(

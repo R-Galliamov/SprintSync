@@ -1,9 +1,9 @@
 package com.developers.sprintsync.presentation.workout_session.active.util.metrics_formatter
 
-import com.developers.sprintsync.presentation.components.formatter.CaloriesUiFormatter
-import com.developers.sprintsync.presentation.components.formatter.PaceUiFormatter
 import com.developers.sprintsync.domain.track.model.Segment
+import com.developers.sprintsync.presentation.components.formatter.CaloriesUiFormatter
 import com.developers.sprintsync.presentation.components.formatter.DistanceFormatter
+import com.developers.sprintsync.presentation.components.formatter.PaceUiFormatter
 import javax.inject.Inject
 
 /**
@@ -41,12 +41,14 @@ class UiMetricsFormatter @Inject constructor(private val distanceFormatter: Dist
 
     // Retrieves pace from the last segment or returns invalid pace
     private fun getPace(segment: Segment?): String {
-        return segment?.let { convertPace(it.pace) } ?: INVALID_PACE
+        return segment?.let { convertPace(it.pace) } ?: EMPTY_VALUE
     }
 
-    private fun convertPace(pace: Float) = PaceUiFormatter.format(pace, PaceUiFormatter.Pattern.TWO_DECIMALS)
+    private fun convertPace(pace: Float?): String {
+        return if (pace == null) EMPTY_VALUE else PaceUiFormatter.format(pace, PaceUiFormatter.Pattern.TWO_DECIMALS)
+    }
 
     companion object {
-        private const val INVALID_PACE = "-"
+        private const val EMPTY_VALUE = "-"
     }
 }

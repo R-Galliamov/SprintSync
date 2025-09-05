@@ -12,8 +12,8 @@ data class TrackEntity(
     val timestamp: Long,
     val durationMillis: Long,
     val distanceMeters: Float,
-    val avgPace: Float,
-    val bestPace: Float,
+    val avgPace: Float?,
+    val bestPace: Float?,
     val calories: Float,
     val segments: List<Segment>,
 ) {

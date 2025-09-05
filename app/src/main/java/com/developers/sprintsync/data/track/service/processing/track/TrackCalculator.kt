@@ -50,14 +50,18 @@ class TrackCalculator @Inject constructor(
     private fun calculateBestPace(
         track: Track,
         newSegment: Segment,
-    ): Float = if (track.segments.isEmpty()) {
-        newSegment.pace
-    } else {
-        minOf(track.bestPace, newSegment.pace)
+    ): Float? {
+        val segmentPace = newSegment.pace
+        return when {
+            track.bestPace == null -> segmentPace
+            segmentPace == null -> track.bestPace
+            else -> minOf(track.bestPace, segmentPace)
+        }
     }
-}
 
-private fun calculateCalories(
-    track: Track,
-    newSegment: Segment,
-): Float = track.calories + newSegment.calories
+
+    private fun calculateCalories(
+        track: Track,
+        newSegment: Segment,
+    ): Float = track.calories + newSegment.calories
+}

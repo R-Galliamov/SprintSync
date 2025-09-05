@@ -8,6 +8,6 @@ data class Segment(
     val startLocation: LocationModel,
     var endLocation: LocationModel,
     var distanceMeters: Float,
-    var pace: Float,
+    var pace: Float?,
     var calories: Float,
 )

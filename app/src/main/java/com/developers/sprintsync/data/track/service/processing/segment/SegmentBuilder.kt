@@ -1,10 +1,11 @@
 package com.developers.sprintsync.data.track.service.processing.segment
 
+import com.developers.sprintsync.core.util.log.AppLogger
 import com.developers.sprintsync.data.track.service.processing.calculator.MetricsCalcOrchestrator
 import com.developers.sprintsync.data.track.service.processing.calculator.pace.RunPaceAnalyzer
 import com.developers.sprintsync.data.track.service.processing.session.TrackPoint
 import com.developers.sprintsync.domain.track.model.Segment
-import com.developers.sprintsync.domain.track.validator.Validator
+import com.developers.sprintsync.domain.track.validator.MetricValidator
 import com.developers.sprintsync.domain.user_profile.model.UserParameters
 import javax.inject.Inject
 
@@ -32,8 +33,9 @@ interface SegmentBuilder {
 class DefaultSegmentBuilder @Inject constructor(
     val calculator: MetricsCalcOrchestrator,
     private val userParameters: UserParameters?,
-    private val validator: Validator<Segment>,
-    private val paceAnalyzer: RunPaceAnalyzer
+    private val validator: MetricValidator,
+    private val paceAnalyzer: RunPaceAnalyzer,
+    private val log: AppLogger,
 ) : SegmentBuilder {
     /**
      * Constructs an active segment with calculated metrics.
@@ -51,10 +53,20 @@ class DefaultSegmentBuilder @Inject constructor(
             val durationMillis =
                 calculator.calculateDurationMillis(startPoint.timeMs, endPoint.timeMs)
             val distanceMeters = calculator.calculateDistanceMeters(startPoint.location, endPoint.location)
-            if (paceAnalyzer.snapshot.paceMinPerKm == null) {
-                paceAnalyzer.add(startPoint).paceMinPerKm
+            val dvr = validator.validateDistance(distanceMeters)
+
+            if (dvr.isNotEmpty()) {
+                log.w("Invalid segment: $dvr")
+                throw IllegalArgumentException()
             }
-            val pace = paceAnalyzer.add(endPoint).paceMinPerKm ?: 0f
+
+            var pace = paceAnalyzer.add(endPoint).paceMpk
+
+            pace?.let {
+                val vr = validator.validatePace(it)
+                if (vr.isNotEmpty()) pace = null
+            }
+
             val weight = userParameters?.weightKg ?: 75f
             val calories =
                 calculator.calculateCalories(weight, distanceMeters, durationMillis)
@@ -71,6 +83,13 @@ class DefaultSegmentBuilder @Inject constructor(
                 calories = calories,
             )
 
-            return validator.validate(segment)
+            val vr = validator.validateSegment(segment)
+
+            if (vr.isNotEmpty()) {
+                log.w("Invalid segment: $vr")
+                throw IllegalArgumentException()
+            }
+
+            segment
         }
 }

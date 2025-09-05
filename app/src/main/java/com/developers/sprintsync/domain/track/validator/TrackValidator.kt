@@ -29,8 +29,8 @@ class TrackValidator(private val policy: TrackValidationPolicy) {
         if (track.timestamp < policy.minTimestamp) errors += TrackErrors.InvalidTimestamp
         if (track.durationMillis <= policy.minDuration) errors += TrackErrors.DurationTooShort
         if (track.distanceMeters <= policy.minDistance) errors += TrackErrors.DistanceTooShort
-        if (track.avgPace <= policy.minPace) errors += TrackErrors.AvgPaceInvalid
-        if (track.bestPace <= policy.minPace) errors += TrackErrors.BestPaceInvalid
+        if (track.avgPace == null) errors += TrackErrors.AvgPaceInvalid else if (track.avgPace <= policy.minPace) errors += TrackErrors.AvgPaceInvalid
+        if (track.bestPace == null) errors += TrackErrors.BestPaceInvalid else if (track.bestPace <= policy.minPace) errors += TrackErrors.BestPaceInvalid
         if (track.calories < policy.minCalories) errors += TrackErrors.CaloriesNegative
         if (track.segments.size < policy.minSegments) errors += TrackErrors.TooFewSegments
 
@@ -38,7 +38,7 @@ class TrackValidator(private val policy: TrackValidationPolicy) {
     }
 }
 
-enum class TrackErrors() {
+enum class TrackErrors {
     InvalidTimestamp,
     DurationTooShort,
     DistanceTooShort,

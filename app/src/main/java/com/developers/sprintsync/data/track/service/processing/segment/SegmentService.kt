@@ -23,10 +23,8 @@ constructor(
     private val _data = MutableStateFlow<Segment?>(null)
     val data = _data.asStateFlow().filterNotNull()
 
-    private val trackPoints: MutableList<TrackPoint> = mutableListOf()
-
     // Processes new location data to generate segments
-    fun addTimedLocation(point: TrackPoint) {
+    fun addTrackPoint(point: TrackPoint) {
         when (val currentState = stateManager.state.value) {
             is SegmentGeneratingState.Uninitialized -> stateManager.initializeState(point)
             is SegmentGeneratingState.Initialized -> {

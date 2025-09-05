@@ -1,5 +1,6 @@
 package com.developers.sprintsync.di
 
+import com.developers.sprintsync.domain.track.validator.MetricValidator
 import com.developers.sprintsync.domain.track.validator.TrackLimits
 import com.developers.sprintsync.domain.track.validator.TrackValidationPolicy
 import com.developers.sprintsync.domain.track.validator.TrackValidator
@@ -26,4 +27,7 @@ class TrackUseCaseDiModule {
 
     @Provides
     fun provideValidator(policy: TrackValidationPolicy): TrackValidator = TrackValidator(policy)
+
+    @Provides
+    fun provideMetricValidator(): MetricValidator = MetricValidator()
 }
